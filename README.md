@@ -24,13 +24,13 @@ Por hacer...
 Por hacer...
 
 ## 👤 Autores
-Oscar Quesada Webb
+#### Oscar Quesada Webb  
 - oscar.quesadawebb@ucr.ac.cr
-Javier Donato
+#### Javier Donato  
 - javier.donato@ucr.ac.cr
-Isabela Rodriguez
+#### Isabela Rodriguez  
 - isabela.rodriguez@ucr.ac.cr
-Kevin Barboza
+#### Kevin Barboza  
 - kevin.barbozaramirez@ucr.ac.cr
-Bryan Villegas
+#### Bryan Villegas  
 - bryan.villegasalvarado@ucr.ac.cr
