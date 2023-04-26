@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:44431",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "/home/ozzy330/Documents/1_2023_ucr/Renovadores/ClientApp/",
+"MaxTimeoutInSeconds": "120"
+}
+}
