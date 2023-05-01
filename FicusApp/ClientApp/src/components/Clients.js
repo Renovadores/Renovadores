@@ -4,41 +4,26 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react'
 
 function Clients() {
-  // TO-DO fetch data from back-end
-  const clients = [
-    {
-      id: 1,
-      name: "Cumpanis"
-    },
-    {
-      id: 2,
-      name: "Feria Verde"
-    },
-    {
-      id: 3,
-      name: "Cliente 3"
-    },
-    {
-      id: 4,
-      name: "Cliente 4"
-    },
-    {
-      id: 5,
-      name: "Cliente 5"
-    },
-    {
-      id: 6,
-      name: "Cliente 6"
-    },
-    {
-      id: 7,
-      name: "Cliente 7"
-    },
-    {
-      id: 8,
-      name: "Cliente 8"
+  // get clients from data base
+  const [clients, setClients] = useState([]);
+  const getClients = async () => {
+    const response = await fetch("api/cliente/GetClientes");
+    if (response.ok) {
+      const data = await response.json();
+      setClients(data);
+    } else {
+      console.log("error");
     }
-  ]
+  }
+  // this method allows to auto call getClients when page is started
+  useEffect(() => {
+    getClients();
+  }, []);
+
+  useEffect(() => {
+    console.log(clients);
+  }, [clients]);
+
 
   // When user click on client button, 'navigate hook' redirect him to new page
   const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
@@ -54,7 +39,8 @@ function Clients() {
 
   useEffect(() => {
     console.log(company);
-    }, [company]);
+  }, [company]);
+
 
   const handleCancel = () => {
     setCompany("");
@@ -62,7 +48,8 @@ function Clients() {
   }
 
   const handleSubmit = (event) => {
-    
+    handleCancel();
+
   }
 
   const current = new Date();
@@ -235,7 +222,7 @@ function Clients() {
           </div>
         </div>
         <div className="col-sm-6 col-md-3  d-flex my-2 my-md-0">
-          <button className="btn btn-danger">Eliminar Cliente</button>
+          <button className="btn btn-danger" >Eliminar Cliente</button>
         </div>
         <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
           <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
@@ -253,23 +240,23 @@ function Clients() {
           </div>
         </div>
       </div>
-      <div className="row m-2 mt-4 d-flex justify-content-center">      
-          {
-            clients.map((client) => (
-              <div className="col-sm-6 col-md-3 mb-3" key={client.id}>
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">{client.name}</h5>
-                    <p className="card-text">Some info.</p>
-                    <button className="btn btn-primary" onClick={() => handleClick(client.id, client.name)}>Ver cliente</button>
-                  </div>
+      <div className="row m-2 mt-4 d-flex justify-content-center">
+        {
+          clients.map((client) => (
+            <div className="col-sm-6 col-md-3 mb-3" key={client.id}>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{client.empresa}</h5>
+                  <p className="card-text">Some info.</p>
+                  <button className="btn btn-primary" onClick={() => handleClick(client.id, client.empresa)}>Ver cliente</button>
                 </div>
               </div>
-            ))
-          }      
+            </div>
+          ))
+        }
       </div>
 
-      <div className="row m-2 mt-4"> 
+      <div className="row m-2 mt-4">
         <nav aria-label="...">
           <ul className="pagination justify-content-center">
             <li className="page-item disabled">
