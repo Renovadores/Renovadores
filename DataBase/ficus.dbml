@@ -1,0 +1,159 @@
+Project "Ficus Data Base" {
+  database_type: 'SQL Server'
+  Note: 'Base de datos para la pyme Ficus'
+}
+
+Table Usuario {
+  ID_Usuario integer [pk, unique, not null, note: "Identificador del usuario"]
+  Nombre varchar [not null, note: "Guarda el nombre del usuario"]
+  Apellidos varchar [not null, note: "Guarda el o los apellidos del usuario"]
+  Contrasena varchar [not null, note: "Contraseña encriptada del usuario"]
+  Rol integer [not null, ref: - Rol.ID_Rol, note: "Identifica las capacidades del usuario"]
+}
+
+Table Rol {
+  ID_Rol integer [pk, unique, not null, note: "Indentificador unico del usuario"]
+  Tipo_rol varchar [unique, not null, note: "Nombre del rol"]
+  Detalles_rol varchar [note: "Detalles sobre el rol"]
+}
+
+// Table Roles_usuario {
+//   Usuario integer [not null, ref: <> Usuario.ID_Usuario, note: "Identificador del usuario"]
+//   Rol integer [not null, ref: <> Rol.ID_Rol, note: "Identifica las capacidades del usuario"]
+// }
+
+Table Producto {
+  SKU integer [pk, unique, not null, note: "Identificador unico para cada producto"]
+  Nombre varchar [not null, note: "Nombre del producto"]
+  Descripcion varchar [not null]
+  Dimensiones varchar [not null]
+  Peso_recipiente integer [not null]
+  Peso_desechable integer [not null]
+  Alquiler_Comercios integer [not null, note: "Costo para el alquiler a comercio incluyendo IVA"]
+  Alquiler_Retail integer [not null, note: "Costo para el alquiler a retail incluyendo IVA"]
+}
+
+Table Categoria {
+  ID_Categoria integer [pk, unique, not null]
+  Nombre_categoria varchar [not null, note: "Nombre de la categoría"]
+}
+
+Table Categoria_producto {
+  Producto integer [not null, ref: <> Producto.SKU]
+  Categoria integer [not null, ref: <> Categoria.ID_Categoria]
+	Note: "Guarda la relacion que hay entre los producto y las categorias"
+}
+
+Table Familia {
+  ID_Familia integer [pk, unique, not null]
+  Nombre_familia varchar [not null, note: "Nombre de un grupo de productos"]
+  Producto integer [not null, ref: - Producto.SKU]
+}
+
+Table Familia_producto {
+  Producto integer [not null, ref: <> Producto.SKU]
+  Familia integer [not null, ref: <> Familia.ID_Familia]
+	Note: "Agrupación de los productos en familias"
+}
+
+Table Color {
+  ID_Color varchar [pk, unique, not null]
+  Descripcion varchar
+}
+
+Table Color_producto{
+  Producto integer [not null, ref: <> Producto.SKU]
+  Color varchar [not null,ref: <> Color.ID_Color]
+	Note: "Guarda que colores tiene cada producto"
+}
+
+Table Estado {
+  ID_EstadoProducto integer [pk, unique, not null]
+  Descripcion_estadoproducto varchar [not null, note: "Que estado es el actual de un producto"]
+}
+
+Table Inventario {
+  Producto integer [ref: - Producto.SKU]
+  Estado integer [ref: > Estado.ID_EstadoProducto]
+  Cantidad integer
+  Lote integer
+  Fecha_ingreso timestamp
+	Note: "Guarda las caracteristicas de cada producto, si está disponible, reservado, etc..."
+}
+
+
+Table Orden {
+  ID_Orden varchar [pk, unique, not null]
+  Fecha_alquiler timestamp [not null]
+  Usuario varchar [ref: - Usuario.ID_Usuario, not null, note: "Responsable de agregar la orden"]
+  Cliente varchar [ref: > Cliente.ID_Cliente]
+  Registro_limpieza integer
+  Limpieza_unidad integer
+  Limpieza integer
+  Monto integer
+  Descuento integer
+}
+
+Table Fase {
+  ID_fase integer [pk, unique, not null]
+  Descripcion_estado varchar [not null, note: "Definición de la fase de una orden"]
+}
+
+Table Fase_Orden {
+	Orden varchar [ref: - Orden.ID_Orden]
+	Fase integer [ref: - Fase.ID_fase]
+	Note: "Guarda en que fase se encuentra cada orden"
+}
+
+Table Evento {
+  ID_Evento integer [pk]
+  Nombre_evento varchar
+  Descripcion_evento varchar
+  Ordenes integer [ref: < Orden.ID_Orden]
+}
+
+Table Detalle {
+  ID_reserva integer [pk, ref: > Orden.ID_Orden]
+  Producto integer [ref: > Producto.SKU]
+  Pedidos integer
+  Sin_usar integer
+  Usados integer
+  Devueltos integer
+  Descuento integer
+}
+
+
+Table Cliente {
+  ID_Cliente integer [pk]
+  Tipo varchar
+  Fecha_agregado timestamp
+  // Segmento varchar
+  Responsable varchar [ref: - Usuario.Nombre]
+  Prioridad varchar
+  Estado varchar
+	// Medio_de_comunicacion varchar
+  Nombre varchar
+  Telefono integer
+  Correo varchar
+  Web varchar
+}
+
+Table Segmento {
+	ID_Segmento varchar [pk]
+	Detalles varchar
+}
+
+Table Cliente_Segmento {
+	Cliente integer [ref: <> Cliente.ID_Cliente]
+	Segmento varchar [ref: <> Segmento.ID_Segmento]
+}
+
+Table MedioComunicacion {
+	ID_Medio varchar [pk]
+	Caracteristicas varchar
+}
+
+Table Cliente_Comunicacion {
+	Cliente integer [ref: <> Cliente.ID_Cliente]
+	Comunicacion varchar [ref: <> MedioComunicacion.ID_Medio]
+}
