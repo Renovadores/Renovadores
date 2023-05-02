@@ -18,11 +18,66 @@ function Clients() {
   // this method allows to auto call getClients when page is started
   useEffect(() => {
     getClients();
+    console.log(clients);
   }, []);
 
+  const current = new Date();
+  const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
+  const dateDB = dateFormat();
+
+  // store form information in variables
+  const [company, setCompany] = useState("");
+  const handleChangeCompany = (event) => {
+    setCompany(event.target.value)
+  }
   useEffect(() => {
-    console.log(clients);
-  }, [clients]);
+    console.log(company);
+  }, [company]);
+
+  const [personInCharge, setPersonInCharge] = useState("Alejandro");
+  const handleChangePersonInCharge = (event) => {
+    setPersonInCharge(event.target.value)
+  }
+  useEffect(() => {
+    console.log(personInCharge);
+  }, [personInCharge]);
+
+  const [priority, setPriority] = useState("Baja");
+  const handleChangePriority = (event) => {
+    setPriority(event.target.value)
+  }
+  useEffect(() => {
+    console.log(priority);
+  }, [priority]);
+
+  const [state, setState] = useState("Clientes");
+  const handleChangeState = (event) => {
+    setState(event.target.value)
+  }
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  const handleCancel = () => {
+    setCompany("");
+    // TO-DO: clear info for the other fields 
+  }
+
+  //Add client to data base
+  const handleSubmit = async (event) => {
+    //event.preventDefault();
+    const response = await fetch("api/cliente/AddCliente", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({ empresa: company, agregado: dateDB, responsable: personInCharge, prioridad: priority })
+    });
+
+    if (response.ok) {
+      handleCancel();
+    }
+  }
 
 
   // When user click on client button, 'navigate hook' redirect him to new page
@@ -31,29 +86,6 @@ function Clients() {
     navigate('/clientes/informacion', { state: { id: clientId, name: clientName } });
     //second argument allows to pass parameters
   };
-
-  const [company, setCompany] = useState("");
-  const handleChangeCompany = (event) => {
-    setCompany(event.target.value)
-  }
-
-  useEffect(() => {
-    console.log(company);
-  }, [company]);
-
-
-  const handleCancel = () => {
-    setCompany("");
-    // TO-DO: clear info for the other fields 
-  }
-
-  const handleSubmit = (event) => {
-    handleCancel();
-
-  }
-
-  const current = new Date();
-  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
   // TO-DO: separate in new components to simplify code
   return (
@@ -76,7 +108,7 @@ function Clients() {
               <form onSubmit={handleSubmit}>
 
                 <div className="form-floating mb-3">
-                  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={company} onChange={handleChangeCompany} />
+                  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={company} onChange={handleChangeCompany}  />
                   <label htmlFor="floatingInput">Empresa</label>
                 </div>
 
@@ -137,27 +169,27 @@ function Clients() {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">Responsable</label>
-                  <select className="form-select" aria-label="Default select example">
-                    <option value="1">Alejandro</option>
-                    <option value="2">Andrea</option>
-                    <option value="3">Fabiola</option>
+                  <label htmlFor="formGroupExampleInput" className="form-label" >Responsable</label>
+                  <select className="form-select" aria-label="Default select example" value={personInCharge} onChange={handleChangePersonInCharge}>
+                    <option value="Alejandro">Alejandro</option>
+                    <option value="Andrea">Andrea</option>
+                    <option value="Fabiola">Fabiola</option>
                   </select>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">Prioridad</label>
-                  <select className="form-select" aria-label="Default select example">
-                    <option value="1">Baja</option>
-                    <option value="2">Media</option>
-                    <option value="3">Alta</option>
+                  <select className="form-select" aria-label="Default select example" value={priority} onChange={handleChangePriority}>
+                    <option value="Baja">Baja</option>
+                    <option value="Media">Media</option>
+                    <option value="Alta">Alta</option>
                   </select>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">Estado</label>
-                  <select className="form-select" aria-label="Default select example">
-                    <option value="1">Clientes</option>
+                  <select className="form-select" aria-label="Default select example" value={state} onChange={handleChangeState}>
+                    <option value="Clientes">Clientes</option>
                   </select>
                 </div>
 
@@ -211,10 +243,10 @@ function Clients() {
                 </div>
                 <div className="row">
                   <div className="col-6 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-primary">Agregar</button>
+                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={ getClients } >Agregar</button>
                   </div>
                   <div className="col-6 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-danger">Cancelar</button>
+                    <button className="btn btn-danger">Cancelar</button>
                   </div>
                 </div>
               </form>
@@ -276,4 +308,19 @@ function Clients() {
     </div>
   );
 }
+
+function dateFormat() {
+  const current = new Date();
+  var month = `${current.getMonth() + 1}`;
+  if ( month < 10) {
+    month = '0' + month;
+  }
+  var day = `${current.getDate()}`;
+  if (day < 10) {
+    day = '0' + day;
+  }
+  const date = `${current.getFullYear()}-${month}-${day}`;
+  return date;
+}
+
 export default Clients;
