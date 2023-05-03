@@ -8,13 +8,12 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    <SpaProxyServerUrl>https://localhost:44431</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:44481</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Helmet.Net" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="7.0.5" />
   </ItemGroup>
 
