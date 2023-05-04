@@ -1,7 +1,16 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import CheckBox from "./CheckBox";
+import ClientList from "./ClientList";
+import FilterClients from "./FilterClients";
+import Input from "./Input";
+import Pagination from "./Pagination";
+import SelectPersonInCharge from "./SelectPersonInCharge";
+import SelectPriority from "./SelectPriority";
+import SelectState from "./SelectState";
+
 
 function Clients() {
   // get clients from data base
@@ -18,49 +27,176 @@ function Clients() {
   // this method allows to auto call getClients when page is started
   useEffect(() => {
     getClients();
-    console.log(clients);
   }, []);
+
+  useEffect(() => {
+    console.log(clients);
+  }, [clients]);
 
   const current = new Date();
   const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
   const dateDB = dateFormat();
 
   // store form information in variables
+  // TO-DO: set variables in english
   const [company, setCompany] = useState("");
   const handleChangeCompany = (event) => {
     setCompany(event.target.value)
   }
-  useEffect(() => {
-    console.log(company);
-  }, [company]);
+
+  const [cafeteria, setCafeteria] = useState(false);
+  const handleCheckboxCafeteria = (event) => {
+    setCafeteria(event.target.checked)
+  }
+
+  const [catering, setCatering] = useState(false);
+  const handleCheckboxCatering = (event) => {
+    setCatering(event.target.checked)
+  }
+
+  const [centroEducativo, setCentroEducativo] = useState(false);
+  const handleCheckboxCentroEducativo = (event) => {
+    setCentroEducativo(event.target.checked)
+  }
+
+  const [comidaPreparada, setComidaPreparada] = useState(false);
+  const handleCheckboxComidaPreparada = (event) => {
+    setComidaPreparada(event.target.checked)
+  }
+
+  const [empresa, setEmpresa] = useState(false);
+  const handleCheckboxEmpresa = (event) => {
+    setEmpresa(event.target.checked)
+  }
+
+  const [feria, setFeria] = useState(false);
+  const handleCheckboxFeria = (event) => {
+    setFeria(event.target.checked)
+  }
+
+  const [otroSector, setOtroSector] = useState(false);
+  const handleCheckboxOtroSector = (event) => {
+    setOtroSector(event.target.checked)
+  }
+
+  const [panaderia, setPanaderia] = useState(false);
+  const handleCheckboxPanaderia = (event) => {
+    setPanaderia(event.target.checked)
+  }
+
+  const [restaurante, setRestaurante] = useState(false);
+  const handleCheckboxRestaurante = (event) => {
+    setRestaurante(event.target.checked)
+  }
+
+  const [usuarioFinal, setUsuarioFinal] = useState(false);
+  const handleCheckboxUsuarioFinal = (event) => {
+    setUsuarioFinal(event.target.checked)
+  }
+
+  const [supermercado, setSupermercado] = useState(false);
+  const handleCheckboxSupermercado = (event) => {
+    setSupermercado(event.target.checked)
+  }
+
+  const [otro, setOtro] = useState(false);
+  const handleCheckboxOtro = (event) => {
+    setOtro(event.target.checked)
+  }
 
   const [personInCharge, setPersonInCharge] = useState("Alejandro");
   const handleChangePersonInCharge = (event) => {
     setPersonInCharge(event.target.value)
   }
-  useEffect(() => {
-    console.log(personInCharge);
-  }, [personInCharge]);
 
   const [priority, setPriority] = useState("Baja");
   const handleChangePriority = (event) => {
     setPriority(event.target.value)
   }
-  useEffect(() => {
-    console.log(priority);
-  }, [priority]);
 
   const [state, setState] = useState("Clientes");
   const handleChangeState = (event) => {
     setState(event.target.value)
   }
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+
+  const [correo, setCorreo] = useState(false);
+  const handleCheckboxCorreo = (event) => {
+    setCorreo(event.target.checked)
+  }
+
+  const [llamada, setLlamada] = useState(false);
+  const handleCheckboxLlamada = (event) => {
+    setLlamada(event.target.checked)
+  }
+
+  const [instagram, setInstagram] = useState(false);
+  const handleCheckboxInstagram = (event) => {
+    setInstagram(event.target.checked)
+  }
+
+  const [whatsapp, setWhatsapp] = useState(false);
+  const handleCheckboxWhatsapp = (event) => {
+    setWhatsapp(event.target.checked)
+  }
+
+  const [zoom, setZoom] = useState(false);
+  const handleCheckboxZoom = (event) => {
+    setZoom(event.target.checked)
+  }
+
+  const [otra, setOtra] = useState(false);
+  const handleCheckboxOtra = (event) => {
+    setOtra(event.target.value)
+  }
+
+  const [contacto, setContacto] = useState("");
+  const handleChangeContacto = (event) => {
+    setContacto(event.target.value)
+  }
+
+  const [telefono, setTelefono] = useState("");
+  const handleChangeTelefono = (event) => {
+    setTelefono(event.target.value)
+  }
+
+  const [correoElectronico, setCorreoElectronico] = useState("");
+  const handleChangeCorreoElectronico = (event) => {
+    setCorreoElectronico(event.target.value)
+  }
+
+  const [paginaWeb, setPaginaWeb] = useState("");
+  const handleChangePaginaWeb = (event) => {
+    setPaginaWeb(event.target.value)
+  }
 
   const handleCancel = () => {
     setCompany("");
-    // TO-DO: clear info for the other fields 
+    setCafeteria(false);
+    setCatering(false);
+    setCentroEducativo(false);
+    setComidaPreparada(false);
+    setEmpresa(false);
+    setFeria(false);
+    setOtro(false);
+    setOtroSector(false);
+    setPanaderia(false);
+    setRestaurante(false);
+    setSupermercado(false);
+    setUsuarioFinal(false);
+    setContacto("");
+    setCorreo(false);
+    setCorreoElectronico("");
+    setInstagram(false);
+    setLlamada(false);
+    setOtra(false);
+    setPaginaWeb("");
+    setPersonInCharge("");
+    setPriority("");
+    setState("");
+    setTelefono("");
+    setWhatsapp(false);
+    setZoom("");
+
   }
 
   //Add client to data base
@@ -73,18 +209,17 @@ function Clients() {
       },
       body: JSON.stringify({ empresa: company, agregado: dateDB, responsable: personInCharge, prioridad: priority })
     });
-
+    
     if (response.ok) {
       handleCancel();
     }
   }
 
-
-  // When user click on client button, 'navigate hook' redirect him to new page
+  // When user click on client button, 'navigate' redirect him to new page
   const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
-  const handleClick = (clientId, clientName) => {
-    navigate('/clientes/informacion', { state: { id: clientId, name: clientName } });
-    //second argument allows to pass parameters
+  const handleClickViewClient = (clientIndex) => {
+    navigate('/clientes/informacion', { state: clients[clientIndex]});
+    //second argument "state" allows to pass parameters
   };
 
   // TO-DO: separate in new components to simplify code
@@ -102,153 +237,58 @@ function Clients() {
           <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
             <div className="offcanvas-header">
               <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del nuevo cliente</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onClick={handleCancel}></button>
+              <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">
               <form onSubmit={handleSubmit}>
-
-                <div className="form-floating mb-3">
-                  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={company} onChange={handleChangeCompany}  />
-                  <label htmlFor="floatingInput">Empresa</label>
-                </div>
-
+                <Input variable={company} handler={handleChangeCompany} text="Empresa"/>
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
                 </div>
-
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Cafeteria</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Catering</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Centro educativo</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Comida preparada</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Empresa</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Feria</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Otro Sector</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Panaderia</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Restaurante</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Usuario Final</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Supermercado</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Otro</label>
-                  </div>
+                  <CheckBox variable={cafeteria} handler={handleCheckboxCafeteria} text="Cafeteria" />
+                  <CheckBox variable={catering} handler={handleCheckboxCatering} text="Catering" />
+                  <CheckBox variable={centroEducativo} handler={handleCheckboxCentroEducativo} text="Centro Educativo" />
+                  <CheckBox variable={comidaPreparada} handler={handleCheckboxComidaPreparada} text="Comida Preparada" />
+                  <CheckBox variable={empresa} handler={handleCheckboxEmpresa} text="Empresa" />
+                  <CheckBox variable={feria} handler={handleCheckboxFeria} text="Feria" />
+                  <CheckBox variable={otroSector} handler={handleCheckboxOtroSector} text="Otro Sector" />
+                  <CheckBox variable={panaderia} handler={handleCheckboxPanaderia} text="Panaderia" />
+                  <CheckBox variable={restaurante} handler={handleCheckboxRestaurante} text="Restaurante" />
+                  <CheckBox variable={usuarioFinal} handler={handleCheckboxUsuarioFinal} text="Usuario Final" />
+                  <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
+                  <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label" >Responsable</label>
-                  <select className="form-select" aria-label="Default select example" value={personInCharge} onChange={handleChangePersonInCharge}>
-                    <option value="Alejandro">Alejandro</option>
-                    <option value="Andrea">Andrea</option>
-                    <option value="Fabiola">Fabiola</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">Prioridad</label>
-                  <select className="form-select" aria-label="Default select example" value={priority} onChange={handleChangePriority}>
-                    <option value="Baja">Baja</option>
-                    <option value="Media">Media</option>
-                    <option value="Alta">Alta</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">Estado</label>
-                  <select className="form-select" aria-label="Default select example" value={state} onChange={handleChangeState}>
-                    <option value="Clientes">Clientes</option>
-                  </select>
-                </div>
+                <SelectPersonInCharge variable={personInCharge} handler={handleChangePersonInCharge} />
+                <SelectPriority variable={priority} handler={handleChangePriority} />
+                <SelectState variable={state} handler={handleChangeState} />
 
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">Medio de Comunicacion</label>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Correo</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Llamada</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Instagram</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Whatsapp</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Zoom</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">Otra</label>
-                  </div>
+                  <CheckBox variable={correo} handler={handleCheckboxCorreo} text="Correo" />
+                  <CheckBox variable={llamada} handler={handleCheckboxLlamada} text="Llamada" />
+                  <CheckBox variable={instagram} handler={handleCheckboxInstagram} text="Instagram" />
+                  <CheckBox variable={whatsapp} handler={handleCheckboxWhatsapp} text="Whatsapp" />
+                  <CheckBox variable={zoom} handler={handleCheckboxZoom} text="Zoom" />
+                  <CheckBox variable={otra} handler={handleCheckboxOtra} text="Otra" />
                 </div>
 
+                <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
+                <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
+                <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
+                <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
 
-                <div className="form-floating mb-3">
-                  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" />
-                  <label htmlFor="floatingInput">Contacto</label>
-                </div>
-
-                <div className="form-floating mb-3">
-                  <input type="tel" className="form-control" id="floatingInput" placeholder="name@example.com" />
-                  <label htmlFor="floatingInput">Telefono</label>
-                </div>
-
-                <div className="form-floating mb-3">
-                  <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
-                  <label htmlFor="floatingInput">Correo Electronico</label>
-                </div>
-
-                <div className="form-floating mb-3">
-                  <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" />
-                  <label htmlFor="floatingInput">Pagina Web</label>
-                </div>
                 <div className="row">
                   <div className="col-6 d-flex justify-content-center">
                     <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={ getClients } >Agregar</button>
                   </div>
                   <div className="col-6 d-flex justify-content-center">
-                    <button className="btn btn-danger">Cancelar</button>
+                    <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
                   </div>
                 </div>
+                
               </form>
             </div>
           </div>
@@ -259,52 +299,10 @@ function Clients() {
         <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
           <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
         </div>
-
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          <div className="dropdown">
-            <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Filtrado
-            </button>
-            <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">Prioridad</a></li>
-              <li><a className="dropdown-item" href="#">Recientes</a></li>
-            </ul>
-          </div>
-        </div>
+        <FilterClients/>
       </div>
-      <div className="row m-2 mt-4 d-flex justify-content-center">
-        {
-          clients.map((client) => (
-            <div className="col-sm-6 col-md-3 mb-3" key={client.id}>
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{client.empresa}</h5>
-                  <p className="card-text">Some info.</p>
-                  <button className="btn btn-primary" onClick={() => handleClick(client.id, client.empresa)}>Ver cliente</button>
-                </div>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-
-      <div className="row m-2 mt-4">
-        <nav aria-label="...">
-          <ul className="pagination justify-content-center">
-            <li className="page-item disabled">
-              <a className="page-link">Anterior</a>
-            </li>
-            <li className="page-item active"><a className="page-link" href="#">1</a></li>
-            <li className="page-item" aria-current="page">
-              <a className="page-link" href="#">2</a>
-            </li>
-            <li className="page-item"><a className="page-link" href="#">3</a></li>
-            <li className="page-item">
-              <a className="page-link" href="#">Siguiente</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <ClientList clients={clients} handler={handleClickViewClient} />
+      <Pagination />
     </div>
   );
 }

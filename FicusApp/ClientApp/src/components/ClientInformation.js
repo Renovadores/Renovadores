@@ -2,12 +2,15 @@ import { useLocation } from "react-router-dom";
 
 function ClientInformation() {
   const location = useLocation();
-  // get id and client name sent by navigate hook in Client.js
-  let clientId = location.state.id;
-  let clientName = location.state.name;
+  // get info sent by navigate hook in Client.js
+  const clientInfo = location.state;
+  console.log(clientInfo);
   return (
     <div className="container">
-      <h1>Empresa: {clientName}</h1>
+      <h2>{clientInfo.empresa}</h2>
+      <h2>{clientInfo.agregado}</h2>
+      <h2>{clientInfo.responsable}</h2>
+      <h2>{clientInfo.prioridad}</h2>
     </div>
   );
 }
