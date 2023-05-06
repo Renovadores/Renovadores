@@ -1,4 +1,54 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 function Stock() {
+  // get clients from data base
+  const [products, setProducts] = useState([]);
+  const getProducts = async () => {
+    const response = await fetch('api/producto/GetProducts');
+    if (response.ok) {
+      const data = await response.json();
+      setProducts(data);
+    } else {
+      console.log('error');
+    }
+  };
+  // this method allows to auto call getProducts when page is started
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
+  // When user click on client button, 'navigate hook' redirect him to new page
+  const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
+  const handleClick = (productId, productName) => {
+    navigate('/inventario/informacion', {
+      state: { id: productId, name: productName },
+    });
+    //second argument allows to pass parameters
+  };
+
+  const [name, setName] = useState('');
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
+
+  useEffect(() => {
+    console.log(name);
+  }, [name]);
+
+  const handleCancel = () => {
+    setName('');
+    // TO-DO: clear info for the other fields
+  };
+
+  const handleSubmit = (event) => {
+    handleCancel();
+  };
+
   return (
     <div>
       <head>
@@ -9,9 +59,6 @@ function Stock() {
       <body>
         <main role="main">
           <div className="container-fluid">
-            <div className="container">
-              <h1 className="display-3 fw-bold">Nuestros productos</h1>
-            </div>
             <div className="d-grid gap-2 mb-4">
               <button className="btn btn-success" type="button">
                 Agregar Producto
@@ -35,6 +82,7 @@ function Stock() {
                   </figure>
                 </div>
               </div>
+
               <div className="col-sm-6 col-lg-4 mb-4">
                 <div className="card">
                   <img
@@ -81,7 +129,10 @@ function Stock() {
             </div>
           </div>
 
-          <div className="container">
+          <div className="container fluid">
+            <div className="container">
+              <h2 className="display-3 fw-bold">Todos los productos</h2>
+            </div>
             <div className="row">
               <div className="col-sm-6 col-lg-4 mb-4">
                 <div className="card">
@@ -91,19 +142,31 @@ function Stock() {
                   />
                 </div>
               </div>
-              <NewCard />
-              <NewCard />
-              <NewCard />
-              <NewCard />
+
+              {products.map((product) => (
+                <div
+                  className="col-sm-6 col-md-3 mb-3"
+                  key={product.productoId}
+                >
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">{product.nombre}</h5>
+                      <p className="card-text">Some info.</p>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          handleClick(product.productoId, product.nombre)
+                        }
+                      >
+                        Ver producto
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </main>
-
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
-          integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
-          crossOrigin="anonymous"
-        ></script>
       </body>
     </div>
   );
