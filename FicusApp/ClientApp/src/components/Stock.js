@@ -60,8 +60,45 @@ function Stock() {
         <main role="main">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
+              <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+                {/* Filter/Search text*/}
+                <input
+                  className="form-control"
+                  list="datalistOptions"
+                  id="exampleDataList"
+                  placeholder="Buscar producto..."
+                />
+                {/* Filter/Search button*/}
+                <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Filtrado
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Prioridad
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          Recientes
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
               <button className="btn btn-success" type="button">
                 Agregar Producto
+              </button>
+              <button className="btn btn-warning" type="button">
+                Eliminar Producto
               </button>
             </div>
           </div>
@@ -82,12 +119,12 @@ function Stock() {
                   </figure>
                 </div>
               </div>
-
+              {/* Vajilla reusable card*/}
               <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card">
+                <div className="card text-center">
                   <img
                     className="card-img-top"
-                    src="images\productos\EC-07-1-JA Montezuma (1).png"
+                    src="images\productos\M-275-BL  (2).png"
                     alt="Producto Ficus"
                   />
                   <div className="card-body">
@@ -104,9 +141,9 @@ function Stock() {
                   </div>
                 </div>
               </div>
-
+              {/* Recipientes para llevar card*/}
               <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card">
+                <div className="card text-center">
                   <img
                     className="card-img-top"
                     src="images\productos\EC-07-1-JA Montezuma (1).png"
@@ -142,7 +179,7 @@ function Stock() {
                   />
                 </div>
               </div>
-
+              {/*Database card list */}
               {products.map((product) => (
                 <div
                   className="col-sm-6 col-md-3 mb-3"
@@ -151,7 +188,7 @@ function Stock() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{product.nombre}</h5>
-                      <p className="card-text">Some info.</p>
+                      <p className="card-text">{product.descripcion}</p>
                       <button
                         className="btn btn-primary"
                         onClick={() =>
@@ -165,32 +202,38 @@ function Stock() {
                 </div>
               ))}
             </div>
+            <div className="row m-2 mt-4">
+              <nav aria-label="...">
+                <ul className="pagination justify-content-center">
+                  <li className="page-item disabled">
+                    <a className="page-link">Anterior</a>
+                  </li>
+                  <li className="page-item active">
+                    <a className="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li className="page-item" aria-current="page">
+                    <a className="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      Siguiente
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </main>
       </body>
-    </div>
-  );
-}
-
-function NewCard() {
-  return (
-    <div className="col-sm-6 col-lg-4 mb-4">
-      <div className="card">
-        <img
-          className="card-img-top"
-          src="images\productos\EC-07-1-JA Montezuma (1).png"
-          alt="Producto Ficus"
-        />
-        <div className="card-body">
-          <h5 className="card-title">Chiquita</h5>
-          <p className="card-text">Bowl pequeño</p>
-        </div>
-        <div className="card-footer">
-          <a href="index.html" className="btn btn-primary">
-            Ver detalles
-          </a>
-        </div>
-      </div>
     </div>
   );
 }
