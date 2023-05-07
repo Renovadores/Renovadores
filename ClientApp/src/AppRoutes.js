@@ -1,7 +1,8 @@
-import ArgNavMenu from "./components/ArgNavMenu";
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import Home from "./components/Home";
+import NavBar from "./components/NavBar";
+import SideBar from "./components/SideBar";
 import Tabla from "./components/Tabla";
 
 const AppRoutes = [
@@ -19,10 +20,14 @@ const AppRoutes = [
   },
   {
     path: "/prueba",
-    element: <ArgNavMenu />,
+    element: <SideBar />,
   },
   {
     path: "/prueba2",
+    element: <NavBar />,
+  },
+  {
+    path: "/tabla",
     element: <Tabla />,
   },
 ];

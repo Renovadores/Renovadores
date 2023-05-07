@@ -1,11 +1,10 @@
-import "../assets/css/argon-dashboard.css";
-import ArgNavMenu from "./ArgNavMenu";
+import NavBar from "./NavBar";
 
 const Tabla = () => {
   return (
     <>
-      <ArgNavMenu>
-        <h1>Aquí podrían haber más cosas de hecho falta la barra superior</h1>
+      <NavBar>
+        <h1> Aquí van cosas, por ejemplo:</h1>
         <div class="card m-3">
           <div class="table-responsive">
             <table class="table align-items-center mb-0">
@@ -276,7 +275,7 @@ const Tabla = () => {
             </table>
           </div>
         </div>
-      </ArgNavMenu>
+      </NavBar>
     </>
   );
 };

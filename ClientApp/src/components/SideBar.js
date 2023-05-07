@@ -4,7 +4,7 @@ import "../assets/css/nucleo-icons.css";
 import title_bg from "../assets/img/Ficus/recurso2.jpg";
 import isotipo_1 from "../assets/img/Ficus/isotipo_1.png";
 
-const ArgNavMenu = (props) => {
+const SideBar = (props) => {
   return (
     <div>
       <div
@@ -164,4 +164,4 @@ const ArgNavMenu = (props) => {
   );
 };
 
-export default ArgNavMenu;
+export default SideBar;
