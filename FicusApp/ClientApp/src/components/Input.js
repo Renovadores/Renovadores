@@ -1,3 +1,4 @@
+/// <reference path="clients.js" />
 function Input(props) {
   return (
     <div className="form-floating mb-3">

@@ -1,4 +1,73 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Input from "./Input";
+
+
 function Stock() {
+
+    const [name, setName] = useState("");
+    const handleChangeName = (event) => {
+        setName(event.target.value)
+    }
+
+    const [descripcion, setDescripcion] = useState("");
+    const handleChangeDescripcion = (event) => {
+        setDescripcion(event.target.value)
+    }
+
+    const [dimensiones, setDimensiones] = useState("");
+    const handleChangeDimensiones = (event) => {
+        setDimensiones(event.target.value)
+    }
+
+    const [peso_recipiente, setPeso_recipiente] = useState(0);
+    const handleChangePeso_recipiente = (event) => {
+        setPeso_recipiente(event.target.value)
+    }
+
+    const [peso_desechable, setPeso_desechable] = useState(0);
+    const handleChangePeso_desechable = (event) => {
+        setPeso_desechable(event.target.value)
+    }
+
+    const [alquiler_comercios, setAlquiler_Comercios] = useState(0);
+    const handleChangeAlquiler_Comercios = (event) => {
+        setAlquiler_Comercios(event.target.value)
+    }
+
+    const [alquiler_retail, setAlquiler_Retail] = useState(0);
+    const handleChangeAlquiler_Retail = (event) => {
+        setAlquiler_Retail(event.target.value)
+    }
+
+    const handleCancel = () => {
+        setName("");
+        setDescripcion("");
+        setDimensiones("");
+        setPeso_recipiente(0);
+        setPeso_desechable(0);
+        setAlquiler_Comercios(0);
+        setAlquiler_Retail(0);
+    }
+    //Add Product to data base
+    const handleSubmit = async (event) => {
+        const response = await fetch("api/producto/AddProducto", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+        });
+        if (response.ok) {
+            handleCancel();
+        }
+    }
+    const current = new Date();
+    const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
+
+
+
   return (
     <div>
       <head>
@@ -17,7 +86,37 @@ function Stock() {
                 Agregar Producto
               </button>
             </div>
-          </div>
+                  </div>
+                  <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                      <div className="offcanvas-header">
+                          <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del nuevo producto</h5>
+                          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div className="offcanvas-body">
+                          <form onSubmit={handleSubmit}>
+                              <Input variable={name} handler={handleChangeName} text="Nombre" />
+                              <div className="mb-3">
+                                  <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
+                              </div> 
+                              <Input variable={descripcion} handler={handleChangeDescripcion} text="Descripcion" />
+                              <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
+                              <Input variable={peso_recipiente} handler={handleChangePeso_recipiente} text="Peso del Recipiente" />
+                              <Input variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
+                              <Input variable={alquiler_comercios} handler={handleChangeAlquiler_Comercios} text="Alquiler comercios" />
+                              <Input variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Alquiler Retail" />
+
+                              <div className="row">
+                                  <div className="col-6 d-flex justify-content-center">
+                                      <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
+                                  </div>
+                                  <div className="col-6 d-flex justify-content-center">
+                                      <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
+                                  </div>
+                              </div>
+
+                          </form>
+                      </div>
+                  </div>
           <div className="container-fluid">
             <div className="row">
               <div className="col-sm-6 col-lg-4 mb-4">
@@ -131,5 +230,19 @@ function NewCard() {
     </div>
   );
 }
+function dateFormat() {
+    const current = new Date();
+    var month = `${current.getMonth() + 1}`;
+    if (month < 10) {
+        month = '0' + month;
+    }
+    var day = `${current.getDate()}`;
+    if (day < 10) {
+        day = '0' + day;
+    }
+    const date = `${current.getFullYear()}-${month}-${day}`;
+    return date;
+}
+
 
 export default Stock;
