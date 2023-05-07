@@ -8,7 +8,7 @@ Table Usuario {
   Nombre varchar [not null, note: "Guarda el nombre del usuario"]
   Apellidos varchar [not null, note: "Guarda el o los apellidos del usuario"]
   Contrasena varchar [not null, note: "Contraseña encriptada del usuario"]
-  Rol integer [not null, note: "Identifica las capacidades del usuario"]
+  ID_Rol integer [not null, note: "Identifica las capacidades del usuario"]
 }
 
 Table Rol {
@@ -17,17 +17,20 @@ Table Rol {
   Detalles_rol varchar [note: "Detalles sobre el rol"]
 }
 
-Ref: Usuario.Rol > Rol.ID_Rol
+Ref: Usuario.ID_Rol > Rol.ID_Rol
 
 Table Producto {
   SKU integer [pk, note: "Identificador unico para cada producto"]
   Nombre varchar [not null, note: "Nombre del producto"]
+  Color varchar [not null]
   Descripcion varchar [not null]
   Dimensiones varchar [not null]
   Peso_recipiente integer [not null]
   Peso_desechable integer [not null]
   Alquiler_Comercios integer [not null, note: "Costo para el alquiler a comercio incluyendo IVA"]
   Alquiler_Retail integer [not null, note: "Costo para el alquiler a retail incluyendo IVA"]
+  Categoria integer
+  Familia integer
 }
 
 Table Categoria {
@@ -35,58 +38,44 @@ Table Categoria {
   Nombre_categoria varchar [not null, note: "Nombre de la categoría"]
 }
 
-Table Categoria_Producto {
-  SKU_Producto integer [not null]
-  ID_Categoria integer [not null]
-  Note: "Guarda la relacion que hay entre los producto y las categorias"
-}
-
-Ref: Producto.SKU < Categoria_Producto.ID_Categoria
-Ref: Categoria.ID_Categoria < Categoria_Producto.ID_Categoria
-
 Table Familia {
   ID_Familia integer [pk]
   Nombre_familia varchar [not null, note: "Nombre de un grupo de productos"]
-  Producto integer [not null, ref: - Producto.SKU]
 }
-
-// Table Familia_producto {
-//   Producto integer [not null, ref: <> Producto.SKU]
-//   Familia integer [not null, ref: <> Familia.ID_Familia]
-// 	Note: "Agrupación de los productos en familias"
-// }
 
 Table Color {
   ID_Color varchar [pk]
   Descripcion varchar
+  Note: "Guarda el color de cada producto"
 }
 
-// Table Color_producto{
-//   Producto integer [not null, ref: <> Producto.SKU]
-//   Color varchar [not null,ref: <> Color.ID_Color]
-// 	Note: "Guarda que colores tiene cada producto"
-// }
+Ref: Producto.Categoria > Categoria.ID_Categoria
+Ref: Producto.Familia > Familia.ID_Familia
+Ref: Producto.Color > Color.ID_Color
+
 
 Table Estado {
-  ID_EstadoProducto integer [pk]
+  ID_Estado integer [pk]
   Descripcion_estadoproducto varchar [not null, note: "Que estado es el actual de un producto"]
 }
 
 Table Inventario {
-  Producto integer [ref: - Producto.SKU]
-  Estado integer [ref: > Estado.ID_EstadoProducto]
+  Producto integer
+  Estado integer
   Cantidad integer
   Lote integer
   Fecha_ingreso date
 	Note: "Guarda las caracteristicas de cada producto, si está disponible, reservado, etc..."
 }
 
+Ref: Inventario.Producto > Producto.SKU
+Ref: Inventario.Estado > Estado.ID_Estado
 
 Table Orden {
   ID_Orden varchar [pk]
   Fecha_alquiler date [not null]
-  Usuario varchar [ref: - Usuario.ID_Usuario, not null, note: "Responsable de agregar la orden"]
-  Cliente varchar [ref: > Cliente.ID_Cliente]
+  Usuario integer [not null, note: "Responsable de agregar la orden"]
+  Cliente integer
   Registro_limpieza integer
   Limpieza_unidad integer
   Limpieza integer
@@ -94,27 +83,36 @@ Table Orden {
   Descuento integer
 }
 
-Table Fase {
-  ID_fase integer [pk]
-  Descripcion_estado varchar [not null, note: "Definición de la fase de una orden"]
-}
-
-Table Fase_Orden {
-	Orden varchar [ref: - Orden.ID_Orden]
-	Fase integer [ref: - Fase.ID_fase]
-	Note: "Guarda en que fase se encuentra cada orden"
-}
-
 Table Evento {
   ID_Evento integer [pk]
   Nombre_evento varchar
   Descripcion_evento varchar
-  Ordenes integer [ref: < Orden.ID_Orden]
+  Orden varchar
 }
 
+Ref: Orden.Usuario > Usuario.ID_Usuario
+Ref: Orden.Cliente > Cliente.ID_Cliente
+Ref: Orden.ID_Orden < Evento.Orden
+
+Table Fase {
+  ID_Fase integer [pk]
+  Descripcion_estado varchar [not null, note: "Definición de la fase de una orden"]
+}
+
+Table Historial_Orden {
+  Orden varchar
+  Fase integer
+  Inicio date [note: "Fecha de inicio de la fase actual"]
+  Final date [note: "Fecha final de la fase actual"]
+  Note: "Guarda en que fase se encuentra cada orden"
+}
+
+Ref: Historial_Orden.Orden > Orden.ID_Orden
+Ref: Historial_Orden.Fase > Fase.ID_Fase
+
 Table Detalle {
-  ID_reserva integer [pk, ref: > Orden.ID_Orden]
-  Producto integer [ref: > Producto.SKU]
+  ID_reserva varchar [pk]
+  Producto integer
   Pedidos integer
   Sin_usar integer
   Usados integer
@@ -122,38 +120,46 @@ Table Detalle {
   Descuento integer
 }
 
+Ref: Detalle.ID_reserva > Orden.ID_Orden
+Ref: Detalle.Producto > Producto.SKU
 
 Table Cliente {
   ID_Cliente integer [pk]
   Tipo varchar
   Fecha_agregado date
-  // Segmento varchar
-  Responsable varchar [ref: - Usuario.Nombre]
+  Responsable integer [note: "Responsable del cliente"]
   Prioridad varchar
   Estado varchar
-	// Medio_de_comunicacion varchar
   Nombre varchar
   Telefono integer
   Correo varchar
   Web varchar
 }
 
+Ref: Usuario.ID_Usuario < Cliente.Responsable
+
 Table Segmento {
-	ID_Segmento varchar [pk]
-	Detalles varchar
+  ID_Segmento varchar [pk]
+  Detalles varchar
 }
 
 Table Cliente_Segmento {
-	Cliente integer [ref: <> Cliente.ID_Cliente]
-	Segmento varchar [ref: <> Segmento.ID_Segmento]
+  Cliente integer
+  Segmento varchar
 }
 
+Ref: Cliente_Segmento.Cliente > Cliente.ID_Cliente
+Ref: Cliente_Segmento.Segmento > Segmento.ID_Segmento
+
 Table MedioComunicacion {
-	ID_Medio varchar [pk]
-	Caracteristicas varchar
+  ID_Medio varchar [pk]
+  Caracteristicas varchar
 }
 
 Table Cliente_Comunicacion {
-	Cliente integer [ref: <> Cliente.ID_Cliente]
-	Comunicacion varchar [ref: <> MedioComunicacion.ID_Medio]
+  Cliente integer
+  Medio varchar
 }
+
+Ref: Cliente_Comunicacion.Cliente > Cliente.ID_Cliente
+Ref: Cliente_Comunicacion.Medio > MedioComunicacion.ID_Medio
