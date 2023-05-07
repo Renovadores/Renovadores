@@ -1,11 +1,12 @@
 import "../assets/css/argon-dashboard.css";
+import "../assets/css/nucleo-icons.css";
 
 import title_bg from "../assets/img/Ficus/recurso2.jpg";
 import isotipo_1 from "../assets/img/Ficus/isotipo_1.png";
 
-const ArgNavMenu = () => {
+const ArgNavMenu = (props) => {
   return (
-    <>
+    <div>
       <div
         class="min-height-300 bg-primary position-absolute w-100"
         style={{
@@ -157,11 +158,9 @@ const ArgNavMenu = () => {
         */}
       </aside>
       <main className="main-content position-relative border-radius-lg">
-        <div>
-          <h1> Hola </h1>
-        </div>
+        {props.children}
       </main>
-    </>
+    </div>
   );
 };
 
