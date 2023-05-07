@@ -1,6 +1,7 @@
+import ArgNavMenu from "./components/ArgNavMenu";
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import { Home } from "./components/Home";
+import Home from "./components/Home";
 
 const AppRoutes = [
   {
@@ -14,6 +15,10 @@ const AppRoutes = [
   {
     path: '/fetch-data',
     element: <FetchData />
+  },
+  {
+    path: '/prueba',
+    element: <ArgNavMenu />
   }
 ];
 
