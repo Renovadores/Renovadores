@@ -4,26 +4,23 @@ Project "Ficus Data Base" {
 }
 
 Table Usuario {
-  ID_Usuario integer [pk, unique, not null, note: "Identificador del usuario"]
+  ID_Usuario integer [pk, note: "Identificador del usuario"]
   Nombre varchar [not null, note: "Guarda el nombre del usuario"]
   Apellidos varchar [not null, note: "Guarda el o los apellidos del usuario"]
   Contrasena varchar [not null, note: "Contraseña encriptada del usuario"]
-  Rol integer [not null, ref: - Rol.ID_Rol, note: "Identifica las capacidades del usuario"]
+  Rol integer [not null, note: "Identifica las capacidades del usuario"]
 }
 
 Table Rol {
-  ID_Rol integer [pk, unique, not null, note: "Indentificador unico del usuario"]
+  ID_Rol integer [pk, note: "Indentificador unico del usuario"]
   Tipo_rol varchar [unique, not null, note: "Nombre del rol"]
   Detalles_rol varchar [note: "Detalles sobre el rol"]
 }
 
-// Table Roles_usuario {
-//   Usuario integer [not null, ref: <> Usuario.ID_Usuario, note: "Identificador del usuario"]
-//   Rol integer [not null, ref: <> Rol.ID_Rol, note: "Identifica las capacidades del usuario"]
-// }
+Ref: Usuario.Rol > Rol.ID_Rol
 
 Table Producto {
-  SKU integer [pk, unique, not null, note: "Identificador unico para cada producto"]
+  SKU integer [pk, note: "Identificador unico para cada producto"]
   Nombre varchar [not null, note: "Nombre del producto"]
   Descripcion varchar [not null]
   Dimensiones varchar [not null]
@@ -34,41 +31,44 @@ Table Producto {
 }
 
 Table Categoria {
-  ID_Categoria integer [pk, unique, not null]
+  ID_Categoria integer [pk]
   Nombre_categoria varchar [not null, note: "Nombre de la categoría"]
 }
 
-Table Categoria_producto {
-  Producto integer [not null, ref: <> Producto.SKU]
-  Categoria integer [not null, ref: <> Categoria.ID_Categoria]
-	Note: "Guarda la relacion que hay entre los producto y las categorias"
+Table Categoria_Producto {
+  SKU_Producto integer [not null]
+  ID_Categoria integer [not null]
+  Note: "Guarda la relacion que hay entre los producto y las categorias"
 }
 
+Ref: Producto.SKU < Categoria_Producto.ID_Categoria
+Ref: Categoria.ID_Categoria < Categoria.ID_Categoria
+
 Table Familia {
-  ID_Familia integer [pk, unique, not null]
+  ID_Familia integer [pk]
   Nombre_familia varchar [not null, note: "Nombre de un grupo de productos"]
   Producto integer [not null, ref: - Producto.SKU]
 }
 
-Table Familia_producto {
-  Producto integer [not null, ref: <> Producto.SKU]
-  Familia integer [not null, ref: <> Familia.ID_Familia]
-	Note: "Agrupación de los productos en familias"
-}
+// Table Familia_producto {
+//   Producto integer [not null, ref: <> Producto.SKU]
+//   Familia integer [not null, ref: <> Familia.ID_Familia]
+// 	Note: "Agrupación de los productos en familias"
+// }
 
 Table Color {
-  ID_Color varchar [pk, unique, not null]
+  ID_Color varchar [pk]
   Descripcion varchar
 }
 
-Table Color_producto{
-  Producto integer [not null, ref: <> Producto.SKU]
-  Color varchar [not null,ref: <> Color.ID_Color]
-	Note: "Guarda que colores tiene cada producto"
-}
+// Table Color_producto{
+//   Producto integer [not null, ref: <> Producto.SKU]
+//   Color varchar [not null,ref: <> Color.ID_Color]
+// 	Note: "Guarda que colores tiene cada producto"
+// }
 
 Table Estado {
-  ID_EstadoProducto integer [pk, unique, not null]
+  ID_EstadoProducto integer [pk]
   Descripcion_estadoproducto varchar [not null, note: "Que estado es el actual de un producto"]
 }
 
@@ -83,7 +83,7 @@ Table Inventario {
 
 
 Table Orden {
-  ID_Orden varchar [pk, unique, not null]
+  ID_Orden varchar [pk]
   Fecha_alquiler timestamp [not null]
   Usuario varchar [ref: - Usuario.ID_Usuario, not null, note: "Responsable de agregar la orden"]
   Cliente varchar [ref: > Cliente.ID_Cliente]
@@ -95,7 +95,7 @@ Table Orden {
 }
 
 Table Fase {
-  ID_fase integer [pk, unique, not null]
+  ID_fase integer [pk]
   Descripcion_estado varchar [not null, note: "Definición de la fase de una orden"]
 }
 
