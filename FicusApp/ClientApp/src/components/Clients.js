@@ -11,19 +11,24 @@ import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 
-
 function Clients() {
   // get clients from data base
+  //this variable allows to know if there are no clients in db (to stop spinner)
+  const [clientsChecked, setClientsChecked] = useState(false); 
   const [clients, setClients] = useState([]);
   const getClients = async () => {
+    setClientsChecked(false);
     const response = await fetch("api/cliente/GetClientes");
     if (response.ok) {
       const data = await response.json();
       setClients(data);
+      setClientsChecked(true);
     } else {
-      console.log("error");
+      console.log(response.text);
     }
   }
+  
+
   // this method allows to auto call getClients when page is started
   useEffect(() => {
     getClients();
@@ -33,9 +38,8 @@ function Clients() {
     console.log(clients);
   }, [clients]);
 
-  const current = new Date();
-  const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
-  const dateDB = dateFormat();
+  const date = currentDateFormat();
+  const dateDB = dateFormatBD();
 
   // store form information in variables
   // TO-DO: set variables in english
@@ -43,6 +47,8 @@ function Clients() {
   const handleChangeCompany = (event) => {
     setCompany(event.target.value)
   }
+
+  var segments = []
 
   const [cafeteria, setCafeteria] = useState(false);
   const handleCheckboxCafeteria = (event) => {
@@ -201,24 +207,64 @@ function Clients() {
 
   //Add client to data base
   const handleSubmit = async (event) => {
-    //event.preventDefault();
+    event.preventDefault();
+    // setSegments TO-DO: add segments to data base
+    if (cafeteria){
+      segments.push("Cafeteria");
+    }
+    if (catering) {
+      segments.push("catering");
+    }
+    if (centroEducativo) {
+      segments.push("Centro Educativo");
+    }
+    if (comidaPreparada) {
+      segments.push("Comida Preparada");
+    }
+    if (empresa) {
+      segments.push("Empresa");
+    }
+    if (feria) {
+      segments.push("Feria");
+    }
+    if (otroSector) {
+      segments.push("Otro Sector");
+    }
+    if (panaderia) {
+      segments.push("Panaderia");
+    }
+    if (restaurante) {
+      segments.push("Restaurante");
+    }
+    if (usuarioFinal) {
+      segments.push("Usuario Final");
+    }
+    if (supermercado) {
+      segments.push("Supermercado");
+    }
+    if (otro) {
+      segments.push("Otra");
+    }
+    
     const response = await fetch("api/cliente/AddCliente", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ empresa: company, agregado: dateDB, responsable: personInCharge, prioridad: priority })
+      body: JSON.stringify({ tipo: "", fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre: company, telefono : telefono, correo : correoElectronico, web : paginaWeb})
     });
     
     if (response.ok) {
       handleCancel();
+      getClients();
     }
+    segments = [];
   }
 
   // When user click on client button, 'navigate' redirect him to new page
   const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
   const handleClickViewClient = (clientIndex) => {
-    navigate('/clientes/informacion', { state: clients[clientIndex]});
+    navigate('/clientes/informacion', { state: clients[clientIndex].id });
     //second argument "state" allows to pass parameters
   };
 
@@ -234,7 +280,7 @@ function Clients() {
             data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
             Agregar Cliente
           </button>
-          <div className="offcanvas offcanvas-start" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+          <div className="offcanvas offcanvas-start " data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
             <div className="offcanvas-header">
               <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del nuevo cliente</h5>
               <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -301,13 +347,22 @@ function Clients() {
         </div>
         <FilterClients/>
       </div>
-      <ClientList clients={clients} handler={handleClickViewClient} />
+      {
+        clientsChecked === false? 
+        <div className="d-flex align-items-center justify-content-center">
+          <strong>Cargando...</strong>
+          <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+         </div>
+          :
+          <ClientList clients={clients} handler={handleClickViewClient} />
+      }
+      
       <Pagination />
     </div>
   );
 }
 
-function dateFormat() {
+function dateFormatBD() {
   const current = new Date();
   var month = `${current.getMonth() + 1}`;
   if ( month < 10) {
@@ -318,6 +373,16 @@ function dateFormat() {
     day = '0' + day;
   }
   const date = `${current.getFullYear()}-${month}-${day}`;
+  return date;
+}
+
+function currentDateFormat() {
+  const current = new Date();
+  const day = current.getDate() < 10 ? "0" + current.getDate() : current.getDate();
+  const month = (current.getMonth()+1) < 10 ? "0" + (current.getMonth()+1) : current.getMonth()+1;
+  const year = current.getFullYear();
+  const date = `${day}-${month}-${year}`;
+
   return date;
 }
 
