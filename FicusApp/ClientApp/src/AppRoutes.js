@@ -1,5 +1,6 @@
 import Home from "./components/Home";
 import Clients from "./components/Clients";
+import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
 
 const AppRoutes = [
@@ -11,6 +12,11 @@ const AppRoutes = [
   {
     path: '/clientes',
     element: <Clients />
+  },
+
+  {
+    path: '/clientes/informacion',
+    element: <ClientInformation />
   },
 
   {
