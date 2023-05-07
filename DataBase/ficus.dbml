@@ -42,7 +42,7 @@ Table Categoria_Producto {
 }
 
 Ref: Producto.SKU < Categoria_Producto.ID_Categoria
-Ref: Categoria.ID_Categoria < Categoria.ID_Categoria
+Ref: Categoria.ID_Categoria < Categoria_Producto.ID_Categoria
 
 Table Familia {
   ID_Familia integer [pk]
@@ -77,14 +77,14 @@ Table Inventario {
   Estado integer [ref: > Estado.ID_EstadoProducto]
   Cantidad integer
   Lote integer
-  Fecha_ingreso timestamp
+  Fecha_ingreso date
 	Note: "Guarda las caracteristicas de cada producto, si está disponible, reservado, etc..."
 }
 
 
 Table Orden {
   ID_Orden varchar [pk]
-  Fecha_alquiler timestamp [not null]
+  Fecha_alquiler date [not null]
   Usuario varchar [ref: - Usuario.ID_Usuario, not null, note: "Responsable de agregar la orden"]
   Cliente varchar [ref: > Cliente.ID_Cliente]
   Registro_limpieza integer
@@ -126,7 +126,7 @@ Table Detalle {
 Table Cliente {
   ID_Cliente integer [pk]
   Tipo varchar
-  Fecha_agregado timestamp
+  Fecha_agregado date
   // Segmento varchar
   Responsable varchar [ref: - Usuario.Nombre]
   Prioridad varchar
