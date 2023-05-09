@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
@@ -15,25 +16,29 @@ public partial class FicusDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Cliente> Clientes { get; set; }
+    public virtual DbSet<Cliente> Cliente { get; set; }
     public virtual DbSet<Producto> Producto { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=KEVIN\\BD_KEVIN; DataBase=FicusDB; Integrated Security=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=KEVIN\\BD_KEVIN; DataBase=Ficus; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cliente>(entity =>
         {
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Agregado).HasColumnType("date");
-            entity.Property(e => e.Empresa).HasMaxLength(50);
-            entity.Property(e => e.Prioridad).HasMaxLength(50);
-            entity.Property(e => e.Responsable).HasMaxLength(50);
-        });
+            entity.Property(e => e.Id).HasColumnName("ID_Cliente");
+            entity.Property(e => e.Tipo).HasMaxLength(255);
+            entity.Property(e => e.Fecha_Agregado).HasColumnType("dateTime");
+            entity.Property(e => e.Responsable).HasMaxLength(255);
+            entity.Property(e => e.Prioridad).HasMaxLength(255);
+            entity.Property(e => e.Estado).HasMaxLength(255);
+            entity.Property(e => e.Nombre).HasMaxLength(255);
+            entity.Property(e => e.Telefono).HasColumnType("int");
+            entity.Property(e => e.Correo).HasMaxLength(255);
+            entity.Property(e => e.Web).HasMaxLength(255);
+});
         modelBuilder.Entity<Producto>(entity =>
-        {
+        { 
             entity.Property(e => e.SKU).HasColumnName("SKU");
             entity.Property(e => e.Nombre).HasMaxLength(50);
             entity.Property(e => e.Descripcion).HasMaxLength(50);
@@ -44,7 +49,9 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.SKU).HasColumnName("Alquiler_Retail");
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        
+
+    OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -82,7 +82,8 @@ function Stock() {
               <h1 className="display-3 fw-bold">Nuestros productos</h1>
             </div>
             <div className="d-grid gap-2 mb-4">
-              <button className="btn btn-success" type="button">
+                          <button className="btn btn-success" type="button" data-bs-toggle= "offcanvas"
+                              data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                 Agregar Producto
               </button>
             </div>

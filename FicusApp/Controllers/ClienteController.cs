@@ -20,18 +20,39 @@ namespace FicusApp.Controllers
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
         {
-            List<Cliente> clientes = _context.Clientes.OrderByDescending(c => c.Id).ToList();
+            List<Cliente> clientes = _context.Cliente.OrderByDescending(c => c.Id).ToList();
             return Ok(clientes);
+        }
+
+        [HttpGet]
+        [Route("GetCliente/{id}")]
+        public async Task<IActionResult> GetCliente(int id)
+        {
+            Cliente cliente = await _context.Cliente.FindAsync(id);
+            return Ok(cliente);
         }
 
         [HttpPost]
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
         {
-            await _context.Clientes.AddAsync(request);
+            //TO-DO create a Service with method GenerateId
+            int generatedID = _context.Cliente.Count()+1;
+            request.Id = generatedID;
+            await _context.Cliente.AddAsync(request);
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("EditCliente")]
+        public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
+        {
+            _context.Cliente.Update(cliente);
+            _context.SaveChanges();
+            return Ok();
+        }
+
     }
 }
 
