@@ -23,5 +23,15 @@ namespace FicusApp.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPost]
+        [Route("EditProductos")]
+
+        public async Task<IActionResult> EditProducto([FromBody] Producto producto)
+        {
+            _context.Producto.Update(producto);
+            _context.SaveChangesAsync();
+            return Ok(); 
+        }
     }
 }
