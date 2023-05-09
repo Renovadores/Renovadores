@@ -26,20 +26,20 @@ public partial class FicusDbContext : DbContext
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("ID_Cliente");
-            entity.Property(e => e.Tipo).HasMaxLength(255);
             entity.Property(e => e.Fecha_Agregado).HasColumnType("dateTime");
-            entity.Property(e => e.Responsable).HasMaxLength(255);
+            entity.Property(e => e.Responsable).HasColumnType("int");
             entity.Property(e => e.Prioridad).HasMaxLength(255);
             entity.Property(e => e.Estado).HasMaxLength(255);
-            entity.Property(e => e.Nombre).HasMaxLength(255);
+            entity.Property(e => e.Nombre_Empresa).HasMaxLength(255);
+            entity.Property(e => e.Contacto).HasMaxLength(255);
             entity.Property(e => e.Telefono).HasColumnType("int");
             entity.Property(e => e.Correo).HasMaxLength(255);
             entity.Property(e => e.Web).HasMaxLength(255);
-});
+        });
 
-        
 
-    OnModelCreatingPartial(modelBuilder);
+
+        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -48,7 +48,7 @@ function Clients() {
     setCompany(event.target.value)
   }
 
-  var segments = []
+  var segments = {}
 
   const [cafeteria, setCafeteria] = useState(false);
   const handleCheckboxCafeteria = (event) => {
@@ -110,7 +110,7 @@ function Clients() {
     setOtro(event.target.checked)
   }
 
-  const [personInCharge, setPersonInCharge] = useState("Alejandro");
+  const [personInCharge, setPersonInCharge] = useState(1);
   const handleChangePersonInCharge = (event) => {
     setPersonInCharge(event.target.value)
   }
@@ -196,9 +196,9 @@ function Clients() {
     setLlamada(false);
     setOtra(false);
     setPaginaWeb("");
-    setPersonInCharge("");
-    setPriority("");
-    setState("");
+    setPersonInCharge(1);
+    setPriority("Baja");
+    setState("Contacto");
     setTelefono("");
     setWhatsapp(false);
     setZoom("");
@@ -210,59 +210,62 @@ function Clients() {
     event.preventDefault();
     // setSegments TO-DO: add segments to data base
     if (cafeteria){
-      segments.push("Cafeteria");
+      segments.cafeteria = "Cafeteria";
     }
     if (catering) {
-      segments.push("catering");
+      segments.catering = "Catering";
     }
     if (centroEducativo) {
-      segments.push("Centro Educativo");
+      segments.centroEducativo = "Centro Educativo";
     }
     if (comidaPreparada) {
-      segments.push("Comida Preparada");
+      segments.comidaPreparada = "Comida Preparada";
     }
     if (empresa) {
-      segments.push("Empresa");
+      segments.empresa = "Empresa";
     }
     if (feria) {
-      segments.push("Feria");
+      segments.feria = "Feria";
     }
     if (otroSector) {
-      segments.push("Otro Sector");
+      segments.otroSector = "Otro Sector";
     }
     if (panaderia) {
-      segments.push("Panaderia");
+      segments.panaderia = "Panaderia";
     }
     if (restaurante) {
-      segments.push("Restaurante");
+      segments.restaurante = "Restaurante";
     }
     if (usuarioFinal) {
-      segments.push("Usuario Final");
+      segments.usuarioFinal = "Usuario Final";
     }
     if (supermercado) {
-      segments.push("Supermercado");
+      segments.supermercado = "Supermercado";
     }
     if (otro) {
-      segments.push("Otra");
+      segments.otro = "Otro";
     }
-    
-    const response = await fetch("api/cliente/AddCliente", {
+
+    console.log(dateDB, personInCharge, priority, state, company, contacto, telefono, correoElectronico, paginaWeb);
+    const responseCliente = await fetch("api/cliente/AddCliente", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ tipo: "", fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre: company, telefono : telefono, correo : correoElectronico, web : paginaWeb})
+      body: JSON.stringify({fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto : contacto, telefono : telefono, correo : correoElectronico, web : paginaWeb})
     });
+    console.log(responseCliente);
     
-    if (response.ok) {
+
+    if (responseCliente.ok) {
       handleCancel();
       getClients();
     }
-    segments = [];
+    segments = {};
   }
 
   // When user click on client button, 'navigate' redirect him to new page
-  const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
+  const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
   const handleClickViewClient = (clientIndex) => {
     navigate('/clientes/informacion', { state: clients[clientIndex].id });
     //second argument "state" allows to pass parameters

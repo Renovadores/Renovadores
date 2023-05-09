@@ -41,7 +41,7 @@ namespace FicusApp.Controllers
             request.Id = generatedID;
             await _context.Cliente.AddAsync(request);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(generatedID);
         }
 
         [HttpPut]

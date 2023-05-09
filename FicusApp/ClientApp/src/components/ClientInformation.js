@@ -10,15 +10,22 @@ function ClientInformation() {
   const location = useLocation();
   // get client id sent by navigate function in Client.js
   const clientId = location.state;
+
   // get client info from data base
   const [clientInfo, setInfo] = useState("");
   const getClient = async () => {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`);
     if (response.ok) {
       const data = await response.json();
-      //data.fecha_Agregado = dateFormat(data.fecha_Agregado);
       setInfo(data);
-      console.log(data);
+      setDate(dateFormat(data.fecha_Agregado));
+      // get personInCharge name (in user table)
+
+      // get segments (in clientSegment table)
+
+      // get media (in clientSegment table)
+
+      addDefaultEditForm(data);
     } else {
       console.log(response.text);
     }
@@ -29,24 +36,52 @@ function ClientInformation() {
       const response = await fetch(`api/cliente/GetCliente/${clientId}`);
       if (response.ok) {
         const data = await response.json();
-        data.fecha_Agregado = dateFormat(data.fecha_Agregado);
+        //data.fecha_Agregado = dateFormat(data.fecha_Agregado);
         setInfo(data);
+        setDate(dateFormat(data.fecha_Agregado));
         addDefaultEditForm(data);
-        
       } else {
         console.log(response.text);
       }
     }
     getClient();
-  }, []);
+  }, [clientId]);
 
   const addDefaultEditForm = (data) => {
-    setCompany(data.nombre);
-    //setContacto(data.contacto);
+    setCompany(data.nombre_Empresa);
+    setContacto(data.contacto);
     setTelefono(data.telefono);
     setCorreoElectronico(data.correo);
     setPaginaWeb(data.web);
+
+    //get values
+    setCafeteria(false);
+    setCatering(false);
+    setCentroEducativo(false);
+    setComidaPreparada(false);
+    setEmpresa(false);
+    setFeria(false);
+    setOtro(false);
+    setOtroSector(false);
+    setPanaderia(false);
+    setRestaurante(false);
+    setSupermercado(false);
+    setUsuarioFinal(false);
+
+    // get values
+    setCorreo(false);
+    setInstagram(false);
+    setLlamada(false);
+    setWhatsapp(false);
+    setZoom(false);
+    setOtra(false);
+
+    setPersonInCharge(data.responsable);
+    setPriority(data.prioridad);
+    setState(data.estado);
   }
+
+  const [date, setDate] = useState("");
 
   // store form information in variables
   // TO-DO: set variables in english
@@ -55,7 +90,7 @@ function ClientInformation() {
     setCompany(event.target.value)
   }
 
-  var segments = []
+  var segments = {}
 
   const [cafeteria, setCafeteria] = useState(false);
   const handleCheckboxCafeteria = (event) => {
@@ -117,7 +152,7 @@ function ClientInformation() {
     setOtro(event.target.checked)
   }
 
-  const [personInCharge, setPersonInCharge] = useState("Alejandro");
+  const [personInCharge, setPersonInCharge] = useState(1);
   const handleChangePersonInCharge = (event) => {
     setPersonInCharge(event.target.value)
   }
@@ -182,90 +217,62 @@ function ClientInformation() {
     setPaginaWeb(event.target.value)
   }
 
-  const handleCancel = () => {
-    setCompany("");
-    setCafeteria(false);
-    setCatering(false);
-    setCentroEducativo(false);
-    setComidaPreparada(false);
-    setEmpresa(false);
-    setFeria(false);
-    setOtro(false);
-    setOtroSector(false);
-    setPanaderia(false);
-    setRestaurante(false);
-    setSupermercado(false);
-    setUsuarioFinal(false);
-    setContacto("");
-    setCorreo(false);
-    setCorreoElectronico("");
-    setInstagram(false);
-    setLlamada(false);
-    setOtra(false);
-    setPaginaWeb("");
-    setPersonInCharge("");
-    setPriority("");
-    setState("");
-    setTelefono("");
-    setWhatsapp(false);
-    setZoom("");
-  }
-
   // Edit Client
   const handleSubmit = async (event) => {
     event.preventDefault();
     // setSegments TO-DO: add segments to data base
     if (cafeteria) {
-      segments.push("Cafeteria");
+      segments.cafeteria = "Cafeteria";
     }
     if (catering) {
-      segments.push("catering");
+      segments.catering = "Catering";
     }
     if (centroEducativo) {
-      segments.push("Centro Educativo");
+      segments.centroEducativo = "Centro Educativo";
     }
     if (comidaPreparada) {
-      segments.push("Comida Preparada");
+      segments.comidaPreparada = "Comida Preparada";
     }
     if (empresa) {
-      segments.push("Empresa");
+      segments.empresa = "Empresa";
     }
     if (feria) {
-      segments.push("Feria");
+      segments.feria = "Feria";
     }
     if (otroSector) {
-      segments.push("Otro Sector");
+      segments.otroSector = "Otro Sector";
     }
     if (panaderia) {
-      segments.push("Panaderia");
+      segments.panaderia = "Panaderia";
     }
     if (restaurante) {
-      segments.push("Restaurante");
+      segments.restaurante = "Restaurante";
     }
     if (usuarioFinal) {
-      segments.push("Usuario Final");
+      segments.usuarioFinal = "Usuario Final";
     }
     if (supermercado) {
-      segments.push("Supermercado");
+      segments.supermercado = "Supermercado";
     }
     if (otro) {
-      segments.push("Otra");
+      segments.otro = "Otro";
     }
-    console.log(clientId, clientInfo.fecha_Agregado, personInCharge, priority, state, company, telefono, correoElectronico, paginaWeb);
+
+    console.log (clientId, clientInfo.fecha_Agregado, personInCharge, priority,state, company, contacto, telefono, correoElectronico, paginaWeb)
     const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ id : clientId ,tipo: "", fecha_Agregado: clientInfo.fecha_Agregado, responsable: personInCharge, prioridad: priority, estado: state, nombre: company, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+      body: JSON.stringify({ id: clientId, fecha_Agregado: clientInfo.fecha_Agregado, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
     });
     
     if (response.ok) {
-      handleCancel();
+      //handleCancel();
       getClient();
     }
 
-    segments = [];
+    segments = {};
   }
 
   return (
@@ -273,10 +280,10 @@ function ClientInformation() {
       <div className="card m-3 mt-5" >
         <div className="card-body">
           <div className="row align-items-center">
-            <div className="col-10">
-              <h5 className="card-title"> { clientInfo.nombre } </h5>
+            <div className="col-8 col-sm-10">
+              <h5 className="card-title"> { clientInfo.nombre_Empresa } </h5>
             </div>
-            <div className="col-2">
+            <div className="col-4 col-sm-2">
               <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                 Editar
@@ -290,7 +297,7 @@ function ClientInformation() {
                   <form onSubmit={ handleSubmit }>
                     <Input variable={company} handler={handleChangeCompany} text="Empresa" />
                     <div className="mb-3">
-                      <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {clientInfo.fecha_Agregado} </label>
+                      <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date} </label>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
@@ -332,7 +339,7 @@ function ClientInformation() {
                         <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
                       </div>
                       <div className="col-6 d-flex justify-content-center">
-                        <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
+                        <button className="btn btn-danger" type="button" onClick={addDefaultEditForm} data-bs-dismiss="offcanvas">Cancelar</button>
                       </div>
                     </div>
 
@@ -343,11 +350,11 @@ function ClientInformation() {
           </div>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">Tipo: {clientInfo.tipo} </li>
-          <li className="list-group-item">Fecha agregado: {clientInfo.fecha_Agregado} </li>
+          <li className="list-group-item">Fecha agregado: {date} </li>
           <li className="list-group-item">Responsable: {clientInfo.responsable} </li>
           <li className="list-group-item">Prioridad: {clientInfo.prioridad} </li>
-          <li className="list-group-item">Estado: { clientInfo.estado } </li>
+          <li className="list-group-item">Estado: {clientInfo.estado} </li>
+          <li className="list-group-item">Contacto: {clientInfo.contacto} </li>
           <li className="list-group-item">Telefono: { clientInfo.telefono } </li>
           <li className="list-group-item">Correo: { clientInfo.correo } </li>
           <li className="list-group-item">Pagina Web: {clientInfo.web} </li>

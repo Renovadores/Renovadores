@@ -7,7 +7,7 @@ function ClientList(props) {
             <div className="col-sm-6 col-md-3 mb-3" key={client.id}>
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">{client.nombre}</h5>
+                  <h5 className="card-title">{client.nombre_Empresa}</h5>
                   <p className="card-text">Some info.</p>
                   <button className="btn btn-primary" onClick={() => props.handler(index)}>Ver cliente</button>
                 </div>
