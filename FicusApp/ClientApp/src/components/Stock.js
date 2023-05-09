@@ -3,12 +3,15 @@ import { useEffect, useState } from 'react';
 
 function Stock() {
   // get clients from data base
+  const [productsChecked, setProductsChecked] = useState(false); 
   const [products, setProducts] = useState([]);
-  const getProducts = async () => {
+    const getProducts = async () => {
+        setProductsChecked(false);
     const response = await fetch('api/producto/GetProducts');
     if (response.ok) {
       const data = await response.json();
-      setProducts(data);
+        setProducts(data);
+        setProductsChecked(true);
     } else {
       console.log('error');
     }
@@ -24,9 +27,9 @@ function Stock() {
 
   // When user click on client button, 'navigate hook' redirect him to new page
   const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
-  const handleClick = (productId, productName) => {
-    navigate('/inventario/informacion', {
-      state: { id: productId, name: productName },
+  const handleClickViewProduct = (productIndex) => {
+      navigate('/productos/informacion', {
+          state: products[productIndex].productoID
     });
     //second argument allows to pass parameters
   };
@@ -40,15 +43,6 @@ function Stock() {
     console.log(name);
   }, [name]);
 
-  const handleCancel = () => {
-    setName('');
-    // TO-DO: clear info for the other fields
-  };
-
-  const handleSubmit = (event) => {
-    handleCancel();
-  };
-
   return (
     <div>
       <head>
@@ -57,7 +51,18 @@ function Stock() {
         <title>Inventario</title>
       </head>
       <body>
-        <main role="main">
+        <header className="bg-success py-5">
+          <div className="container px-4 px-lg-5 my-5">
+            <div className="text-center text-white">
+              <h1 className="display-8 fw-bolder">
+                Ayudamos a los comercios de alimentos a sustituir sus
+                recipientes desechables por retornables.
+              </h1>
+              <p className="lead fw-normal text-white-50 mb-0">- Ficus.</p>
+            </div>
+          </div>
+        </header>
+        <section className="py-4">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
               <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
@@ -102,23 +107,10 @@ function Stock() {
               </button>
             </div>
           </div>
+        </section>
+        <section className="py-4">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card p-3">
-                  <figure className="p-3 mb-0">
-                    <blockquote className="blockquote">
-                      <p>
-                        Ayudamos a los comercios de alimentos a sustituir sus
-                        recipientes desechables por retornables.
-                      </p>
-                    </blockquote>
-                    <figcaption className="blockquote-footer mb-0 text-muted">
-                      Ficus
-                    </figcaption>
-                  </figure>
-                </div>
-              </div>
               {/* Vajilla reusable card*/}
               <div className="col-sm-6 col-lg-4 mb-4">
                 <div className="card text-center">
@@ -165,22 +157,16 @@ function Stock() {
               </div>
             </div>
           </div>
-
+        </section>
+        <section className="py-4">
           <div className="container fluid">
             <div className="container">
               <h2 className="display-3 fw-bold">Todos los productos</h2>
             </div>
             <div className="row">
-              <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card">
-                  <img
-                    src="images/marca/JPG/Logotipo (1).jpg"
-                    alt="Ficus logo"
-                  />
-                </div>
-              </div>
+             
               {/*Database card list */}
-              {products.map((product) => (
+              {products.map((product, productIndex) => (
                 <div
                   className="col-sm-6 col-md-3 mb-3"
                   key={product.productoId}
@@ -192,10 +178,9 @@ function Stock() {
                       <button
                         className="btn btn-primary"
                         onClick={() =>
-                          handleClick(product.productoId, product.nombre)
+                          handleClickViewProduct(productIndex)
                         }
-                      >
-                        Ver producto
+                      > Ver producto
                       </button>
                     </div>
                   </div>
@@ -232,7 +217,7 @@ function Stock() {
               </nav>
             </div>
           </div>
-        </main>
+        </section>
       </body>
     </div>
   );

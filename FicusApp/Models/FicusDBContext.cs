@@ -36,8 +36,18 @@ public partial class FicusDbContext : DbContext
         modelBuilder.Entity<Producto>(entity =>
         {
             entity.Property(e => e.ProductoID).HasColumnName("ProductoID");
-            entity.Property(e => e.Nombre).HasMaxLength(50);
-            entity.Property(e => e.Descripcion).HasMaxLength(50);
+            entity.Property(e => e.Nombre).HasMaxLength(255);
+            entity.Property(e => e.Descripcion).HasMaxLength(255);
+            entity.Property(e => e.Color).HasMaxLength(255);
+            entity.Property(e => e.Dimensiones).HasMaxLength(255);
+            entity.Property(e => e.Peso_recipiente).HasMaxLength(50);
+            entity.Property(e => e.Peso_desechable).HasMaxLength(50);
+            entity.Property(e => e.Alquiler_Comercios).HasMaxLength(50);
+            entity.Property(e => e.Alquiler_Retail).HasMaxLength(50);
+            entity.Property(e => e.Categoria).HasMaxLength(50);
+            entity.Property(e => e.Familia).HasMaxLength(50);
+            entity.Property(e => e.Imagen).HasMaxLength(50);
+
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -23,6 +23,14 @@ public class ProductoController : ControllerBase
             return Ok(productos);
         }
 
+        [HttpGet]
+        [Route("GetProducto/{id}")]
+        public async Task<IActionResult> GetProducto(int id)
+        {
+            Producto producto = await _context.Productos.FindAsync(id);
+            return Ok(producto);
+        }
+
         [HttpPost]
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] Producto request)
