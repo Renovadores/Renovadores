@@ -14,18 +14,39 @@ function ClientInformation() {
   const [clientInfo, setInfo] = useState("");
   const getClient = async () => {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`);
-    console.log(clientId);
     if (response.ok) {
       const data = await response.json();
-      data.fecha_Agregado = dateFormat(data.fecha_Agregado);
+      //data.fecha_Agregado = dateFormat(data.fecha_Agregado);
       setInfo(data);
+      console.log(data);
     } else {
       console.log(response.text);
     }
   }
+
   useEffect(() => {
+    async function getClient () {
+      const response = await fetch(`api/cliente/GetCliente/${clientId}`);
+      if (response.ok) {
+        const data = await response.json();
+        data.fecha_Agregado = dateFormat(data.fecha_Agregado);
+        setInfo(data);
+        addDefaultEditForm(data);
+        
+      } else {
+        console.log(response.text);
+      }
+    }
     getClient();
   }, []);
+
+  const addDefaultEditForm = (data) => {
+    setCompany(data.nombre);
+    //setContacto(data.contacto);
+    setTelefono(data.telefono);
+    setCorreoElectronico(data.correo);
+    setPaginaWeb(data.web);
+  }
 
   // store form information in variables
   // TO-DO: set variables in english
@@ -190,6 +211,7 @@ function ClientInformation() {
     setZoom("");
   }
 
+  // Edit Client
   const handleSubmit = async (event) => {
     event.preventDefault();
     // setSegments TO-DO: add segments to data base
@@ -229,21 +251,20 @@ function ClientInformation() {
     if (otro) {
       segments.push("Otra");
     }
-
-    /*
-    const response = await fetch("api/cliente/EditarCliente", {
+    console.log(clientId, clientInfo.fecha_Agregado, personInCharge, priority, state, company, telefono, correoElectronico, paginaWeb);
+    const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ tipo: "", fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre: company, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+      body: JSON.stringify({ id : clientId ,tipo: "", fecha_Agregado: clientInfo.fecha_Agregado, responsable: personInCharge, prioridad: priority, estado: state, nombre: company, telefono: telefono, correo: correoElectronico, web: paginaWeb })
     });
     
     if (response.ok) {
       handleCancel();
-      getClients();
+      getClient();
     }
-    */
+
     segments = [];
   }
 
@@ -269,7 +290,7 @@ function ClientInformation() {
                   <form onSubmit={ handleSubmit }>
                     <Input variable={company} handler={handleChangeCompany} text="Empresa" />
                     <div className="mb-3">
-                      <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: </label>
+                      <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {clientInfo.fecha_Agregado} </label>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
@@ -339,7 +360,6 @@ function ClientInformation() {
 function dateFormat(dateDB) {
   var arrayDate = dateDB.split("-");
   const day = arrayDate[2].substring(0, 2);
-  arrayDate[2] = arrayDate[2] + 1;
   const date = day + "-" + arrayDate[1] + "-" + arrayDate[0];
   
   return date;

@@ -43,6 +43,16 @@ namespace FicusApp.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("EditCliente")]
+        public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
+        {
+            _context.Cliente.Update(cliente);
+            _context.SaveChanges();
+            return Ok();
+        }
+
     }
 }
 
