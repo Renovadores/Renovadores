@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-05-07T21:47:23.345Z
+-- Generated at: 2023-05-09T14:24:33.805Z
 
 CREATE TABLE [Usuario] (
   [ID_Usuario] integer PRIMARY KEY,
@@ -29,7 +29,8 @@ CREATE TABLE [Producto] (
   [Alquiler_Comercios] integer NOT NULL,
   [Alquiler_Retail] integer NOT NULL,
   [Categoria] integer,
-  [Familia] integer
+  [Familia] integer,
+  [Imagen] nvarchar(255) UNIQUE
 )
 GO
 
@@ -70,18 +71,18 @@ CREATE TABLE [Orden] (
   [ID_Orden] nvarchar(255) PRIMARY KEY,
   [Fecha_alquiler] date NOT NULL,
   [Usuario] integer NOT NULL,
-  [Cliente] integer,
+  [Cliente] integer NOT NULL,
   [Registro_limpieza] integer,
   [Limpieza_unidad] integer,
   [Limpieza] integer,
-  [Monto] integer,
+  [Monto] integer NOT NULL,
   [Descuento] integer
 )
 GO
 
 CREATE TABLE [Evento] (
   [ID_Evento] integer PRIMARY KEY,
-  [Nombre_evento] nvarchar(255),
+  [Nombre_evento] nvarchar(255) NOT NULL,
   [Descripcion_evento] nvarchar(255),
   [Orden] nvarchar(255)
 )
@@ -94,10 +95,10 @@ CREATE TABLE [Fase] (
 GO
 
 CREATE TABLE [Historial_Orden] (
-  [Orden] nvarchar(255),
-  [Fase] integer,
-  [Inicio] date,
-  [Final] date
+  [Orden] nvarchar(255) NOT NULL,
+  [Fase] integer NOT NULL,
+  [Inicio] date NOT NULL,
+  [Final] date NOT NULL
 )
 GO
 
@@ -114,12 +115,12 @@ GO
 
 CREATE TABLE [Cliente] (
   [ID_Cliente] integer PRIMARY KEY,
-  [Tipo] nvarchar(255),
   [Fecha_agregado] date,
   [Responsable] integer,
   [Prioridad] nvarchar(255),
   [Estado] nvarchar(255),
-  [Nombre] nvarchar(255),
+  [Nombre_empresa] nvarchar(255),
+  [Contacto] nvarchar(255),
   [Telefono] integer,
   [Correo] nvarchar(255),
   [Web] nvarchar(255)
@@ -133,8 +134,8 @@ CREATE TABLE [Segmento] (
 GO
 
 CREATE TABLE [Cliente_Segmento] (
-  [Cliente] integer,
-  [Segmento] nvarchar(255)
+  [Cliente] integer NOT NULL,
+  [Segmento] nvarchar(255) NOT NULL
 )
 GO
 
@@ -244,6 +245,14 @@ EXEC sp_addextendedproperty
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
 @level2type = N'Column', @level2name = 'Alquiler_Retail';
+GO
+
+EXEC sp_addextendedproperty
+@name = N'Column_Description',
+@value = 'URL a la imagen del producto',
+@level0type = N'Schema', @level0name = 'dbo',
+@level1type = N'Table',  @level1name = 'Producto',
+@level2type = N'Column', @level2name = 'Imagen';
 GO
 
 EXEC sp_addextendedproperty

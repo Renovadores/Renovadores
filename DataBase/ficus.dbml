@@ -31,6 +31,7 @@ Table Producto {
   Alquiler_Retail integer [not null, note: "Costo para el alquiler a retail incluyendo IVA"]
   Categoria integer
   Familia integer
+  Imagen varchar [unique, note: "URL a la imagen del producto"]
 }
 
 Table Categoria {
@@ -75,17 +76,17 @@ Table Orden {
   ID_Orden varchar [pk]
   Fecha_alquiler date [not null]
   Usuario integer [not null, note: "Responsable de agregar la orden"]
-  Cliente integer
+  Cliente integer [not null]
   Registro_limpieza integer
   Limpieza_unidad integer
   Limpieza integer
-  Monto integer
+  Monto integer [not null]
   Descuento integer
 }
 
 Table Evento {
   ID_Evento integer [pk]
-  Nombre_evento varchar
+  Nombre_evento varchar [not null]
   Descripcion_evento varchar
   Orden varchar
 }
@@ -100,10 +101,10 @@ Table Fase {
 }
 
 Table Historial_Orden {
-  Orden varchar
-  Fase integer
-  Inicio date [note: "Fecha de inicio de la fase actual"]
-  Final date [note: "Fecha final de la fase actual"]
+  Orden varchar [not null]
+  Fase integer [not null]
+  Inicio date [not null, note: "Fecha de inicio de la fase actual"]
+  Final date [not null, note: "Fecha final de la fase actual"]
   Note: "Guarda en que fase se encuentra cada orden"
 }
 
@@ -112,7 +113,7 @@ Ref: Historial_Orden.Fase > Fase.ID_Fase
 
 Table Detalle {
   ID_reserva varchar [pk]
-  Producto integer
+  Producto integer 
   Pedidos integer
   Sin_usar integer
   Usados integer
@@ -125,12 +126,12 @@ Ref: Detalle.Producto > Producto.SKU
 
 Table Cliente {
   ID_Cliente integer [pk]
-  Tipo varchar
   Fecha_agregado date
   Responsable integer [note: "Responsable del cliente"]
   Prioridad varchar
   Estado varchar
-  Nombre varchar
+  Nombre_empresa varchar
+  Contacto varchar
   Telefono integer
   Correo varchar
   Web varchar
@@ -144,8 +145,8 @@ Table Segmento {
 }
 
 Table Cliente_Segmento {
-  Cliente integer
-  Segmento varchar
+  Cliente integer [not null]
+  Segmento varchar [not null]
 }
 
 Ref: Cliente_Segmento.Cliente > Cliente.ID_Cliente
