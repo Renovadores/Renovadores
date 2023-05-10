@@ -1,3 +1,5 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -167,16 +169,224 @@ function Stock() {
                           </div>
                           <div className="offcanvas-body">
                               <form onSubmit={handleSubmit}>
-                                  <input variable={name} handler={handleChangeName} text="Nombre" />
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="text"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Nombre</label>
+                                  </div>
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
                                   </div>
-                                  <input variable={descripcion} handler={handleChangeDescripcion} text="Descripcion" />
-                                  <input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
-                                  <input variable={peso_recipiente} handler={handleChangePeso_recipiente} text="Peso del Recipiente" />
-                                  <input variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
-                                  <input variable={alquiler_comercios} handler={handleChangeAlquiler_Comercios} text="Alquiler comercios" />
-                                  <input variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Alquiler Retail" />
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="text"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Descripción</label>
+                                  </div>
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="text"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Dimensiones</label>
+                                  </div>
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="number"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Peso del Recipiente</label>
+                                  </div>
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="number"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Peso Desechable</label>
+                                  </div>
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="number"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Precio Comercios</label>
+                                  </div>
+                                  <div className="form-floating mb-3">
+                                      <input
+                                          type="number"
+                                          className="form-control"
+                                          id="floatingInput"
+                                          placeholder="name@example.com"
+                                      />
+                                      <label htmlFor="floatingInput">Precio Retail</label>
+                                  </div>
+
+                                  <div className="mb-3">
+                                      <label htmlFor="formGroupExampleInput" className="form-label">
+                                          Categoria
+                                      </label>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Sopa
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Sin división
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Medio
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Compartimientos
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Vaso
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Plato
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Plato Sopa
+                                          </label>
+                                      </div>
+                                  </div>
+
+                                  <div className="mb-3">
+                                      <label htmlFor="formGroupExampleInput" className="form-label">
+                                          Familia
+                                      </label>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Costas
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Páramos
+                                          </label>
+                                      </div>
+                                      <div className="form-check">
+                                          <input
+                                              className="form-check-input"
+                                              type="checkbox"
+                                              value=""
+                                              id="flexCheckDefault"
+                                          />
+                                          <label
+                                              className="form-check-label"
+                                              htmlFor="flexCheckDefault"
+                                          >
+                                              Bosques
+                                          </label>
+                                      </div>
+                                      </div>
 
                                   <div className="row">
                                       <div className="col-6 d-flex justify-content-center">
