@@ -100,14 +100,21 @@ function Stock() {
     }
     //Add Product to data base
     const handleSubmit = async (event) => {
-        const response = await fetch("api/producto/AddProducto", {
+        event.preventDefault();
+        console.log(date, sku, name, color, descripcion, dimensiones, peso_recipiente, peso_desechable, alquiler_comercios, alquiler_retail, category, family);
+        const responseCliente = await fetch("api/cliente/AddCliente", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
+            body: JSON.stringify({ fecha_Agregado: date, color: color, sku: sku, name: name, descripcion: descripcion, dimensiones: dimensiones, peso_recipiente: peso_recipiente, peso_desechable: peso_desechable, alquiler_comercios: alquiler_comercios, alquiler_retail: alquiler_retail, category: category, family: family })
         });
-        if (response.ok) {
+        console.log(responseCliente);
+
+
+        if (responseCliente.ok) {
             handleCancel();
+            getProducts();
         }
     }
     const current = new Date();

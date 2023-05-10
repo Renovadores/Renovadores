@@ -32,19 +32,5 @@ namespace FicusApp.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
-        public int toIntegerFamilias(string familia)
-        {
-            if (familia == "Costas")
-            {
-                return 0;
-            }else if(familia == "Páramos")
-            {
-                return 1;
-            } else if (familia == "Bosques")
-            {
-                return 2;
-            }
-            return 0;
-        }
     }
 }
