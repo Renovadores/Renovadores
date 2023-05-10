@@ -1,6 +1,5 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 import SideBar from "./components/SideBar";
 import Tabla from "./components/Tabla";
@@ -13,6 +12,7 @@ import ProductInformation from './components/ProductInformation';
 const AppRoutes = [
   {
     index: true,
+    path: "/home",
     element: <Home />,
   },
   {
@@ -22,6 +22,8 @@ const AppRoutes = [
   {
     path: "/fetch-data",
     element: <FetchData />,
+  },
+  {
     path: '/clientes',
     element: <Clients />,
   },
@@ -51,8 +53,6 @@ const AppRoutes = [
   {
     path: "/tabla",
     element: <Tabla />,
-    path: '/cerrarSesion',
-    element: <Home />,
   },
 ];
 
