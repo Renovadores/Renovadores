@@ -3,6 +3,7 @@ import Clients from './components/Clients';
 import ClientInformation from './components/ClientInformation';
 import Stock from './components/Stock';
 import ProductInformation from './components/ProductInformation';
+import Login from './components/Login';
 
 const AppRoutes = [
   {
@@ -41,7 +42,7 @@ const AppRoutes = [
 
   {
     path: '/cerrarSesion',
-    element: <Home />,
+    element: <Login />,
   },
 ];
 
