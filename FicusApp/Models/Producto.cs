@@ -6,7 +6,7 @@ namespace FicusApp.Models;
 
 public partial class Producto
 {
-    public string SKU { get; set; }
+    [Key] public string SKU { get; set; }
 
     public string Nombre { get; set; } = null!;
     public string Color { get; set; } = null!;
