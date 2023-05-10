@@ -171,6 +171,18 @@ function Stock() {
     const handleCheckboxMo = (event) => {
         setMo(event.target.checked)
     }
+    const [family, setFamily] = useState(1);
+    const handleChangeFamily = (event) => {
+        setFamily(event.target.value)
+    }
+    const [color, setColor] = useState(1);
+    const handleChangeColor = (event) => {
+        setColor(event.target.value)
+    }
+    const [category, setCategory] = useState(1);
+    const handleChangeCategory = (event) => {
+        setCategory(event.target.value)
+    }
 
 
 
