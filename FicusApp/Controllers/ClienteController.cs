@@ -44,6 +44,7 @@ namespace FicusApp.Controllers
             {
                 return 2;
             }
+            return 0;
         }
     }
 }
