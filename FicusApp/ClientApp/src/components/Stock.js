@@ -2,6 +2,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Input from "./Input";
+import InputInt from "./InputInt";
 
 function Stock() {
   // get products from data base
@@ -169,72 +171,16 @@ function Stock() {
                           </div>
                           <div className="offcanvas-body">
                               <form onSubmit={handleSubmit}>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="text"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Nombre</label>
-                                  </div>
+                                  <Input variable={name} handler={handleChangeName} text="Nombre" />
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
                                   </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="text"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Descripción</label>
-                                  </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="text"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Dimensiones</label>
-                                  </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="number"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Peso del Recipiente</label>
-                                  </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="number"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Peso Desechable</label>
-                                  </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="number"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Precio Comercios</label>
-                                  </div>
-                                  <div className="form-floating mb-3">
-                                      <input
-                                          type="number"
-                                          className="form-control"
-                                          id="floatingInput"
-                                          placeholder="name@example.com"
-                                      />
-                                      <label htmlFor="floatingInput">Precio Retail</label>
-                                  </div>
+                                  <Input variable={descripcion} handler={handleChangeDescripcion} text="Descripción" />
+                                  <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
+                                  <InputInt variable={peso_recipiente} handler={handleChangePeso_recipiente} text="Peso de Recipiente" />
+                                  <InputInt variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
+                                  <InputInt variable={alquiler_comercios} handler={handleChangeAlquiler_Comercios} text="Precio Comercio" />
+                                  <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Precio Retail" />
 
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">
