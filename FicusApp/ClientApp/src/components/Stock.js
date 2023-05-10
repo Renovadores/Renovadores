@@ -80,8 +80,13 @@ function Stock() {
     const handleChangeAlquiler_Retail = (event) => {
         setAlquiler_Retail(event.target.value)
     }
+    const [sku, setSKU] = useState(0);
+    const handleChangeSKU = (event) => {
+        setSKU(event.target.value)
+    }
 
     const handleCancel = () => {
+        setSKU("");
         setName("");
         setDescripcion("");
         setDimensiones("");
@@ -89,6 +94,9 @@ function Stock() {
         setPeso_desechable(0);
         setAlquiler_Comercios(0);
         setAlquiler_Retail(0);
+        setColor(0);
+        setCategory(0);
+        setFamily(0);
     }
     //Add Product to data base
     const handleSubmit = async (event) => {
@@ -192,6 +200,7 @@ function Stock() {
                           </div>
                           <div className="offcanvas-body">
                               <form onSubmit={handleSubmit}>
+                                  <Input variable={sku} handler={handleChangeSKU} text="SKU" />
                                   <Input variable={name} handler={handleChangeName} text="Nombre" />
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
@@ -209,7 +218,7 @@ function Stock() {
 
                                   <div className="row">
                                       <div className="col-6 d-flex justify-content-center">
-                                          <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
+                                          <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProducts} >Agregar</button>
                                       </div>
                                       <div className="col-6 d-flex justify-content-center">
                                           <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>

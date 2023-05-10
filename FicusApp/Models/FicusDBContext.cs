@@ -35,7 +35,7 @@ public partial class FicusDbContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.Property(e => e.ProductoID).HasColumnName("ProductoID");
+            entity.Property(e => e.SKU).HasColumnName("SKU");
             entity.Property(e => e.Nombre).HasMaxLength(255);
             entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Color).HasMaxLength(255);
