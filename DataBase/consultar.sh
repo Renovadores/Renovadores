@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables de conexión
-SERVER="172.17.0.3"
+SERVER="172.17.0.2"
 USER="sa"
 PASSWORD="Hola1234"
 
