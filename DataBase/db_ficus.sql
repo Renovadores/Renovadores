@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-05-10T05:42:29.623Z
+-- Generated at: 2023-05-10T06:03:28.948Z
 
 CREATE TABLE [Usuario] (
   [ID_Usuario] integer PRIMARY KEY,
