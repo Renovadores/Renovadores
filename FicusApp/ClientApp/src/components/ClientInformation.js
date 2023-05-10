@@ -275,6 +275,9 @@ function ClientInformation() {
     segments = {};
   }
 
+  // get id and client name sent by navigate hook in Client.js
+  let clientId = location.state.id;
+  let clientName = location.state.name;
   return (
     <div className="container" >
       <div className="card m-3 mt-5" >

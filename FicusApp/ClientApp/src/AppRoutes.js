@@ -1,17 +1,28 @@
-import Home from "./components/Home";
-import Clients from "./components/Clients";
-import ClientInformation from "./components/ClientInformation";
-import Stock from "./components/Stock";
+import Home from './components/Home';
+import Clients from './components/Clients';
+import ClientInformation from './components/ClientInformation';
+import Stock from './components/Stock';
+import ProductInformation from './components/ProductInformation';
 
 const AppRoutes = [
   {
     index: true,
-    element: <Home />
+    element: <Home />,
   },
-  
+
   {
     path: '/clientes',
-    element: <Clients />
+    element: <Clients />,
+  },
+
+  {
+    path: '/clientes/informacion',
+    element: <ClientInformation />,
+  },
+
+  {
+    path: '/productos',
+    element: <Stock />,
   },
 
   {
@@ -22,12 +33,14 @@ const AppRoutes = [
   {
     path: '/inventario',
     element: <Stock />
+    path: '/productos/informacion',
+    element: <ProductInformation />,
   },
 
   {
     path: '/cerrarSesion',
-    element: <Home />
-  }
+    element: <Home />,
+  },
 ];
 
 export default AppRoutes;
