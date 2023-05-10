@@ -107,70 +107,6 @@ function Stock() {
 
     var options = {}
 
-    const [sopa, setSopa] = useState(false);
-    const handleCheckboxSopa = (event) => {
-        setSopa(event.target.checked)
-    }
-    const [sin_division, setSin_division] = useState(false);
-    const handleCheckboxSin_division = (event) => {
-        setSin_division(event.target.checked)
-    } 
-    const [medio, setMedio] = useState(false);
-    const handleCheckboxMedio = (event) => {
-        setMedio(event.target.checked)
-    }
-    const [compartimientos, setCompartimientos] = useState(false);
-    const handleCheckboxCompartimientos = (event) => {
-        setCompartimientos(event.target.checked)
-    }
-    const [vaso, setVaso] = useState(false);
-    const handleCheckboxVaso = (event) => {
-        setVaso(event.target.checked)
-    }
-    const [plato, setPlato] = useState(false);
-    const handleCheckboxPlato = (event) => {
-        setPlato(event.target.checked)
-    }
-    const [plato_sopa, setPlato_sopa] = useState(false);
-    const handleCheckboxPlato_sopa = (event) => {
-        setPlato_sopa(event.target.checked)
-    }
-    const [costas, setCostas] = useState(false);
-    const handleCheckboxCostas = (event) => {
-        setCostas(event.target.checked)
-    }
-    const [paramos, setParamos] = useState(false);
-    const handleCheckboxParamos = (event) => {
-        setParamos(event.target.checked)
-    }
-    const [bosques, setBosques] = useState(false);
-    const handleCheckboxBosques = (event) => {
-        setBosques(event.target.checked)
-    }
-    const [ja, setJa] = useState(false);
-    const handleCheckboxJa = (event) => {
-        setJa(event.target.checked)
-    }
-    const [cl, setCl] = useState(false);
-    const handleCheckboxCl = (event) => {
-        setCl(event.target.checked)
-    }
-    const [bl, setBl] = useState(false);
-    const handleCheckboxBl = (event) => {
-        setBl(event.target.checked)
-    }
-    const [rj, setRj] = useState(false);
-    const handleCheckboxRj = (event) => {
-        setRj(event.target.checked)
-    }
-    const [ro, setRo] = useState(false);
-    const handleCheckboxRo = (event) => {
-        setRo(event.target.checked)
-    }
-    const [mo, setMo] = useState(false);
-    const handleCheckboxMo = (event) => {
-        setMo(event.target.checked)
-    }
     const [family, setFamily] = useState(1);
     const handleChangeFamily = (event) => {
         setFamily(event.target.value)
@@ -267,30 +203,9 @@ function Stock() {
                                   <InputInt variable={alquiler_comercios} handler={handleChangeAlquiler_Comercios} text="Precio Comercio" />
                                   <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Precio Retail" />
 
-                                  <div className="mb-3">
-                                      <label htmlFor="formGroupExampleInput" className="form-label">Categoría</label>
-                                      <CheckBox variable={sopa} handler={handleCheckboxSopa} text="Sopa" />
-                                      <CheckBox variable={sin_division} handler={handleCheckboxSin_division} text="Sin División" />
-                                      <CheckBox variable={medio} handler={handleCheckboxMedio} text="Medio" />
-                                      <CheckBox variable={compartimientos} handler={handleCheckboxCompartimientos} text="Compartimientos" />
-                                      <CheckBox variable={vaso} handler={handleCheckboxVaso} text="Vaso" />
-                                      <CheckBox variable={plato} handler={handleCheckboxPlato} text="Plato" />
-                                      <CheckBox variable={plato_sopa} handler={handleCheckboxPlato_sopa} text="Plato Sopa" />
-                                  </div>
-
+                                  <SelectCategory variable={category} handler={handleChangeCategory} />
                                   <SelectFamily variable={family} handler={handleChangeFamily} />
-                                  <SelectState variable={state} handler={handleChangeState} />
-
-
-                                  <div className="mb-3">
-                                      <label htmlFor="formGroupExampleInput" className="form-label">Color</label>
-                                      <CheckBox variable={ja} handler={handleCheckboxJa} text="JA" />
-                                      <CheckBox variable={cl} handler={handleCheckboxCl} text="CL" />
-                                      <CheckBox variable={bl} handler={handleCheckboxBl} text="BL" />
-                                      <CheckBox variable={rj} handler={handleCheckboxRj} text="RJ" />
-                                      <CheckBox variable={ro} handler={handleCheckboxRo} text="RO" />
-                                      <CheckBox variable={mo} handler={handleCheckboxMo} text="MO" />
-                                  </div>
+                                  <SelectColor variable={color} handler={handleChangeColor} />
 
                                   <div className="row">
                                       <div className="col-6 d-flex justify-content-center">
