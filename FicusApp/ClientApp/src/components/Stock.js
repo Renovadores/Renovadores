@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import Input from "./Input";
 import InputInt from "./InputInt";
 import CheckBox from "./CheckBox";
+import SelectColor from "./SelectColor";
+import SelectCategory from "./SelectCategory";
+import SelectFamily from "./SelectFamily";
 
 function Stock() {
   // get products from data base
@@ -263,12 +266,9 @@ function Stock() {
                                       <CheckBox variable={plato_sopa} handler={handleCheckboxPlato_sopa} text="Plato Sopa" />
                                   </div>
 
-                                  <div className="mb-3">
-                                      <label htmlFor="formGroupExampleInput" className="form-label">Familia</label>
-                                      <CheckBox variable={costas} handler={handleCheckboxCostas} text="Costas" />
-                                      <CheckBox variable={paramos} handler={handleCheckboxParamos} text="Páramos" />
-                                      <CheckBox variable={bosques} handler={handleCheckboxBosques} text="Bosques" />
-                                  </div>
+                                  <SelectFamily variable={family} handler={handleChangeFamily} />
+                                  <SelectState variable={state} handler={handleChangeState} />
+
 
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">Color</label>
