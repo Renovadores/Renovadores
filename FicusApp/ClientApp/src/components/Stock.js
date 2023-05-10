@@ -102,6 +102,75 @@ function Stock() {
     const current = new Date();
     const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
 
+    var options = {}
+
+    const [sopa, setSopa] = useState(false);
+    const handleCheckboxSopa = (event) => {
+        setSopa(event.target.checked)
+    }
+    const [sin_division, setSin_division] = useState(false);
+    const handleCheckboxSin_division = (event) => {
+        setSin_division(event.target.checked)
+    } 
+    const [medio, setMedio] = useState(false);
+    const handleCheckboxMedio = (event) => {
+        setMedio(event.target.checked)
+    }
+    const [compartimientos, setCompartimientos] = useState(false);
+    const handleCheckboxCompartimientos = (event) => {
+        setCompartimientos(event.target.checked)
+    }
+    const [vaso, setVaso] = useState(false);
+    const handleCheckboxVaso = (event) => {
+        setVaso(event.target.checked)
+    }
+    const [plato, setPlato] = useState(false);
+    const handleCheckboxPlato = (event) => {
+        setPlato(event.target.checked)
+    }
+    const [plato_sopa, setPlato_sopa] = useState(false);
+    const handleCheckboxPlato_sopa = (event) => {
+        setPlato_sopa(event.target.checked)
+    }
+    const [costas, setCostas] = useState(false);
+    const handleCheckboxCostas = (event) => {
+        setCostas(event.target.checked)
+    }
+    const [paramos, setParamos] = useState(false);
+    const handleCheckboxParamos = (event) => {
+        setParamos(event.target.checked)
+    }
+    const [bosques, setBosques] = useState(false);
+    const handleCheckboxBosques = (event) => {
+        setBosques(event.target.checked)
+    }
+    const [ja, setJa] = useState(false);
+    const handleCheckboxJa = (event) => {
+        setJa(event.target.checked)
+    }
+    const [cl, setCl] = useState(false);
+    const handleCheckboxCl = (event) => {
+        setCl(event.target.checked)
+    }
+    const [bl, setBl] = useState(false);
+    const handleCheckboxBl = (event) => {
+        setBl(event.target.checked)
+    }
+    const [rj, setRj] = useState(false);
+    const handleCheckboxRj = (event) => {
+        setRj(event.target.checked)
+    }
+    const [ro, setRo] = useState(false);
+    const handleCheckboxRo = (event) => {
+        setRo(event.target.checked)
+    }
+    const [mo, setMo] = useState(false);
+    const handleCheckboxMo = (event) => {
+        setMo(event.target.checked)
+    }
+
+
+
   return (
       <div>
           <head>
@@ -188,58 +257,28 @@ function Stock() {
                                       <CheckBox variable={sopa} handler={handleCheckboxSopa} text="Sopa" />
                                       <CheckBox variable={sin_division} handler={handleCheckboxSin_division} text="Sin División" />
                                       <CheckBox variable={medio} handler={handleCheckboxMedio} text="Medio" />
-                                      <CheckBox variable={compartimientos} handler={handleCheckboxCompartimientos} text="Compartiientos" />
+                                      <CheckBox variable={compartimientos} handler={handleCheckboxCompartimientos} text="Compartimientos" />
                                       <CheckBox variable={vaso} handler={handleCheckboxVaso} text="Vaso" />
                                       <CheckBox variable={plato} handler={handleCheckboxPlato} text="Plato" />
                                       <CheckBox variable={plato_sopa} handler={handleCheckboxPlato_sopa} text="Plato Sopa" />
+                                  </div>
 
                                   <div className="mb-3">
-                                      <label htmlFor="formGroupExampleInput" className="form-label">
-                                          Familia
-                                      </label>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Costas
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Páramos
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Bosques
-                                          </label>
-                                      </div>
-                                      </div>
+                                      <label htmlFor="formGroupExampleInput" className="form-label">Familia</label>
+                                      <CheckBox variable={costas} handler={handleCheckboxCostas} text="Costas" />
+                                      <CheckBox variable={paramos} handler={handleCheckboxParamos} text="Páramos" />
+                                      <CheckBox variable={bosques} handler={handleCheckboxBosques} text="Bosques" />
+                                  </div>
+
+                                  <div className="mb-3">
+                                      <label htmlFor="formGroupExampleInput" className="form-label">Color</label>
+                                      <CheckBox variable={ja} handler={handleCheckboxJa} text="JA" />
+                                      <CheckBox variable={cl} handler={handleCheckboxCl} text="CL" />
+                                      <CheckBox variable={bl} handler={handleCheckboxBl} text="BL" />
+                                      <CheckBox variable={rj} handler={handleCheckboxRj} text="RJ" />
+                                      <CheckBox variable={ro} handler={handleCheckboxRo} text="RO" />
+                                      <CheckBox variable={mo} handler={handleCheckboxMo} text="MO" />
+                                  </div>
 
                                   <div className="row">
                                       <div className="col-6 d-flex justify-content-center">
