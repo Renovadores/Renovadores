@@ -1,0 +1,2 @@
+#! /bin/bash
+dotnet ef dbcontext scaffold "Server=172.17.0.2;User id=sa;password=Hola1234;MultipleActiveResultSets=true;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer  --no-build -o Models -d --use-database-names -t Usuario -t Rol -t Producto -t Categoria -t Familia -t Color -t Estado -t Inventario -t Cliente -t Segmento -t Cliente_Segmento -t MedioComunicacion -t Cliente_Comunicacion -f -d
