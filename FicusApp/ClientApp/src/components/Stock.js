@@ -2,10 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Input from "./Input";
+import InputInt from "./InputInt";
+import CheckBox from "./CheckBox";
+import SelectColor from "./SelectColor";
+import SelectCategory from "./SelectCategory";
+import SelectFamily from "./SelectFamily";
 
 function Stock() {
-  // get clients from data base
-  const [productsChecked, setProductsChecked] = useState(false);
+  // get products from data base
+  const [productsChecked, setProductsChecked] = useState(false); 
   const [products, setProducts] = useState([]);
   const getProducts = async () => {
     setProductsChecked(false);
@@ -44,6 +50,92 @@ function Stock() {
   useEffect(() => {
     console.log(name);
   }, [name]);
+
+    const [descripcion, setDescripcion] = useState("");
+    const handleChangeDescripcion = (event) => {
+        setDescripcion(event.target.value)
+    }
+
+    const [dimensiones, setDimensiones] = useState("");
+    const handleChangeDimensiones = (event) => {
+        setDimensiones(event.target.value)
+    }
+
+    const [peso_recipiente, setPeso_recipiente] = useState(0);
+    const handleChangePeso_recipiente = (event) => {
+        setPeso_recipiente(event.target.value)
+    }
+
+    const [peso_desechable, setPeso_desechable] = useState(0);
+    const handleChangePeso_desechable = (event) => {
+        setPeso_desechable(event.target.value)
+    }
+
+    const [alquiler_comercios, setAlquiler_Comercios] = useState(0);
+    const handleChangeAlquiler_Comercios = (event) => {
+        setAlquiler_Comercios(event.target.value)
+    }
+
+    const [alquiler_retail, setAlquiler_Retail] = useState(0);
+    const handleChangeAlquiler_Retail = (event) => {
+        setAlquiler_Retail(event.target.value)
+    }
+    const [sku, setSKU] = useState(0);
+    const handleChangeSKU = (event) => {
+        setSKU(event.target.value)
+    }
+
+    const handleCancel = () => {
+        setSKU("");
+        setName("");
+        setDescripcion("");
+        setDimensiones("");
+        setPeso_recipiente(0);
+        setPeso_desechable(0);
+        setAlquiler_Comercios(0);
+        setAlquiler_Retail(0);
+        setColor(0);
+        setCategory(0);
+        setFamily(0);
+    }
+    //Add Product to data base
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(date, sku, name, color, descripcion, dimensiones, peso_recipiente, peso_desechable, alquiler_comercios, alquiler_retail, category, family);
+        const responseCliente = await fetch("api/cliente/AddCliente", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ fecha_Agregado: date, color: color, sku: sku, name: name, descripcion: descripcion, dimensiones: dimensiones, peso_recipiente: peso_recipiente, peso_desechable: peso_desechable, alquiler_comercios: alquiler_comercios, alquiler_retail: alquiler_retail, category: category, family: family })
+        });
+        console.log(responseCliente);
+
+
+        if (responseCliente.ok) {
+            handleCancel();
+            getProducts();
+        }
+    }
+    const current = new Date();
+    const date = `${current.getDate()}-${current.getMonth() + 1}-${current.getFullYear()}`; 
+
+    var options = {}
+
+    const [family, setFamily] = useState(1);
+    const handleChangeFamily = (event) => {
+        setFamily(event.target.value)
+    }
+    const [color, setColor] = useState(1);
+    const handleChangeColor = (event) => {
+        setColor(event.target.value)
+    }
+    const [category, setCategory] = useState(1);
+    const handleChangeCategory = (event) => {
+        setCategory(event.target.value)
+    }
+
+
 
   return (
     <div>

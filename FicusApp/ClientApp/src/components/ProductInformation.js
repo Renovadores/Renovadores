@@ -1,6 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from 'react';
+import Input from "./Input";
+import InputInt from "./InputInt";
+import CheckBox from "./CheckBox";
+import SelectColor from "./SelectColor";
+import SelectCategory from "./SelectCategory";
+import SelectFamily from "./SelectFamily";
 import { useLocation } from 'react-router-dom';
 
 function ProductInformation() {
