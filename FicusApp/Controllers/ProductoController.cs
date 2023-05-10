@@ -39,6 +39,15 @@ public class ProductoController : ControllerBase
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("EditProducto")]
+        public async Task<IActionResult> EditProduct([FromBody] Producto producto)
+        {
+            _context.Producto.Update(producto);
+            _context.SaveChanges();
+            return Ok();
+        }
     }
 }
 

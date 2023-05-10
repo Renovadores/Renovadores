@@ -47,7 +47,7 @@ function NavMenu() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/inventario">
+              <NavLink tag={Link} className="text-light" to="/productos">
                 Inventario
               </NavLink>
             </NavItem>

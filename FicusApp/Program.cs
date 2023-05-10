@@ -1,8 +1,14 @@
+// reference to Models (context)
+using FicusApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+//access to Models (for controllers)
+builder.Services.AddDbContext<FicusDbContext>();
 
 var app = builder.Build();
 
@@ -22,6 +28,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html");
+//app.MapFallbackToFile("index.html");
 
 app.Run();
