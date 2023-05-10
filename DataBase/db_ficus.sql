@@ -1,36 +1,36 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-05-09T14:24:33.805Z
+-- Generated at: 2023-05-10T05:42:29.623Z
 
 CREATE TABLE [Usuario] (
   [ID_Usuario] integer PRIMARY KEY,
   [Nombre] nvarchar(255) NOT NULL,
   [Apellidos] nvarchar(255) NOT NULL,
   [Contrasena] nvarchar(255) NOT NULL,
-  [ID_Rol] integer NOT NULL
+  [ID_Rol] integer
 )
 GO
 
 CREATE TABLE [Rol] (
   [ID_Rol] integer PRIMARY KEY,
-  [Tipo_rol] nvarchar(255) UNIQUE NOT NULL,
+  [Tipo_rol] nvarchar(255) NOT NULL,
   [Detalles_rol] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Producto] (
-  [SKU] integer PRIMARY KEY,
-  [Nombre] nvarchar(255) NOT NULL,
-  [Color] nvarchar(255) NOT NULL,
-  [Descripcion] nvarchar(255) NOT NULL,
-  [Dimensiones] nvarchar(255) NOT NULL,
-  [Peso_recipiente] integer NOT NULL,
-  [Peso_desechable] integer NOT NULL,
-  [Alquiler_Comercios] integer NOT NULL,
-  [Alquiler_Retail] integer NOT NULL,
+  [SKU] nvarchar(255) PRIMARY KEY,
+  [Nombre] nvarchar(255),
+  [Color] integer,
+  [Descripcion] nvarchar(255),
+  [Dimensiones] nvarchar(255),
+  [Peso_recipiente] integer,
+  [Peso_desechable] integer,
+  [Alquiler_Comercios] integer,
+  [Alquiler_Retail] integer,
   [Categoria] integer,
   [Familia] integer,
-  [Imagen] nvarchar(255) UNIQUE
+  [Imagen] nvarchar(255)
 )
 GO
 
@@ -47,7 +47,7 @@ CREATE TABLE [Familia] (
 GO
 
 CREATE TABLE [Color] (
-  [ID_Color] nvarchar(255) PRIMARY KEY,
+  [ID_Color] integer PRIMARY KEY,
   [Descripcion] nvarchar(255)
 )
 GO
@@ -59,7 +59,7 @@ CREATE TABLE [Estado] (
 GO
 
 CREATE TABLE [Inventario] (
-  [Producto] integer,
+  [Producto] nvarchar(255),
   [Estado] integer,
   [Cantidad] integer,
   [Lote] integer,
@@ -104,7 +104,7 @@ GO
 
 CREATE TABLE [Detalle] (
   [ID_reserva] nvarchar(255) PRIMARY KEY,
-  [Producto] integer,
+  [Producto] nvarchar(255),
   [Pedidos] integer,
   [Sin_usar] integer,
   [Usados] integer,

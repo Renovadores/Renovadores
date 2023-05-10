@@ -8,30 +8,30 @@ Table Usuario {
   Nombre varchar [not null, note: "Guarda el nombre del usuario"]
   Apellidos varchar [not null, note: "Guarda el o los apellidos del usuario"]
   Contrasena varchar [not null, note: "Contraseña encriptada del usuario"]
-  ID_Rol integer [not null, note: "Identifica las capacidades del usuario"]
+  ID_Rol integer [note: "Identifica las capacidades del usuario"]
 }
 
 Table Rol {
   ID_Rol integer [pk, note: "Indentificador unico del usuario"]
-  Tipo_rol varchar [unique, not null, note: "Nombre del rol"]
+  Tipo_rol varchar [not null, note: "Nombre del rol"]
   Detalles_rol varchar [note: "Detalles sobre el rol"]
 }
 
 Ref: Usuario.ID_Rol > Rol.ID_Rol
 
 Table Producto {
-  SKU integer [pk, note: "Identificador unico para cada producto"]
-  Nombre varchar [not null, note: "Nombre del producto"]
-  Color varchar [not null]
-  Descripcion varchar [not null]
-  Dimensiones varchar [not null]
-  Peso_recipiente integer [not null]
-  Peso_desechable integer [not null]
-  Alquiler_Comercios integer [not null, note: "Costo para el alquiler a comercio incluyendo IVA"]
-  Alquiler_Retail integer [not null, note: "Costo para el alquiler a retail incluyendo IVA"]
+  SKU varchar [pk, note: "Identificador unico para cada producto"]
+  Nombre varchar [note: "Nombre del producto"]
+  Color integer
+  Descripcion varchar
+  Dimensiones varchar
+  Peso_recipiente integer
+  Peso_desechable integer 
+  Alquiler_Comercios integer [note: "Costo para el alquiler a comercio incluyendo IVA"]
+  Alquiler_Retail integer [note: "Costo para el alquiler a retail incluyendo IVA"]
   Categoria integer
   Familia integer
-  Imagen varchar [unique, note: "URL a la imagen del producto"]
+  Imagen varchar [note: "URL a la imagen del producto"]
 }
 
 Table Categoria {
@@ -45,7 +45,7 @@ Table Familia {
 }
 
 Table Color {
-  ID_Color varchar [pk]
+  ID_Color integer [pk]
   Descripcion varchar
   Note: "Guarda el color de cada producto"
 }
@@ -61,7 +61,7 @@ Table Estado {
 }
 
 Table Inventario {
-  Producto integer
+  Producto varchar
   Estado integer
   Cantidad integer
   Lote integer
@@ -113,7 +113,7 @@ Ref: Historial_Orden.Fase > Fase.ID_Fase
 
 Table Detalle {
   ID_reserva varchar [pk]
-  Producto integer 
+  Producto varchar 
   Pedidos integer
   Sin_usar integer
   Usados integer
