@@ -20,7 +20,7 @@ namespace FicusApp.Controllers
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
         {
-            List<Cliente> clientes = _context.Clientes.OrderByDescending(c => c.Id).ToList();
+            List<Cliente> clientes = _context.Clientes.OrderByDescending(c => c.ID_Cliente).ToList();
             return Ok(clientes);
         }
 

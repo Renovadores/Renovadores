@@ -19,7 +19,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).ToList();
+            List<Producto> productos = _context.Productos.OrderByDescending(c => c.SKU).ToList();
             return Ok(productos);
         }
 
@@ -27,7 +27,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducto/{SKU}")]
         public async Task<IActionResult> GetProducto(int SKU)
         {
-            Producto producto = await _context.Producto.FindAsync(SKU);
+            Producto producto = await _context.Productos.FindAsync(SKU);
             return Ok(producto);
         }
 
@@ -35,7 +35,7 @@ public class ProductoController : ControllerBase
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] Producto request)
         {
-            await _context.Producto.AddAsync(request);
+            await _context.Productos.AddAsync(request);
             await _context.SaveChangesAsync();
             return Ok();
         }
@@ -44,7 +44,7 @@ public class ProductoController : ControllerBase
         [Route("EditProducto")]
         public async Task<IActionResult> EditProduct([FromBody] Producto producto)
         {
-            _context.Producto.Update(producto);
+            _context.Productos.Update(producto);
             _context.SaveChanges();
             return Ok();
         }
