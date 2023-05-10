@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Input from "./Input";
 import InputInt from "./InputInt";
+import CheckBox from "./CheckBox";
 
 function Stock() {
   // get products from data base
@@ -183,108 +184,14 @@ function Stock() {
                                   <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Precio Retail" />
 
                                   <div className="mb-3">
-                                      <label htmlFor="formGroupExampleInput" className="form-label">
-                                          Categoria
-                                      </label>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Sopa
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Sin división
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Medio
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Compartimientos
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Vaso
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Plato
-                                          </label>
-                                      </div>
-                                      <div className="form-check">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              value=""
-                                              id="flexCheckDefault"
-                                          />
-                                          <label
-                                              className="form-check-label"
-                                              htmlFor="flexCheckDefault"
-                                          >
-                                              Plato Sopa
-                                          </label>
-                                      </div>
-                                  </div>
+                                      <label htmlFor="formGroupExampleInput" className="form-label">Categoría</label>
+                                      <CheckBox variable={sopa} handler={handleCheckboxSopa} text="Sopa" />
+                                      <CheckBox variable={sin_division} handler={handleCheckboxSin_division} text="Sin División" />
+                                      <CheckBox variable={medio} handler={handleCheckboxMedio} text="Medio" />
+                                      <CheckBox variable={compartimientos} handler={handleCheckboxCompartimientos} text="Compartiientos" />
+                                      <CheckBox variable={vaso} handler={handleCheckboxVaso} text="Vaso" />
+                                      <CheckBox variable={plato} handler={handleCheckboxPlato} text="Plato" />
+                                      <CheckBox variable={plato_sopa} handler={handleCheckboxPlato_sopa} text="Plato Sopa" />
 
                                   <div className="mb-3">
                                       <label htmlFor="formGroupExampleInput" className="form-label">
