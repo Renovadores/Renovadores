@@ -3,6 +3,15 @@ a {
   color: #0366d6;
 }
 
+.App {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+    background-color: #F7E6D0;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -16,3 +25,40 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.auth-form-container, .login-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #544ADD;
+    border-radius: 15px;
+    padding: 0.25rem 0;
+    margin: 45px;
+}
+
+label {
+    color: white;
+    text-align: left;
+    padding: 0.25rem 0;
+}
+
+input {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 15px;
+}
+
+button {
+    color: black;
+    border: none;
+    background-color: #FF2C2C;
+    padding: 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+
+
+
+
+
