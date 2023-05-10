@@ -91,3 +91,31 @@ VALUES
   ("M-273-MO", 1, 200, 1, "2023-05-09"),
   ("M-273-RO", 1, 300, 1, "2023-05-09"),
   ("M-275-BL", 1, 100, 1, "2023-05-09");
+
+
+INSERT INTO Cliente (ID_Cliente, Fecha_agregado, Responsable, Prioridad, Estado, Nombre_empresa, Contacto, Telefono, Correo, Web)
+VALUES
+(1, '2022-05-01', 123, 'Alta', 'Clientes', 'Empresa A', 'Juan Perez', 5551234, 'juan.perez@empresaA.com', 'www.empresaA.com'),
+(2, '2022-05-02', 456, 'Baja', 'Clientes', 'Empresa B', 'Maria Garcia', 5555678, 'maria.garcia@empresaB.com', 'www.empresaB.com');
+
+INSERT INTO Segmento (ID_Segmento, Detalles)
+VALUES
+('Cafeteria', 'Caracteristicas de las cafeterias'),
+('Panaderia', 'Caracteristicas de la panaderia');
+
+INSERT INTO Cliente_Segmento (Cliente, Segmento)
+VALUES
+(1, 'Cafeteria'),
+(2, 'Cafeteria'),
+(2, 'Panaderia');
+
+INSERT INTO MedioComunicacion (ID_Medio, Caracteristicas)
+VALUES
+  ('Medio1', 'Caracteristicas del medio 1'),
+  ('Medio2', 'Caracteristicas del medio 2');
+
+INSERT INTO Cliente_Comunicacion (Cliente, Medio)
+VALUES
+  (1, 'Medio1'),
+  (1, 'Medio2'),
+  (2, 'Medio1');
