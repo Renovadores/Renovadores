@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 
 function Stock() {
   // get clients from data base
-  const [productsChecked, setProductsChecked] = useState(false); 
+  const [productsChecked, setProductsChecked] = useState(false);
   const [products, setProducts] = useState([]);
-    const getProducts = async () => {
-        setProductsChecked(false);
+  const getProducts = async () => {
+    setProductsChecked(false);
     const response = await fetch('api/producto/GetProducts');
     if (response.ok) {
       const data = await response.json();
-        setProducts(data);
-        setProductsChecked(true);
+      setProducts(data);
+      setProductsChecked(true);
     } else {
       console.log('error');
     }
@@ -28,8 +28,8 @@ function Stock() {
   // When user click on client button, 'navigate hook' redirect him to new page
   const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
   const handleClickViewProduct = (productIndex) => {
-      navigate('/productos/informacion', {
-          state: products[productIndex].productoID
+    navigate('/productos/informacion', {
+      state: products[productIndex].SKU,
     });
     //second argument allows to pass parameters
   };
@@ -164,23 +164,19 @@ function Stock() {
               <h2 className="display-3 fw-bold">Todos los productos</h2>
             </div>
             <div className="row">
-             
               {/*Database card list */}
               {products.map((product, productIndex) => (
-                <div
-                  className="col-sm-6 col-md-3 mb-3"
-                  key={product.productoId}
-                >
+                <div className="col-sm-6 col-md-3 mb-3" key={product.SKU}>
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{product.nombre}</h5>
                       <p className="card-text">{product.descripcion}</p>
                       <button
                         className="btn btn-primary"
-                        onClick={() =>
-                          handleClickViewProduct(productIndex)
-                        }
-                      > Ver producto
+                        onClick={() => handleClickViewProduct(productIndex)}
+                      >
+                        {' '}
+                        Ver producto
                       </button>
                     </div>
                   </div>
