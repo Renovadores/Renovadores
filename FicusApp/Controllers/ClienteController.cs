@@ -37,7 +37,7 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
         {
             //TO-DO create a Service with method GenerateId
-            int generatedID = _context.Cliente.Count()+1;
+            int generatedID = _context.Cliente.Count() + 1;
             request.Id = generatedID;
             await _context.Cliente.AddAsync(request);
             await _context.SaveChangesAsync();
@@ -55,4 +55,3 @@ namespace FicusApp.Controllers
 
     }
 }
-

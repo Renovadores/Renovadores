@@ -30,9 +30,11 @@ const AppRoutes = [
     element: <ClientInformation />
   },
 
-  {
-    path: '/inventario',
-    element: <Stock />
+    {
+        path: '/producto',
+        element: <Stock />
+    },
+   {
     path: '/productos/informacion',
     element: <ProductInformation />,
   },

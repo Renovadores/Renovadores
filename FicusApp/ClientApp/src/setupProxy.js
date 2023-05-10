@@ -8,9 +8,6 @@ const target = env.ASPNETCORE_HTTPS_PORT
   : 'http://localhost:17998';
 
 const context = ['/api/cliente', '/api/producto'];
-const context = [
-  "/api/cliente",
-];
 
 const onError = (err, req, resp, target) => {
   console.error(`${err.message}`);
