@@ -8,6 +8,7 @@ import CheckBox from "./CheckBox";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
+import { useLocation } from 'react-router-dom';
 
 function ProductInformation() {
     const location = useLocation();
@@ -149,35 +150,6 @@ function ProductInformation() {
                                     <div className="offcanvas-header">
                                         <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del producto</h5>
                                         <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                                    </div>
-                                    <div className="offcanvas-body">
-                                        <form onSubmit={handleSubmit}>
-                                            <Input variable={SKU} handler={handleChangeSKU} text="SKU" />
-                                            <Input variable={name} handler={handleChangeName} text="Nombre" />
-                                            <div className="mb-3">
-                                                <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
-                                            </div>
-                                            <Input variable={description} handler={handleChangeDescription} text="Descripción" />
-                                            <Input variable={dimentions} handler={handleChangeDimentions} text="Dimensiones" />
-                                            <InputInt variable={bowlWeight} handler={handleChangeBowl_Weight} text="Peso de Recipiente" />
-                                            <InputInt variable={notReusable} handler={handleChangeNo_Reusable} text="Peso Desechable" />
-                                            <InputInt variable={alquiler_comercios} handler={handleChangeAlquiler_Comercios} text="Precio Comercio" />
-                                            <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_Retail} text="Precio Retail" />
-
-                                            <SelectCategory variable={category} handler={handleChangeCategory} />
-                                            <SelectFamily variable={family} handler={handleChangeFamily} />
-                                            <SelectColor variable={color} handler={handleChangeColor} />
-
-                                            <div className="row">
-                                                <div className="col-6 d-flex justify-content-center">
-                                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProducts} >Agregar</button>
-                                                </div>
-                                                <div className="col-6 d-flex justify-content-center">
-                                                    <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
-                                                </div>
-                                            </div>
-
-                                        </form>
                                     </div>
                                 </div>
                             </div>
