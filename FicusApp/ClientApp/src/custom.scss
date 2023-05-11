@@ -1,6 +1,6 @@
 $theme-colors: (
 
-  "primary": #544ADD,
+  "primary": #0B4931,
   "secondary":#F7E6D0,
   "success":#0B4931,
   "info":#544ADD,
@@ -11,4 +11,5 @@ $theme-colors: (
 );
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-
+/* To generate custom.css and custom.map.css run 'sass --watch custom.scss:custom.css'
+ on terminal as administrator after changing this file*/
