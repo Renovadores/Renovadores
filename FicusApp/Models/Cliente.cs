@@ -19,11 +19,21 @@ public partial class Cliente
 
     public string? Contacto { get; set; }
 
-    public int? Telefono { get; set; }
+    public DateTime Fecha_Agregado { get; set; }
 
-    public string? Correo { get; set; }
+    public int Responsable { get; set; } = 0;
 
-    public string? Web { get; set; }
+    public string Prioridad { get; set; } = null!;
 
-    public virtual Usuario? ResponsableNavigation { get; set; }
+    public string Estado { get; set; } = null!;
+
+    public string Nombre_Empresa { get; set; } = null!;
+
+    public string Contacto { get; set; } = null!;
+
+    public int? Telefono { get; set; } = 0;
+
+    public string Correo { get; set; } = null!;
+
+    public string Web { get; set; } = null!;
 }
