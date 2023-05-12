@@ -37,16 +37,6 @@ const AppRoutes = [
     path: '/productos',
     element: <Stock />,
   },
-
-  {
-    path: '/clientes/informacion',
-    element: <ClientInformation />
-  },
-
-    {
-        path: '/producto',
-        element: <Stock />
-    },
    {
     path: '/productos/informacion',
     element: <ProductInformation />,
