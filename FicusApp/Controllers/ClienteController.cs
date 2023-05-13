@@ -25,6 +25,15 @@ namespace FicusApp.Controllers
         }
 
         [HttpGet]
+        [Route("GetNewId")]
+        public async Task<IActionResult> GetNewId()
+        {
+            newId id = new newId();
+            id.Id = _context.Cliente.Count()+1;
+            return Ok(id);
+        }
+
+        [HttpGet]
         [Route("GetCliente/{id}")]
         public async Task<IActionResult> GetCliente(int id)
         {
@@ -36,12 +45,9 @@ namespace FicusApp.Controllers
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
         {
-            //TO-DO create a Service with method GenerateId
-            int generatedID = _context.Cliente.Count() + 1;
-            request.Id = generatedID;
             await _context.Cliente.AddAsync(request);
             await _context.SaveChangesAsync();
-            return Ok(generatedID);
+            return Ok();
         }
 
         [HttpPut]
@@ -53,5 +59,10 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+    }
+
+    public class newId
+    {
+        public int Id { get; set; }
     }
 }

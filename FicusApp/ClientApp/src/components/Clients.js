@@ -20,9 +20,9 @@ function Clients() {
         setClientsChecked(false);
         const response = await fetch("api/cliente/GetClientes");
         if (response.ok) {
-            const data = await response.json();
-            setClients(data);
-            setClientsChecked(true);
+          const data = await response.json();
+          setClients(data);
+          setClientsChecked(true);
         } else {
             console.log(response.text);
         }
@@ -216,10 +216,10 @@ function Clients() {
             segments.catering = "Catering";
         }
         if (centroEducativo) {
-            segments.centroEducativo = "Centro Educativo";
+            segments.centro_Educativo = "Centro_Educativo";
         }
         if (comidaPreparada) {
-            segments.comidaPreparada = "Comida Preparada";
+            segments.comida_Preparada = "Comida_Preparada";
         }
         if (empresa) {
             segments.empresa = "Empresa";
@@ -228,7 +228,7 @@ function Clients() {
             segments.feria = "Feria";
         }
         if (otroSector) {
-            segments.otroSector = "Otro Sector";
+            segments.otro_Sector = "Otro_Sector";
         }
         if (panaderia) {
             segments.panaderia = "Panaderia";
@@ -237,30 +237,48 @@ function Clients() {
             segments.restaurante = "Restaurante";
         }
         if (usuarioFinal) {
-            segments.usuarioFinal = "Usuario Final";
+            segments.usuario_Final = "Usuario_Final";
         }
         if (supermercado) {
             segments.supermercado = "Supermercado";
         }
         if (otro) {
             segments.otro = "Otro";
-        }
-
-        console.log(dateDB, personInCharge, priority, state, company, contacto, telefono, correoElectronico, paginaWeb);
-        const responseCliente = await fetch("api/cliente/AddCliente", {
+      }
+      console.log(segments)
+        // generate id
+        const responseId = await fetch("api/cliente/GetNewId");
+        if (responseId.ok) {
+          const newClientId = await responseId.json();
+          // add client
+          const responseCliente = await fetch("api/cliente/AddCliente", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
-        });
-        console.log(responseCliente);
+            body: JSON.stringify({ id: newClientId.id, fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+          });
+          if (responseCliente.ok) {
+            // add segments
+            for (var segment in segments) {
+              const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ cliente: newClientId.id, segmento: segment })
+              });
+              if (!responseSegmento.ok) {
+                // store or notify which segment fails
+              }
+            }
+            // add social media
 
-
-        if (responseCliente.ok) {
             handleCancel();
             getClients();
+          }
         }
+          
         segments = {};
     }
 

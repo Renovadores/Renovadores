@@ -7,44 +7,56 @@ import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 
 function ClientInformation() {
-    const location = useLocation();
     // get client id sent by navigate function in Client.js
+    const location = useLocation();
     const clientId = location.state;
 
     // get client info from data base
     const [clientInfo, setInfo] = useState("");
+    const [clientSegments, setClientSegments] = useState("");
     const getClient = async () => {
-        const response = await fetch(`api/cliente/GetCliente/${clientId}`);
-        if (response.ok) {
-            const data = await response.json();
-            setInfo(data);
-            setDate(dateFormat(data.fecha_Agregado));
-            // get personInCharge name (in user table)
+      const responseClient = await fetch(`api/cliente/GetCliente/${clientId}`);
+      if (responseClient.ok) {
+        const data = await responseClient.json();
+        setInfo(data);
+        setDate(dateFormat(data.fecha_Agregado));
+        // get personInCharge name (in user table)
 
-            // get segments (in clientSegment table)
+        // get segments (in client_Segment table)
+        
+        // get media (in client_Comunication table)
 
-            // get media (in clientSegment table)
-
-            addDefaultEditForm(data);
-        } else {
-            console.log(response.text);
-        }
+        addDefaultEditForm(data);
+      } else {
+        console.log(responseClient.text);
+      }
     }
 
     useEffect(() => {
-        async function getClient() {
-            const response = await fetch(`api/cliente/GetCliente/${clientId}`);
-            if (response.ok) {
-                const data = await response.json();
-                //data.fecha_Agregado = dateFormat(data.fecha_Agregado);
-                setInfo(data);
-                setDate(dateFormat(data.fecha_Agregado));
-                addDefaultEditForm(data);
-            } else {
-                console.log(response.text);
-            }
+      async function getClient() {
+        const response = await fetch(`api/cliente/GetCliente/${clientId}`);
+        if (response.ok) {
+          const data = await response.json();
+          //data.fecha_Agregado = dateFormat(data.fecha_Agregado);
+          setInfo(data);
+          setDate(dateFormat(data.fecha_Agregado));
+          // get personInCharge name (in user table)
+
+          // get segments (in client_Segment table)
+          const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
+          if (responseClientSegments.ok) {
+            const dataSegment = await responseClientSegments.json();
+            setClientSegments(dataSegment);
+            console.log(dataSegment);
+          }
+        // get media (in client_Comunication table)
+
+          addDefaultEditForm(data);
+        } else {
+            console.log(response.text);
         }
-        getClient();
+      }
+      getClient();
     }, [clientId]);
 
     const addDefaultEditForm = (data) => {
@@ -54,7 +66,7 @@ function ClientInformation() {
         setCorreoElectronico(data.correo);
         setPaginaWeb(data.web);
 
-        //get values
+        //TO-DO: get values
         setCafeteria(false);
         setCatering(false);
         setCentroEducativo(false);
@@ -68,7 +80,7 @@ function ClientInformation() {
         setSupermercado(false);
         setUsuarioFinal(false);
 
-        // get values
+        //TO-DO:  get values
         setCorreo(false);
         setInstagram(false);
         setLlamada(false);
@@ -76,6 +88,7 @@ function ClientInformation() {
         setZoom(false);
         setOtra(false);
 
+        // get personInCharge name (in user table)
         setPersonInCharge(data.responsable);
         setPriority(data.prioridad);
         setState(data.estado);
