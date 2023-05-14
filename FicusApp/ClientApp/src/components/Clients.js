@@ -48,7 +48,7 @@ function Clients() {
         setCompany(event.target.value)
     }
 
-    var segments = {}
+    var segments = []
 
     const [cafeteria, setCafeteria] = useState(false);
     const handleCheckboxCafeteria = (event) => {
@@ -210,40 +210,40 @@ function Clients() {
         event.preventDefault();
         // setSegments TO-DO: add segments to data base
         if (cafeteria) {
-            segments.cafeteria = "Cafeteria";
+            segments.push("Cafeteria");
         }
         if (catering) {
-            segments.catering = "Catering";
+            segments.push("Catering");
         }
         if (centroEducativo) {
-            segments.centro_Educativo = "Centro_Educativo";
+            segments.push("Centro Educativo");
         }
         if (comidaPreparada) {
-            segments.comida_Preparada = "Comida_Preparada";
+            segments.push("Comida Preparada");
         }
         if (empresa) {
-            segments.empresa = "Empresa";
+            segments.push("Empresa");
         }
         if (feria) {
-            segments.feria = "Feria";
+            segments.push("Feria");
         }
         if (otroSector) {
-            segments.otro_Sector = "Otro_Sector";
+            segments.push("Otro Sector");
         }
         if (panaderia) {
-            segments.panaderia = "Panaderia";
+            segments.push("Panaderia");
         }
         if (restaurante) {
-            segments.restaurante = "Restaurante";
+            segments.push("Restaurante");
         }
         if (usuarioFinal) {
-            segments.usuario_Final = "Usuario_Final";
+            segments.push("Usuario Final");
         }
         if (supermercado) {
-            segments.supermercado = "Supermercado";
+            segments.push("Supermercado");
         }
         if (otro) {
-            segments.otro = "Otro";
+            segments.push("Otro");
       }
       console.log(segments)
         // generate id
@@ -260,13 +260,13 @@ function Clients() {
           });
           if (responseCliente.ok) {
             // add segments
-            for (var segment in segments) {
+            for (var i = 0; i < segments.length; i++) {
               const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segment })
+                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i]})
               });
               if (!responseSegmento.ok) {
                 // store or notify which segment fails
@@ -279,7 +279,7 @@ function Clients() {
           }
         }
           
-        segments = {};
+        segments = [];
     }
 
     // When user click on client button, 'navigate' redirect him to new page
@@ -369,13 +369,13 @@ function Clients() {
                 <FilterClients />
             </div>
             {
-                clientsChecked === false ?
-                    <div className="d-flex align-items-center justify-content-center">
-                        <strong>Cargando...</strong>
-                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>
-                    :
-                    <ClientList clients={clients} handler={handleClickViewClient} />
+              clientsChecked === false ?
+                <div className="d-flex align-items-center justify-content-center">
+                  <strong>Cargando...</strong>
+                  <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+              :
+              <ClientList clients={clients} handler={handleClickViewClient} />
             }
 
             <Pagination />

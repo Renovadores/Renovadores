@@ -7,8 +7,7 @@ namespace FicusApp.Models;
 
 public partial class Cliente_Segmento
 {
-    [Key]
     public int Cliente { get; set; }
-
+    [Key]
     public string Segmento { get; set; } = null!;
 }

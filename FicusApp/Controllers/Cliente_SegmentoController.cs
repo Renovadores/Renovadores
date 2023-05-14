@@ -23,7 +23,12 @@ namespace FicusApp.Controllers
         {
             List<Cliente_Segmento> cliente_segmentos = _context.Cliente_Segmento
                                                        .Where(s => s.Cliente == id).ToList();
-            return Ok(cliente_segmentos);
+            List<string> segmentos = new();
+            for (int i = 0; i < cliente_segmentos.Count; i++)
+            {
+                segmentos.Add(cliente_segmentos[i].Segmento);
+            }
+            return Ok(segmentos);
         }
 
         [HttpPost]
@@ -34,5 +39,15 @@ namespace FicusApp.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("DeleteClient_Segment")] 
+        public async Task<IActionResult> DeleteClient_Segment([FromBody] Cliente_Segmento request)
+        {
+            _context.Cliente_Segmento.Remove(request);
+            _context.SaveChanges();
+            return Ok();
+        }
+        
     }
 }
