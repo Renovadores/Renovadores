@@ -1,14 +1,6 @@
-$theme-colors: (
-
-  "primary": #544ADD,
-  "secondary":#F7E6D0,
-  "success":#0B4931,
-  "info":#544ADD,
-  "warning":#FF2C2C,
-  "danger": #FF2C2C,
-  "light":#ffffff,
-  "dark": #000000
-);
+$theme-colors: ( "primary": #0B4931, "secondary":#F7E6D0, "success":#0B4931, "info":#544ADD, "warning":#FF2C2C, "danger": #FF2C2C, "light":#ffffff, "dark": #000000 );
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+// sass --watch custom.scss custom.css
 
 
