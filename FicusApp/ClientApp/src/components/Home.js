@@ -1,4 +1,4 @@
-import "../assets/css/argon-dashboard.css";
+import "../custom.css";
 
 const Home = () => {
   return (

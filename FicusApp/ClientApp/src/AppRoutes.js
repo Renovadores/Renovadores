@@ -1,13 +1,13 @@
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import NavBar from "./components/NavBar";
-import SideBar from "./components/SideBar";
-import Tabla from "./components/Tabla";
-import Home from './components/Home';
-import Clients from './components/Clients';
-import ClientInformation from './components/ClientInformation';
-import Stock from './components/Stock';
-import ProductInformation from './components/ProductInformation';
+//import NavBar from "./components/NavBar";
+//import SideBar from "./components/SideBar";
+//import Tabla from "./components/Tabla";
+import Home from "./components/Home";
+import Clients from "./components/Clients";
+import ClientInformation from "./components/ClientInformation";
+import Stock from "./components/Stock";
+import ProductInformation from "./components/ProductInformation";
 
 const AppRoutes = [
   {
@@ -24,34 +24,22 @@ const AppRoutes = [
     element: <FetchData />,
   },
   {
-    path: '/clientes',
+    path: "/clientes",
     element: <Clients />,
   },
 
   {
-    path: '/clientes/informacion',
+    path: "/clientes/informacion",
     element: <ClientInformation />,
   },
 
   {
-    path: '/productos',
+    path: "/productos",
     element: <Stock />,
   },
-   {
-    path: '/productos/informacion',
+  {
+    path: "/productos/informacion",
     element: <ProductInformation />,
-  },
-  {
-    path: "/prueba",
-    element: <SideBar />,
-  },
-  {
-    path: "/prueba2",
-    element: <NavBar />,
-  },
-  {
-    path: "/tabla",
-    element: <Tabla />,
   },
 ];
 
