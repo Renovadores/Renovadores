@@ -162,7 +162,7 @@ function Clients() {
 
     const [otra, setOtra] = useState(false);
     const handleCheckboxOtra = (event) => {
-        setOtra(event.target.value)
+        setOtra(event.target.checked)
     }
 
     const [contacto, setContacto] = useState("");
@@ -289,7 +289,7 @@ function Clients() {
           });
           if (responseCliente.ok) {
             // add segments
-            for (var i = 0; i < segments.length; i++) {
+            for (let i = 0; i < segments.length; i++) {
               const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
@@ -302,7 +302,7 @@ function Clients() {
               }
             }
             // add social media
-            for (var i = 0; i < media.length; i++) {
+            for (let i = 0; i < media.length; i++) {
               const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
                 method: "POST",
                 headers: {

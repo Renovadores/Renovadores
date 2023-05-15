@@ -243,7 +243,7 @@ function ClientInformation() {
 
   const [otra, setOtra] = useState(false);
   const handleCheckboxOtra = (event) => {
-    setOtra(event.target.value)
+    setOtra(event.target.checked)
   }
 
   const [contacto, setContacto] = useState("");
