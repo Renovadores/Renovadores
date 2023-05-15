@@ -16,7 +16,9 @@ public partial class FicusDbContext : DbContext
     }
     public virtual DbSet<Producto> Producto { get; set; }
     public virtual DbSet<Cliente> Cliente { get; set; }
+    public virtual DbSet<Cliente_Comunicacion> Cliente_Comunicacion { get; set; }
     public virtual DbSet<Cliente_Segmento> Cliente_Segmento { get; set; }
+    public virtual DbSet<Usuario> Usuario { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=KEVIN\\BD_KEVIN; DataBase=Ficus; Integrated Security=True; TrustServerCertificate=True;");
@@ -41,6 +43,15 @@ public partial class FicusDbContext : DbContext
         {
             entity.Property(e => e.Cliente).HasColumnType("int");
             entity.Property(e => e.Segmento).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.Property(e => e.ID_Usuario).HasColumnName("ID_Usuario");
+            entity.Property(e => e.Nombre).HasMaxLength(255);
+            entity.Property(e => e.Apellidos).HasMaxLength(255);
+            entity.Property(e => e.Contrasena).HasMaxLength(255);
+            entity.Property(e => e.ID_Rol).HasColumnType("int");
         });
 
         modelBuilder.Entity<Producto>(entity =>

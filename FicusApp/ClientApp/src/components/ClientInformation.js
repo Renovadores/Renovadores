@@ -14,25 +14,41 @@ function ClientInformation() {
   // get client info from data base
   const [clientInfo, setInfo] = useState("");
   const [clientSegments, setClientSegments] = useState([]);
+  const [clientMedia, setClientMedia] = useState([]);
+  const [personInChargeName, setPersonInChargeName] = useState("");
+  const [users, setUsers] = useState([]);
   async function getClient() {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`);
     if (response.ok) {
       const dataClient = await response.json();
-      setInfo(dataClient);
       setDate(dateFormat(dataClient.fecha_Agregado));
+      setInfo(dataClient);
       // get personInCharge name (in user table)
-
+      const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
+      if (responseUser.ok) {
+        const dataUser = await responseUser.json();
+        setPersonInChargeName(dataUser.nombre);
+      }
       // get segments (in client_Segment table)
       const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
       if (responseClientSegments.ok) {
         const dataSegments = await responseClientSegments.json();
         setClientSegments(dataSegments);
-
-        addDefaultEditForm(dataClient, dataSegments);
+        // get media (in client_Comunication table)
+        const responseClientMedia = await fetch(`api/cliente_comunicacion/GetMedia/${clientId}`)
+        if (responseClientMedia.ok) {
+          const dataMedia = await responseClientMedia.json();
+          setClientMedia(dataMedia);
+          addDefaultEditForm(dataClient, dataSegments, dataMedia);
+        }
       }
-      // get media (in client_Comunication table)
-
-
+      // get users
+      const responseUsers = await fetch("api/usuario/GetUsers");
+      if (responseUsers.ok) {
+        const dataUsers = await responseUsers.json();
+        setUsers(dataUsers);
+        console.log(dataUsers);
+      }
     } else {
       console.log(response.text);
     }
@@ -43,21 +59,35 @@ function ClientInformation() {
       const response = await fetch(`api/cliente/GetCliente/${clientId}`);
       if (response.ok) {
         const dataClient = await response.json();
-        setInfo(dataClient);
         setDate(dateFormat(dataClient.fecha_Agregado));
+        setInfo(dataClient);
         // get personInCharge name (in user table)
-
+        const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
+        if (responseUser.ok) {
+          const dataUser = await responseUser.json();
+          setPersonInChargeName(dataUser.nombre);
+        }
         // get segments (in client_Segment table)
         const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
         if (responseClientSegments.ok) {
           const dataSegments = await responseClientSegments.json();
           setClientSegments(dataSegments);
-
-          addDefaultEditForm(dataClient, dataSegments);
+          // get media (in client_Comunication table)
+          const responseClientMedia = await fetch(`api/cliente_comunicacion/GetMedia/${clientId}`)
+          if (responseClientMedia.ok) {
+            const dataMedia = await responseClientMedia.json();
+            setClientMedia(dataMedia);
+            addDefaultEditForm(dataClient, dataSegments, dataMedia);
+          }
         }
-      // get media (in client_Comunication table)
-
         
+        // get users
+        const responseUsers = await fetch("api/usuario/GetUsers");
+        if (responseUsers.ok) {
+          const dataUsers = await responseUsers.json();
+          setUsers(dataUsers);
+          console.log(dataUsers);
+        }
       } else {
         console.log(response.text);
       }
@@ -65,14 +95,13 @@ function ClientInformation() {
     getClient();
   }, [clientId]);
 
-  const addDefaultEditForm = (dataClient, dataSegments) => {
+  const addDefaultEditForm = (dataClient, dataSegments, dataMedia) => {
     setCompany(dataClient.nombre_Empresa);
     setContacto(dataClient.contacto);
     setTelefono(dataClient.telefono);
     setCorreoElectronico(dataClient.correo);
     setPaginaWeb(dataClient.web);
 
-    //TO-DO: get values
     setCafeteria(dataSegments.includes("Cafeteria"));
     setCatering(dataSegments.includes("Catering"));
     setCentroEducativo(dataSegments.includes("Centro Educativo"));
@@ -87,14 +116,13 @@ function ClientInformation() {
     setUsuarioFinal(dataSegments.includes("Usuario Final"));
 
     //TO-DO:  get values
-    setCorreo(false);
-    setInstagram(false);
-    setLlamada(false);
-    setWhatsapp(false);
-    setZoom(false);
-    setOtra(false);
+    setCorreo(dataMedia.includes("Correo"));
+    setInstagram(dataMedia.includes("Instagram"));
+    setLlamada(dataMedia.includes("Llamada"));
+    setWhatsapp(dataMedia.includes("Whatsapp"));
+    setZoom(dataMedia.includes("Zoom"));
+    setOtra(dataMedia.includes("Otra"));
 
-    // get personInCharge name (in user table)
     setPersonInCharge(dataClient.responsable);
     setPriority(dataClient.prioridad);
     setState(dataClient.estado);
@@ -186,6 +214,8 @@ function ClientInformation() {
     setState(event.target.value)
   }
 
+  var media = []
+
   const [correo, setCorreo] = useState(false);
   const handleCheckboxCorreo = (event) => {
     setCorreo(event.target.checked)
@@ -276,7 +306,26 @@ function ClientInformation() {
     if (otro) {
       segments.push("Otro");
     }
-    console.log(segments, clientId);
+    // media
+    if (correo) {
+      media.push("Correo");
+    }
+    if (llamada) {
+      media.push("Llamada");
+    }
+    if (instagram) {
+      media.push("Instagram");
+    }
+    if (whatsapp) {
+      media.push("Whatsapp");
+    }
+    if (zoom) {
+      media.push("Zoom");
+    }
+    if (otra) {
+      media.push("Otra")
+    }
+    console.log(segments, clientId, media);
     const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
@@ -287,7 +336,7 @@ function ClientInformation() {
 
     if (response.ok) {
       // add new segments
-      for (var i = 0; i < segments.length; i++) {
+      for (let i = 0; i < segments.length; i++) {
         if (!clientSegments.includes(segments[i])) {
           const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
             method: "POST",
@@ -302,7 +351,7 @@ function ClientInformation() {
         }
       }
       // delete unchecked segments
-      for (var i = 0; i < clientSegments.length; i++) {
+      for (let i = 0; i < clientSegments.length; i++) {
         if (!segments.includes(clientSegments[i])) {
           // add new segment
           const responseSegmento = await fetch("api/cliente_segmento/DeleteClient_Segment", {
@@ -317,10 +366,42 @@ function ClientInformation() {
           }
         }
       }
+      // add new media
+      for (let i = 0; i < media.length; i++) {
+        if (!clientMedia.includes(media[i])) {
+          const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ cliente: clientId, medio: media[i] })
+          });
+          if (!responseMedia.ok) {
+            // store or notify which media fails
+          }
+        }
+      }
+      // delete unchecked media
+      for (let i = 0; i < clientMedia.length; i++) {
+        if (!media.includes(clientMedia[i])) {
+          // add new segment
+          const responseMedia = await fetch("api/cliente_comunicacion/DeleteClientMedia", {
+            method: "DELETE",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ cliente: clientId, medio: clientMedia[i] })
+          });
+          if (!responseMedia.ok) {
+            // store or notify which segment fails
+          }
+        }
+      }
       getClient();
     }
 
     segments = [];
+    media = [];
   }
 
   return (
@@ -363,7 +444,7 @@ function ClientInformation() {
                       <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                     </div>
 
-                    <SelectPersonInCharge variable={personInCharge} handler={handleChangePersonInCharge} />
+                    <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
                     <SelectPriority variable={priority} handler={handleChangePriority} />
                     <SelectState variable={state} handler={handleChangeState} />
 
@@ -387,7 +468,7 @@ function ClientInformation() {
                         <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
                       </div>
                       <div className="col-6 d-flex justify-content-center">
-                        <button className="btn btn-danger" type="button" onClick={() =>  addDefaultEditForm (clientInfo, clientSegments)} data-bs-dismiss="offcanvas">Cancelar</button>
+                        <button className="btn btn-danger" type="button" onClick={() =>  addDefaultEditForm (clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
                       </div>
                     </div>
                   </form>
@@ -404,8 +485,15 @@ function ClientInformation() {
               ))
             }
           </li>
+          <li className="list-group-item">Medios de comunicacion: <> </>
+            {
+              clientMedia.map((media, index) => (
+                <label className="m-1" key={index}>{media}</label>
+              ))
+            }
+          </li>
           <li className="list-group-item">Fecha agregado: {date} </li>
-          <li className="list-group-item">Responsable: {clientInfo.responsable} </li>
+          <li className="list-group-item">Responsable: {personInChargeName} </li>
           <li className="list-group-item">Prioridad: {clientInfo.prioridad} </li>
           <li className="list-group-item">Estado: {clientInfo.estado} </li>
           <li className="list-group-item">Contacto: {clientInfo.contacto} </li>
