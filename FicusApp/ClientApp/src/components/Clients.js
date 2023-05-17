@@ -16,16 +16,24 @@ function Clients() {
     //this variable allows to know if there are no clients in db (to stop spinner)
     const [clientsChecked, setClientsChecked] = useState(false);
     const [clients, setClients] = useState([]);
+    const [users, setUsers] = useState([]);
     const getClients = async () => {
-        setClientsChecked(false);
-        const response = await fetch("api/cliente/GetClientes");
-        if (response.ok) {
-          const data = await response.json();
-          setClients(data);
-          setClientsChecked(true);
-        } else {
-            console.log(response.text);
-        }
+      setClientsChecked(false);
+      const response = await fetch("api/cliente/GetClientes");
+      if (response.ok) {
+        const data = await response.json();
+        setClients(data);
+        setClientsChecked(true);
+      } else {
+          console.log(response.text);
+      }
+      // get users
+      const responseUsers = await fetch("api/usuario/GetUsers");
+      if (responseUsers.ok) {
+        const dataUsers = await responseUsers.json();
+        setUsers(dataUsers);
+        console.log(dataUsers);
+      }
     }
 
 
@@ -48,7 +56,7 @@ function Clients() {
         setCompany(event.target.value)
     }
 
-    var segments = {}
+    var segments = []
 
     const [cafeteria, setCafeteria] = useState(false);
     const handleCheckboxCafeteria = (event) => {
@@ -125,6 +133,8 @@ function Clients() {
         setState(event.target.value)
     }
 
+    var media = []
+
     const [correo, setCorreo] = useState(false);
     const handleCheckboxCorreo = (event) => {
         setCorreo(event.target.checked)
@@ -152,7 +162,7 @@ function Clients() {
 
     const [otra, setOtra] = useState(false);
     const handleCheckboxOtra = (event) => {
-        setOtra(event.target.value)
+        setOtra(event.target.checked)
     }
 
     const [contacto, setContacto] = useState("");
@@ -210,42 +220,61 @@ function Clients() {
         event.preventDefault();
         // setSegments TO-DO: add segments to data base
         if (cafeteria) {
-            segments.cafeteria = "Cafeteria";
+            segments.push("Cafeteria");
         }
         if (catering) {
-            segments.catering = "Catering";
+            segments.push("Catering");
         }
         if (centroEducativo) {
-            segments.centro_Educativo = "Centro_Educativo";
+            segments.push("Centro Educativo");
         }
         if (comidaPreparada) {
-            segments.comida_Preparada = "Comida_Preparada";
+            segments.push("Comida Preparada");
         }
         if (empresa) {
-            segments.empresa = "Empresa";
+            segments.push("Empresa");
         }
         if (feria) {
-            segments.feria = "Feria";
+            segments.push("Feria");
         }
         if (otroSector) {
-            segments.otro_Sector = "Otro_Sector";
+            segments.push("Otro Sector");
         }
         if (panaderia) {
-            segments.panaderia = "Panaderia";
+            segments.push("Panaderia");
         }
         if (restaurante) {
-            segments.restaurante = "Restaurante";
+            segments.push("Restaurante");
         }
         if (usuarioFinal) {
-            segments.usuario_Final = "Usuario_Final";
+            segments.push("Usuario Final");
         }
         if (supermercado) {
-            segments.supermercado = "Supermercado";
+            segments.push("Supermercado");
         }
         if (otro) {
-            segments.otro = "Otro";
-      }
-      console.log(segments)
+            segments.push("Otro");
+        }
+        console.log(segments)
+        // get media
+        if (correo) {
+          media.push("Correo");
+        }
+        if (llamada) {
+          media.push("Llamada");
+        }
+        if (instagram) {
+          media.push("Instagram");
+        }
+        if (whatsapp) {
+          media.push("Whatsapp");
+        }
+        if (zoom) {
+          media.push("Zoom");
+        }
+        if (otra) {
+          media.push("Otra")
+        }
         // generate id
         const responseId = await fetch("api/cliente/GetNewId");
         if (responseId.ok) {
@@ -260,26 +289,38 @@ function Clients() {
           });
           if (responseCliente.ok) {
             // add segments
-            for (var segment in segments) {
+            for (let i = 0; i < segments.length; i++) {
               const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segment })
+                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i]})
               });
               if (!responseSegmento.ok) {
                 // store or notify which segment fails
               }
             }
             // add social media
-
+            for (let i = 0; i < media.length; i++) {
+              const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
+              });
+              if (!responseMedia.ok) {
+                // store or notify which media fails
+              }
+            }
             handleCancel();
             getClients();
           }
         }
           
-        segments = {};
+        segments = [];
+        media = [];
     }
 
     // When user click on client button, 'navigate' redirect him to new page
@@ -328,7 +369,7 @@ function Clients() {
                                     <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                                 </div>
 
-                                <SelectPersonInCharge variable={personInCharge} handler={handleChangePersonInCharge} />
+                  <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
                                 <SelectPriority variable={priority} handler={handleChangePriority} />
                                 <SelectState variable={state} handler={handleChangeState} />
 
@@ -369,13 +410,13 @@ function Clients() {
                 <FilterClients />
             </div>
             {
-                clientsChecked === false ?
-                    <div className="d-flex align-items-center justify-content-center">
-                        <strong>Cargando...</strong>
-                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>
-                    :
-                    <ClientList clients={clients} handler={handleClickViewClient} />
+              clientsChecked === false ?
+                <div className="d-flex align-items-center justify-content-center">
+                  <strong>Cargando...</strong>
+                  <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+              :
+              <ClientList clients={clients} handler={handleClickViewClient} />
             }
 
             <Pagination />
