@@ -11,7 +11,7 @@ import { useParams, useLocation } from "react-router-dom";
 
 function ProductInformation() {
   const params = useParams();
-  // get id and product name sent by navigate hook in Stock.js
+  // get info from URL
   const SKU = params.SKU;
   const [productInfo, setInfo] = useState("");
   const getProduct = async () => {
@@ -25,20 +25,70 @@ function ProductInformation() {
       console.log(responseProduct.text);
     }
   };
+  // this method allows to auto call getProduct when page is started
+    useEffect(() => {
+        getProduct();
+    }, []);
 
-  useEffect(() => {
-    async function getProduct() {
-      const response = await fetch(`api/producto/GetProducto/${SKU}`);
-      if (response.ok) {
-        const data = await response.json();
-        setInfo(data);
-        addDefaultEditForm(data);
-      } else {
-        console.log(response.text);
-      }
-    }
-    getProduct();
-  }, [SKU]);
+    const [SKUId, setSKUId] = useState("");
+    const handleChangeSKU = (event) => {
+        setSKUId(event.target.value);
+    };
+
+    const [name, setName] = useState("");
+    const handleChangeName = (event) => {
+        setName(event.target.value);
+    };
+
+    const [color, setColor] = useState("");
+    const handleChangeColor = (event) => {
+        setColor(event.target.value);
+    };
+
+    const [description, setDescription] = useState("");
+    const handleChangeDescription = (event) => {
+        setDescription(event.target.value);
+    };
+
+    const [dimentions, setDimentions] = useState("");
+    const handleChangeDimentions = (event) => {
+        setDimentions(event.target.value);
+    };
+
+    const [bowlWeight, setBowlWeight] = useState("");
+    const handleChangeBowlWeight = (event) => {
+        setBowlWeight(event.target.value);
+    };
+
+    const [notReusable, setNotReusable] = useState("");
+    const handleChangeNotReusable = (event) => {
+        setNotReusable(event.target.value);
+    };
+
+    const [comercialP, setComercialP] = useState("");
+    const handleChangeComercialP = (event) => {
+        setComercialP(event.target.value);
+    };
+
+    const [retailP, setRetailP] = useState("");
+    const handleChangeRetailP = (event) => {
+        setRetailP(event.target.value);
+    };
+
+    const [category, setCategory] = useState("");
+    const handleChangeCategory = (event) => {
+        setCategory(event.target.value);
+    };
+
+    const [family, setFamily] = useState("");
+    const handleChangeFamily = (event) => {
+        setFamily(event.target.value);
+    };
+
+    const [image, setImage] = useState("");
+    const handleChangeImage = (event) => {
+        setImage(event.target.value);
+    };
 
   const addDefaultEditForm = (data) => {
     setSKUId(data.sku);
@@ -55,73 +105,13 @@ function ProductInformation() {
     setImage(data.Imagen);
   };
 
-  const [SKUId, setSKUId] = useState("");
-  const handleChangeSKU = (event) => {
-    setSKUId(event.target.value);
-  };
-
-  const [name, setName] = useState("");
-  const handleChangeName = (event) => {
-    setName(event.target.value);
-  };
-
-  const [color, setColor] = useState("");
-  const handleChangeColor = (event) => {
-    setColor(event.target.value);
-  };
-
-  const [description, setDescription] = useState("");
-  const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const [dimentions, setDimentions] = useState("");
-  const handleChangeDimentions = (event) => {
-    setDimentions(event.target.value);
-  };
-
-  const [bowlWeight, setBowlWeight] = useState("");
-  const handleChangeBowlWeight = (event) => {
-    setBowlWeight(event.target.value);
-  };
-
-  const [notReusable, setNotReusable] = useState("");
-  const handleChangeNotReusable = (event) => {
-    setNotReusable(event.target.value);
-  };
-
-  const [comercialP, setComercialP] = useState("");
-  const handleChangeComercialP = (event) => {
-    setComercialP(event.target.value);
-  };
-
-  const [retailP, setRetailP] = useState("");
-  const handleChangeRetailP = (event) => {
-    setRetailP(event.target.value);
-  };
-
-  const [category, setCategory] = useState("");
-  const handleChangeCategory = (event) => {
-    setCategory(event.target.value);
-  };
-
-  const [family, setFamily] = useState("");
-  const handleChangeFamily = (event) => {
-    setFamily(event.target.value);
-  };
-
-  const [image, setImage] = useState("");
-  const handleChangeImage = (event) => {
-    setImage(event.target.value);
-  };
-
   return (
     <div className="container">
       <div className="card m-3 mt-5">
         <div className="card-body">
           <div className="row align-items-center">
             <div className="col-8 col-sm-10">
-              <h5 className="card-title"> {productInfo.Nombre} </h5>
+              <h5 className="card-title"> {productInfo.nombre} </h5>
             </div>
             <div className="col-4 col-sm-2">
               <button
@@ -159,19 +149,28 @@ function ProductInformation() {
           </div>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">SKU: {SKUId} </li>
-          <li className="list-group-item">Color: {productInfo.color} </li>
           <li className="list-group-item">
-            Descripcion: {productInfo.descripcion}{" "}
-          </li>
+            SKU: {SKUId} </li>
           <li className="list-group-item">
-            Dimensiones: {productInfo.dimensiones}{" "}
-          </li>
-          <li className="list-group-item">Familia: {productInfo.familia} </li>
+            Color: {productInfo.color} </li>
           <li className="list-group-item">
-            Categoria: {productInfo.categoria}{" "}
-          </li>
-          <li className="list-group-item">Imagen: {productInfo.imagen} </li>
+            Descripcion: {productInfo.descripcion}{" "}</li>
+          <li className="list-group-item">
+            Dimensiones: {productInfo.dimensiones}{" "}</li>
+          <li className="list-group-item">
+            Peso: {productInfo.peso_recipiente} </li>
+          <li className="list-group-item">
+            Peso sustituido: {productInfo.peso_desechable} </li>
+          <li className="list-group-item">
+            Precio comercios: {productInfo.alquiler_Comercios} </li>
+          <li className="list-group-item">
+            Precio retail: {productInfo.alquiler_Retail} </li>
+          <li className="list-group-item">
+            Familia: {productInfo.familia} </li>
+          <li className="list-group-item">
+            Categoria: {productInfo.categoria}{" "}</li>
+          <li className="list-group-item">
+            Imagen: {productInfo.imagen} </li>
         </ul>
       </div>
     </div>

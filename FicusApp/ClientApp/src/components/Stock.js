@@ -42,7 +42,7 @@ function Stock() {
   //   });
   //   //second argument allows to pass parameters
   // };
-
+  // Agregar producto
   const [name, setName] = useState("");
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -81,6 +81,23 @@ function Stock() {
   const handleChangeSKU = (event) => {
     setSKU(event.target.value);
   };
+  const current = new Date();
+  const date = `${current.getDate()}-${
+    current.getMonth() + 1
+  }-${current.getFullYear()}`;
+
+  const [family, setFamily] = useState(1);
+  const handleChangeFamily = (event) => {
+    setFamily(event.target.value);
+  };
+  const [color, setColor] = useState(1);
+  const handleChangeColor = (event) => {
+    setColor(event.target.value);
+  };
+  const [category, setCategory] = useState(1);
+  const handleChangeCategory = (event) => {
+    setCategory(event.target.value);
+  }
 
   const handleCancel = () => {
     setSKU("");
@@ -112,7 +129,7 @@ function Stock() {
       category,
       family
     );
-    const responseCliente = await fetch("api/cliente/AddCliente", {
+    const responseCliente = await fetch("api/producto/AddProducto", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -138,26 +155,7 @@ function Stock() {
       handleCancel();
       getProducts();
     }
-  };
-  const current = new Date();
-  const date = `${current.getDate()}-${
-    current.getMonth() + 1
-  }-${current.getFullYear()}`;
-
-  var options = {};
-
-  const [family, setFamily] = useState(1);
-  const handleChangeFamily = (event) => {
-    setFamily(event.target.value);
-  };
-  const [color, setColor] = useState(1);
-  const handleChangeColor = (event) => {
-    setColor(event.target.value);
-  };
-  const [category, setCategory] = useState(1);
-  const handleChangeCategory = (event) => {
-    setCategory(event.target.value);
-  };
+  };;
 
   return (
     <div>
@@ -320,56 +318,6 @@ function Stock() {
                     </div>
                   </div>
                 </form>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="py-4">
-          <div className="container-fluid">
-            <div className="row">
-              {/* Vajilla reusable card*/}
-              <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card text-center">
-                  <img
-                    className="card-img-top"
-                    src="images\productos\M-275-BL  (2).png"
-                    alt="Producto Ficus"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Vajilla Reusable</h5>
-                    <p className="card-text">
-                      Variedad de vajillas 100% retornables y reciclables para
-                      mejorar la experiencia de tus clientes
-                    </p>
-                  </div>
-                  <div className="card-footer">
-                    <a href="index.html" className="btn btn-primary">
-                      Ver Todos
-                    </a>
-                  </div>
-                </div>
-              </div>
-              {/* Recipientes para llevar card*/}
-              <div className="col-sm-6 col-lg-4 mb-4">
-                <div className="card text-center">
-                  <img
-                    className="card-img-top"
-                    src="images\productos\EC-07-1-JA Montezuma (1).png"
-                    alt="Producto Ficus"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Recipientes para llevar</h5>
-                    <p className="card-text">
-                      Recipientes para llevar, reciclables, retornables, aptos
-                      para microondas y mucho más
-                    </p>
-                  </div>
-                  <div className="card-footer">
-                    <a href="index.html" className="btn btn-primary">
-                      Ver Todos
-                    </a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

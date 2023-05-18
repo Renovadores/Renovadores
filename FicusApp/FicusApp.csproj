@@ -52,6 +52,10 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\images\" />
+<<<<<<< Updated upstream
+=======
+    <Folder Include="Models\" />
+>>>>>>> Stashed changes
     <Folder Include="Services\" />
   </ItemGroup>
 
