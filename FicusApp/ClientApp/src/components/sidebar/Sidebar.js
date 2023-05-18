@@ -34,7 +34,7 @@ function Sidebar(props) {
     "unset"
   );
   // Chakra Color Mode
-  let sidebarBg = useColorModeValue("white", "navy.800");
+  let sidebarBg = useColorModeValue("secondaryGray.100", "white", "navy.800");
   let sidebarMargins = "0px";
 
   // SIDEBAR
@@ -54,7 +54,7 @@ function Sidebar(props) {
           renderTrackVertical={renderTrack}
           renderThumbVertical={renderThumb}
           renderView={renderView}>
-          <Content routes={routes} />
+          <Content routes={routes}/>
         </Scrollbars>
       </Box>
     </Box>

@@ -6,7 +6,7 @@ const Vacio = () => {
   // Chakra Color Mode
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <h1> Aquí van las cosas </h1>
+      <p> Aquí van las cosas </p>
     </Box>
   );
 }

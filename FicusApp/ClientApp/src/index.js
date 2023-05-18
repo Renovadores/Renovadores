@@ -12,16 +12,15 @@ import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <React.StrictMode>
-      <ThemeEditorProvider>
+      {/*<ThemeEditorProvider>*/}
         <HashRouter>
           <Switch>
             <Route path={`/auth`} component={AuthLayout} />
             <Route path={`/admin`} component={AdminLayout} />
-            <Route path={`/rtl`} component={RTLLayout} />
             <Redirect from='/' to='/admin' />
           </Switch>
         </HashRouter>
-      </ThemeEditorProvider>
+      {/*</ThemeEditorProvider>*/}
     </React.StrictMode>
   </ChakraProvider>,
   document.getElementById("root")
