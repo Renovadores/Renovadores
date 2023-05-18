@@ -7,12 +7,12 @@ import CheckBox from "./CheckBox";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
-import { useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 function ProductInformation() {
-  const location = useLocation();
+  const params = useParams();
   // get id and product name sent by navigate hook in Stock.js
-  const SKU = location.state;
+  const SKU = params.SKU;
   const [productInfo, setInfo] = useState("");
   const getProduct = async () => {
     const responseProduct = await fetch(`api/producto/GetProducto/${SKU}`);
@@ -27,11 +27,21 @@ function ProductInformation() {
   };
 
   useEffect(() => {
+    async function getProduct() {
+      const response = await fetch(`api/producto/GetProducto/${SKU}`);
+      if (response.ok) {
+        const data = await response.json();
+        setInfo(data);
+        addDefaultEditForm(data);
+      } else {
+        console.log(response.text);
+      }
+    }
     getProduct();
-  }, []);
+  }, [SKU]);
 
   const addDefaultEditForm = (data) => {
-    //setSKU(data.sku);
+    setSKUId(data.sku);
     setName(data.nombre);
     setColor(data.color);
     setDescription(data.descripcion);
@@ -45,10 +55,10 @@ function ProductInformation() {
     setImage(data.Imagen);
   };
 
-  /*const [SKU, setSKU] = useState("");
-    const handleChangeSKU = (event) => {
-        setSKU(event.target.value)
-    }*/
+  const [SKUId, setSKUId] = useState("");
+  const handleChangeSKU = (event) => {
+    setSKUId(event.target.value);
+  };
 
   const [name, setName] = useState("");
   const handleChangeName = (event) => {
@@ -110,10 +120,10 @@ function ProductInformation() {
       <div className="card m-3 mt-5">
         <div className="card-body">
           <div className="row align-items-center">
-            <div className="col-10">
+            <div className="col-8 col-sm-10">
               <h5 className="card-title"> {productInfo.Nombre} </h5>
             </div>
-            <div className="col-2">
+            <div className="col-4 col-sm-2">
               <button
                 className="btn btn-primary"
                 type="button"
@@ -149,7 +159,7 @@ function ProductInformation() {
           </div>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">SKU: {productInfo.SKU} </li>
+          <li className="list-group-item">SKU: {SKUId} </li>
           <li className="list-group-item">Color: {productInfo.color} </li>
           <li className="list-group-item">
             Descripcion: {productInfo.descripcion}{" "}

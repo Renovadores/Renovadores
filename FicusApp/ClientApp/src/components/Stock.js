@@ -34,14 +34,14 @@ function Stock() {
     console.log(products);
   }, [products]);
 
-  // When user click on client button, 'navigate hook' redirect him to new page
-  const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
-  const handleClickViewProduct = (productIndex) => {
-    navigate("/productos/informacion", {
-      state: products[productIndex].SKU,
-    });
-    //second argument allows to pass parameters
-  };
+  // // When user click on client button, 'navigate hook' redirect him to new page
+  // const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
+  // const handleClickViewProduct = (productIndex) => {
+  //   navigate("/productos/informacion/", {
+  //     state: products[productIndex].SKU,
+  //   });
+  //   //second argument allows to pass parameters
+  // };
 
   const [name, setName] = useState("");
   const handleChangeName = (event) => {
@@ -167,17 +167,6 @@ function Stock() {
         <title>Inventario</title>
       </head>
       <body>
-        <header className="bg-success py-5">
-          <div className="container px-4 px-lg-5 my-5">
-            <div className="text-center text-white">
-              <h1 className="display-8 fw-bolder">
-                Ayudamos a los comercios de alimentos a sustituir sus
-                recipientes desechables por retornables.
-              </h1>
-              <p className="lead fw-normal text-white-50 mb-0">- Ficus.</p>
-            </div>
-          </div>
-        </header>
         <section className="py-4">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
@@ -225,7 +214,7 @@ function Stock() {
                 >
                   Agregar Producto
                 </button>
-                <button className="btn btn-warning" type="button">
+                <button className="btn btn-warning text-light" type="button">
                   Eliminar Producto
                 </button>
               </div>
@@ -403,7 +392,7 @@ function Stock() {
             ) : (
               <ProductList
                 products={products}
-                handler={handleClickViewProduct}
+                // handler={handleClickViewProduct}
               />
             )}
             <div className="row m-2 mt-4">

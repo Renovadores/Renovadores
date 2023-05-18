@@ -50,12 +50,12 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Color).HasMaxLength(255);
             entity.Property(e => e.Dimensiones).HasMaxLength(255);
-            entity.Property(e => e.Peso_recipiente).HasMaxLength(50);
-            entity.Property(e => e.Peso_desechable).HasMaxLength(50);
-            entity.Property(e => e.Alquiler_Comercios).HasMaxLength(50);
-            entity.Property(e => e.Alquiler_Retail).HasMaxLength(50);
-            entity.Property(e => e.Categoria).HasMaxLength(50);
-            entity.Property(e => e.Familia).HasMaxLength(50);
+            entity.Property(e => e.Peso_recipiente).HasColumnType("int");
+            entity.Property(e => e.Peso_desechable).HasColumnType("int");
+            entity.Property(e => e.Alquiler_Comercios).HasColumnType("int");
+            entity.Property(e => e.Alquiler_Retail).HasColumnType("int");
+            entity.Property(e => e.Categoria).HasColumnType("int");
+            entity.Property(e => e.Familia).HasColumnType("int");
             entity.Property(e => e.Imagen).HasMaxLength(255);
 
         });
