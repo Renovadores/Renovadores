@@ -41,13 +41,13 @@ namespace FicusApp.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteClient_Segment")] 
+        [Route("DeleteClient_Segment")]
         public async Task<IActionResult> DeleteClient_Segment([FromBody] Cliente_Segmento request)
         {
             _context.Cliente_Segmento.Remove(request);
             _context.SaveChanges();
             return Ok();
         }
-        
+
     }
 }

@@ -18,22 +18,22 @@ function Clients() {
     const [clients, setClients] = useState([]);
     const [users, setUsers] = useState([]);
     const getClients = async () => {
-      setClientsChecked(false);
-      const response = await fetch("api/cliente/GetClientes");
-      if (response.ok) {
-        const data = await response.json();
-        setClients(data);
-        setClientsChecked(true);
-      } else {
-          console.log(response.text);
-      }
-      // get users
-      const responseUsers = await fetch("api/usuario/GetUsers");
-      if (responseUsers.ok) {
-        const dataUsers = await responseUsers.json();
-        setUsers(dataUsers);
-        console.log(dataUsers);
-      }
+        setClientsChecked(false);
+        const response = await fetch("api/cliente/GetClientes");
+        if (response.ok) {
+            const data = await response.json();
+            setClients(data);
+            setClientsChecked(true);
+        } else {
+            console.log(response.text);
+        }
+        // get users
+        const responseUsers = await fetch("api/usuario/GetUsers");
+        if (responseUsers.ok) {
+            const dataUsers = await responseUsers.json();
+            setUsers(dataUsers);
+            console.log(dataUsers);
+        }
     }
 
 
@@ -258,67 +258,67 @@ function Clients() {
         console.log(segments)
         // get media
         if (correo) {
-          media.push("Correo");
+            media.push("Correo");
         }
         if (llamada) {
-          media.push("Llamada");
+            media.push("Llamada");
         }
         if (instagram) {
-          media.push("Instagram");
+            media.push("Instagram");
         }
         if (whatsapp) {
-          media.push("Whatsapp");
+            media.push("Whatsapp");
         }
         if (zoom) {
-          media.push("Zoom");
+            media.push("Zoom");
         }
         if (otra) {
-          media.push("Otra")
+            media.push("Otra")
         }
         // generate id
         const responseId = await fetch("api/cliente/GetNewId");
         if (responseId.ok) {
-          const newClientId = await responseId.json();
-          // add client
-          const responseCliente = await fetch("api/cliente/AddCliente", {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({ id: newClientId.id, fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
-          });
-          if (responseCliente.ok) {
-            // add segments
-            for (let i = 0; i < segments.length; i++) {
-              const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+            const newClientId = await responseId.json();
+            // add client
+            const responseCliente = await fetch("api/cliente/AddCliente", {
                 method: "POST",
                 headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i]})
-              });
-              if (!responseSegmento.ok) {
-                // store or notify which segment fails
-              }
+                body: JSON.stringify({ id: newClientId.id, fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+            });
+            if (responseCliente.ok) {
+                // add segments
+                for (let i = 0; i < segments.length; i++) {
+                    const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
+                    });
+                    if (!responseSegmento.ok) {
+                        // store or notify which segment fails
+                    }
+                }
+                // add social media
+                for (let i = 0; i < media.length; i++) {
+                    const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
+                    });
+                    if (!responseMedia.ok) {
+                        // store or notify which media fails
+                    }
+                }
+                handleCancel();
+                getClients();
             }
-            // add social media
-            for (let i = 0; i < media.length; i++) {
-              const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
-                method: "POST",
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
-              });
-              if (!responseMedia.ok) {
-                // store or notify which media fails
-              }
-            }
-            handleCancel();
-            getClients();
-          }
         }
-          
+
         segments = [];
         media = [];
     }
@@ -369,7 +369,7 @@ function Clients() {
                                     <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                                 </div>
 
-                  <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
+                                <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
                                 <SelectPriority variable={priority} handler={handleChangePriority} />
                                 <SelectState variable={state} handler={handleChangeState} />
 
@@ -410,13 +410,13 @@ function Clients() {
                 <FilterClients />
             </div>
             {
-              clientsChecked === false ?
-                <div className="d-flex align-items-center justify-content-center">
-                  <strong>Cargando...</strong>
-                  <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                </div>
-              :
-              <ClientList clients={clients} handler={handleClickViewClient} />
+                clientsChecked === false ?
+                    <div className="d-flex align-items-center justify-content-center">
+                        <strong>Cargando...</strong>
+                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                    </div>
+                    :
+                    <ClientList clients={clients} handler={handleClickViewClient} />
             }
 
             <Pagination />
