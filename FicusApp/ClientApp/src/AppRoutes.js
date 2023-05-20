@@ -1,8 +1,8 @@
-import Home from './components/Home';
-import Clients from './components/Clients';
-import ClientInformation from './components/ClientInformation';
-import Stock from './components/Stock';
-import ProductInformation from './components/ProductInformation';
+import Home from "./components/Home";
+import Clients from "./components/Clients";
+import ClientInformation from "./components/ClientInformation";
+import Stock from "./components/Stock";
+import ProductInformation from "./components/ProductInformation";
 
 const AppRoutes = [
   {
@@ -11,36 +11,27 @@ const AppRoutes = [
   },
 
   {
-    path: '/clientes',
+    path: "/clientes",
     element: <Clients />,
   },
 
   {
-    path: '/clientes/informacion',
+    path: "/clientes/informacion",
     element: <ClientInformation />,
   },
 
   {
-    path: '/productos',
+    path: "/productos",
     element: <Stock />,
   },
 
   {
-    path: '/clientes/informacion',
-    element: <ClientInformation />
-  },
-
-    {
-        path: '/producto',
-        element: <Stock />
-    },
-   {
-    path: '/productos/informacion/:SKU',
+    path: "/productos/informacion/:SKU",
     element: <ProductInformation />,
   },
 
   {
-    path: '/cerrarSesion',
+    path: "/cerrarSesion",
     element: <Home />,
   },
 ];
