@@ -168,40 +168,6 @@ function Stock() {
         <section className="py-4">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
-              <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-                {/* Filter/Search text*/}
-                <input
-                  className="form-control"
-                  list="datalistOptions"
-                  id="exampleDataList"
-                  placeholder="Buscar producto..."
-                />
-                {/* Filter/Search button*/}
-                <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Filtrado
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Prioridad
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Recientes
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
               <div className="d-grid gap-2 mb-4">
                 <button
                   className="btn btn-success"
@@ -321,6 +287,40 @@ function Stock() {
               </div>
             </div>
           </div>
+                  <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+                      {/* Filter/Search text*/}
+                      <input
+                          className="form-control"
+                          list="datalistOptions"
+                          id="exampleDataList"
+                          placeholder="Buscar producto..."
+                      />
+                      {/* Filter/Search button*/}
+                      <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
+                          <div className="dropdown">
+                              <button
+                                  className="btn btn-secondary dropdown-toggle"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false"
+                              >
+                                  Filtrado
+                              </button>
+                              <ul className="dropdown-menu">
+                                  <li>
+                                      <a className="dropdown-item" href="#">
+                                          Prioridad
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a className="dropdown-item" href="#">
+                                          Recientes
+                                      </a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
         </section>
         <section className="py-4">
           <div className="container fluid">

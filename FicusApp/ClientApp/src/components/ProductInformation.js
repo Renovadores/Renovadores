@@ -7,7 +7,7 @@ import CheckBox from "./CheckBox";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 
 function ProductInformation() {
     const params = useParams();
@@ -110,10 +110,21 @@ function ProductInformation() {
             <div className="card m-3 mt-5">
                 <div className="card-body">
                     <div className="row align-items-center">
-                        <div className="col-8 col-sm-10">
+                        <div className="col-8 col-xs-2 px-2">
                             <h5 className="card-title"> {productInfo.nombre} </h5>
                         </div>
-                        <div className="col-4 col-sm-2">
+                        <div className="col-8 col-xs-2 px-2">
+                            <Link to={`/inventario`}>
+                            <button
+                                className="btn btn-primary"
+                                type="button"
+                                >
+                            
+                                Ver en inventario
+                                </button>
+                            </Link>
+                            </div>
+                            <div className="col-2 col-xs-2 px-2">
                             <button
                                 className="btn btn-primary"
                                 type="button"
