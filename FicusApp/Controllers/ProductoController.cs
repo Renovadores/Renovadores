@@ -19,7 +19,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).ToList();
+            List<Producto> productos = _context.Producto.OrderByDescending(c => c.Sku).ToList();
             return Ok(productos);
         }
 

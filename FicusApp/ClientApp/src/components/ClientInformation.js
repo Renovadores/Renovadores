@@ -21,7 +21,7 @@ function ClientInformation() {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`);
     if (response.ok) {
       const dataClient = await response.json();
-      setDate(dateFormat(dataClient.fecha_Agregado));
+      setDate(dateFormat(dataClient.fechaAgregado));
       setInfo(dataClient);
       // get personInCharge name (in user table)
       const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
@@ -55,48 +55,48 @@ function ClientInformation() {
   }
 
   useEffect(() => {
-    async function getClient() {
-      const response = await fetch(`api/cliente/GetCliente/${clientId}`);
-      if (response.ok) {
-        const dataClient = await response.json();
-        setDate(dateFormat(dataClient.fecha_Agregado));
-        setInfo(dataClient);
-        // get personInCharge name (in user table)
-        const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
-        if (responseUser.ok) {
-          const dataUser = await responseUser.json();
-          setPersonInChargeName(dataUser.nombre);
-        }
-        // get segments (in client_Segment table)
-        const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
-        if (responseClientSegments.ok) {
-          const dataSegments = await responseClientSegments.json();
-          setClientSegments(dataSegments);
-          // get media (in client_Comunication table)
-          const responseClientMedia = await fetch(`api/cliente_comunicacion/GetMedia/${clientId}`)
-          if (responseClientMedia.ok) {
-            const dataMedia = await responseClientMedia.json();
-            setClientMedia(dataMedia);
-            addDefaultEditForm(dataClient, dataSegments, dataMedia);
-          }
-        }
+    //async function getClient() {
+    //  const response = await fetch(`api/cliente/GetCliente/${clientId}`);
+    //  if (response.ok) {
+    //    const dataClient = await response.json();
+    //    setDate(dateFormat(dataClient.fechaAgregado));
+    //    setInfo(dataClient);
+    //    // get personInCharge name (in user table)
+    //    const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
+    //    if (responseUser.ok) {
+    //      const dataUser = await responseUser.json();
+    //      setPersonInChargeName(dataUser.nombre);
+    //    }
+    //    // get segments (in client_Segment table)
+    //    const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
+    //    if (responseClientSegments.ok) {
+    //      const dataSegments = await responseClientSegments.json();
+    //      setClientSegments(dataSegments);
+    //      // get media (in client_Comunication table)
+    //      const responseClientMedia = await fetch(`api/cliente_comunicacion/GetMedia/${clientId}`)
+    //      if (responseClientMedia.ok) {
+    //        const dataMedia = await responseClientMedia.json();
+    //        setClientMedia(dataMedia);
+    //        addDefaultEditForm(dataClient, dataSegments, dataMedia);
+    //      }
+    //    }
         
-        // get users
-        const responseUsers = await fetch("api/usuario/GetUsers");
-        if (responseUsers.ok) {
-          const dataUsers = await responseUsers.json();
-          setUsers(dataUsers);
-          console.log(dataUsers);
-        }
-      } else {
-        console.log(response.text);
-      }
-    }
+    //    // get users
+    //    const responseUsers = await fetch("api/usuario/GetUsers");
+    //    if (responseUsers.ok) {
+    //      const dataUsers = await responseUsers.json();
+    //      setUsers(dataUsers);
+    //      console.log(dataUsers);
+    //    }
+    //  } else {
+    //    console.log(response.text);
+    //  }
+    //}
     getClient();
   }, [clientId]);
 
   const addDefaultEditForm = (dataClient, dataSegments, dataMedia) => {
-    setCompany(dataClient.nombre_Empresa);
+    setCompany(dataClient.nombreEmpresa);
     setContacto(dataClient.contacto);
     setTelefono(dataClient.telefono);
     setCorreoElectronico(dataClient.correo);
@@ -269,7 +269,6 @@ function ClientInformation() {
   // Edit Client
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // setSegments TO-DO: add segments to data base
     if (cafeteria) {
       segments.push("Cafeteria");
     }
@@ -331,7 +330,7 @@ function ClientInformation() {
       headers: {
           'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ id: clientId, fecha_Agregado: clientInfo.fecha_Agregado, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+      body: JSON.stringify({ idCliente: clientId, fechaAgregado: clientInfo.fechaAgregado, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
     });
 
     if (response.ok) {
@@ -408,11 +407,11 @@ function ClientInformation() {
     <div className="container" >
       <div className="card m-3 mt-5" >
         <div className="card-body">
-          <div className="row align-items-center">
-            <div className="col-8 col-sm-10">
-              <h5 className="card-title"> {clientInfo.nombre_Empresa} </h5>
+          <div className="row align-items-center responsive">
+            <div className="col-8 col-sm-9">
+              <h5 className="card-title"> {clientInfo.nombreEmpresa} </h5>
             </div>
-            <div className="col-4 col-sm-2">
+            <div className="col-4 col-sm-3 d-flex justify-content-md-end">
               <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                 Editar

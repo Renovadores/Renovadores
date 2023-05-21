@@ -6,6 +6,7 @@ import CheckBox from "./CheckBox";
 import ClientList from "./ClientList";
 import FilterClients from "./FilterClients";
 import Input from "./Input";
+import InputInt from "./InputInt";
 import Pagination from "./Pagination";
 import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
@@ -170,7 +171,7 @@ function Clients() {
         setContacto(event.target.value)
     }
 
-    const [telefono, setTelefono] = useState("");
+    const [telefono, setTelefono] = useState('');
     const handleChangeTelefono = (event) => {
         setTelefono(event.target.value)
     }
@@ -209,7 +210,7 @@ function Clients() {
         setPersonInCharge(1);
         setPriority("Baja");
         setState("Contacto");
-        setTelefono("");
+        setTelefono('');
         setWhatsapp(false);
         setZoom("");
 
@@ -280,22 +281,24 @@ function Clients() {
         if (responseId.ok) {
           const newClientId = await responseId.json();
           // add client
+          console.log(newClientId.id, dateDB,personInCharge, priority, state, company, contacto, telefono, correoElectronico, paginaWeb)
           const responseCliente = await fetch("api/cliente/AddCliente", {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ id: newClientId.id, fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+            body: JSON.stringify({ idCliente: newClientId.id, fechaAgregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
           });
           if (responseCliente.ok) {
             // add segments
             for (let i = 0; i < segments.length; i++) {
+              console.log(newClientId.id, segments[i])
               const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i]})
+                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
               });
               if (!responseSegmento.ok) {
                 // store or notify which segment fails
@@ -303,6 +306,7 @@ function Clients() {
             }
             // add social media
             for (let i = 0; i < media.length; i++) {
+              console.log(newClientId.id, media[i])
               const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
                 method: "POST",
                 headers: {
@@ -326,7 +330,7 @@ function Clients() {
     // When user click on client button, 'navigate' redirect him to new page
     const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
     const handleClickViewClient = (clientIndex) => {
-        navigate('/clientes/informacion', { state: clients[clientIndex].id });
+        navigate('/clientes/informacion', { state: clients[clientIndex].idCliente });
         //second argument "state" allows to pass parameters
     };
 
@@ -369,7 +373,7 @@ function Clients() {
                                     <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                                 </div>
 
-                  <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
+                                <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
                                 <SelectPriority variable={priority} handler={handleChangePriority} />
                                 <SelectState variable={state} handler={handleChangeState} />
 
@@ -384,7 +388,7 @@ function Clients() {
                                 </div>
 
                                 <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
-                                <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
+                                <InputInt variable={telefono} handler={handleChangeTelefono} text="Telefono" />
                                 <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
                                 <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
 

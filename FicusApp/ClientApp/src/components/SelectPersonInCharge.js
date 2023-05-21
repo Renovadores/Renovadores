@@ -5,7 +5,7 @@ function SelectPersonInCharge(props) {
       <select className="form-select" aria-label="Default select example" value={props.variable} onChange={props.handler}>
         {
           props.users.map((user, index) => (
-            <option value={user.iD_Usuario} key={index}>{user.nombre}</option>
+            <option value={user.idUsuario} key={index}>{user.nombre}</option>
           ))
         }
       </select>
