@@ -11,6 +11,7 @@ import Pagination from "./Pagination";
 import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
+import Spinner from "./Spinner";
 
 function Clients() {
     // get clients from data base
@@ -33,7 +34,6 @@ function Clients() {
       if (responseUsers.ok) {
         const dataUsers = await responseUsers.json();
         setUsers(dataUsers);
-        console.log(dataUsers);
       }
     }
 
@@ -42,10 +42,6 @@ function Clients() {
     useEffect(() => {
         getClients();
     }, []);
-
-    useEffect(() => {
-        console.log(clients);
-    }, [clients]);
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
@@ -219,7 +215,6 @@ function Clients() {
     //Add client to data base
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setSegments TO-DO: add segments to data base
         if (cafeteria) {
             segments.push("Cafeteria");
         }
@@ -256,7 +251,6 @@ function Clients() {
         if (otro) {
             segments.push("Otro");
         }
-        console.log(segments)
         // get media
         if (correo) {
           media.push("Correo");
@@ -281,7 +275,6 @@ function Clients() {
         if (responseId.ok) {
           const newClientId = await responseId.json();
           // add client
-          console.log(newClientId.id, dateDB,personInCharge, priority, state, company, contacto, telefono, correoElectronico, paginaWeb)
           const responseCliente = await fetch("api/cliente/AddCliente", {
             method: "POST",
             headers: {
@@ -292,7 +285,6 @@ function Clients() {
           if (responseCliente.ok) {
             // add segments
             for (let i = 0; i < segments.length; i++) {
-              console.log(newClientId.id, segments[i])
               const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
@@ -306,7 +298,6 @@ function Clients() {
             }
             // add social media
             for (let i = 0; i < media.length; i++) {
-              console.log(newClientId.id, media[i])
               const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
                 method: "POST",
                 headers: {
@@ -415,14 +406,11 @@ function Clients() {
             </div>
             {
               clientsChecked === false ?
-                <div className="d-flex align-items-center justify-content-center">
-                  <strong>Cargando...</strong>
-                  <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                </div>
+              <Spinner />
               :
               <ClientList clients={clients} handler={handleClickViewClient} />
             }
-
+            {/*TO-DO: Pagination*/}
             <Pagination />
         </div>
     );
