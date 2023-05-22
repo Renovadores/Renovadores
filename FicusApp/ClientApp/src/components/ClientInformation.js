@@ -7,6 +7,7 @@ import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
+import ButtonAddOrder from "./ButtonAddOrder";
 
 function ClientInformation() {
   // get client id sent by navigate function in Client.js
@@ -372,78 +373,81 @@ function ClientInformation() {
         clientInfo === "" ?
           <Spinner />
         :
-          <div className="card m-3 mt-5" >
-            <div className="card-body">
-              <div className="row align-items-center responsive">
-                <div className="col-8 col-sm-9">
-                  <h5 className="card-title"> {clientInfo.nombreEmpresa} </h5>
-                </div>
-                <div className="col-4 col-sm-3 d-flex justify-content-md-end">
-                  <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                    Editar
-                  </button>
-                  <div className="offcanvas offcanvas-start " data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                    <div className="offcanvas-header">
-                      <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del cliente</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div className="offcanvas-body">
-                      <form onSubmit={handleSubmit}>
-                        <Input variable={company} handler={handleChangeCompany} text="Empresa" />
-                        <div className="mb-3">
-                          <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date} </label>
-                        </div>
-                        <div className="mb-3">
-                          <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
-                          <CheckBox variable={cafeteria} handler={handleCheckboxCafeteria} text="Cafeteria" />
-                          <CheckBox variable={catering} handler={handleCheckboxCatering} text="Catering" />
-                          <CheckBox variable={centroEducativo} handler={handleCheckboxCentroEducativo} text="Centro Educativo" />
-                          <CheckBox variable={comidaPreparada} handler={handleCheckboxComidaPreparada} text="Comida Preparada" />
-                          <CheckBox variable={empresa} handler={handleCheckboxEmpresa} text="Empresa" />
-                          <CheckBox variable={feria} handler={handleCheckboxFeria} text="Feria" />
-                          <CheckBox variable={otroSector} handler={handleCheckboxOtroSector} text="Otro Sector" />
-                          <CheckBox variable={panaderia} handler={handleCheckboxPanaderia} text="Panaderia" />
-                          <CheckBox variable={restaurante} handler={handleCheckboxRestaurante} text="Restaurante" />
-                          <CheckBox variable={usuarioFinal} handler={handleCheckboxUsuarioFinal} text="Usuario Final" />
-                          <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
-                          <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
-                        </div>
-
-                        <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
-                        <SelectPriority variable={priority} handler={handleChangePriority} />
-                        <SelectState variable={state} handler={handleChangeState} />
-
-                        <div className="mb-3">
-                          <label htmlFor="formGroupExampleInput" className="form-label">Medio de Comunicacion</label>
-                          <CheckBox variable={correo} handler={handleCheckboxCorreo} text="Correo" />
-                          <CheckBox variable={llamada} handler={handleCheckboxLlamada} text="Llamada" />
-                          <CheckBox variable={instagram} handler={handleCheckboxInstagram} text="Instagram" />
-                          <CheckBox variable={whatsapp} handler={handleCheckboxWhatsapp} text="Whatsapp" />
-                          <CheckBox variable={zoom} handler={handleCheckboxZoom} text="Zoom" />
-                          <CheckBox variable={otra} handler={handleCheckboxOtra} text="Otra" />
-                        </div>
-
-                        <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
-                        <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
-                        <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
-                        <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
-
-                        <div className="row">
-                          <div className="col-6 d-flex justify-content-center">
-                            <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
+          <div className="container" >
+            <div className="card m-3 mt-5" >
+              <div className="card-body">
+                <div className="row align-items-center responsive">
+                  <div className="col-8 col-sm-9">
+                    <h5 className="card-title"> {clientInfo.nombreEmpresa} </h5>
+                  </div>
+                  <div className="col-4 col-sm-3 d-flex justify-content-md-end">
+                    <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                      Editar
+                    </button>
+                    <div className="offcanvas offcanvas-start " data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                      <div className="offcanvas-header">
+                        <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del cliente</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div className="offcanvas-body">
+                        <form onSubmit={handleSubmit}>
+                          <Input variable={company} handler={handleChangeCompany} text="Empresa" />
+                          <div className="mb-3">
+                            <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date} </label>
                           </div>
-                          <div className="col-6 d-flex justify-content-center">
-                            <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
+                          <div className="mb-3">
+                            <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
+                            <CheckBox variable={cafeteria} handler={handleCheckboxCafeteria} text="Cafeteria" />
+                            <CheckBox variable={catering} handler={handleCheckboxCatering} text="Catering" />
+                            <CheckBox variable={centroEducativo} handler={handleCheckboxCentroEducativo} text="Centro Educativo" />
+                            <CheckBox variable={comidaPreparada} handler={handleCheckboxComidaPreparada} text="Comida Preparada" />
+                            <CheckBox variable={empresa} handler={handleCheckboxEmpresa} text="Empresa" />
+                            <CheckBox variable={feria} handler={handleCheckboxFeria} text="Feria" />
+                            <CheckBox variable={otroSector} handler={handleCheckboxOtroSector} text="Otro Sector" />
+                            <CheckBox variable={panaderia} handler={handleCheckboxPanaderia} text="Panaderia" />
+                            <CheckBox variable={restaurante} handler={handleCheckboxRestaurante} text="Restaurante" />
+                            <CheckBox variable={usuarioFinal} handler={handleCheckboxUsuarioFinal} text="Usuario Final" />
+                            <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
+                            <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                           </div>
-                        </div>
-                      </form>
+
+                          <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
+                          <SelectPriority variable={priority} handler={handleChangePriority} />
+                          <SelectState variable={state} handler={handleChangeState} />
+
+                          <div className="mb-3">
+                            <label htmlFor="formGroupExampleInput" className="form-label">Medio de Comunicacion</label>
+                            <CheckBox variable={correo} handler={handleCheckboxCorreo} text="Correo" />
+                            <CheckBox variable={llamada} handler={handleCheckboxLlamada} text="Llamada" />
+                            <CheckBox variable={instagram} handler={handleCheckboxInstagram} text="Instagram" />
+                            <CheckBox variable={whatsapp} handler={handleCheckboxWhatsapp} text="Whatsapp" />
+                            <CheckBox variable={zoom} handler={handleCheckboxZoom} text="Zoom" />
+                            <CheckBox variable={otra} handler={handleCheckboxOtra} text="Otra" />
+                          </div>
+
+                          <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
+                          <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
+                          <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
+                          <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
+
+                          <div className="row">
+                            <div className="col-6 d-flex justify-content-center">
+                              <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
+                            </div>
+                            <div className="col-6 d-flex justify-content-center">
+                              <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
             </div>
-            <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
+            <ButtonAddOrder idCliente={clientId} />
           </div>
       }
     </div> 
