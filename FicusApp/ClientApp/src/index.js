@@ -2,9 +2,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "theme/theme";
+import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -12,7 +16,11 @@ const root = createRoot(rootElement);
 
 root.render(
   <BrowserRouter basename={baseUrl}>
-    <App />
+    <ChakraProvider theme={theme}>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </ChakraProvider>,
   </BrowserRouter>);
 
 // If you want your app to work offline and load faster, you can change

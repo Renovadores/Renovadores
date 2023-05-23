@@ -2162,26 +2162,40 @@ brew update
 brew reinstall watchman
 ```
 
-You can find [other installation methods](https://facebook.github.io/watchman/docs/install.html#build-install) on the Watchman documentation page.
+### Example Pages
 
-If this still doesn’t help, try running `launchctl unload -F ~/Library/LaunchAgents/com.github.facebook.watchman.plist`.
+If you want to get inspiration or just show something directly to your clients,
+you can jump start your development with our pre-built example pages. You will
+be able to quickly set up the basic structure for your web project. View
+<a href="https://horizon-ui.com/horizon-ui-chakra/?ref=readme-horizon" target="_blank">example
+pages here.</a>
 
-There are also reports that *uninstalling* Watchman fixes the issue. So if nothing else helps, remove it from your system and try again.
+### Versions
 
-### `npm run build` exits too early
+| Free Version                                                                                                       | PRO Version                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| [![Horizon UI](https://i.ibb.co/fdyTwz1/introduction-image-2.png)](https://www.horizon-ui.com/?ref=readme-horizon) | [![Horizon UI PRO](https://i.ibb.co/R6jFKRM/introduction-image-1.png)](https://www.horizon-ui.com/pro?ref=readme-horizon) |
 
-It is reported that `npm run build` can fail on machines with limited memory and no swap space, which is common in cloud environments. Even with small projects this command can increase RAM usage in your system by hundreds of megabytes, so if you have less than 1 GB of available memory your build is likely to fail with the following message:
+### Figma Version
 
->  The build failed because the process exited too early. This probably means the system ran out of memory or someone called `kill -9` on the process.
+Horizon UI is available in Figma format as well! Check it out on Figma
+Community! 🎨
+[See the Horizon UI Figma design files](https://bit.ly/horizon-figma)
 
-If you are completely sure that you didn't terminate the process, consider [adding some swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04) to the machine you’re building on, or build the project locally.
+### Reporting Issues
 
-### `npm run build` fails on Heroku
+We use GitHub Issues as the official bug tracker for the Horizon UI. Here are
+some advices for our users that want to report an issue:
 
-This may be a problem with case sensitive filenames.
-Please refer to [this section](#resolving-heroku-deployment-errors).
+1. Make sure that you are using the latest version of the Horizon UI Dashbaord.
+   Check the CHANGELOG from your dashboard on our
+   [CHANGE LOG File](https://github.com/horizon-ui/horizon-ui-chakra/blob/main/CHANGELOG.md?ref=readme-horizon).
+2. Providing us reproducible steps for the issue will shorten the time it takes
+   for it to be fixed.
+3. Some issues may be browser specific, so specifying in what browser you
+   encountered the issue might help.
 
-### Moment.js locales are missing
+---
 
 If you use a [Moment.js](https://momentjs.com/), you might notice that only the English locale is available by default. This is because the locale files are large, and you probably only need a subset of [all the locales provided by Moment.js](https://momentjs.com/#multiple-locale-support).
 
@@ -2219,10 +2233,10 @@ To resolve this:
 
 2. Fork the package and publish a corrected version yourself. 
 
-3. If the dependency is small enough, copy it to your `src/` folder and treat it as application code.
+💬 [Join the #HorizonUI Discord Community!](https://discord.gg/f6tEKFBd4m)
 
-In the future, we might start automatically compiling incompatible third-party modules, but it is not currently supported. This approach would also slow down the production builds.
+### Copyright and license
 
-## Something Missing?
+⭐️ [Copyright 2022 Simmmple ](https://www.simmmple.com/?ref=readme-horizon)
 
-If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/packages/react-scripts/template/README.md)
+📄 [Horizon UI License](https://www.simmmple.com/licenses?ref=readme-horizon)

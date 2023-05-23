@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # Variables de conexión
-SERVER="172.17.0.3"
+SERVER="172.17.0.2"
 USER="sa"
 PASSWORD="Hola1234"
+DATABASE="Ficus"
 
 # Comando para conectarse a la base de datos
-CMD="sqlcmd -S $SERVER -U $USER -P $PASSWORD"
+CMD="sqlcmd -S $SERVER -d $DATABASE -U $USER -P $PASSWORD"
 
 # Verifica si se ha pasado un archivo SQL como argumento
 if [ "$1" != "" ] && [ "${1##*.}" == "sql" ]; then
