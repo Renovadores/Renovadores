@@ -17,9 +17,7 @@ const root = createRoot(rootElement);
 root.render(
   <BrowserRouter basename={baseUrl}>
     <ChakraProvider theme={theme}>
-      <HashRouter>
         <App />
-      </HashRouter>
     </ChakraProvider>,
   </BrowserRouter>);
 
