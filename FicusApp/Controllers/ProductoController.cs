@@ -25,7 +25,7 @@ public class ProductoController : ControllerBase
 
         [HttpGet]
         [Route("GetProducto/{SKU}")]
-        public async Task<IActionResult> GetProducto(int SKU)
+        public async Task<IActionResult> GetProducto(string SKU)
         {
             Producto producto = await _context.Producto.FindAsync(SKU);
             return Ok(producto);

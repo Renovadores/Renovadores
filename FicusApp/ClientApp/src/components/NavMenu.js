@@ -48,6 +48,11 @@ function NavMenu() {
             </NavItem>
             <NavItem>
               <NavLink tag={Link} className="text-light" to="/productos">
+                Productos
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} className="text-light" to="/inventario">
                 Inventario
               </NavLink>
             </NavItem>
