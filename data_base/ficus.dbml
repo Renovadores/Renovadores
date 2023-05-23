@@ -21,7 +21,7 @@ Table Rol {
 // }
 
 Table Producto {
-  SKU integer [pk]
+  SKU varchar [pk]
   Nombre varchar
   Descripcion varchar
   Dimensiones varchar
@@ -70,7 +70,8 @@ Table Estado_producto {
 }
 
 Table Inventario {
-  Producto integer [ref: - Producto.SKU]
+  ID_Inventario integer [pk]
+  ProductoSKU varchar [ref: - Producto.SKU]
   Estado integer [ref: > Estado_producto.ID_EstadoProducto]
   Cantidad integer
   Lote integer
@@ -107,7 +108,7 @@ Table Evento {
 
 Table Detalle {
   ID_reserva integer [pk, ref: > Orden.ID_Orden]
-  Producto integer [ref: > Producto.SKU]
+  ProductoSKU varchar [ref: > Producto.SKU]
   Pedidos integer
   Sin_usar integer
   Usados integer
