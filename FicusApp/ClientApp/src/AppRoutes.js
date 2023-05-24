@@ -2,6 +2,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import Vacio from "./components/Vacio"
+import AdminLayout from "../src/layouts/admin";
 
 const AppRoutes = [
   {
@@ -17,7 +18,7 @@ const AppRoutes = [
     element: <FetchData />
   },
   {
-    path: '/vacio',
+    path: '/admin/default',
     element: <Vacio />
   }
 ];

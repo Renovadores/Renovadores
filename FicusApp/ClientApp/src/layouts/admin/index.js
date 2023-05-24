@@ -1,12 +1,15 @@
+// Fixes imports
+import { Routes, Route, Navigate } from 'react-router-dom';
 // Chakra imports
-import { Portal, Box, useDisclosure , useColorModeValue} from "@chakra-ui/react";
+import { Portal, Box, useDisclosure, useColorModeValue } from "@chakra-ui/react";
 // Layout components
 import Navbar from "components/navbar/NavbarAdmin.js";
 import Sidebar from "components/sidebar/Sidebar.js";
 import { SidebarContext } from "contexts/SidebarContext";
 import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import routes from "routes.js";
+// import { Redirect, Route, Switch } from "react-router-dom";
+// import routes from "routes.js";
+import AppRoutes from 'AppRoutes';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -18,77 +21,77 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
-  const getActiveRoute = (routes) => {
+  const getActiveRoute = (AppRoutes) => {
     let activeRoute = "Default Brand Text";
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].items);
+    for (let i = 0; i < AppRoutes.length; i++) {
+      if (AppRoutes[i].collapse) {
+        let collapseActiveRoute = getActiveRoute(AppRoutes[i].items);
         if (collapseActiveRoute !== activeRoute) {
           return collapseActiveRoute;
         }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].items);
+      } else if (AppRoutes[i].category) {
+        let categoryActiveRoute = getActiveRoute(AppRoutes[i].items);
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AppRoutes[i].layout + AppRoutes[i].path) !== -1
         ) {
-          return routes[i].name;
+          return AppRoutes[i].name;
         }
       }
     }
     return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
+  const getActiveNavbar = (AppRoutes) => {
     let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbar(routes[i].items);
+    for (let i = 0; i < AppRoutes.length; i++) {
+      if (AppRoutes[i].collapse) {
+        let collapseActiveNavbar = getActiveNavbar(AppRoutes[i].items);
         if (collapseActiveNavbar !== activeNavbar) {
           return collapseActiveNavbar;
         }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].items);
+      } else if (AppRoutes[i].category) {
+        let categoryActiveNavbar = getActiveNavbar(AppRoutes[i].items);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AppRoutes[i].layout + AppRoutes[i].path) !== -1
         ) {
-          return routes[i].secondary;
+          return AppRoutes[i].secondary;
         }
       }
     }
     return activeNavbar;
   };
-  const getActiveNavbarText = (routes) => {
+  const getActiveNavbarText = (AppRoutes) => {
     let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbarText(routes[i].items);
+    for (let i = 0; i < AppRoutes.length; i++) {
+      if (AppRoutes[i].collapse) {
+        let collapseActiveNavbar = getActiveNavbarText(AppRoutes[i].items);
         if (collapseActiveNavbar !== activeNavbar) {
           return collapseActiveNavbar;
         }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbarText(routes[i].items);
+      } else if (AppRoutes[i].category) {
+        let categoryActiveNavbar = getActiveNavbarText(AppRoutes[i].items);
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
       } else {
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.indexOf(AppRoutes[i].layout + AppRoutes[i].path) !== -1
         ) {
-          return routes[i].messageNavbar;
+          return AppRoutes[i].messageNavbar;
         }
       }
     }
     return activeNavbar;
   };
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
+  const getRoutes = (AppRoutes) => {
+    return AppRoutes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -117,7 +120,7 @@ export default function Dashboard(props) {
           toggleSidebar,
           setToggleSidebar,
         }}>
-        <Sidebar routes={routes} display='none' {...rest} />
+        <Sidebar routes={AppRoutes} display='none' {...rest} />
         <Box
           float='right'
           minHeight='100vh'
@@ -136,16 +139,23 @@ export default function Dashboard(props) {
               <Navbar
                 onOpen={onOpen}
                 logoText={"Horizon UI Dashboard PRO"}
-                brandText={getActiveRoute(routes)}
-                secondary={getActiveNavbar(routes)}
-                message={getActiveNavbarText(routes)}
+                brandText={getActiveRoute(AppRoutes)}
+                secondary={getActiveNavbar(AppRoutes)}
+                message={getActiveNavbarText(AppRoutes)}
                 fixed={fixed}
                 {...rest}
               />
             </Box>
           </Portal>
-
           {getRoute() ? (
+            <Box mx="auto" p={{ base: '20px', md: '30px' }} pe="20px" minH="100vh" pt="50px">
+              <Routes>
+                {getRoutes(AppRoutes)}
+                <Route path="/" element={<Navigate to="/admin/default" />} />
+              </Routes>
+            </Box>
+          ) : null}
+          {/*{getRoute() ? (
             <Box
               mx='auto'
               p={{ base: "20px", md: "30px" }}
@@ -157,7 +167,7 @@ export default function Dashboard(props) {
                 <Redirect from='/' to='/admin/default' />
               </Switch>
             </Box>
-          ) : null}
+          ) : null}*/}
           <Box>
             {/* Aqui va el footer */}
           </Box>

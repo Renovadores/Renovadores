@@ -27,6 +27,7 @@ import { GoChevronDown, GoChevronRight } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { SidebarContext } from "contexts/SidebarContext";
 import routes from "routes.js";
+import AppRoutes from 'AppRoutes';
 
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, sidebarWidth, ...rest } = props;
@@ -58,14 +59,14 @@ export default function AuthNavbar(props) {
 
   // Menus
   let authObject = {};
-  routes.map((route) => {
+  AppRoutes.map((route) => {
     if (route.items) {
       authObject = route.items.find((link) => link.name === "Authentication");
     }
   });
 
   let applicationsObject = {};
-  routes.map((route) => {
+  AppRoutes.map((route) => {
     if (route.items) {
       applicationsObject = route.items.find(
         (link) => link.name === "Applications"
@@ -74,14 +75,14 @@ export default function AuthNavbar(props) {
   });
 
   let ecommerceObject = {};
-  routes.map((route) => {
+  AppRoutes.map((route) => {
     if (route.items) {
       ecommerceObject = route.items.find((link) => link.name === "Ecommerce");
     }
   });
 
   let extraArr = [];
-  routes.map((route) => {
+  AppRoutes.map((route) => {
     route.items.map((item) => {
       if (item.items && item.name === "Pages") {
         extraArr = item.items.filter((link) => !link.collapse);
@@ -149,8 +150,8 @@ export default function AuthNavbar(props) {
     // navbarPosition = "fixed";
   }
 
-  const createPagesLinks = (routes) => {
-    return routes.map((link) => {
+  const createPagesLinks = (AppRoutes) => {
+    return AppRoutes.map((link) => {
       if (
         link.name === "Applications" ||
         link.name === "Ecommerce" ||
@@ -223,8 +224,8 @@ export default function AuthNavbar(props) {
     });
   };
 
-  const createExtraLinks = (routes) => {
-    return routes.map((link) => {
+  const createExtraLinks = (AppRoutes) => {
+    return AppRoutes.map((link) => {
       return (
         <NavLink to={link.layout + link.path}>
           <MenuItem
@@ -241,8 +242,8 @@ export default function AuthNavbar(props) {
     });
   };
 
-  const createAuthLinks = (routes) => {
-    return routes.map((link) => {
+  const createAuthLinks = (AppRoutes) => {
+    return AppRoutes.map((link) => {
       if (link.authIcon && link.collapse === true) {
         return (
           <Stack direction='column' my='auto'>
@@ -280,8 +281,8 @@ export default function AuthNavbar(props) {
     });
   };
 
-  const createApplicationLinks = (routes) => {
-    return routes.map((link) => {
+  const createApplicationLinks = (AppRoutes) => {
+    return AppRoutes.map((link) => {
       return (
         <NavLink to={link.layout + link.path}>
           <Stack direction='row' spacing='12px' align='center' cursor='pointer'>
@@ -297,8 +298,8 @@ export default function AuthNavbar(props) {
     });
   };
 
-  const createEcommerceLinks = (routes) => {
-    return routes.map((link) => {
+  const createEcommerceLinks = (AppRoutes) => {
+    return AppRoutes.map((link) => {
       if (link.authIcon) {
         return (
           <Stack direction='column'>
@@ -373,7 +374,7 @@ export default function AuthNavbar(props) {
             top='30px'
             left='-10px'>
             <Grid templateColumns='repeat(3, 1fr)' gap='16px'>
-              {createPagesLinks(routes)}
+              {createPagesLinks(AppRoutes)}
             </Grid>
           </MenuList>
         </Menu>
@@ -555,7 +556,7 @@ export default function AuthNavbar(props) {
               }
               logoText={props.logoText}
               secondary={props.secondary}
-              routes={routes}
+              AppRoutes={AppRoutes}
               {...rest}
             />
           </Box>

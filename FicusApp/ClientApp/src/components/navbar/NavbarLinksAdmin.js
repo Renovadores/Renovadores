@@ -23,7 +23,8 @@ import React from 'react';
 import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
-import routes from 'routes.js';
+// import routes from 'routes.js';
+import AppRoutes from 'AppRoutes';
 export default function HeaderLinks(props) {
 	const { secondary } = props;
 	// Chakra Color Mode
@@ -70,7 +71,7 @@ export default function HeaderLinks(props) {
 					</Text>
 				</Text>
 			</Flex>
-			<SidebarResponsive routes={routes} />
+			<SidebarResponsive routes={AppRoutes} />
 			<Menu>
 				<MenuButton p="0px">
 					<Icon mt="6px" as={MdNotificationsNone} color={navbarIcon} w="18px" h="18px" me="10px" />
