@@ -1,27 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
 public partial class Cliente
 {
-    public int Id { get; set; }
+    [Key]
+    [Column("ID_Cliente")]
+    public int IdCliente { get; set; }
 
-    public DateTime Fecha_Agregado { get; set; }
+    [Column("Fecha_agregado", TypeName = "date")]
+    public DateTime? FechaAgregado { get; set; }
 
-    public int Responsable { get; set; } = 0;
+    public int? Responsable { get; set; }
 
-    public string Prioridad { get; set; } = null!;
+    [StringLength(255)]
+    public string? Prioridad { get; set; }
 
-    public string Estado { get; set; } = null!;
+    [StringLength(255)]
+    public string? Estado { get; set; }
 
-    public string Nombre_Empresa { get; set; } = null!;
+    [Column("Nombre_empresa")]
+    [StringLength(255)]
+    public string? NombreEmpresa { get; set; }
 
-    public string Contacto { get; set; } = null!;
+    [StringLength(255)]
+    public string? Contacto { get; set; }
 
-    public int? Telefono { get; set; } = 0;
+    public int? Telefono { get; set; }
 
-    public string Correo { get; set; } = null!;
+    [StringLength(255)]
+    public string? Correo { get; set; }
 
-    public string Web { get; set; } = null!;
+    [StringLength(255)]
+    public string? Web { get; set; }
+
+    [InverseProperty("ClienteNavigation")]
+    public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
+
+    [ForeignKey("Responsable")]
+    [InverseProperty("Cliente")]
+    public virtual Usuario? ResponsableNavigation { get; set; }
 }

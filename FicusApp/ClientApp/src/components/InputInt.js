@@ -1,4 +1,4 @@
-﻿function Input(props) {
+﻿function InputInt(props) {
     return (
         <div className="form-floating mb-3">
             <input type="number" className="form-control" id="floatingInput" placeholder="name@example.com" value={props.variable} onChange={props.handler} />
@@ -6,4 +6,4 @@
         </div>
     );
 }
-export default Input;
+export default InputInt;
