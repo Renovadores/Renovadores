@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
 public class ProductoController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public ProductoController(FicusDbContext context)
+        public ProductoController(FicusContext context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.Sku).ToList();
+            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).ToList();
             return Ok(productos);
         }
 

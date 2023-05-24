@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class Cliente_ComunicacionController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public Cliente_ComunicacionController(FicusDbContext context)
+        public Cliente_ComunicacionController(FicusContext context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace FicusApp.Controllers
         [Route("GetMedia/{id}")]
         public async Task<IActionResult> GetMedia(int id)
         {
-            List<ClienteComunicacion> cliente_medios = _context.ClienteComunicacion
+            List<Cliente_Comunicacion> cliente_medios = _context.Cliente_Comunicacion
                                                        .Where(s => s.Cliente == id).ToList();
             List<string> medios = new();
             for (int i = 0; i < cliente_medios.Count; i++)
@@ -31,18 +31,18 @@ namespace FicusApp.Controllers
 
         [HttpPost]
         [Route("AddClientMedia")]
-        public async Task<IActionResult> AddClientMedia([FromBody] ClienteComunicacion request)
+        public async Task<IActionResult> AddClientMedia([FromBody] Cliente_Comunicacion request)
         {
-            await _context.ClienteComunicacion.AddAsync(request);
+            await _context.Cliente_Comunicacion.AddAsync(request);
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpDelete]
         [Route("DeleteClientMedia")]
-        public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)
+        public async Task<IActionResult> DeleteClientMedia([FromBody] Cliente_Comunicacion request)
         {
-            _context.ClienteComunicacion.Remove(request);
+            _context.Cliente_Comunicacion.Remove(request);
             _context.SaveChanges();
             return Ok();
         }
