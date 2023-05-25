@@ -18,6 +18,7 @@ public partial class FicusDbContext : DbContext
     public virtual DbSet<Cliente> Cliente { get; set; }
     public virtual DbSet<Cliente_Comunicacion> Cliente_Comunicacion { get; set; }
     public virtual DbSet<Cliente_Segmento> Cliente_Segmento { get; set; }
+    public virtual DbSet<Inventario> Inventario { get; set; }
     public virtual DbSet<Usuario> Usuario { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -69,6 +70,16 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.Familia).HasColumnType("int");
             entity.Property(e => e.Imagen).HasMaxLength(255);
 
+        });
+
+        modelBuilder.Entity<Inventario>(entity =>
+        {
+            entity.Property(e => e.Id_Inventario).HasColumnName("ID_Inventario");
+            entity.Property(e => e.ProductoSKU).HasMaxLength(255);
+            entity.Property(e => e.Estado).HasColumnType("int");
+            entity.Property(e => e.Cantidad).HasColumnType("int");
+            entity.Property(e => e.Lote).HasColumnType("int");
+            entity.Property(e => e.Fecha_ingreso).HasColumnType("dateTime");
         });
 
         OnModelCreatingPartial(modelBuilder);
