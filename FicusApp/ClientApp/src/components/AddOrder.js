@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import InputInt from "./InputInt";
+import SelectProductList from "./SelectProductList";
+import SelectedProductList from "./SelectedProductList";
+
 function AddOrder() {
   // get client id sent by navigate function in Client.js
   const location = useLocation();
@@ -19,6 +21,8 @@ function AddOrder() {
   useEffect(() => {
     generateIdOrder();
   }, [])
+
+  const [products, setProducts] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-13-1-CL", cantidad: "20", dimensiones: "20x30" }])
 
   const date = currentDateFormat();
   //TO-DO: Get user name automatically from login info
@@ -69,7 +73,12 @@ function AddOrder() {
   }
 
   const handleDelete = (index) => {
-    console.log("Se elimino el producto")
+    console.log("Se elimino el producto");
+    var aux = products;
+    aux.pop(aux[index]);
+    console.log(aux)
+    setProducts(aux);
+    console.log(aux)
   }
   
   const handleSubmit = () => {
@@ -128,70 +137,10 @@ function AddOrder() {
           <div className="row">
             <h3 className="mb-4">Seleccion de Productos</h3>
           </div>
-          <div className="row my-2">
-            <div className="col">
-              <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar un producto..." />
-            </div>
-          </div>
-          <ol className="list-group list-group-numbered">
-            <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Montezuma</div>
-                EC-07-1-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="badge bg-primary rounded-pill">14</span>
-            </li>
-            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">Montezuma EC-07-1-JA</h1>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div className="modal-body">
-                    <label>Total disponible: 14</label>
-                    <InputInt variable={cuantity} handler={handleCuantity} text="Indique la cantidad"></InputInt>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" className="btn btn-primary">Aceptar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <SelectProductList products={products} variable={cuantity} handler={handleCuantity} />
 
-            <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Subheading</div>
-                Content for list item
-              </div>
-              <span className="badge bg-primary rounded-pill">50</span>
-            </li>
-          </ol>
           <h5 className="mt-4">Productos seleccionados:</h5>
-          <ol className="list-group list-group-numbered">
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Montezuma<span className="badge bg-primary rounded-pill mx-4">14</span></div>
-                EC-07-1-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{color:"white"}}>X</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Tapanti<span className="badge bg-primary rounded-pill mx-4">20</span></div>
-                EC-12-1-CL  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }}>X</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Corcovado<span className="badge bg-primary rounded-pill mx-4">10</span></div>
-                EC-17-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }}>X</span>
-            </li>
-          </ol>
+          <SelectedProductList products={products} variable={cuantity} handler={handleDelete} />
           <div className="row m-5 d-flex justify-content-center">
             <div className="col-8 p-0 d-flex justify-content-center">
               <button className="btn btn-primary">

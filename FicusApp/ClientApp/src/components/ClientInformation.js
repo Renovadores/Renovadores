@@ -436,7 +436,7 @@ function ClientInformation() {
                               <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
                             </div>
                             <div className="col-6 d-flex justify-content-center">
-                              <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
+                              <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
                             </div>
                           </div>
                         </form>

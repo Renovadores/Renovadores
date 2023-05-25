@@ -388,7 +388,7 @@ function Clients() {
                                         <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClients} >Agregar</button>
                                     </div>
                                     <div className="col-6 d-flex justify-content-center">
-                                        <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
+                                        <button className="btn btn-warning text-light" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
                                     </div>
                                 </div>
 
@@ -397,7 +397,7 @@ function Clients() {
                     </div>
                 </div>
                 <div className="col-sm-6 col-md-3  d-flex my-2 my-md-0">
-                    <button className="btn btn-danger" >Eliminar Cliente</button>
+                    <button className="btn btn-warning text-light" >Eliminar Cliente</button>
                 </div>
                 <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
                     <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
