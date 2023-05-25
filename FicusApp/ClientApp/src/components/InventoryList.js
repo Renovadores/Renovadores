@@ -1,0 +1,52 @@
+import { Link } from "react-router-dom";
+
+const NoProducts = () => (
+  <h5 className="d-flex justify-content-center">
+    No se encontraron productos en la base de datos
+  </h5>
+);
+
+const ProductRow = ({ product }) => (
+  <tr>
+    <th scope="row">{product.id_Inventario}</th>
+    <td>{product.productoSKU}</td>
+    <td>{product.estado}</td>
+    <td>{product.cantidad}</td>
+    <td>{product.lote}</td>
+    <td>{product.fecha_ingreso}</td>
+  </tr>
+);
+
+const ProductsTable = ({ inventory }) => (
+  <table className="table table-hover">
+    <thead className="bg-primary text-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Lote</th>
+        <th scope="col">Fecha Ingreso</th>
+      </tr>
+    </thead>
+    <tbody>
+      {inventory.map((product, productIndex) => (
+        <ProductRow key={productIndex} product={product} />
+      ))}
+    </tbody>
+  </table>
+);
+
+function InventoryList({ inventory }) {
+  return (
+    <div className="row">
+      {/*Database list */}
+      {inventory.length !== 0 ? (
+        <ProductsTable inventory={inventory} />
+      ) : (
+        <NoProducts />
+      )}
+    </div>
+  );
+}
+export default InventoryList;

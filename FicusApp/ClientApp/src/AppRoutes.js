@@ -3,6 +3,7 @@ import Clients from "./components/Clients";
 import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
 import ProductInformation from "./components/ProductInformation";
+import Inventory from "./components/Inventory";
 
 const AppRoutes = [
   {
@@ -28,6 +29,11 @@ const AppRoutes = [
   {
     path: "/productos/informacion/:SKU",
     element: <ProductInformation />,
+  },
+
+  {
+    path: "/inventario",
+    element: <Inventory />,
   },
 
   {
