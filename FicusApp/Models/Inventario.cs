@@ -6,8 +6,8 @@ namespace FicusApp.Models;
 
 public partial class Inventario
 {
-    [Key] public int Id_Inventario {get; set;}
-    public string? ProductoSKU { get; set; }
+    //[Key] public int Id_Inventario {get; set;}
+    [Key] public string? Producto { get; set; }
     public int Estado { get; set; } = 0;
     public int Cantidad { get; set; }
     public int Lote { get; set; }

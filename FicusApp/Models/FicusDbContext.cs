@@ -74,8 +74,8 @@ public partial class FicusDbContext : DbContext
 
         modelBuilder.Entity<Inventario>(entity =>
         {
-            entity.Property(e => e.Id_Inventario).HasColumnName("ID_Inventario");
-            entity.Property(e => e.ProductoSKU).HasMaxLength(255);
+            // entity.Property(e => e.Id_Inventario).HasColumnName("ID_Inventario");
+            entity.Property(e => e.Producto).HasMaxLength(255);
             entity.Property(e => e.Estado).HasColumnType("int");
             entity.Property(e => e.Cantidad).HasColumnType("int");
             entity.Property(e => e.Lote).HasColumnType("int");

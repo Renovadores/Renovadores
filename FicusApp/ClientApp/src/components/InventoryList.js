@@ -8,8 +8,8 @@ const NoProducts = () => (
 
 const ProductRow = ({ product }) => (
   <tr>
-    <th scope="row">{product.id_Inventario}</th>
-    <td>{product.productoSKU}</td>
+    {/*<th scope="row">{product.id_Inventario}</th>*/}
+    <td>{product.producto}</td>
     <td>{product.estado}</td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
@@ -21,7 +21,7 @@ const ProductsTable = ({ inventory }) => (
   <table className="table table-hover">
     <thead className="bg-primary text-light">
       <tr>
-        <th scope="col">#</th>
+        {/*<th scope="col">#</th>*/}
         <th scope="col">Producto</th>
         <th scope="col">Estado</th>
         <th scope="col">Cantidad</th>

@@ -19,7 +19,7 @@ namespace FicusApp.Controllers
         [Route("GetInventory")]
         public async Task<IActionResult> GetInventory()
         {
-            List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Id_Inventario).ToList();
+            List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
             return Ok(Inventarios);
         }
 
