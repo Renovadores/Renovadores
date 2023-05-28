@@ -25,7 +25,7 @@ export default function AdminNavbar(props) {
   });
 
   const { secondary, message, brandText } = props;
-
+  const currentPageUrl = window.location.href;
   // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
   let mainText = useColorModeValue("navy.700", "white");
   let secondaryText = useColorModeValue("gray.700", "white");
@@ -51,6 +51,7 @@ export default function AdminNavbar(props) {
 
   return (
     <Box
+      fontFamily="Chivo, sans-serif"
       position={navbarPosition}
       boxShadow={navbarShadow}
       bg={navbarBg}
@@ -100,20 +101,23 @@ export default function AdminNavbar(props) {
         alignItems={{ xl: "center" }}
         mb={gap}>
         <Box mb={{ sm: "8px", md: "0px" }}>
-          <Breadcrumb>
+          <Breadcrumb style={{marginLeft:-30}}>
             <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
-              <BreadcrumbLink href='#' color={secondaryText}>
+              <BreadcrumbLink href='/' color={secondaryText}>
                 Páginas
               </BreadcrumbLink>
             </BreadcrumbItem>
 
-            <BreadcrumbItem color={secondaryText} fontSize='sm'>
+            <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
+              <BreadcrumbLink href={currentPageUrl} color={secondaryText}>
+                {brandText}
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
           {/* Here we create navbar brand, based on route name */}
           <Link
             color={mainText}
-            href='#'
+            href={currentPageUrl}
             bg='inherit'
             borderRadius='inherit'
             fontWeight='bold'

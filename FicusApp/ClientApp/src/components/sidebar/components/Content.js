@@ -3,7 +3,6 @@ import logo_sidebar from "../../../assets/ficus/img/tagline_red.png"
 import { Box, Flex, Stack, Center, Image } from "@chakra-ui/react";
 //   Custom components
 import Links from "components/sidebar/components/Links";
-import { HSeparator } from "components/separator/Separator";
 import React from "react";
 
 // FUNCTIONS
@@ -22,7 +21,7 @@ function SidebarContent(props) {
       </Flex>
       <Stack direction='column' mb='auto' mt='8px'>
         <Box ps='20px' pe={{ md: "16px", "2xl": "1px" }}>
-          <Links routes={routes} />
+         <Links routes={routes} />
         </Box>
       </Stack>
     </Flex>

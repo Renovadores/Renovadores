@@ -12,8 +12,7 @@ import React, { useState } from "react";
 import AppRoutes from 'AppRoutes';
 
 // Custom Chakra theme
-export default function Dashboard(props) {
-  const { ...rest } = props;
+export default function Dashboard({children}) {
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -22,27 +21,17 @@ export default function Dashboard(props) {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
   const getActiveRoute = (AppRoutes) => {
-    let activeRoute = "Default Brand Text";
+    const currentPath = window.location.pathname;
     for (let i = 0; i < AppRoutes.length; i++) {
-      if (AppRoutes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(AppRoutes[i].items);
-        if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
-        }
-      } else if (AppRoutes[i].category) {
-        let categoryActiveRoute = getActiveRoute(AppRoutes[i].items);
-        if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(AppRoutes[i].layout + AppRoutes[i].path) !== -1
-        ) {
-          return AppRoutes[i].name;
-        }
+      const route = AppRoutes[i];
+      if (route.index && currentPath === '/') {
+        return route.name;
+      } else if (route.path && currentPath === route.path) {
+        return route.name;
       }
     }
-    return activeRoute;
+    // Return a default route name if no active route is found
+    return "Predeterminada";
   };
   const getActiveNavbar = (AppRoutes) => {
     let activeNavbar = false;
@@ -92,13 +81,21 @@ export default function Dashboard(props) {
   };
   const getRoutes = (AppRoutes) => {
     return AppRoutes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/") {
         return (
+
           <Route
+            path={prop.path}
+            component={prop.element}
+            key={key}
+          />
+
+          /*<Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
-          />
+          />*/
+
         );
       }
       if (prop.collapse) {
@@ -120,7 +117,7 @@ export default function Dashboard(props) {
           toggleSidebar,
           setToggleSidebar,
         }}>
-        <Sidebar routes={AppRoutes} display='none' {...rest} />
+        <Sidebar routes={AppRoutes} display='none'/>
         <Box
           float='right'
           minHeight='100vh'
@@ -138,21 +135,25 @@ export default function Dashboard(props) {
             <Box>
               <Navbar
                 onOpen={onOpen}
-                logoText={"Horizon UI Dashboard PRO"}
+                logoText={"Ficus App"}
                 brandText={getActiveRoute(AppRoutes)}
                 secondary={getActiveNavbar(AppRoutes)}
                 message={getActiveNavbarText(AppRoutes)}
                 fixed={fixed}
-                {...rest}
               />
             </Box>
           </Portal>
           {getRoute() ? (
             <Box mx="auto" p={{ base: '20px', md: '30px' }} pe="20px" minH="100vh" pt="50px">
-              <Routes>
+              {/*<Routes>
                 {getRoutes(AppRoutes)}
                 <Route path="/" element={<Navigate to="/admin/default" />} />
-              </Routes>
+              </Routes>*/}
+              <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+                <main>
+                  {children}
+                </main>
+              </Box>
             </Box>
           ) : null}
           {/*{getRoute() ? (

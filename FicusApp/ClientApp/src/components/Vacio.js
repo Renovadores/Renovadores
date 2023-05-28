@@ -1,18 +1,16 @@
-// Chakra imports
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import React from "react";
-import AuthLayout from "layouts/auth";
-import AdminLayout from "layouts/admin";
+import React from 'react';
+import Dashboard from 'layouts/admin';
+import { Box } from "@chakra-ui/react";
+
 
 const Vacio = () => {
-  // Chakra Color Mode
   return (
-    <AdminLayout>
-      <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-        <p> Aquí van las cosas </p>
+    <Dashboard>
+      <Box fontFamily="Overpass Light, sans-serif">
+      <h1> Aquí no hay nada... </h1>
       </Box>
-    </AdminLayout>
+    </Dashboard>
   );
-}
+};
 
 export default Vacio;

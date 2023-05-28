@@ -8,13 +8,9 @@ export function SidebarLinks(props) {
   //   Chakra color mode
   let location = useLocation();
   let activeColor = useColorModeValue("gray.700", "white");
-  let inactiveColor = useColorModeValue(
-    "secondaryGray.600",
-    "secondaryGray.600"
-  );
-  let activeIcon = useColorModeValue("brand.500", "white");
+  let activeIcon = useColorModeValue("grey.500", "white");
   let textColor = useColorModeValue("secondaryGray.500", "white");
-  let brandColor = useColorModeValue("brand.500", "brand.400");
+  let brandColor = useColorModeValue("red.500", "brand.400");
 
   const { routes } = props;
 
@@ -32,7 +28,6 @@ export function SidebarLinks(props) {
             <Text
               fontSize={"md"}
               color={activeColor}
-              fontWeight='bold'
               mx='auto'
               ps={{
                 sm: "10px",
@@ -46,79 +41,55 @@ export function SidebarLinks(props) {
             {createLinks(route.items)}
           </>
         );
-      } else if (
+      } else /*if (
         route.layout === "/admin" ||
         route.layout === "/auth" ||
         route.layout === "/rtl"
-      ) {
+      )*/ {
         return (
-          <NavLink key={index} to={route.layout + route.path}>
-            {route.icon ? (
-              <Box>
+          <NavLink key={index} to={route.path}>
+            {(
+              <Box _hover={{ color: brandColor }}>
                 <HStack
+                  alignItems="center"
+                  justifyContent="space-between"
                   spacing={
-                    activeRoute(route.path.toLowerCase()) ? "22px" : "26px"
+                    activeRoute(route.path) ? "22px" : "26px"
                   }
                   py='5px'
                   ps='10px'>
-                  <Flex w='100%' alignItems='center' justifyContent='center'>
+                  <Flex w='50%' alignItems='center' justifyContent='center'>
                     <Box
                       color={
-                        activeRoute(route.path.toLowerCase())
-                          ? activeIcon
-                          : textColor
+                        activeRoute(route.path)
+                          ? brandColor
+                          : activeIcon
                       }
                       me='18px'>
                       {route.icon}
                     </Box>
-                    <Text
+                    <Box
+                      fontFamily="Chivo, sans-serif"
                       me='auto'
-                      color={
-                        activeRoute(route.path.toLowerCase())
-                          ? activeColor
-                          : textColor
-                      }
+                      color={textColor}
                       fontWeight={
-                        activeRoute(route.path.toLowerCase())
+                        activeRoute(route.path)
                           ? "bold"
                           : "normal"
                       }>
                       {route.name}
-                    </Text>
+                    </Box>
                   </Flex>
                   <Box
                     h='36px'
                     w='4px'
                     bg={
-                      activeRoute(route.path.toLowerCase())
+                      activeRoute(route.path)
                         ? brandColor
                         : "transparent"
                     }
                     borderRadius='5px'
                   />
-                </HStack>
-              </Box>
-            ) : (
-              <Box>
-                <HStack
-                  spacing={
-                    activeRoute(route.path.toLowerCase()) ? "22px" : "26px"
-                  }
-                  py='5px'
-                  ps='10px'>
-                  <Text
-                    me='auto'
-                    color={
-                      activeRoute(route.path.toLowerCase())
-                        ? activeColor
-                        : inactiveColor
-                    }
-                    fontWeight={
-                      activeRoute(route.path.toLowerCase()) ? "bold" : "normal"
-                    }>
-                    {route.name}
-                  </Text>
-                  <Box h='36px' w='4px' bg='brand.400' borderRadius='5px' />
                 </HStack>
               </Box>
             )}
@@ -127,7 +98,6 @@ export function SidebarLinks(props) {
       }
     });
   };
-  //  BRAND
   return createLinks(routes);
 }
 

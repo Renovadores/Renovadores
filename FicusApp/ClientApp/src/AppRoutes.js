@@ -2,24 +2,24 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import Vacio from "./components/Vacio"
-import AdminLayout from "../src/layouts/admin";
+import { Icon } from "@chakra-ui/react";
+import {
+  MdBarChart,
+} from "react-icons/md";
 
 const AppRoutes = [
   {
-    index: true,
-    element: <Home />
+    path: '/home',
+    element: <Home />,
+    name: "Home",
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    index: true
   },
   {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    element: <FetchData />
-  },
-  {
-    path: '/admin/default',
-    element: <Vacio />
+    path: '/vacio',
+    element: <Vacio />,
+    name: "Vacio",
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />
   }
 ];
 

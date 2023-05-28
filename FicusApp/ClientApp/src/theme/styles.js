@@ -49,6 +49,18 @@ export const globalStyles = {
       700: "#835316",
       800: "#57380F",
       900: "#2C1C07"
+    },
+    brand: {
+      50: "#FF0000",
+      100: "#FF0000",
+      200: "#FF0000",
+      300: "#FF0000",
+      400: "#FF0000",
+      500: "#FF0000",
+      600: "#FF0000",
+      700: "#FF0000",
+      800: "#FF0000",
+      900: "#FF0000"
     }
   },
   
@@ -85,7 +97,7 @@ export const globalStyles = {
       },
     ],
     body: {
-      fontFamily: 'Overpass Light, sans-serif',
+      fontFamily: 'Chivo',
       bg: mode('gray.100', 'navy.900')(props),
       letterSpacing: '-0.5px',
     },
@@ -99,7 +111,7 @@ export const globalStyles = {
         color: "secundaryGray.700",
       },
       html: {
-        fontFamily: "DM Sans",
+        fontFamily: "Chivo",
       },
     }),
   },

@@ -1,5 +1,6 @@
 import React from "react";
-
+import { Link } from 'react-router-dom';
+import AppRoutes from "../../AppRoutes";
 // chakra imports
 import {
   Box,
