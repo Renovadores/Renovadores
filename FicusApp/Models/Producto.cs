@@ -8,7 +8,7 @@ public partial class Producto
 {
     [Key] public string SKU { get; set; } = null!;
     public string? Nombre { get; set; }
-    public string? Color { get; set; } = null!;
+    public int Color { get; set; }
     public string? Descripcion { get; set; } = null!;
     public string? Dimensiones { get; set; } = null!;
     public int Peso_recipiente { get; set; }

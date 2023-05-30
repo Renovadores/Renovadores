@@ -60,7 +60,7 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.SKU).HasColumnName("SKU");
             entity.Property(e => e.Nombre).HasMaxLength(255);
             entity.Property(e => e.Descripcion).HasMaxLength(255);
-            entity.Property(e => e.Color).HasMaxLength(255);
+            entity.Property(e => e.Color).HasColumnType("int");
             entity.Property(e => e.Dimensiones).HasMaxLength(255);
             entity.Property(e => e.Peso_recipiente).HasColumnType("int");
             entity.Property(e => e.Peso_desechable).HasColumnType("int");
