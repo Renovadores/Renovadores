@@ -1,5 +1,4 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
+import { Navigate } from 'react-router-dom';
 import { Home } from "./components/Home";
 import Vacio from "./components/Vacio"
 import { Icon } from "@chakra-ui/react";
@@ -20,7 +19,11 @@ const AppRoutes = [
     element: <Vacio />,
     name: "Vacio",
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />
-  }
+  },
+  {
+    path: '/*', // Catch-all route for unmatched paths
+    element: <Navigate to="/home" replace />,
+  },
 ];
 
 export default AppRoutes;
