@@ -24,7 +24,7 @@ function ClientInformation() {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`);
     if (response.ok) {
       const dataClient = await response.json();
-      setDate(dateFormat(dataClient.fechaAgregado));
+      setDate(dateFormat(dataClient.fecha_agregado));
       setInfo(dataClient);
       // get personInCharge name (in user table)
       const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);

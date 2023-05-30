@@ -43,6 +43,12 @@ function Clients() {
         getClients();
     }, []);
 
+
+  useEffect(() => {
+    console.log(clients);
+  }, [clients]);
+
+
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
 
@@ -321,8 +327,9 @@ function Clients() {
     // When user click on client button, 'navigate' redirect him to new page
     const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
     const handleClickViewClient = (clientIndex) => {
-        navigate('/clientes/informacion', { state: clients[clientIndex].idCliente });
+        navigate('/clientes/informacion/', { state: clients[clientIndex].iD_Cliente });
         //second argument "state" allows to pass parameters
+            console.log(clients[clientIndex].iD_Cliente);
     };
 
     // TO-DO: separate in new components to simplify code

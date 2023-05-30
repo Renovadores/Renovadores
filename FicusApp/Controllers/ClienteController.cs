@@ -29,15 +29,16 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetNewId()
         {
             newId id = new newId();
-            id.Id = _context.Cliente.Count()+1;
+            id.Id = _context.Cliente.Count() + 1;
             return Ok(id);
         }
 
         [HttpGet]
-        [Route("GetCliente/{id}")]
-        public async Task<IActionResult> GetCliente(int id)
+        [Route("GetCliente/{ID_Cliente}")]
+        public async Task<IActionResult> GetCliente(int ID_Cliente)
         {
-            Cliente cliente = await _context.Cliente.FindAsync(id);
+            Cliente cliente = await _context.Cliente.FindAsync(ID_Cliente);
+
             return Ok(cliente);
         }
 

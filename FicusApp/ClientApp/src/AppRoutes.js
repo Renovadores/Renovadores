@@ -17,7 +17,7 @@ const AppRoutes = [
   },
 
   {
-    path: "/clientes/informacion",
+    path: "/clientes/informacion/:iD_Cliente",
     element: <ClientInformation />,
   },
 
