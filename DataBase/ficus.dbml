@@ -88,12 +88,17 @@ Table Evento {
   ID_Evento integer [pk]
   Nombre_evento varchar [not null]
   Descripcion_evento varchar
-  Orden varchar
+}
+
+Table Evento_Orden {
+  ID_Evento integer [not null]
+  ID_Orden varchar [not null]
 }
 
 Ref: Orden.Usuario > Usuario.ID_Usuario
 Ref: Orden.Cliente > Cliente.ID_Cliente
-Ref: Orden.ID_Orden < Evento.Orden
+Ref: Orden.ID_Orden < Evento_Orden.ID_Orden
+Ref: Evento.ID_Evento < Evento_Orden.ID_Evento
 
 Table Fase {
   ID_Fase integer [pk]
