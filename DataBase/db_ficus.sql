@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-05-10T06:03:28.948Z
+-- Generated at: 2023-05-30T17:33:44.051Z
 
 CREATE TABLE [Usuario] (
   [ID_Usuario] integer PRIMARY KEY,
@@ -83,8 +83,13 @@ GO
 CREATE TABLE [Evento] (
   [ID_Evento] integer PRIMARY KEY,
   [Nombre_evento] nvarchar(255) NOT NULL,
-  [Descripcion_evento] nvarchar(255),
-  [Orden] nvarchar(255)
+  [Descripcion_evento] nvarchar(255)
+)
+GO
+
+CREATE TABLE [Evento_Orden] (
+  [ID_Evento] integer NOT NULL,
+  [ID_Orden] nvarchar(255) NOT NULL
 )
 GO
 
@@ -364,7 +369,10 @@ GO
 ALTER TABLE [Orden] ADD FOREIGN KEY ([Cliente]) REFERENCES [Cliente] ([ID_Cliente])
 GO
 
-ALTER TABLE [Evento] ADD FOREIGN KEY ([Orden]) REFERENCES [Orden] ([ID_Orden])
+ALTER TABLE [Evento_Orden] ADD FOREIGN KEY ([ID_Orden]) REFERENCES [Orden] ([ID_Orden])
+GO
+
+ALTER TABLE [Evento_Orden] ADD FOREIGN KEY ([ID_Evento]) REFERENCES [Evento] ([ID_Evento])
 GO
 
 ALTER TABLE [Historial_Orden] ADD FOREIGN KEY ([Orden]) REFERENCES [Orden] ([ID_Orden])
