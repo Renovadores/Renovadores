@@ -20,7 +20,7 @@ function NavMenu() {
         className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
         color="primary"
       >
-        <img src="images\Logotipo (12).jpg" alt="logo" width="30" height="30" />
+        <img src="images\Logotipo (12).jpg" alt="logo" width="40" height="40" />
         <NavbarBrand tag={Link} className="text-light" to="/">
           FicusApp
         </NavbarBrand>
