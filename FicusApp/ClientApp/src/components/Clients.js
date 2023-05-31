@@ -6,10 +6,12 @@ import CheckBox from "./CheckBox";
 import ClientList from "./ClientList";
 import FilterClients from "./FilterClients";
 import Input from "./Input";
+import InputInt from "./InputInt";
 import Pagination from "./Pagination";
 import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
+import Spinner from "./Spinner";
 
 function Clients() {
     // get clients from data base
@@ -18,22 +20,21 @@ function Clients() {
     const [clients, setClients] = useState([]);
     const [users, setUsers] = useState([]);
     const getClients = async () => {
-        setClientsChecked(false);
-        const response = await fetch("api/cliente/GetClientes");
-        if (response.ok) {
-            const data = await response.json();
-            setClients(data);
-            setClientsChecked(true);
-        } else {
-            console.log(response.text);
-        }
-        // get users
-        const responseUsers = await fetch("api/usuario/GetUsers");
-        if (responseUsers.ok) {
-            const dataUsers = await responseUsers.json();
-            setUsers(dataUsers);
-            console.log(dataUsers);
-        }
+      setClientsChecked(false);
+      const response = await fetch("api/cliente/GetClientes");
+      if (response.ok) {
+        const data = await response.json();
+        setClients(data);
+        setClientsChecked(true);
+      } else {
+          console.log(response.text);
+      }
+      // get users
+      const responseUsers = await fetch("api/usuario/GetUsers");
+      if (responseUsers.ok) {
+        const dataUsers = await responseUsers.json();
+        setUsers(dataUsers);
+      }
     }
 
 
@@ -42,9 +43,11 @@ function Clients() {
         getClients();
     }, []);
 
-    useEffect(() => {
-        console.log(clients);
-    }, [clients]);
+
+  useEffect(() => {
+    console.log(clients);
+  }, [clients]);
+
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
@@ -170,7 +173,7 @@ function Clients() {
         setContacto(event.target.value)
     }
 
-    const [telefono, setTelefono] = useState("");
+    const [telefono, setTelefono] = useState('');
     const handleChangeTelefono = (event) => {
         setTelefono(event.target.value)
     }
@@ -209,7 +212,7 @@ function Clients() {
         setPersonInCharge(1);
         setPriority("Baja");
         setState("Contacto");
-        setTelefono("");
+        setTelefono('');
         setWhatsapp(false);
         setZoom("");
 
@@ -218,7 +221,6 @@ function Clients() {
     //Add client to data base
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setSegments TO-DO: add segments to data base
         if (cafeteria) {
             segments.push("Cafeteria");
         }
@@ -255,70 +257,69 @@ function Clients() {
         if (otro) {
             segments.push("Otro");
         }
-        console.log(segments)
         // get media
         if (correo) {
-            media.push("Correo");
+          media.push("Correo");
         }
         if (llamada) {
-            media.push("Llamada");
+          media.push("Llamada");
         }
         if (instagram) {
-            media.push("Instagram");
+          media.push("Instagram");
         }
         if (whatsapp) {
-            media.push("Whatsapp");
+          media.push("Whatsapp");
         }
         if (zoom) {
-            media.push("Zoom");
+          media.push("Zoom");
         }
         if (otra) {
-            media.push("Otra")
+          media.push("Otra")
         }
         // generate id
         const responseId = await fetch("api/cliente/GetNewId");
         if (responseId.ok) {
-            const newClientId = await responseId.json();
-            // add client
-            const responseCliente = await fetch("api/cliente/AddCliente", {
+          const newClientId = await responseId.json();
+          // add client
+          const responseCliente = await fetch("api/cliente/AddCliente", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ idCliente: newClientId.id, fechaAgregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+          });
+          if (responseCliente.ok) {
+            // add segments
+            for (let i = 0; i < segments.length; i++) {
+              const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                  'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ id: newClientId.id, fecha_Agregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombre_Empresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
-            });
-            if (responseCliente.ok) {
-                // add segments
-                for (let i = 0; i < segments.length; i++) {
-                    const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
-                        },
-                        body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
-                    });
-                    if (!responseSegmento.ok) {
-                        // store or notify which segment fails
-                    }
-                }
-                // add social media
-                for (let i = 0; i < media.length; i++) {
-                    const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
-                        },
-                        body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
-                    });
-                    if (!responseMedia.ok) {
-                        // store or notify which media fails
-                    }
-                }
-                handleCancel();
-                getClients();
+                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
+              });
+              if (!responseSegmento.ok) {
+                // store or notify which segment fails
+              }
             }
+            // add social media
+            for (let i = 0; i < media.length; i++) {
+              const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
+              });
+              if (!responseMedia.ok) {
+                // store or notify which media fails
+              }
+            }
+            handleCancel();
+            getClients();
+          }
         }
-
+          
         segments = [];
         media = [];
     }
@@ -326,8 +327,9 @@ function Clients() {
     // When user click on client button, 'navigate' redirect him to new page
     const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
     const handleClickViewClient = (clientIndex) => {
-        navigate('/clientes/informacion', { state: clients[clientIndex].id });
+        navigate('/clientes/informacion/', { state: clients[clientIndex].iD_Cliente });
         //second argument "state" allows to pass parameters
+            console.log(clients[clientIndex].iD_Cliente);
     };
 
     // TO-DO: separate in new components to simplify code
@@ -384,7 +386,7 @@ function Clients() {
                                 </div>
 
                                 <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
-                                <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
+                                <InputInt variable={telefono} handler={handleChangeTelefono} text="Telefono" />
                                 <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
                                 <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
 
@@ -410,15 +412,12 @@ function Clients() {
                 <FilterClients />
             </div>
             {
-                clientsChecked === false ?
-                    <div className="d-flex align-items-center justify-content-center">
-                        <strong>Cargando...</strong>
-                        <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-                    </div>
-                    :
-                    <ClientList clients={clients} handler={handleClickViewClient} />
+              clientsChecked === false ?
+              <Spinner />
+              :
+              <ClientList clients={clients} handler={handleClickViewClient} />
             }
-
+            {/*TO-DO: Pagination*/}
             <Pagination />
         </div>
     );

@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class Cliente_ComunicacionController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public Cliente_ComunicacionController(FicusDbContext context)
+        public Cliente_ComunicacionController(FicusContext context)
         {
             _context = context;
         }

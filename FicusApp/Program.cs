@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //access to Models (for controllers)
-builder.Services.AddDbContext<FicusDbContext>();
+builder.Services.AddDbContext<FicusContext>();
 
 var app = builder.Build();
 
