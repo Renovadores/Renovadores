@@ -21,7 +21,7 @@ GO
 CREATE TABLE [Producto] (
   [SKU] nvarchar(255) PRIMARY KEY,
   [Nombre] nvarchar(255) NOT NULL,
-  [Color] nvarchar(255) NOT NULL,
+  [Color] integer,
   [Descripcion] nvarchar(255) NOT NULL,
   [Dimensiones] nvarchar(255) NOT NULL,
   [Peso_recipiente] integer NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE [Familia] (
 GO
 
 CREATE TABLE [Color] (
-  [ID_Color] nvarchar(255) PRIMARY KEY,
+  [ID_Color] integer PRIMARY KEY,
   [Descripcion] nvarchar(255)
 )
 GO
@@ -59,8 +59,7 @@ CREATE TABLE [Estado] (
 GO
 
 CREATE TABLE [Inventario] (
-  [ID_Inventario] integer PRIMARY KEY,
-  [ProductoSKU] nvarchar(255),
+  [Producto] nvarchar(255),
   [Estado] integer,
   [Cantidad] integer,
   [Lote] integer,
@@ -105,7 +104,7 @@ GO
 
 CREATE TABLE [Detalle] (
   [ID_reserva] nvarchar(255) PRIMARY KEY,
-  [ProductoSKU] nvarchar(255),
+  [Producto] nvarchar(255),
   [Pedidos] integer,
   [Sin_usar] integer,
   [Usados] integer,
@@ -178,7 +177,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'ContraseÒa encriptada del usuario',
+@value = 'Contrase√±a encriptada del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
 @level2type = N'Column', @level2name = 'Contrasena';
@@ -258,7 +257,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Nombre de la categorÌa',
+@value = 'Nombre de la categor√≠a',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Categoria',
 @level2type = N'Column', @level2name = 'Nombre_categoria';
@@ -289,7 +288,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Table_Description',
-@value = 'Guarda las caracteristicas de cada producto, si est· disponible, reservado, etc...',
+@value = 'Guarda las caracteristicas de cada producto, si est√° disponible, reservado, etc...',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Inventario';
 GO
@@ -304,7 +303,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'DefiniciÛn de la fase de una orden',
+@value = 'Definici√≥n de la fase de una orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Fase',
 @level2type = N'Column', @level2name = 'Descripcion_estado';
@@ -353,7 +352,7 @@ GO
 ALTER TABLE [Producto] ADD FOREIGN KEY ([Color]) REFERENCES [Color] ([ID_Color])
 GO
 
-ALTER TABLE [Inventario] ADD FOREIGN KEY ([ProductoSKU]) REFERENCES [Producto] ([SKU])
+ALTER TABLE [Inventario] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
 GO
 
 ALTER TABLE [Inventario] ADD FOREIGN KEY ([Estado]) REFERENCES [Estado] ([ID_Estado])
@@ -377,7 +376,7 @@ GO
 ALTER TABLE [Detalle] ADD FOREIGN KEY ([ID_reserva]) REFERENCES [Orden] ([ID_Orden])
 GO
 
-ALTER TABLE [Detalle] ADD FOREIGN KEY ([ProductoSKU]) REFERENCES [Producto] ([SKU])
+ALTER TABLE [Detalle] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
 GO
 
 ALTER TABLE [Cliente] ADD FOREIGN KEY ([Responsable]) REFERENCES [Usuario] ([ID_Usuario])
