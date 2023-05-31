@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class InventarioController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public InventarioController(FicusDbContext context)
+        public InventarioController(FicusContext context)
         {
             _context = context;
         }
