@@ -1,10 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Input from "./Input";
-import InputInt from "./InputInt";
-import Stock from "./Stock";
 import InventoryList from "./InventoryList";
 
 function Inventory() {
@@ -96,11 +92,7 @@ function Inventory() {
             ></div>
           </div>
         ) : (
-          <InventoryList
-
-            inventory={inventory}
-            
-          />
+          <InventoryList inventory={inventory} />
         )}
       </section>
     </div>

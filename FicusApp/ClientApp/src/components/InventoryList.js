@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
-
 const NoProducts = () => (
   <h5 className="d-flex justify-content-center">
-    No se encontraron productos en la base de datos
+    No se encontraron productos en la base de datos.
   </h5>
 );
 
@@ -18,7 +16,7 @@ const ProductRow = ({ product }) => (
 );
 
 const ProductsTable = ({ inventory }) => (
-  <table className="table table-hover">
+  <table className="table table-hover table-striped">
     <thead className="bg-primary text-light">
       <tr>
         {/*<th scope="col">#</th>*/}
@@ -29,7 +27,7 @@ const ProductsTable = ({ inventory }) => (
         <th scope="col">Fecha Ingreso</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody className="bg-light">
       {inventory.map((product, productIndex) => (
         <ProductRow key={productIndex} product={product} />
       ))}
