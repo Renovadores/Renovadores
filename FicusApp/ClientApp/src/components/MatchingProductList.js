@@ -1,15 +1,13 @@
 import InputInt from "./InputInt";
 
 function SelectProductList(props) {
-  
+  const cancell = () => {
+    props.handleCuantity("");
+    props.handleSelectedProduct("");
+  }
   return (
     <div className="container">
-      <div className="row my-2">
-        <div className="col">
-          <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar un producto..." />
-        </div>
-      </div>
-      <ol className="list-group list-group-numbered">
+      <ol className="list-group list-group-numbered" id="listOptions">
         {
           props.products.map((product, index) => (
             <>
@@ -25,15 +23,15 @@ function SelectProductList(props) {
                   <div className="modal-content">
                     <div className="modal-header">
                       <h1 className="modal-title fs-5" id="exampleModalLabel">{product.nombre} {product.sku}</h1>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
                     </div>
                     <div className="modal-body">
                       <label>Total disponible: {product.cantidad}</label>
-                      <InputInt variable={props.variable} handler={props.handler} text="Indique la cantidad"></InputInt>
+                      <InputInt handler={props.handleCuantity} text="Indique la cantidad"></InputInt>
                     </div>
                     <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" >Aceptar</button>
+                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={cancell}>Cancelar</button>
+                      <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => props.handleSelectedProduct(product.sku)}>Aceptar</button>
                     </div>
                   </div>
                 </div>

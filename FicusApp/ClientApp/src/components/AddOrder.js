@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import SelectProductList from "./SelectProductList";
+import MatchingProductsList from "./MatchingProductList";
+import MatchingProductsInput from "./MatchingProductsInput";
 import SelectedProductList from "./SelectedProductList";
 
 function AddOrder() {
@@ -22,7 +23,11 @@ function AddOrder() {
     generateIdOrder();
   }, [])
 
-  const [products, setProducts] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-13-1-CL", cantidad: "20", dimensiones: "20x30" }])
+  const [stock, setStock] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Montezuma", sku: "EC-07-1-CL", cantidad: "45", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-13-1-CL", cantidad: "20", dimensiones: "20x30" }])
+
+  const [matchingProducts, setMatchingProducts] = useState([])
+
+  const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
   //TO-DO: Get user name automatically from login info
@@ -30,7 +35,6 @@ function AddOrder() {
   
   useEffect(() => {
     const getClientName = async () => {
-      console.log(clientId)
       const responseClientName = await fetch(`api/cliente/GetCliente/${clientId}`)
       if (responseClientName.ok) {
         const data = await responseClientName.json();
@@ -60,29 +64,50 @@ function AddOrder() {
     setBelongToEvent(event.target.checked);
   }
 
+  const [cost, setCost] = useState(0);
+
+  const handleProductInput = (event) => {
+    let input = event.target.value
+    console.log(input)
+    if (input === "") {
+      setMatchingProducts([])
+    } else {
+      setMatchingProducts(stock.filter(product => product.nombre.indexOf(input) !== -1));
+    }
+  }
+
+  const handleSelectedProduct = (sku) => {
+    //TO-DO: verify if the cuantity is valid and decrease total products
+    if (cuantity !== "" && cuantity > 0) {
+      console.log(stock.find(product => product.sku === sku));
+      var selectedProduct = JSON.parse(JSON.stringify(stock.find(selectedProduct => selectedProduct.sku === sku)));
+      selectedProduct.cantidad = cuantity;
+      setSelectedProducts([...selectedProducts, selectedProduct]);
+      setCost(cost + (cuantity * 1000));
+      stock.find(product => product.sku === sku).cantidad -= cuantity;
+      console.log(stock);
+    }
+    setCuantity("");
+  }
+
   const [cuantity, setCuantity] = useState("")
   const handleCuantity = (event) => {
-    setCuantity(event.target.value)
     console.log(event.target.value);
+    setCuantity(event.target.value)
   }
 
-  const [selectedProduct, setSelectProduct] = useState("")
-  const handleSelectedProduct = (index) => {
-    setSelectProduct(index)
-    console.log(index);
-  }
-
-  const handleDelete = (index) => {
+  const handleDelete = (sku) => {
     console.log("Se elimino el producto");
-    var aux = products;
-    aux.pop(aux[index]);
-    console.log(aux)
-    setProducts(aux);
-    console.log(aux)
+    setCost(cost - selectedProducts.find(product=>product.sku === sku).cantidad*1000)
+    setSelectedProducts((currentProduct) =>
+      currentProduct.filter((product) => product.sku !== sku)
+    )
   }
   
   const handleSubmit = () => {
+    //TO-DO: add selectedProducts to data base
   }
+
   return (
     <div className="container p-3">
       <div className="row">
@@ -137,11 +162,16 @@ function AddOrder() {
           <div className="row">
             <h3 className="mb-4">Seleccion de Productos</h3>
           </div>
-          <SelectProductList products={products} variable={cuantity} handler={handleCuantity} />
+
+          <MatchingProductsInput handler={handleProductInput} />
+          <MatchingProductsList products={matchingProducts} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
 
           <h5 className="mt-4">Productos seleccionados:</h5>
-          <SelectedProductList products={products} variable={cuantity} handler={handleDelete} />
-          <div className="row m-5 d-flex justify-content-center">
+          <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
+          <div className="row mt-5 mb-1">
+            <h5>Costo de la orden: {cost} colones</h5>
+          </div>
+          <div className="row mx-5 d-flex justify-content-center">
             <div className="col-8 p-0 d-flex justify-content-center">
               <button className="btn btn-primary">
                 Generar Orden
