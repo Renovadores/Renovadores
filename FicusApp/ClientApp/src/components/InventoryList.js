@@ -10,7 +10,7 @@ const ProductRow = ({ product }) => (
   <tr>
     {/*<th scope="row">{product.id_Inventario}</th>*/}
     <td>{product.producto}</td>
-    <td>{product.estado}</td>
+    <td>{product.estadoNavigation.descripcion_estadoproducto}</td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{product.fecha_ingreso}</td>

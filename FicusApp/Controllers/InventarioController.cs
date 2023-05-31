@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Controllers
 {
@@ -19,7 +20,13 @@ namespace FicusApp.Controllers
         [Route("GetInventory")]
         public async Task<IActionResult> GetInventory()
         {
-            List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
+            //List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
+            var Inventarios = _context.Inventario
+                .Include(inventario => inventario.EstadoNavigation)
+                .Include(inventario => inventario.ProductoNavigation)
+                .OrderByDescending(c => c.Producto)
+                .ToList();
+
             return Ok(Inventarios);
         }
 

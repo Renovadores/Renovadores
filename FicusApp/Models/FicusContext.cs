@@ -204,7 +204,8 @@ public partial class FicusContext : DbContext
             entity.Property(e => e.Fecha_ingreso).HasColumnType("date");
             entity.Property(e => e.Producto).HasMaxLength(255);
 
-            entity.HasOne(d => d.EstadoNavigation).WithMany()
+            entity.HasOne(d => d.EstadoNavigation)
+                .WithMany()
                 .HasForeignKey(d => d.Estado)
                 .HasConstraintName("FK__Inventari__Estad__45F365D3");
 
@@ -212,6 +213,10 @@ public partial class FicusContext : DbContext
                 .HasForeignKey(d => d.Producto)
                 .HasConstraintName("FK__Inventari__Produ__44FF419A");
         });
+
+        // modelBuilder.Entity<Inventario>()
+        //     .Navigation(e => e.EstadoNavigation)
+        //     .AutoInclude();
 
         modelBuilder.Entity<MedioComunicacion>(entity =>
         {
