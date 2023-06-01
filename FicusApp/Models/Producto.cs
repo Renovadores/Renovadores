@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FicusApp.Models;
 
 public partial class Producto
 {
-    public string SKU { get; set; } = null!;
+    [Key] public string SKU { get; set; } = null!;
 
     public string? Nombre { get; set; }
 

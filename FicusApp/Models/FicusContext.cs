@@ -53,7 +53,7 @@ public partial class FicusContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=172.17.0.2;User id=sa;password=Hola1234;Database=Ficus;MultipleActiveResultSets=true;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-7EIA8UC; DataBase=FicusDataBase; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -204,7 +204,8 @@ public partial class FicusContext : DbContext
             entity.Property(e => e.Fecha_ingreso).HasColumnType("date");
             entity.Property(e => e.Producto).HasMaxLength(255);
 
-            entity.HasOne(d => d.EstadoNavigation).WithMany()
+            entity.HasOne(d => d.EstadoNavigation)
+                .WithMany()
                 .HasForeignKey(d => d.Estado)
                 .HasConstraintName("FK__Inventari__Estad__45F365D3");
 
@@ -212,6 +213,10 @@ public partial class FicusContext : DbContext
                 .HasForeignKey(d => d.Producto)
                 .HasConstraintName("FK__Inventari__Produ__44FF419A");
         });
+
+        // modelBuilder.Entity<Inventario>()
+        //     .Navigation(e => e.EstadoNavigation)
+        //     .AutoInclude();
 
         modelBuilder.Entity<MedioComunicacion>(entity =>
         {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Collapse,
   Navbar,
@@ -6,8 +6,8 @@ import {
   NavbarToggler,
   NavItem,
   NavLink,
-} from 'reactstrap';
-import { Link } from 'react-router-dom';
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 function NavMenu() {
   const [collapsed, setState] = useState(true);
@@ -20,12 +20,7 @@ function NavMenu() {
         className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3"
         color="primary"
       >
-        <img
-          src="images\marca\JPG\Logotipo (7).jpg"
-          alt="logo"
-          width="30"
-          height="30"
-        />
+        <img src="images\Logotipo (12).jpg" alt="logo" width="40" height="40" />
         <NavbarBrand tag={Link} className="text-light" to="/">
           FicusApp
         </NavbarBrand>
