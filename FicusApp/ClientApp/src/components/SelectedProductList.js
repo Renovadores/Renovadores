@@ -1,4 +1,4 @@
-﻿import InputInt from "./InputInt";
+﻿import DeleteProductModal from "./DeleteProductModal";
 
 function SelectedProductList(props) {
 
@@ -7,7 +7,7 @@ function SelectedProductList(props) {
       <ol className="list-group list-group-numbered">
         {
           props.products.map((product, index) => (
-            <>
+            <div key={index}>
               <li className="list-group-item d-flex justify-content-between align-items-center"  key={product.sku}>
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{product.nombre} <span className="badge bg-primary rounded-pill">{product.cantidad}</span> </div>
@@ -15,6 +15,7 @@ function SelectedProductList(props) {
                 </div>
                 <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }} data-bs-toggle="modal" data-bs-target={"#exampleModal" + index + product.sku}>X</span>
               </li>
+              <DeleteProductModal index={index} nombre={product.nombre} sku={product.sku} handler={props.handler} />
               <div className="modal fade" id={"exampleModal" + index + product.sku} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content">
@@ -29,7 +30,7 @@ function SelectedProductList(props) {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           ))
         }
       </ol>

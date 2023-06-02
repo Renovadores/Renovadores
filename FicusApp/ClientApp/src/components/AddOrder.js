@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import MatchingProductsList from "./MatchingProductList";
+import BelongToEvent from "./BelongToEvent";
+import MatchingProductList from "./MatchingProductList";
 import MatchingProductsInput from "./MatchingProductsInput";
 import SelectedProductList from "./SelectedProductList";
 
@@ -64,7 +65,11 @@ function AddOrder() {
     setBelongToEvent(event.target.checked);
   }
 
-  const [cost, setCost] = useState(0);
+  const [eventName, setEventName] = useState("");
+  const handleEvent = (event) => {
+    console.log(event.target.value);
+    setEventName(event.target.value);
+  }
 
   const handleProductInput = (event) => {
     let input = event.target.value
@@ -76,16 +81,15 @@ function AddOrder() {
     }
   }
 
+  const [cost, setCost] = useState(0);
   const handleSelectedProduct = (sku) => {
     //TO-DO: verify if the cuantity is valid and decrease total products
     if (cuantity !== "" && cuantity > 0) {
-      console.log(stock.find(product => product.sku === sku));
       var selectedProduct = JSON.parse(JSON.stringify(stock.find(selectedProduct => selectedProduct.sku === sku)));
       selectedProduct.cantidad = cuantity;
       setSelectedProducts([...selectedProducts, selectedProduct]);
       setCost(cost + (cuantity * 1000));
       stock.find(product => product.sku === sku).cantidad -= cuantity;
-      console.log(stock);
     }
     setCuantity("");
   }
@@ -106,6 +110,7 @@ function AddOrder() {
   
   const handleSubmit = () => {
     //TO-DO: add selectedProducts to data base
+
   }
 
   return (
@@ -127,26 +132,8 @@ function AddOrder() {
           <div className="row">
         
             <form onSubmit={handleSubmit}>
-              <div className="form-check form-switch">
-                <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked={belongToEvent} onChange={handleBelongToEvent} />
-                <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Pertenece a un evento</label>
-              </div>
-              {
-                belongToEvent === true ?
-                  <div>
-                    <label htmlFor="exampleDataList" className="form-label mt-3">Seleccionar evento (Si no existe se genera automaticamente)</label>
-                    <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." />
-                    <datalist id="datalistOptions">
-                      <option value="Feria Verde" />
-                      <option value="Feria 2" />
-                      <option value="Feria 3" />
-                      <option value="Feria 4" />
-                    </datalist>
-                  </div>
-                :
-                  <>
-                  </>
-              }
+              
+              <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
 
               <label htmlFor="startDate" className="mt-3">Fecha de entrega de la orden</label>
               <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} />
@@ -164,12 +151,12 @@ function AddOrder() {
           </div>
 
           <MatchingProductsInput handler={handleProductInput} />
-          <MatchingProductsList products={matchingProducts} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
+          <MatchingProductList products={matchingProducts} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
 
           <h5 className="mt-4">Productos seleccionados:</h5>
           <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
-          <div className="row mt-5 mb-1">
-            <h5>Costo de la orden: {cost} colones</h5>
+          <div className="row mt-5 mb-5">
+            <h5>Costo de la orden: {"\u20A1" + cost}</h5>
           </div>
           <div className="row mx-5 d-flex justify-content-center">
             <div className="col-8 p-0 d-flex justify-content-center">

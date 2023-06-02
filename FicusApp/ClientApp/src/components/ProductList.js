@@ -5,7 +5,7 @@ function ProductList(props) {
     <div className="row">
       {/*Database card list */}
       {props.products.length !== 0 ? (
-        props.products.map((product, productIndex) => (
+        props.products.map((product) => (
           <div className="col-sm-6 col-md-3 mb-3" key={product.sku}>
             <div className="card">
               <div className="card-body">

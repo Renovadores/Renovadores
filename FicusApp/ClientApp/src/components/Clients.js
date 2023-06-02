@@ -344,7 +344,7 @@ function Clients() {
                         </div>
                         <div className="offcanvas-body">
                             <form onSubmit={handleSubmit}>
-                                <Input variable={company} handler={handleChangeCompany} text="Empresa" />
+                                <Input variable={company} handler={handleChangeCompany} text="Nombre del cliente" />
                                 <div className="mb-3">
                                     <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
                                 </div>

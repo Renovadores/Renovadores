@@ -1,11 +1,11 @@
+
 function MatchingProductsInput(props) {
   return (
-    <div className="container">
-      <div className="row my-2">
-        <div className="col">
-          <input className="form-control" list="listOptions" id="exampleDataList" placeholder="Escriba para buscar un producto..." onChange={props.handler} />
+    <div>
+        <div className="form-floating mb-3">
+          <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" onChange={props.handler} autoComplete="off" />
+          <label htmlFor="floatingInput">Escriba para buscar un producto...</label>
         </div>
-      </div>
     </div>
   );
 }
