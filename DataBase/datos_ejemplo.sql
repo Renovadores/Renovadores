@@ -1,16 +1,16 @@
-INSERT INTO Rol (ID_Rol, Tipo_rol, Detalles_rol)
+INSERT INTO Rol (RolId, TipoRol, DetallesRol)
 VALUES 
   (1, 'Administrador', 'Rol con acceso a todas las funcionalidades del sistema'),
   (2, 'Usuario normal', 'Rol con acceso limitado a ciertas funcionalidades del sistema'),
   (3, 'Invitado', 'Rol con acceso limitado a funcionalidades básicas del sistema');
 
-INSERT INTO Usuario (ID_Usuario, Nombre, Apellidos, Contrasena, ID_Rol)
+INSERT INTO Usuario (UsuarioId, Nombre, Apellidos, Contrasena, RolId)
 VALUES 
   (1, 'Andrea', 'Quiros', 'contraseña1', 1),
   (2, 'Fabiola', 'Chirino', 'contraseña2', 2),
   (3, 'Alejandro', 'Calderón', 'contraseña5', 3);
 
-INSERT INTO Categoria (ID_Categoria, Nombre_categoria)
+INSERT INTO Categoria (CategoriaId, NombreCategoria)
 VALUES
   (1, 'Sopa'),
   (2, 'Sin división'),
@@ -20,13 +20,13 @@ VALUES
   (6, 'Plato'),
   (7, 'Plato sopa');
 
-INSERT INTO Familia (ID_Familia, Nombre_familia)
+INSERT INTO Familia (FamiliaId, NombreFamilia)
 VALUES
   (1, 'Costas'),
   (2, 'Bosques'),
   (3, 'Páramos');
 
-INSERT INTO Color (ID_Color, Descripcion)
+INSERT INTO Color (ColorId, Descripcion)
 VALUES
   (1, 'JA'),
   (2, 'CL'),
@@ -35,12 +35,12 @@ VALUES
   (5, 'RO'),
   (6, 'MO');
 
-INSERT INTO Estado (ID_Estado, Descripcion_estadoproducto)
+INSERT INTO Estado (EstadoId, DescripcionEstadoProducto)
 VALUES
   (1, 'Disponible'),
   (2, 'Descontinuado');
 
-INSERT INTO Producto (SKU, Nombre, Familia, Descripcion, Categoria, Color, Dimensiones, Imagen, Peso_recipiente, Peso_desechable, Alquiler_Comercios, Alquiler_Retail)
+INSERT INTO Producto (ProductoId, Nombre, FamiliaId, Descripcion, CategoriaId, ColorId, Dimensiones, Imagen, PesoRecipiente, PesoDesechable, AlquilerComercios, AlquilerRetail)
 VALUES
   ('EC-07-1-JA','Montezuma', 1,'Sopa pequeña', 1, 1,'12 oz (4,25"" Top Dia., 2,75"" Tall)', NULL, NULL, NULL,130,170),
   ('EC-08-1-JA','Ena', 3,'Sin compartimientos pequeño', 2, 1,'05,00""L-05,00""W-03,25""H', NULL, NULL, NULL,110,150),
@@ -65,7 +65,7 @@ VALUES
   ('M-273-RO',NULL,NULL,'Plato redondo principal', 6, 5,'23,50 cm Dia - 02,00 cm H', NULL,81.65,14,80.51,115),
   ('M-275-BL',NULL,NULL,'Plato semi hondo', 7, 3,'18,30 cm Dia - 03,70 cm H', NULL,58.6,8,55,90);
 
-INSERT INTO Inventario (Producto, Estado, Cantidad, Lote, Fecha_ingreso)
+INSERT INTO Inventario (ProductoId, EstadoId, Cantidad, Lote, FechaIngreso)
 VALUES
   ('EC-07-1-JA', 1, 300, 1, "2023-05-09"),
   ('EC-08-1-JA', 1, 100, 1, "2023-05-09"),
@@ -90,66 +90,66 @@ VALUES
   ('M-273-RO', 1, 300, 1, "2023-05-09"),
   ('M-275-BL', 1, 100, 1, "2023-05-09");
 
-INSERT INTO Segmento (ID_Segmento, Detalles)
+INSERT INTO Segmento (SegmentoId, Detalles)
 VALUES
 ('Cafeteria', 'Caracteristicas de las cafeterias'),
 ('Panaderia', 'Caracteristicas de la panaderia');
 
-INSERT INTO MedioComunicacion (ID_Medio, Caracteristicas)
+INSERT INTO MedioComunicacion (MedioId, Caracteristicas)
 VALUES
   ('Medio1', 'Caracteristicas del medio 1'),
   ('Medio2', 'Caracteristicas del medio 2');
 
-INSERT INTO Cliente (ID_Cliente, Fecha_agregado, Responsable, Prioridad, Estado, Nombre_empresa, Contacto, Telefono, Correo, Web)
+INSERT INTO Cliente (ClienteId, FechaAgregado, ResponsableId, Prioridad, Estado, NombreEmpresa, Contacto, Telefono, Correo, Web)
 VALUES
 (1, '2022-05-01', 1, 'Alta', 'Clientes', 'Empresa A', 'Juan Perez', 5551234, 'juan.perez@empresaA.com', 'www.empresaA.com'),
 (2, '2022-05-02', 2, 'Baja', 'Clientes', 'Empresa B', 'Maria Garcia', 5555678, 'maria.garcia@empresaB.com', 'www.empresaB.com');
 
-INSERT INTO Cliente_Segmento (Cliente, Segmento)
+INSERT INTO ClienteSegmento (ClienteId, SegmentoId)
 VALUES
 (1, 'Cafeteria'),
 (2, 'Cafeteria'),
 (2, 'Panaderia');
 
-INSERT INTO Cliente_Comunicacion (Cliente, Medio)
+INSERT INTO ClienteComunicacion (ClienteId, MedioId)
 VALUES
   (1, 'Medio1'),
   (1, 'Medio2'),
   (2, 'Medio1');
 
-INSERT INTO Evento (ID_Evento, Nombre_evento, Descripcion_evento)
+INSERT INTO Evento (EventoId, NombreEvento, DescripcionEvento)
 VALUES
 (1, 'Conferencia de Tecnología', 'Evento sobre las últimas tendencias tecnológicas'),
 (2, 'Taller de Marketing Digital', 'Taller práctico sobre estrategias de marketing en línea'),
 (3, 'Concierto Benéfico', 'Concierto para recaudar fondos para una causa social');
 
-INSERT INTO Orden (ID_Orden, Fecha_alquiler, Usuario, Cliente, Evento, Registro_limpieza, Limpieza_unidad, Limpieza, Monto, Descuento)
+INSERT INTO Orden (OrdenId, FechaAlquiler, UsuarioId, ClienteId, EventoId, RegistroLimpiezaId, LimpiezaUnidad, Limpieza, Monto, Descuento)
 VALUES
-('ORD001', '2023-05-01', 1, 1, 1, NULL, NULL, NULL, 500, 50),
-('ORD002', '2023-05-02', 2, 2, NULL, NULL, NULL, NULL, 1000, 0),
-('ORD003', '2023-05-03', 2, 1, 2, NULL, NULL, NULL, 750, 25),
-('ORD004', '2023-05-04', 3, 2, 2, NULL, NULL, NULL, 1200, 0),
-('ORD005', '2023-05-05', 1, 1, 3, NULL, NULL, NULL, 900, 0);
+(001, '2023-05-01', 1, 1, 1, NULL, NULL, NULL, 500, 50),
+(002, '2023-05-02', 2, 2, NULL, NULL, NULL, NULL, 1000, 0),
+(003, '2023-05-03', 2, 1, 2, NULL, NULL, NULL, 750, 25),
+(004, '2023-05-04', 3, 2, 2, NULL, NULL, NULL, 1200, 0),
+(005, '2023-05-05', 1, 1, 3, NULL, NULL, NULL, 900, 0);
 
-INSERT INTO Fase (ID_Fase, Descripcion_estado)
+INSERT INTO Fase (FaseId, DescripcionEstado)
 VALUES
 (1, 'Reservada'),
 (2, 'Entregada'),
 (3, 'Finalizada');
 
-INSERT INTO Historial_Orden (Orden, Fase, Inicio, Final)
+INSERT INTO HistorialOrden (OrdenId, FaseId, Inicio, Final)
 VALUES
-('ORD001', 1, '2023-05-01', '2023-05-03'),
-('ORD001', 2, '2023-05-03', '2023-05-05'),
-('ORD002', 1, '2023-05-02', '2023-05-04'),
-('ORD002', 2, '2023-05-04', '2023-05-06'),
-('ORD003', 1, '2023-05-03', '2023-05-05');
+(001, 1, '2023-05-01', '2023-05-03'),
+(001, 2, '2023-05-03', '2023-05-05'),
+(002, 1, '2023-05-02', '2023-05-04'),
+(002, 2, '2023-05-04', '2023-05-06'),
+(003, 1, '2023-05-03', '2023-05-05');
 
-INSERT INTO Detalle (ID_reserva, Producto, Pedidos, Sin_usar, Usados, Devueltos, Descuento)
+INSERT INTO Detalle (OrdenId, ProductoId, Pedidos, SinUsar, Usados, Devueltos, Descuento)
 VALUES
-('ORD001', 'EC-07-1-JA', 10, 5, 3, 2, 5),
-('ORD002', 'EC-11-1-CL', 5, 1, 4, NULL, NULL),
-('ORD003', 'EC-12-1-CL', 8, 2, 4, 2, 10),
-('ORD003', 'M-212-BL', 8, 2, 4, 2, 10),
-('ORD004', 'EC-12-1-CL', 8, 2, 4, 2, 10),
-('ORD005', 'EC-12-1-CL', 8, 2, 4, 2, 10);
+(001, 'EC-07-1-JA', 10, 5, 3, 2, 5),
+(002, 'EC-11-1-CL', 5, 1, 4, NULL, NULL),
+(003, 'EC-12-1-CL', 8, 2, 4, 2, 10),
+(003, 'M-212-BL', 8, 2, 4, 2, 10),
+(004, 'EC-12-1-CL', 8, 2, 4, 2, 10),
+(005, 'EC-12-1-CL', 8, 2, 4, 2, 10);
