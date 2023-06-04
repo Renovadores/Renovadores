@@ -117,26 +117,19 @@ VALUES
   (1, 'Medio2'),
   (2, 'Medio1');
 
-INSERT INTO Orden (ID_Orden, Fecha_alquiler, Usuario, Cliente, Registro_limpieza, Limpieza_unidad, Limpieza, Monto, Descuento)
-VALUES
-('ORD001', '2023-05-01', 1, 1, NULL, NULL, NULL, 500, 50),
-('ORD002', '2023-05-02', 2, 2, NULL, NULL, NULL, 1000, 0),
-('ORD003', '2023-05-03', 2, 1, NULL, NULL, NULL, 750, 25),
-('ORD004', '2023-05-04', 3, 2, NULL, NULL, NULL, 1200, 0),
-('ORD005', '2023-05-05', 1, 1, NULL, NULL, NULL, 900, 0);
-
 INSERT INTO Evento (ID_Evento, Nombre_evento, Descripcion_evento)
 VALUES
 (1, 'Conferencia de Tecnología', 'Evento sobre las últimas tendencias tecnológicas'),
 (2, 'Taller de Marketing Digital', 'Taller práctico sobre estrategias de marketing en línea'),
 (3, 'Concierto Benéfico', 'Concierto para recaudar fondos para una causa social');
 
-INSERT INTO Evento_Orden (ID_Evento, ID_Orden)
+INSERT INTO Orden (ID_Orden, Fecha_alquiler, Usuario, Cliente, Evento, Registro_limpieza, Limpieza_unidad, Limpieza, Monto, Descuento)
 VALUES
-(1, 'ORD001'),
-(1, 'ORD002'),
-(2, 'ORD003'),
-(2, 'ORD004');
+('ORD001', '2023-05-01', 1, 1, 1, NULL, NULL, NULL, 500, 50),
+('ORD002', '2023-05-02', 2, 2, NULL, NULL, NULL, NULL, 1000, 0),
+('ORD003', '2023-05-03', 2, 1, 2, NULL, NULL, NULL, 750, 25),
+('ORD004', '2023-05-04', 3, 2, 2, NULL, NULL, NULL, 1200, 0),
+('ORD005', '2023-05-05', 1, 1, 3, NULL, NULL, NULL, 900, 0);
 
 INSERT INTO Fase (ID_Fase, Descripcion_estado)
 VALUES
@@ -156,4 +149,7 @@ INSERT INTO Detalle (ID_reserva, Producto, Pedidos, Sin_usar, Usados, Devueltos,
 VALUES
 ('ORD001', 'EC-07-1-JA', 10, 5, 3, 2, 5),
 ('ORD002', 'EC-11-1-CL', 5, 1, 4, NULL, NULL),
-('ORD003', 'EC-12-1-CL', 8, 2, 4, 2, 10);
+('ORD003', 'EC-12-1-CL', 8, 2, 4, 2, 10),
+('ORD003', 'M-212-BL', 8, 2, 4, 2, 10),
+('ORD004', 'EC-12-1-CL', 8, 2, 4, 2, 10),
+('ORD005', 'EC-12-1-CL', 8, 2, 4, 2, 10);
