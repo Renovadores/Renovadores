@@ -66,7 +66,11 @@ Table Inventario {
   Cantidad integer
   Lote integer
   Fecha_ingreso date
-	Note: "Guarda las caracteristicas de cada producto, si está disponible, reservado, etc..."
+
+  indexes {
+    (Producto, Estado) [pk]
+  }
+  Note: "Guarda las caracteristicas de cada producto, si está disponible, reservado, etc..."
 }
 
 Ref: Inventario.Producto > Producto.SKU
@@ -77,6 +81,7 @@ Table Orden {
   Fecha_alquiler date [not null]
   Usuario integer [not null, note: "Responsable de agregar la orden"]
   Cliente integer [not null]
+  Evento integer
   Registro_limpieza integer
   Limpieza_unidad integer
   Limpieza integer
@@ -90,15 +95,9 @@ Table Evento {
   Descripcion_evento varchar
 }
 
-Table Evento_Orden {
-  ID_Evento integer [not null]
-  ID_Orden varchar [not null]
-}
-
 Ref: Orden.Usuario > Usuario.ID_Usuario
 Ref: Orden.Cliente > Cliente.ID_Cliente
-Ref: Orden.ID_Orden < Evento_Orden.ID_Orden
-Ref: Evento.ID_Evento < Evento_Orden.ID_Evento
+Ref: Evento.ID_Evento < Orden.Evento
 
 Table Fase {
   ID_Fase integer [pk]
@@ -110,6 +109,10 @@ Table Historial_Orden {
   Fase integer [not null]
   Inicio date [not null, note: "Fecha de inicio de la fase actual"]
   Final date [not null, note: "Fecha final de la fase actual"]
+
+  indexes {
+    (Orden, Fase) [pk]
+  }
   Note: "Guarda en que fase se encuentra cada orden"
 }
 
@@ -117,13 +120,18 @@ Ref: Historial_Orden.Orden > Orden.ID_Orden
 Ref: Historial_Orden.Fase > Fase.ID_Fase
 
 Table Detalle {
-  ID_reserva varchar [pk]
+  ID_reserva varchar
   Producto varchar 
   Pedidos integer
   Sin_usar integer
   Usados integer
   Devueltos integer
   Descuento integer
+
+  indexes {
+    (ID_reserva, Producto) [pk]
+  }
+
 }
 
 Ref: Detalle.ID_reserva > Orden.ID_Orden
@@ -152,6 +160,10 @@ Table Segmento {
 Table Cliente_Segmento {
   Cliente integer [not null]
   Segmento varchar [not null]
+  
+  indexes {
+    (Cliente, Segmento) [pk]
+  }
 }
 
 Ref: Cliente_Segmento.Cliente > Cliente.ID_Cliente
@@ -165,6 +177,10 @@ Table MedioComunicacion {
 Table Cliente_Comunicacion {
   Cliente integer
   Medio varchar
+
+  indexes {
+    (Cliente, Medio) [pk]
+  }
 }
 
 Ref: Cliente_Comunicacion.Cliente > Cliente.ID_Cliente
