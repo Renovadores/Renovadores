@@ -22,30 +22,7 @@ export function SidebarLinks(props) {
   // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
   const createLinks = (routes) => {
     return routes.map((route, index) => {
-      if (route.category) {
-        return (
-          <>
-            <Text
-              fontSize={"md"}
-              color={activeColor}
-              mx='auto'
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              pt='18px'
-              pb='12px'
-              key={index}>
-              {route.name}
-            </Text>
-            {createLinks(route.items)}
-          </>
-        );
-      } else /*if (
-        route.layout === "/admin" ||
-        route.layout === "/auth" ||
-        route.layout === "/rtl"
-      )*/ {
+      if ( route.path != '/') {
         return (
           <NavLink key={index} to={route.path}>
             {(
@@ -94,9 +71,9 @@ export function SidebarLinks(props) {
               </Box>
             )}
           </NavLink>
-        );
+        );}
       }
-    });
+    );
   };
   return createLinks(routes);
 }

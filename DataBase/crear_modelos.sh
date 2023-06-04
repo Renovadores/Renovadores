@@ -8,4 +8,5 @@ dotnet ef dbcontext scaffold \
     -o Models \
     -d \
     --use-database-names \
+    --data-annotations \
     -f \

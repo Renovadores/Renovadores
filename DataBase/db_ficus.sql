@@ -1,158 +1,158 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-05-30T17:33:44.051Z
+-- Generated at: 2023-06-03T00:50:26.178Z
 
 CREATE TABLE [Usuario] (
-  [ID_Usuario] integer PRIMARY KEY,
-  [Nombre] nvarchar(255) NOT NULL,
-  [Apellidos] nvarchar(255) NOT NULL,
-  [Contrasena] nvarchar(255) NOT NULL,
-  [ID_Rol] integer
+  [id_usuario] integer PRIMARY KEY,
+  [nombre] nvarchar(255) NOT NULL,
+  [apellidos] nvarchar(255) NOT NULL,
+  [contrasena] nvarchar(255) NOT NULL,
+  [id_rol] integer
 )
 GO
 
 CREATE TABLE [Rol] (
-  [ID_Rol] integer PRIMARY KEY,
-  [Tipo_rol] nvarchar(255) NOT NULL,
-  [Detalles_rol] nvarchar(255)
+  [id_rol] integer PRIMARY KEY,
+  [tipo_rol] nvarchar(255) NOT NULL,
+  [detalles_rol] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Producto] (
-  [SKU] nvarchar(255) PRIMARY KEY,
-  [Nombre] nvarchar(255),
-  [Color] integer,
-  [Descripcion] nvarchar(255),
-  [Dimensiones] nvarchar(255),
-  [Peso_recipiente] integer,
-  [Peso_desechable] integer,
-  [Alquiler_Comercios] integer,
-  [Alquiler_Retail] integer,
-  [Categoria] integer,
-  [Familia] integer,
-  [Imagen] nvarchar(255)
+  [sku] nvarchar(255) PRIMARY KEY,
+  [nombre] nvarchar(255),
+  [color] integer,
+  [descripcion] nvarchar(255),
+  [dimensiones] nvarchar(255),
+  [peso_recipiente] integer,
+  [peso_desechable] integer,
+  [alquiler_Comercios] integer,
+  [alquiler_Retail] integer,
+  [categoria] integer,
+  [familia] integer,
+  [imagen] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Categoria] (
-  [ID_Categoria] integer PRIMARY KEY,
-  [Nombre_categoria] nvarchar(255) NOT NULL
+  [id_categoria] integer PRIMARY KEY,
+  [nombre_categoria] nvarchar(255) NOT NULL
 )
 GO
 
 CREATE TABLE [Familia] (
-  [ID_Familia] integer PRIMARY KEY,
-  [Nombre_familia] nvarchar(255) NOT NULL
+  [id_familia] integer PRIMARY KEY,
+  [nombre_familia] nvarchar(255) NOT NULL
 )
 GO
 
 CREATE TABLE [Color] (
-  [ID_Color] integer PRIMARY KEY,
-  [Descripcion] nvarchar(255)
+  [id_color] integer PRIMARY KEY,
+  [descripcion] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Estado] (
-  [ID_Estado] integer PRIMARY KEY,
-  [Descripcion_estadoproducto] nvarchar(255) NOT NULL
+  [id_estado] integer PRIMARY KEY,
+  [descripcion_estadoproducto] nvarchar(255) NOT NULL
 )
 GO
 
 CREATE TABLE [Inventario] (
-  [Producto] nvarchar(255),
-  [Estado] integer,
-  [Cantidad] integer,
-  [Lote] integer,
-  [Fecha_ingreso] date
+  [producto] nvarchar(255),
+  [estado] integer,
+  [cantidad] integer,
+  [lote] integer,
+  [fecha_ingreso] date,
+  PRIMARY KEY ([producto], [estado])
 )
 GO
 
 CREATE TABLE [Orden] (
-  [ID_Orden] nvarchar(255) PRIMARY KEY,
-  [Fecha_alquiler] date NOT NULL,
-  [Usuario] integer NOT NULL,
-  [Cliente] integer NOT NULL,
-  [Registro_limpieza] integer,
-  [Limpieza_unidad] integer,
-  [Limpieza] integer,
-  [Monto] integer NOT NULL,
-  [Descuento] integer
+  [id_orden] nvarchar(255) PRIMARY KEY,
+  [fecha_alquiler] date NOT NULL,
+  [usuario] integer NOT NULL,
+  [cliente] integer NOT NULL,
+  [evento] integer,
+  [registro_limpieza] integer,
+  [limpieza_unidad] integer,
+  [limpieza] integer,
+  [monto] integer NOT NULL,
+  [descuento] integer
 )
 GO
 
 CREATE TABLE [Evento] (
-  [ID_Evento] integer PRIMARY KEY,
-  [Nombre_evento] nvarchar(255) NOT NULL,
-  [Descripcion_evento] nvarchar(255)
-)
-GO
-
-CREATE TABLE [Evento_Orden] (
-  [ID_Evento] integer NOT NULL,
-  [ID_Orden] nvarchar(255) NOT NULL
+  [id_evento] integer PRIMARY KEY,
+  [nombre_evento] nvarchar(255) NOT NULL,
+  [descripcion_evento] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Fase] (
-  [ID_Fase] integer PRIMARY KEY,
-  [Descripcion_estado] nvarchar(255) NOT NULL
+  [id_fase] integer PRIMARY KEY,
+  [descripcion_estado] nvarchar(255) NOT NULL
 )
 GO
 
 CREATE TABLE [Historial_Orden] (
-  [Orden] nvarchar(255) NOT NULL,
-  [Fase] integer NOT NULL,
-  [Inicio] date NOT NULL,
-  [Final] date NOT NULL
+  [orden] nvarchar(255) NOT NULL,
+  [fase] integer NOT NULL,
+  [inicio] date NOT NULL,
+  [final] date NOT NULL,
+  PRIMARY KEY ([orden], [fase])
 )
 GO
 
 CREATE TABLE [Detalle] (
-  [ID_reserva] nvarchar(255) PRIMARY KEY,
-  [Producto] nvarchar(255),
-  [Pedidos] integer,
-  [Sin_usar] integer,
-  [Usados] integer,
-  [Devueltos] integer,
-  [Descuento] integer
+  [id_reserva] nvarchar(255),
+  [producto] nvarchar(255),
+  [pedidos] integer,
+  [sin_usar] integer,
+  [usados] integer,
+  [devueltos] integer,
+  [descuento] integer,
+  PRIMARY KEY ([id_reserva], [producto])
 )
 GO
 
 CREATE TABLE [Cliente] (
-  [ID_Cliente] integer PRIMARY KEY,
-  [Fecha_agregado] date,
-  [Responsable] integer,
-  [Prioridad] nvarchar(255),
-  [Estado] nvarchar(255),
-  [Nombre_empresa] nvarchar(255),
-  [Contacto] nvarchar(255),
-  [Telefono] integer,
-  [Correo] nvarchar(255),
-  [Web] nvarchar(255)
+  [id_cliente] integer PRIMARY KEY,
+  [fecha_agregado] date,
+  [responsable] integer,
+  [prioridad] nvarchar(255),
+  [estado] nvarchar(255),
+  [nombre_empresa] nvarchar(255),
+  [contacto] nvarchar(255),
+  [telefono] integer,
+  [correo] nvarchar(255),
+  [web] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Segmento] (
-  [ID_Segmento] nvarchar(255) PRIMARY KEY,
-  [Detalles] nvarchar(255)
+  [id_segmento] nvarchar(255) PRIMARY KEY,
+  [detalles] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Cliente_Segmento] (
-  [Cliente] integer NOT NULL,
-  [Segmento] nvarchar(255) NOT NULL
+  [cliente] integer NOT NULL,
+  [segmento] nvarchar(255) NOT NULL,
+  PRIMARY KEY ([cliente], [segmento])
 )
 GO
 
 CREATE TABLE [MedioComunicacion] (
-  [ID_Medio] nvarchar(255) PRIMARY KEY,
-  [Caracteristicas] nvarchar(255)
+  [id_medio] nvarchar(255) PRIMARY KEY,
+  [caracteristicas] nvarchar(255)
 )
 GO
 
 CREATE TABLE [Cliente_Comunicacion] (
-  [Cliente] integer,
-  [Medio] nvarchar(255)
+  [cliente] integer,
+  [medio] nvarchar(255),
+  PRIMARY KEY ([cliente], [medio])
 )
 GO
 
@@ -161,7 +161,7 @@ EXEC sp_addextendedproperty
 @value = 'Identificador del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
-@level2type = N'Column', @level2name = 'ID_Usuario';
+@level2type = N'Column', @level2name = 'id_usuario';
 GO
 
 EXEC sp_addextendedproperty
@@ -169,7 +169,7 @@ EXEC sp_addextendedproperty
 @value = 'Guarda el nombre del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
-@level2type = N'Column', @level2name = 'Nombre';
+@level2type = N'Column', @level2name = 'nombre';
 GO
 
 EXEC sp_addextendedproperty
@@ -177,7 +177,7 @@ EXEC sp_addextendedproperty
 @value = 'Guarda el o los apellidos del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
-@level2type = N'Column', @level2name = 'Apellidos';
+@level2type = N'Column', @level2name = 'apellidos';
 GO
 
 EXEC sp_addextendedproperty
@@ -185,7 +185,7 @@ EXEC sp_addextendedproperty
 @value = 'Contraseña encriptada del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
-@level2type = N'Column', @level2name = 'Contrasena';
+@level2type = N'Column', @level2name = 'contrasena';
 GO
 
 EXEC sp_addextendedproperty
@@ -193,7 +193,7 @@ EXEC sp_addextendedproperty
 @value = 'Identifica las capacidades del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
-@level2type = N'Column', @level2name = 'ID_Rol';
+@level2type = N'Column', @level2name = 'id_rol';
 GO
 
 EXEC sp_addextendedproperty
@@ -201,7 +201,7 @@ EXEC sp_addextendedproperty
 @value = 'Indentificador unico del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Rol',
-@level2type = N'Column', @level2name = 'ID_Rol';
+@level2type = N'Column', @level2name = 'id_rol';
 GO
 
 EXEC sp_addextendedproperty
@@ -209,7 +209,7 @@ EXEC sp_addextendedproperty
 @value = 'Nombre del rol',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Rol',
-@level2type = N'Column', @level2name = 'Tipo_rol';
+@level2type = N'Column', @level2name = 'tipo_rol';
 GO
 
 EXEC sp_addextendedproperty
@@ -217,7 +217,7 @@ EXEC sp_addextendedproperty
 @value = 'Detalles sobre el rol',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Rol',
-@level2type = N'Column', @level2name = 'Detalles_rol';
+@level2type = N'Column', @level2name = 'detalles_rol';
 GO
 
 EXEC sp_addextendedproperty
@@ -225,7 +225,7 @@ EXEC sp_addextendedproperty
 @value = 'Identificador unico para cada producto',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
-@level2type = N'Column', @level2name = 'SKU';
+@level2type = N'Column', @level2name = 'sku';
 GO
 
 EXEC sp_addextendedproperty
@@ -233,7 +233,7 @@ EXEC sp_addextendedproperty
 @value = 'Nombre del producto',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
-@level2type = N'Column', @level2name = 'Nombre';
+@level2type = N'Column', @level2name = 'nombre';
 GO
 
 EXEC sp_addextendedproperty
@@ -241,7 +241,7 @@ EXEC sp_addextendedproperty
 @value = 'Costo para el alquiler a comercio incluyendo IVA',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
-@level2type = N'Column', @level2name = 'Alquiler_Comercios';
+@level2type = N'Column', @level2name = 'alquiler_Comercios';
 GO
 
 EXEC sp_addextendedproperty
@@ -249,7 +249,7 @@ EXEC sp_addextendedproperty
 @value = 'Costo para el alquiler a retail incluyendo IVA',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
-@level2type = N'Column', @level2name = 'Alquiler_Retail';
+@level2type = N'Column', @level2name = 'alquiler_Retail';
 GO
 
 EXEC sp_addextendedproperty
@@ -257,7 +257,7 @@ EXEC sp_addextendedproperty
 @value = 'URL a la imagen del producto',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Producto',
-@level2type = N'Column', @level2name = 'Imagen';
+@level2type = N'Column', @level2name = 'imagen';
 GO
 
 EXEC sp_addextendedproperty
@@ -265,7 +265,7 @@ EXEC sp_addextendedproperty
 @value = 'Nombre de la categoría',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Categoria',
-@level2type = N'Column', @level2name = 'Nombre_categoria';
+@level2type = N'Column', @level2name = 'nombre_categoria';
 GO
 
 EXEC sp_addextendedproperty
@@ -273,7 +273,7 @@ EXEC sp_addextendedproperty
 @value = 'Nombre de un grupo de productos',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Familia',
-@level2type = N'Column', @level2name = 'Nombre_familia';
+@level2type = N'Column', @level2name = 'nombre_familia';
 GO
 
 EXEC sp_addextendedproperty
@@ -288,7 +288,7 @@ EXEC sp_addextendedproperty
 @value = 'Que estado es el actual de un producto',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Estado',
-@level2type = N'Column', @level2name = 'Descripcion_estadoproducto';
+@level2type = N'Column', @level2name = 'descripcion_estadoproducto';
 GO
 
 EXEC sp_addextendedproperty
@@ -303,7 +303,7 @@ EXEC sp_addextendedproperty
 @value = 'Responsable de agregar la orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Orden',
-@level2type = N'Column', @level2name = 'Usuario';
+@level2type = N'Column', @level2name = 'usuario';
 GO
 
 EXEC sp_addextendedproperty
@@ -311,7 +311,7 @@ EXEC sp_addextendedproperty
 @value = 'Definición de la fase de una orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Fase',
-@level2type = N'Column', @level2name = 'Descripcion_estado';
+@level2type = N'Column', @level2name = 'descripcion_estado';
 GO
 
 EXEC sp_addextendedproperty
@@ -326,7 +326,7 @@ EXEC sp_addextendedproperty
 @value = 'Fecha de inicio de la fase actual',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Historial_Orden',
-@level2type = N'Column', @level2name = 'Inicio';
+@level2type = N'Column', @level2name = 'inicio';
 GO
 
 EXEC sp_addextendedproperty
@@ -334,7 +334,7 @@ EXEC sp_addextendedproperty
 @value = 'Fecha final de la fase actual',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Historial_Orden',
-@level2type = N'Column', @level2name = 'Final';
+@level2type = N'Column', @level2name = 'final';
 GO
 
 EXEC sp_addextendedproperty
@@ -342,62 +342,59 @@ EXEC sp_addextendedproperty
 @value = 'Responsable del cliente',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Cliente',
-@level2type = N'Column', @level2name = 'Responsable';
+@level2type = N'Column', @level2name = 'responsable';
 GO
 
-ALTER TABLE [Usuario] ADD FOREIGN KEY ([ID_Rol]) REFERENCES [Rol] ([ID_Rol])
+ALTER TABLE [Usuario] ADD FOREIGN KEY ([id_rol]) REFERENCES [Rol] ([id_rol])
 GO
 
-ALTER TABLE [Producto] ADD FOREIGN KEY ([Categoria]) REFERENCES [Categoria] ([ID_Categoria])
+ALTER TABLE [Producto] ADD FOREIGN KEY ([categoria]) REFERENCES [Categoria] ([id_categoria])
 GO
 
-ALTER TABLE [Producto] ADD FOREIGN KEY ([Familia]) REFERENCES [Familia] ([ID_Familia])
+ALTER TABLE [Producto] ADD FOREIGN KEY ([familia]) REFERENCES [Familia] ([id_familia])
 GO
 
-ALTER TABLE [Producto] ADD FOREIGN KEY ([Color]) REFERENCES [Color] ([ID_Color])
+ALTER TABLE [Producto] ADD FOREIGN KEY ([color]) REFERENCES [Color] ([id_color])
 GO
 
-ALTER TABLE [Inventario] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
+ALTER TABLE [Inventario] ADD FOREIGN KEY ([producto]) REFERENCES [Producto] ([sku])
 GO
 
-ALTER TABLE [Inventario] ADD FOREIGN KEY ([Estado]) REFERENCES [Estado] ([ID_Estado])
+ALTER TABLE [Inventario] ADD FOREIGN KEY ([estado]) REFERENCES [Estado] ([id_estado])
 GO
 
-ALTER TABLE [Orden] ADD FOREIGN KEY ([Usuario]) REFERENCES [Usuario] ([ID_Usuario])
+ALTER TABLE [Orden] ADD FOREIGN KEY ([usuario]) REFERENCES [Usuario] ([id_usuario])
 GO
 
-ALTER TABLE [Orden] ADD FOREIGN KEY ([Cliente]) REFERENCES [Cliente] ([ID_Cliente])
+ALTER TABLE [Orden] ADD FOREIGN KEY ([cliente]) REFERENCES [Cliente] ([id_cliente])
 GO
 
-ALTER TABLE [Evento_Orden] ADD FOREIGN KEY ([ID_Orden]) REFERENCES [Orden] ([ID_Orden])
+ALTER TABLE [Orden] ADD FOREIGN KEY ([evento]) REFERENCES [Evento] ([id_evento])
 GO
 
-ALTER TABLE [Evento_Orden] ADD FOREIGN KEY ([ID_Evento]) REFERENCES [Evento] ([ID_Evento])
+ALTER TABLE [Historial_Orden] ADD FOREIGN KEY ([orden]) REFERENCES [Orden] ([id_orden])
 GO
 
-ALTER TABLE [Historial_Orden] ADD FOREIGN KEY ([Orden]) REFERENCES [Orden] ([ID_Orden])
+ALTER TABLE [Historial_Orden] ADD FOREIGN KEY ([fase]) REFERENCES [Fase] ([id_fase])
 GO
 
-ALTER TABLE [Historial_Orden] ADD FOREIGN KEY ([Fase]) REFERENCES [Fase] ([ID_Fase])
+ALTER TABLE [Detalle] ADD FOREIGN KEY ([id_reserva]) REFERENCES [Orden] ([id_orden])
 GO
 
-ALTER TABLE [Detalle] ADD FOREIGN KEY ([ID_reserva]) REFERENCES [Orden] ([ID_Orden])
+ALTER TABLE [Detalle] ADD FOREIGN KEY ([producto]) REFERENCES [Producto] ([sku])
 GO
 
-ALTER TABLE [Detalle] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
+ALTER TABLE [Cliente] ADD FOREIGN KEY ([responsable]) REFERENCES [Usuario] ([id_usuario])
 GO
 
-ALTER TABLE [Cliente] ADD FOREIGN KEY ([Responsable]) REFERENCES [Usuario] ([ID_Usuario])
+ALTER TABLE [Cliente_Segmento] ADD FOREIGN KEY ([cliente]) REFERENCES [Cliente] ([id_cliente])
 GO
 
-ALTER TABLE [Cliente_Segmento] ADD FOREIGN KEY ([Cliente]) REFERENCES [Cliente] ([ID_Cliente])
+ALTER TABLE [Cliente_Segmento] ADD FOREIGN KEY ([segmento]) REFERENCES [Segmento] ([id_segmento])
 GO
 
-ALTER TABLE [Cliente_Segmento] ADD FOREIGN KEY ([Segmento]) REFERENCES [Segmento] ([ID_Segmento])
+ALTER TABLE [Cliente_Comunicacion] ADD FOREIGN KEY ([cliente]) REFERENCES [Cliente] ([id_cliente])
 GO
 
-ALTER TABLE [Cliente_Comunicacion] ADD FOREIGN KEY ([Cliente]) REFERENCES [Cliente] ([ID_Cliente])
-GO
-
-ALTER TABLE [Cliente_Comunicacion] ADD FOREIGN KEY ([Medio]) REFERENCES [MedioComunicacion] ([ID_Medio])
+ALTER TABLE [Cliente_Comunicacion] ADD FOREIGN KEY ([medio]) REFERENCES [MedioComunicacion] ([id_medio])
 GO

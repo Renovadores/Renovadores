@@ -21,7 +21,7 @@ const AppRoutes = [
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />
   },
   {
-    path: '/*', // Catch-all route for unmatched paths
+    path: '/',
     element: <Navigate to="/home" replace />,
   },
 ];

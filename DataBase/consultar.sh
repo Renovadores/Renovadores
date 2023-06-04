@@ -6,6 +6,8 @@ USER="sa"
 PASSWORD="Hola1234"
 DATABASE="Ficus"
 
+sqlcmd -S $SERVER -U $USER -P $PASSWORD -Q "CREATE DATABASE Ficus" >/dev/null 2>&1
+
 # Comando para conectarse a la base de datos
 CMD="sqlcmd -S $SERVER -d $DATABASE -U $USER -P $PASSWORD"
 

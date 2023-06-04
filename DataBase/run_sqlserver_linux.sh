@@ -6,7 +6,8 @@ if sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Hola1234" \
 then
    sudo docker ps -a
    sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' Ficus
+else
+   sudo docker start Ficus
+   sudo docker ps -a
+   sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' Ficus
 fi
-sudo docker start Ficus
-sudo docker ps -a
-sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' Ficus

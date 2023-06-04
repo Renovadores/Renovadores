@@ -1,0 +1,81 @@
+2023-06-02T18:16:55.936Z
+SyntaxError: You have a syntax error at "ficus.dbml" line 67 column 3. Expected "note", "note:", "}", comment, indexes, valid name, or whitespace but "(" found.
+    at /usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (/usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:39:14)
+    at exportHandler (/usr/local/lib/node_modules/@dbml/cli/lib/cli/export.js:28:27)
+    at Object.dbml2sql (/usr/local/lib/node_modules/@dbml/cli/lib/cli/index.js:19:23)
+    at Object.<anonymous> (/usr/local/lib/node_modules/@dbml/cli/bin/dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1267:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1321:10)
+    at Module.load (node:internal/modules/cjs/loader:1125:32)
+    at Module._load (node:internal/modules/cjs/loader:965:12)
+
+ROOT_ERROR:
+SyntaxError: Expected "note", "note:", "}", comment, indexes, valid name, or whitespace but "(" found.
+    at peg$buildStructuredError (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/parse/dbmlParser.js:1090:12)
+    at Object.peg$parse [as parse] (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/parse/dbmlParser.js:6903:11)
+    at Function.parseDBMLToJSON (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/parse/Parser.js:43:37)
+    at Function.parse (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/parse/Parser.js:67:32)
+    at Object._export [as export] (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/export/index.js:11:37)
+    at /usr/local/lib/node_modules/@dbml/cli/lib/cli/export.js:28:69
+    at /usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:42:23
+    at Array.forEach (<anonymous>)
+    at generate (/usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:39:14)
+    at exportHandler (/usr/local/lib/node_modules/@dbml/cli/lib/cli/export.js:28:27)
+{"start":{"offset":1901,"line":67,"column":3},"end":{"offset":1902,"line":67,"column":4}}
+
+2023-06-03T00:44:42.266Z
+SyntaxError: You have a syntax error at "ficus.dbml" line 101 column 6. Can't find field "id_Evento" in table "Evento"
+    at /usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (/usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:39:14)
+    at exportHandler (/usr/local/lib/node_modules/@dbml/cli/lib/cli/export.js:28:27)
+    at Object.dbml2sql (/usr/local/lib/node_modules/@dbml/cli/lib/cli/index.js:19:23)
+    at Object.<anonymous> (/usr/local/lib/node_modules/@dbml/cli/bin/dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1267:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1321:10)
+    at Module.load (node:internal/modules/cjs/loader:1125:32)
+    at Module._load (node:internal/modules/cjs/loader:965:12)
+
+ROOT_ERROR:
+Error: Can't find field "id_Evento" in table "Evento"
+    at Endpoint.error (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/element.js:55:13)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:141:18
+    at Array.forEach (<anonymous>)
+    at Endpoint.setFields (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:138:21)
+    at new Endpoint (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:61:11)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:71:31
+    at Array.forEach (<anonymous>)
+    at Ref.processEndpoints (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:70:20)
+    at new Ref (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:58:11)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/database.js:133:28
+{"start":{"offset":2680,"line":101,"column":6},"end":{"offset":2711,"line":101,"column":37}}
+
+2023-06-03T00:45:32.520Z
+SyntaxError: You have a syntax error at "ficus.dbml" line 168 column 6. Can't find field "id_segmento" in table "Segmento"
+    at /usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:45:13
+    at Array.forEach (<anonymous>)
+    at generate (/usr/local/lib/node_modules/@dbml/cli/lib/cli/utils.js:39:14)
+    at exportHandler (/usr/local/lib/node_modules/@dbml/cli/lib/cli/export.js:28:27)
+    at Object.dbml2sql (/usr/local/lib/node_modules/@dbml/cli/lib/cli/index.js:19:23)
+    at Object.<anonymous> (/usr/local/lib/node_modules/@dbml/cli/bin/dbml2sql.js:4:19)
+    at Module._compile (node:internal/modules/cjs/loader:1267:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1321:10)
+    at Module.load (node:internal/modules/cjs/loader:1125:32)
+    at Module._load (node:internal/modules/cjs/loader:965:12)
+
+ROOT_ERROR:
+Error: Can't find field "id_segmento" in table "Segmento"
+    at Endpoint.error (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/element.js:55:13)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:141:18
+    at Array.forEach (<anonymous>)
+    at Endpoint.setFields (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:138:21)
+    at new Endpoint (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/endpoint.js:61:11)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:71:31
+    at Array.forEach (<anonymous>)
+    at Ref.processEndpoints (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:70:20)
+    at new Ref (/usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/ref.js:58:11)
+    at /usr/local/lib/node_modules/@dbml/cli/node_modules/@dbml/core/lib/model_structure/database.js:133:28
+{"start":{"offset":4062,"line":168,"column":6},"end":{"offset":4110,"line":168,"column":54}}
+
