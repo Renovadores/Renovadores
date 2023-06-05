@@ -1,27 +1,29 @@
-import Home from "./components/Home";
-import Clients from "./components/Clients";
-import Stock from "./components/Stock";
+import { Navigate } from 'react-router-dom';
+import { Home } from "./components/Home";
+import Vacio from "./components/Vacio"
+import { Icon } from "@chakra-ui/react";
+import {
+  MdBarChart,
+} from "react-icons/md";
 
 const AppRoutes = [
   {
-    index: true,
-    element: <Home />
+    path: '/home',
+    element: <Home />,
+    name: "Home",
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+    index: true
   },
-  
   {
-    path: '/clientes',
-    element: <Clients />
+    path: '/vacio',
+    element: <Vacio />,
+    name: "Vacio",
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />
   },
-
   {
-    path: '/inventario',
-    element: <Stock />
+    path: '/',
+    element: <Navigate to="/home" replace />,
   },
-
-  {
-    path: '/cerrarSesion',
-    element: <Home />
-  }
 ];
 
 export default AppRoutes;
