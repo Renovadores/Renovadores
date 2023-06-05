@@ -7,7 +7,8 @@ namespace FicusApp.Models;
 
 public partial class Inventario
 {
-    [Key, ForeignKey("ProductoNavigation")]
+    [Key] public int ID_Inventario { get; set; }
+    [ForeignKey("ProductoNavigation")]
     public string? Producto { get; set; }
 
     [ForeignKey("EstadoNavigation")]
@@ -19,7 +20,7 @@ public partial class Inventario
 
     public DateTime? Fecha_ingreso { get; set; }
 
-    public Estado EstadoNavigation { get; set; } = null!;
+    public virtual Estado? EstadoNavigation { get; set; }
 
     public virtual Producto? ProductoNavigation { get; set; }
 }

@@ -31,6 +31,25 @@ namespace FicusApp.Controllers
         }
 
         [HttpGet]
+        [Route("GetNewId")]
+        public async Task<IActionResult> GetNewId()
+        {
+            newId id = new newId();
+            id.Id = _context.Inventario.Count() + 1;
+            return Ok(id);
+        }
+
+        [HttpGet]
+        [Route("GetState")]
+        public async Task<IActionResult> GetState()
+        {
+            var Estados = _context.Estado
+                .ToList();
+
+            return Ok(Estados);
+        }
+
+        [HttpGet]
         [Route("GetInventory/{SKU}")]
         public async Task<IActionResult> GetInventoryDetail(string SKU)
         {

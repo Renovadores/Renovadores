@@ -199,7 +199,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Inventario>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.ID_Inventario);
 
             entity.Property(e => e.Fecha_ingreso).HasColumnType("date");
             entity.Property(e => e.Producto).HasMaxLength(255);

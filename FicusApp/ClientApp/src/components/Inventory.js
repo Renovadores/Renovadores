@@ -2,6 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
 import InventoryList from "./InventoryList";
+import { CurrentDateFormat, DateFormatBD } from "./Clients";
+import InputInt from "./InputInt";
+import SelectInventoryState from "./SelectInventoryState";
+import SelectProduct from "./SelectProduct";
 
 function Inventory() {
   // get inventory from data base
@@ -22,10 +26,102 @@ function Inventory() {
   useEffect(() => {
     getInventory();
   }, []);
-
+  // display inventory on console
   useEffect(() => {
     console.log(inventory);
   }, [inventory]);
+
+  const date = CurrentDateFormat();
+  const dateDB = DateFormatBD();
+  // get existent products from DB
+  const [SKUProducts, setSKUProducts] = useState([]);
+  const [SKUProduct, setSKUProduct] = useState(SKUProducts[0]);
+  const getSKUProducts = async () => {
+    const response = await fetch("api/producto/GetProducts");
+    if (response.ok) {
+      const data = await response.json();
+      setSKUProducts(data);
+      setSKUProduct(data[0].sku);
+    } else {
+      console.log(response.text + " Error getSKUProducts");
+    }
+  };
+  useEffect(() => {
+    getSKUProducts();
+  }, []);
+  const handleChangeSKUProduct = (event) => {
+    setSKUProduct(event.target.value);
+    console.log(" handled " + SKUProduct);
+  };
+  // Get inventory states from DB
+  const [inventoryStates, setInventoryStates] = useState([]);
+  const [inventoryState, setInventoryState] = useState(inventoryStates[0]);
+
+  const getInventoryStates = async () => {
+    const response = await fetch("api/inventario/GetState");
+    if (response.ok) {
+      const data = await response.json();
+      setInventoryStates(data);
+      setInventoryState(data[0].iD_estado);
+    } else {
+      console.log(response.text);
+    }
+  };
+  useEffect(() => {
+    getInventoryStates();
+  }, []);
+
+  const handleChangeInventoryState = (event) => {
+    setInventoryState(event.target.value);
+  };
+
+  const [productAmount, setProductAmount] = useState(10);
+  const handleChangeProductAmount = (event) => {
+    setProductAmount(event.target.value);
+  };
+  //TO DO get batch count from inventory product
+  const [batch, setBatch] = useState(1);
+  const handleChangeBatch = (event) => {
+    setBatch(event.target.value);
+  };
+
+  const handleCancel = () => {
+    setSKUProduct(SKUProducts[0]);
+    setInventoryState(1);
+    setProductAmount(0);
+    setBatch(1);
+    //setDate
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // generate id
+    const responseId = await fetch("api/inventario/GetNewId");
+    if (responseId.ok) {
+      const newInventoryId = await responseId.json();
+      // add inventory
+      const responseInventory = await fetch("api/inventario/AddInventory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          ID_Inventario: newInventoryId.id,
+          producto: SKUProduct,
+          estado: inventoryState,
+          cantidad: productAmount,
+          lote: batch,
+          fecha_ingreso: dateDB,
+        }),
+      });
+      if (responseInventory.ok) {
+        handleCancel();
+        getInventory();
+      } else {
+        console.log(responseInventory.text + " Error handleSubmit");
+      }
+    }
+  };
 
   return (
     <div>
@@ -41,6 +137,89 @@ function Inventory() {
             >
               Agregar Inventario
             </button>
+            <div
+              className="offcanvas offcanvas-start "
+              data-bs-scroll="true"
+              tabIndex="-1"
+              id="offcanvasWithBothOptions"
+              aria-labelledby="offcanvasWithBothOptionsLabel"
+            >
+              <div className="offcanvas-header">
+                <h5
+                  className="offcanvas-title"
+                  id="offcanvasWithBothOptionsLabel"
+                >
+                  Información del Nuevo Inventario
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="offcanvas-body">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label
+                      htmlFor="formGroupExampleInput"
+                      className="form-label"
+                    >
+                      Agregado el: {date}
+                    </label>
+                  </div>
+
+                  <SelectProduct
+                    products={SKUProducts}
+                    value={SKUProduct}
+                    onChange={handleChangeSKUProduct}
+                    text="SKU"
+                  />
+                  <small>
+                    * Si no ve el producto en la lista, agrégelo en la sección
+                    productos
+                  </small>
+                  <SelectInventoryState
+                    inventories={inventoryStates}
+                    value={inventoryState}
+                    onChange={handleChangeInventoryState}
+                  />
+                  <InputInt
+                    variable={productAmount}
+                    handler={handleChangeProductAmount}
+                    text="Cantidad"
+                  />
+                  <InputInt
+                    variable={batch}
+                    handler={handleChangeBatch}
+                    text="Lote"
+                  />
+
+                  <div className="row">
+                    <div className="col-6 d-flex justify-content-center">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        data-bs-dismiss="offcanvas"
+                        onClick={getInventory}
+                      >
+                        Agregar
+                      </button>
+                    </div>
+                    <div className="col-6 d-flex justify-content-center">
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={handleCancel}
+                        data-bs-dismiss="offcanvas"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
             <button className="btn btn-warning text-light" type="button">
               Eliminar Inventario
             </button>
@@ -98,4 +277,5 @@ function Inventory() {
     </div>
   );
 }
+
 export default Inventory;

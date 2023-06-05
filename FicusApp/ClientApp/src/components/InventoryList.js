@@ -12,6 +12,10 @@ const ProductRow = ({ product }) => (
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{product.fecha_ingreso}</td>
+    <td>
+      <button class="btn btn-primary mx-2 text-light">Editar</button>
+      <button class="btn btn-danger text-light">Eliminar</button>
+    </td>
   </tr>
 );
 
@@ -25,6 +29,7 @@ const ProductsTable = ({ inventory }) => (
         <th scope="col">Cantidad</th>
         <th scope="col">Lote</th>
         <th scope="col">Fecha Ingreso</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody className="bg-light">
