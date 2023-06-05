@@ -1,0 +1,177 @@
+Project "FicusDataBase" {
+  database_type: 'SQL Server'
+  Note: 'Base de datos para la pyme Ficus'
+}
+
+Table Usuario {
+  UsuarioId integer [pk, note: "Identificador del usuario"]
+  Nombre varchar [not null, note: "Guarda el nombre del usuario"]
+  Apellidos varchar [not null, note: "Guarda el o los apellidos del usuario"]
+  Contrasena varchar [not null, note: "Contraseña encriptada del usuario"]
+  RolId integer [note: "Identifica las capacidades del usuario"]
+}
+
+Table Rol {
+  RolId integer [pk, note: "Indentificador unico del usuario"]
+  TipoRol varchar [not null, note: "Nombre del rol"]
+  DetallesRol varchar [note: "Detalles sobre el rol"]
+}
+
+Table Producto {
+  ProductoId varchar [pk, note: "Identificador unico para cada producto"]
+  Nombre varchar [note: "Nombre del producto"]
+  ColorId integer
+  Descripcion varchar
+  Dimensiones varchar
+  PesoRecipiente integer
+  PesoDesechable integer 
+  AlquilerComercios integer [note: "Costo para el alquiler a comercio incluyendo IVA"]
+  AlquilerRetail integer [note: "Costo para el alquiler a retail incluyendo IVA"]
+  CategoriaId integer
+  FamiliaId integer
+  Imagen varchar [note: "URL a la imagen del producto"]
+}
+
+Table Categoria {
+  CategoriaId integer [pk]
+  NombreCategoria varchar [not null, note: "Nombre de la categoría"]
+}
+
+Table Familia {
+  FamiliaId integer [pk]
+  NombreFamilia varchar [not null, note: "Nombre de un grupo de productos"]
+}
+
+Table Color {
+  ColorId integer [pk]
+  Descripcion varchar
+  Note: "Guarda el color de cada producto"
+}
+
+Table Estado {
+  EstadoId integer [pk]
+  DescripcionEstadoProducto varchar [not null, note: "Que estado es el actual de un producto"]
+}
+
+Table Inventario {
+  ProductoId varchar
+  EstadoId integer
+  Cantidad integer
+  Lote integer
+  FechaIngreso date
+
+  indexes {
+    (ProductoId, EstadoId) [pk]
+  }
+  Note: "Guarda las características de cada producto, si está disponible, reservado, etc..."
+}
+
+Table Orden {
+  OrdenId integer [pk]
+  FechaAlquiler date [not null]
+  UsuarioId integer [not null, note: "Responsable de agregar la orden"]
+  ClienteId integer [not null]
+  EventoId integer
+  RegistroLimpiezaId integer
+  LimpiezaUnidad integer
+  Limpieza integer
+  Monto integer [not null]
+  Descuento integer
+}
+
+Table Evento {
+  EventoId integer [pk]
+  NombreEvento varchar [not null]
+  DescripcionEvento varchar
+}
+
+Table Fase {
+  FaseId integer [pk]
+  DescripcionEstado varchar [not null, note: "Definición de la fase de una orden"]
+}
+
+Table HistorialOrden {
+  OrdenId integer [not null]
+  FaseId integer [not null]
+  Inicio date [not null, note: "Fecha de inicio de la fase actual"]
+  Final date [not null, note: "Fecha final de la fase actual"]
+
+  indexes {
+    (OrdenId, FaseId) [pk]
+  }
+  Note: "Guarda en qué fase se encuentra cada orden"
+}
+
+Table Detalle {
+  OrdenId integer
+  ProductoId varchar 
+  Pedidos integer
+  SinUsar integer
+  Usados integer
+  Devueltos integer
+  Descuento integer
+
+  indexes {
+    (OrdenId, ProductoId) [pk]
+  }
+}
+
+Table Cliente {
+  ClienteId integer [pk]
+  FechaAgregado date
+  ResponsableId integer [note: "Responsable del cliente"]
+  Prioridad varchar
+  Estado varchar
+  NombreEmpresa varchar
+  Contacto varchar
+  Telefono integer
+  Correo varchar
+  Web varchar
+}
+
+Table Segmento {
+  SegmentoId varchar [pk]
+  Detalles varchar
+}
+
+Table ClienteSegmento {
+  ClienteId integer [not null]
+  SegmentoId varchar [not null]
+  
+  indexes {
+    (ClienteId, SegmentoId) [pk]
+  }
+}
+
+Table MedioComunicacion {
+  MedioId varchar [pk]
+  Caracteristicas varchar
+}
+
+Table ClienteComunicacion {
+  ClienteId integer
+  MedioId varchar
+
+  indexes {
+    (ClienteId, MedioId) [pk]
+  }
+}
+
+Ref: Usuario.RolId > Rol.RolId
+Ref: Producto.ColorId > Color.ColorId
+Ref: Producto.CategoriaId > Categoria.CategoriaId
+Ref: Producto.FamiliaId > Familia.FamiliaId
+Ref: Inventario.ProductoId > Producto.ProductoId
+Ref: Inventario.EstadoId > Estado.EstadoId
+Ref: Orden.UsuarioId > Usuario.UsuarioId
+Ref: Orden.ClienteId > Cliente.ClienteId
+Ref: Orden.EventoId > Evento.EventoId
+Ref: HistorialOrden.OrdenId > Orden.OrdenId
+Ref: HistorialOrden.FaseId > Fase.FaseId
+Ref: Detalle.OrdenId > Orden.OrdenId
+Ref: Detalle.ProductoId > Producto.ProductoId
+Ref: Cliente.ResponsableId > Usuario.UsuarioId
+Ref: ClienteSegmento.ClienteId > Cliente.ClienteId
+Ref: ClienteSegmento.SegmentoId > Segmento.SegmentoId
+Ref: ClienteComunicacion.ClienteId > Cliente.ClienteId
+Ref: ClienteComunicacion.MedioId > MedioComunicacion.MedioId
