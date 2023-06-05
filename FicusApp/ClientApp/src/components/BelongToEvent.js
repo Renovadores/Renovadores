@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
 
 function BelongToEvent(props) {
   //TO-DO: Get events from DB
-  const events = [{ nombre: "Feria Verde" }, { nombre: "Feria B" }, { nombre: "Feria C" }]
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    const getEvents = async () => {
+      const eventResponse = await fetch("api/evento/GetEventos");
+      if (eventResponse.ok) {
+        const data = await eventResponse.json();
+        console.log(data)
+        setEvents(data);
+      }
+    }
+    getEvents();
+  }, []);
+
   return (
     <div>
       <div className="form-check form-switch">
@@ -19,7 +32,7 @@ function BelongToEvent(props) {
             <datalist id="datalistOptions">
               {
                 events.map((event, index) => (
-                  <option value={event.nombre} key={index} />
+                  <option value={event.nombreEvento} key={index} />
                 ))
               }
             </datalist>

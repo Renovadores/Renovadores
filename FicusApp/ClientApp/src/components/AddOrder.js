@@ -10,7 +10,6 @@ function AddOrder() {
   // get client id sent by navigate function in Client.js
   const location = useLocation();
   const [clientId] = useState(location.state);
-  var orders;
   // get a new order id (order code)
   const [orderId, setIdOrder] = useState(0);
   const generateIdOrder = async () => {
@@ -116,7 +115,7 @@ function AddOrder() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const responseOrder = await fetch("api/orden/PostOrder", {
+    const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -125,10 +124,24 @@ function AddOrder() {
     });
     if (responseOrder.ok) {
       console.log("Orden agregada")
-    }
-    //TO-DO: add selectedProducts to data base
+      //Add selected products to data base
+      for (let i = 0; i < selectedProducts.length; i++) {
+        var responseDetail = await fetch("api/detalle/AddDetalle", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({ idReserva: orderId, producto: selectedProducts[i].sku, pedidos: selectedProducts[i].cantidad, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
+        });
+        if (responseDetail.ok) {
 
-    
+        }
+      }
+    }
+    //add event
+    if (eventName !== "") {
+
+    }
     navigate('/clientes/informacion', { state: clientId });
   }
 

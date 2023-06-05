@@ -29,7 +29,7 @@ public partial class Detalle
 
     [ForeignKey("IdReserva")]
     [InverseProperty("Detalle")]
-    public virtual Orden IdReservaNavigation { get; set; } = null!;
+    public virtual Orden? IdReservaNavigation { get; set; } = null!;
 
     [ForeignKey("Producto")]
     [InverseProperty("Detalle")]

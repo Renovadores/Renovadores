@@ -41,8 +41,8 @@ namespace FicusApp.Controllers
         }
 
         [HttpPost]
-        [Route("PostOrder")]
-        public async Task<IActionResult> PostOrder([FromBody] Orden request)
+        [Route("AddOrder")]
+        public async Task<IActionResult> AddOrder([FromBody] Orden request)
         {
             await _context.Orden.AddAsync(request);
             await _context.SaveChangesAsync();
