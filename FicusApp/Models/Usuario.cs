@@ -9,7 +9,8 @@ namespace FicusApp.Models;
 public partial class Usuario
 {
     [Key]
-    public int UsuarioId { get; set; }
+    [Column("ID_Usuario")]
+    public int IdUsuario { get; set; }
 
     [StringLength(255)]
     public string Nombre { get; set; } = null!;
@@ -20,15 +21,16 @@ public partial class Usuario
     [StringLength(255)]
     public string Contrasena { get; set; } = null!;
 
-    public int? RolId { get; set; }
+    [Column("ID_Rol")]
+    public int? IdRol { get; set; }
 
-    [InverseProperty("Responsable")]
+    [InverseProperty("ResponsableNavigation")]
     public virtual ICollection<Cliente> Cliente { get; set; } = new List<Cliente>();
 
+    [ForeignKey("IdRol")]
     [InverseProperty("Usuario")]
-    public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
+    public virtual Rol? IdRolNavigation { get; set; }
 
-    [ForeignKey("RolId")]
-    [InverseProperty("Usuario")]
-    public virtual Rol? Rol { get; set; }
+    [InverseProperty("UsuarioNavigation")]
+    public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
 }

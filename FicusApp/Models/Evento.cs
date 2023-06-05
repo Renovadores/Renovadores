@@ -9,14 +9,21 @@ namespace FicusApp.Models;
 public partial class Evento
 {
     [Key]
-    public int EventoId { get; set; }
+    [Column("ID_Evento")]
+    public int IdEvento { get; set; }
 
+    [Column("Nombre_evento")]
     [StringLength(255)]
     public string NombreEvento { get; set; } = null!;
 
+    [Column("Descripcion_evento")]
     [StringLength(255)]
     public string? DescripcionEvento { get; set; }
 
+    [StringLength(255)]
+    public string? Orden { get; set; }
+
+    [ForeignKey("Orden")]
     [InverseProperty("Evento")]
-    public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
+    public virtual Orden? OrdenNavigation { get; set; }
 }

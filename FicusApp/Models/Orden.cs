@@ -9,19 +9,21 @@ namespace FicusApp.Models;
 public partial class Orden
 {
     [Key]
-    public int OrdenId { get; set; }
+    [Column("ID_Orden")]
+    [StringLength(255)]
+    public string IdOrden { get; set; } = null!;
 
-    [Column(TypeName = "date")]
+    [Column("Fecha_alquiler", TypeName = "date")]
     public DateTime FechaAlquiler { get; set; }
 
-    public int UsuarioId { get; set; }
+    public int Usuario { get; set; }
 
-    public int ClienteId { get; set; }
+    public int Cliente { get; set; }
 
-    public int? EventoId { get; set; }
+    [Column("Registro_limpieza")]
+    public int? RegistroLimpieza { get; set; }
 
-    public int? RegistroLimpiezaId { get; set; }
-
+    [Column("Limpieza_unidad")]
     public int? LimpiezaUnidad { get; set; }
 
     public int? Limpieza { get; set; }
@@ -30,21 +32,17 @@ public partial class Orden
 
     public int? Descuento { get; set; }
 
-    [ForeignKey("ClienteId")]
+    [ForeignKey("Cliente")]
     [InverseProperty("Orden")]
-    public virtual Cliente Cliente { get; set; } = null!;
+    public virtual Cliente? ClienteNavigation { get; set; } = null!;
 
-    [InverseProperty("Orden")]
-    public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
+    [InverseProperty("IdReservaNavigation")]
+    public virtual Detalle? Detalle { get; set; }
 
-    [ForeignKey("EventoId")]
-    [InverseProperty("Orden")]
-    public virtual Evento? Evento { get; set; }
+    [InverseProperty("OrdenNavigation")]
+    public virtual ICollection<Evento> Evento { get; set; } = new List<Evento>();
 
+    [ForeignKey("Usuario")]
     [InverseProperty("Orden")]
-    public virtual ICollection<HistorialOrden> HistorialOrden { get; set; } = new List<HistorialOrden>();
-
-    [ForeignKey("UsuarioId")]
-    [InverseProperty("Orden")]
-    public virtual Usuario Usuario { get; set; } = null!;
+    public virtual Usuario? UsuarioNavigation { get; set; } = null!;
 }
