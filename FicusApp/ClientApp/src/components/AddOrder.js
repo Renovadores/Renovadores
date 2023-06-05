@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import BelongToEvent from "./BelongToEvent";
 import MatchingProductList from "./MatchingProductList";
@@ -8,18 +9,20 @@ import SelectedProductList from "./SelectedProductList";
 function AddOrder() {
   // get client id sent by navigate function in Client.js
   const location = useLocation();
-  const clientId = location.state;
+  const [clientId] = useState(location.state);
+  var orders;
   // get a new order id (order code)
-  const [idOrder, setIdOrder] = useState("");
+  const [orderId, setIdOrder] = useState(0);
   const generateIdOrder = async () => {
-    //const responseId = await fetch("api/orden/GetNewId");
-    //if (responseId.ok) {
-    //  const id = responseId.json();
-        setIdOrder(1);
-    //} else {
-    //  console.log(responseId.text);
-    //}
+    const response = await fetch("api/orden/GetNewCode");
+    if (response.ok) {
+      const data = await response.json();
+      setIdOrder(data.id);
+    } else {
+      console.log(response.text);
+    }
   }
+  
   useEffect(() => {
     generateIdOrder();
   }, [])
@@ -31,6 +34,7 @@ function AddOrder() {
   const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
+  const dateDB = dateFormatBD();
   //TO-DO: Get user name automatically from login info
   const [clientName, setClientName] = useState("");
   
@@ -107,10 +111,25 @@ function AddOrder() {
       currentProduct.filter((product) => product.sku !== sku)
     )
   }
-  
-  const handleSubmit = () => {
+
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const responseOrder = await fetch("api/orden/PostOrder", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({ idOrden: orderId, fechaAlquiler: deliveryDate, usuario: 1, cliente: clientId, registroLimpieza: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
+    });
+    if (responseOrder.ok) {
+      console.log("Orden agregada")
+    }
     //TO-DO: add selectedProducts to data base
 
+    
+    navigate('/clientes/informacion', { state: clientId });
   }
 
   return (
@@ -122,7 +141,7 @@ function AddOrder() {
           </div>
           <div className="row mt-3">
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">Codigo de la orden: {idOrder}</li>
+              <li className="list-group-item">Codigo de la orden: {orderId}</li>
               <li className="list-group-item">Fecha de creacion: {date}</li>
               <li className="list-group-item">Cliente: {clientName}</li>
               <li className="list-group-item">Responsable de la orden: Alejandro</li>
@@ -131,7 +150,7 @@ function AddOrder() {
           </div>
           <div className="row">
         
-            <form onSubmit={handleSubmit}>
+            <form id="order-form" onSubmit={handleSubmit} >
               
               <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
 
@@ -160,7 +179,7 @@ function AddOrder() {
           </div>
           <div className="row mx-5 d-flex justify-content-center">
             <div className="col-8 p-0 d-flex justify-content-center">
-              <button className="btn btn-primary">
+              <button className="btn btn-primary" form="order-form" type="submit">
                 Generar Orden
               </button>
             </div>
@@ -178,6 +197,20 @@ function currentDateFormat() {
   const year = current.getFullYear();
   const date = `${day}-${month}-${year}`;
 
+  return date;
+}
+
+function dateFormatBD() {
+  const current = new Date();
+  var month = `${current.getMonth() + 1}`;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  var day = `${current.getDate()}`;
+  if (day < 10) {
+    day = '0' + day;
+  }
+  const date = `${current.getFullYear()}-${month}-${day}`;
   return date;
 }
 

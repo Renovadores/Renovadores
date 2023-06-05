@@ -34,7 +34,7 @@ public partial class Orden
 
     [ForeignKey("Cliente")]
     [InverseProperty("Orden")]
-    public virtual Cliente ClienteNavigation { get; set; } = null!;
+    public virtual Cliente? ClienteNavigation { get; set; } = null!;
 
     [InverseProperty("IdReservaNavigation")]
     public virtual Detalle? Detalle { get; set; }
@@ -44,5 +44,5 @@ public partial class Orden
 
     [ForeignKey("Usuario")]
     [InverseProperty("Orden")]
-    public virtual Usuario UsuarioNavigation { get; set; } = null!;
+    public virtual Usuario? UsuarioNavigation { get; set; } = null!;
 }
