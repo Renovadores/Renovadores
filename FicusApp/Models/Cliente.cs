@@ -9,13 +9,12 @@ namespace FicusApp.Models;
 public partial class Cliente
 {
     [Key]
-    [Column("ID_Cliente")]
-    public int IdCliente { get; set; }
+    public int ClienteId { get; set; }
 
-    [Column("Fecha_agregado", TypeName = "date")]
+    [Column(TypeName = "date")]
     public DateTime? FechaAgregado { get; set; }
 
-    public int? Responsable { get; set; }
+    public int? ResponsableId { get; set; }
 
     [StringLength(255)]
     public string? Prioridad { get; set; }
@@ -23,7 +22,6 @@ public partial class Cliente
     [StringLength(255)]
     public string? Estado { get; set; }
 
-    [Column("Nombre_empresa")]
     [StringLength(255)]
     public string? NombreEmpresa { get; set; }
 
@@ -38,10 +36,18 @@ public partial class Cliente
     [StringLength(255)]
     public string? Web { get; set; }
 
-    [InverseProperty("ClienteNavigation")]
+    [InverseProperty("Cliente")]
     public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
 
-    [ForeignKey("Responsable")]
+    [ForeignKey("ResponsableId")]
     [InverseProperty("Cliente")]
-    public virtual Usuario? ResponsableNavigation { get; set; }
+    public virtual Usuario? Responsable { get; set; }
+
+    [ForeignKey("ClienteId")]
+    [InverseProperty("Cliente")]
+    public virtual ICollection<MedioComunicacion> Medio { get; set; } = new List<MedioComunicacion>();
+
+    [ForeignKey("ClienteId")]
+    [InverseProperty("Cliente")]
+    public virtual ICollection<Segmento> Segmento { get; set; } = new List<Segmento>();
 }
