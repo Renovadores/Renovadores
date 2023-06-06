@@ -29,7 +29,7 @@ const Vacio = () => {
       });
 
     // Tomar los datos del historial de ordenes
-    fetch('https://localhost:44493/api/historial_orden/')
+    fetch('https://localhost:44493/api/historialorden/')
       .then((response) => response.json())
       .then((data) => {
         setHistorial(data);
@@ -61,9 +61,9 @@ const Vacio = () => {
           <Tbody class="table-group-divider">
             {orden.map((orden) => (
               <Tr>
-                <Th scope="row">{orden.id_orden}</Th>
-                <Td>{orden.cliente}</Td>
-                <Td>{orden.fecha_alquiler}</Td>
+                <Th scope="row">{orden.ordeId}</Th>
+                <Td>{orden.clienteId}</Td>
+                <Td>{orden.fechaAlquiler}</Td>
                 <Td>{orden.datalle}</Td>
 
               </Tr>
