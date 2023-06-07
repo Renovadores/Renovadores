@@ -35,7 +35,7 @@ function NavMenu() {
           isOpen={!collapsed}
           navbar
         >
-          <ul className="navbar-nav flex-grow">
+          <ul className="navbar-nav flex-grow" onClick={toggleNavbar}>
             <NavItem>
               <NavLink tag={Link} className="text-light" to="/">
                 Inicio
