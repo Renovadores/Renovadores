@@ -6,19 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
+[PrimaryKey("OrdenId", "ProductoId")]
 public partial class Detalle
 {
     [Key]
-    [Column("ID_reserva")]
-    [StringLength(255)]
-    public string IdReserva { get; set; } = null!;
+    public int OrdenId { get; set; }
 
+    [Key]
     [StringLength(255)]
-    public string? Producto { get; set; }
+    public string ProductoId { get; set; } = null!;
 
     public int? Pedidos { get; set; }
 
-    [Column("Sin_usar")]
     public int? SinUsar { get; set; }
 
     public int? Usados { get; set; }
@@ -27,11 +26,11 @@ public partial class Detalle
 
     public int? Descuento { get; set; }
 
-    [ForeignKey("IdReserva")]
+    [ForeignKey("OrdenId")]
     [InverseProperty("Detalle")]
-    public virtual Orden? IdReservaNavigation { get; set; } = null!;
+    public virtual Orden? Orden { get; set; } = null!;
 
-    [ForeignKey("Producto")]
+    [ForeignKey("ProductoId")]
     [InverseProperty("Detalle")]
-    public virtual Producto? ProductoNavigation { get; set; }
+    public virtual Producto? Producto { get; set; } = null!;
 }

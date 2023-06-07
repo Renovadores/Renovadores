@@ -9,14 +9,13 @@ namespace FicusApp.Models;
 public partial class Producto
 {
     [Key]
-    [Column("SKU")]
     [StringLength(255)]
-    public string Sku { get; set; } = null!;
+    public string ProductoId { get; set; } = null!;
 
     [StringLength(255)]
     public string? Nombre { get; set; }
 
-    public int? Color { get; set; }
+    public int? ColorId { get; set; }
 
     [StringLength(255)]
     public string? Descripcion { get; set; }
@@ -24,37 +23,36 @@ public partial class Producto
     [StringLength(255)]
     public string? Dimensiones { get; set; }
 
-    [Column("Peso_recipiente")]
     public int? PesoRecipiente { get; set; }
 
-    [Column("Peso_desechable")]
     public int? PesoDesechable { get; set; }
 
-    [Column("Alquiler_Comercios")]
     public int? AlquilerComercios { get; set; }
 
-    [Column("Alquiler_Retail")]
     public int? AlquilerRetail { get; set; }
 
-    public int? Categoria { get; set; }
+    public int? CategoriaId { get; set; }
 
-    public int? Familia { get; set; }
+    public int? FamiliaId { get; set; }
 
     [StringLength(255)]
     public string? Imagen { get; set; }
 
-    [ForeignKey("Categoria")]
+    [ForeignKey("CategoriaId")]
     [InverseProperty("Producto")]
-    public virtual Categoria? CategoriaNavigation { get; set; }
+    public virtual Categoria? Categoria { get; set; }
 
-    [ForeignKey("Color")]
+    [ForeignKey("ColorId")]
     [InverseProperty("Producto")]
-    public virtual Color? ColorNavigation { get; set; }
+    public virtual Color? Color { get; set; }
 
-    [InverseProperty("ProductoNavigation")]
+    [InverseProperty("Producto")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
 
-    [ForeignKey("Familia")]
+    [ForeignKey("FamiliaId")]
     [InverseProperty("Producto")]
-    public virtual Familia? FamiliaNavigation { get; set; }
+    public virtual Familia? Familia { get; set; }
+
+    [InverseProperty("Producto")]
+    public virtual ICollection<Inventario> Inventario { get; set; } = new List<Inventario>();
 }

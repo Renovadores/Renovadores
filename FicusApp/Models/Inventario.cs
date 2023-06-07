@@ -6,24 +6,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
-[Keyless]
+[PrimaryKey("ProductoId", "EstadoId")]
 public partial class Inventario
 {
+    [Key]
     [StringLength(255)]
-    public string? Producto { get; set; }
+    public string ProductoId { get; set; } = null!;
 
-    public int? Estado { get; set; }
+    [Key]
+    public int EstadoId { get; set; }
 
     public int? Cantidad { get; set; }
 
     public int? Lote { get; set; }
 
-    [Column("Fecha_ingreso", TypeName = "date")]
+    [Column(TypeName = "date")]
     public DateTime? FechaIngreso { get; set; }
 
-    [ForeignKey("Estado")]
-    public virtual Estado? EstadoNavigation { get; set; }
+    [ForeignKey("EstadoId")]
+    [InverseProperty("Inventario")]
+    public virtual Estado Estado { get; set; } = null!;
 
-    [ForeignKey("Producto")]
-    public virtual Producto? ProductoNavigation { get; set; }
+    [ForeignKey("ProductoId")]
+    [InverseProperty("Inventario")]
+    public virtual Producto Producto { get; set; } = null!;
 }

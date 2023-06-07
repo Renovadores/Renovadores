@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 function ButtonAddOrder(props) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/ordenes/nueva-orden', { state: props.idCliente });
+    navigate('/ordenes/nueva-orden', { state: props.clientId });
   }
   return (
     <div className="row m-3 my-5 d-flex justify-content-center">

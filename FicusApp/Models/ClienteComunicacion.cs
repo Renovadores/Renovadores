@@ -6,18 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
-[Table("Cliente_Comunicacion")]
 public partial class ClienteComunicacion
 {
-    public int? Cliente { get; set; }
-
     [Key]
+    public int ClienteComunicacionId { get; set; }
+
+    public int? ClienteId { get; set; }
+
     [StringLength(255)]
-    public string? Medio { get; set; }
+    public string? MedioId { get; set; }
 
-    [ForeignKey("Cliente")]
-    public virtual Cliente? ClienteNavigation { get; set; }
+    [ForeignKey("ClienteId")]
+    [InverseProperty("ClienteComunicacion")]
+    public virtual Cliente? Cliente { get; set; }
 
-    [ForeignKey("Medio")]
-    public virtual MedioComunicacion? MedioNavigation { get; set; }
+    [ForeignKey("MedioId")]
+    [InverseProperty("ClienteComunicacion")]
+    public virtual MedioComunicacion? Medio { get; set; }
 }

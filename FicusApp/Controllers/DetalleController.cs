@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class DetalleController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public DetalleController(FicusDbContext context)
+        public DetalleController(FicusContext context)
         {
             _context = context;
         }

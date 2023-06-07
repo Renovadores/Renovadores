@@ -9,9 +9,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public ClienteController(FicusDbContext context)
+        public ClienteController(FicusContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace FicusApp.Controllers
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
         {
-            List<Cliente> clientes = _context.Cliente.OrderByDescending(c => c.IdCliente).ToList();
+            List<Cliente> clientes = _context.Cliente.OrderByDescending(c => c.ClienteId).ToList();
             return Ok(clientes);
         }
 
@@ -29,7 +29,7 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetNewId()
         {
             newId id = new newId();
-            id.Id = _context.Cliente.Count()+1;
+            id.Id = _context.Cliente.Count() + 1;
             return Ok(id);
         }
 

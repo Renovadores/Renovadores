@@ -9,13 +9,11 @@ namespace FicusApp.Models;
 public partial class Familia
 {
     [Key]
-    [Column("ID_Familia")]
-    public int IdFamilia { get; set; }
+    public int FamiliaId { get; set; }
 
-    [Column("Nombre_familia")]
     [StringLength(255)]
     public string NombreFamilia { get; set; } = null!;
 
-    [InverseProperty("FamiliaNavigation")]
+    [InverseProperty("Familia")]
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
 }

@@ -9,10 +9,11 @@ namespace FicusApp.Models;
 public partial class Fase
 {
     [Key]
-    [Column("ID_Fase")]
-    public int IdFase { get; set; }
+    public int FaseId { get; set; }
 
-    [Column("Descripcion_estado")]
     [StringLength(255)]
     public string DescripcionEstado { get; set; } = null!;
+
+    [InverseProperty("Fase")]
+    public virtual ICollection<HistorialOrden> HistorialOrden { get; set; } = new List<HistorialOrden>();
 }

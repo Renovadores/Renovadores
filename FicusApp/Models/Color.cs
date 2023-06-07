@@ -9,12 +9,11 @@ namespace FicusApp.Models;
 public partial class Color
 {
     [Key]
-    [Column("ID_Color")]
-    public int IdColor { get; set; }
+    public int ColorId { get; set; }
 
     [StringLength(255)]
     public string? Descripcion { get; set; }
 
-    [InverseProperty("ColorNavigation")]
+    [InverseProperty("Color")]
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
 }

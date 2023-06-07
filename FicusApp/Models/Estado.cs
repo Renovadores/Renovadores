@@ -9,10 +9,11 @@ namespace FicusApp.Models;
 public partial class Estado
 {
     [Key]
-    [Column("ID_Estado")]
-    public int IdEstado { get; set; }
+    public int EstadoId { get; set; }
 
-    [Column("Descripcion_estadoproducto")]
     [StringLength(255)]
-    public string DescripcionEstadoproducto { get; set; } = null!;
+    public string DescripcionEstadoProducto { get; set; } = null!;
+
+    [InverseProperty("Estado")]
+    public virtual ICollection<Inventario> Inventario { get; set; } = new List<Inventario>();
 }

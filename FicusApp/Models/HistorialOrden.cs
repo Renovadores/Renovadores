@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
-[Keyless]
-[Table("Historial_Orden")]
+[PrimaryKey("OrdenId", "FaseId")]
 public partial class HistorialOrden
 {
-    [StringLength(255)]
-    public string Orden { get; set; } = null!;
+    [Key]
+    public int OrdenId { get; set; }
 
-    public int Fase { get; set; }
+    [Key]
+    public int FaseId { get; set; }
 
     [Column(TypeName = "date")]
     public DateTime Inicio { get; set; }
@@ -21,9 +21,11 @@ public partial class HistorialOrden
     [Column(TypeName = "date")]
     public DateTime Final { get; set; }
 
-    [ForeignKey("Fase")]
-    public virtual Fase FaseNavigation { get; set; } = null!;
+    [ForeignKey("FaseId")]
+    [InverseProperty("HistorialOrden")]
+    public virtual Fase Fase { get; set; } = null!;
 
-    [ForeignKey("Orden")]
-    public virtual Orden OrdenNavigation { get; set; } = null!;
+    [ForeignKey("OrdenId")]
+    [InverseProperty("HistorialOrden")]
+    public virtual Orden Orden { get; set; } = null!;
 }

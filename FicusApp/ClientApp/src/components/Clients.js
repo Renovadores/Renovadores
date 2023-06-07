@@ -270,27 +270,29 @@ function Clients() {
         if (otra) {
           media.push("Otra")
         }
+        
         // generate id
         const responseId = await fetch("api/cliente/GetNewId");
         if (responseId.ok) {
           const newClientId = await responseId.json();
+          console.log(personInCharge, paginaWeb)
           // add client
           const responseCliente = await fetch("api/cliente/AddCliente", {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ idCliente: newClientId.id, fechaAgregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+            body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
           });
           if (responseCliente.ok) {
             // add segments
             for (let i = 0; i < segments.length; i++) {
-              const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+              const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
+                body: JSON.stringify({ clienteId: newClientId.id, segmentoId: segments[i] })
               });
               if (!responseSegmento.ok) {
                 // store or notify which segment fails
@@ -298,12 +300,12 @@ function Clients() {
             }
             // add social media
             for (let i = 0; i < media.length; i++) {
-              const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+              const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
+                body: JSON.stringify({ clienteId: newClientId.id, medioId: media[i] })
               });
               if (!responseMedia.ok) {
                 // store or notify which media fails
@@ -321,7 +323,7 @@ function Clients() {
     // When user click on client button, 'navigate' redirect him to new page
     const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
     const handleClickViewClient = (clientIndex) => {
-        navigate('/clientes/informacion', { state: clients[clientIndex].idCliente });
+        navigate('/clientes/informacion', { state: clients[clientIndex].clienteId });
         //second argument "state" allows to pass parameters
     };
 

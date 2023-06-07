@@ -8,11 +8,11 @@ namespace FicusApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Cliente_SegmentoController : ControllerBase
+    public class ClienteSegmentoController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public Cliente_SegmentoController(FicusDbContext context)
+        public ClienteSegmentoController(FicusContext context)
         {
             _context = context;
         }
@@ -22,11 +22,11 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetSegments(int id)
         {
             List<ClienteSegmento> cliente_segmentos = _context.ClienteSegmento
-                                                       .Where(s => s.Cliente == id).ToList();
+                                                       .Where(s => s.ClienteId == id).ToList();
             List<string> segmentos = new();
             for (int i = 0; i < cliente_segmentos.Count; i++)
             {
-                segmentos.Add(cliente_segmentos[i].Segmento);
+                segmentos.Add(cliente_segmentos[i].SegmentoId);
             }
             return Ok(segmentos);
         }
@@ -44,7 +44,10 @@ namespace FicusApp.Controllers
         [Route("DeleteClient_Segment")] 
         public async Task<IActionResult> DeleteClient_Segment([FromBody] ClienteSegmento request)
         {
-            _context.ClienteSegmento.Remove(request);
+            ClienteSegmento clienteSegmento = _context.ClienteSegmento.Where(s =>
+                                                s.ClienteId == request.ClienteId
+                                                && s.SegmentoId == request.SegmentoId).FirstOrDefault();
+            _context.ClienteSegmento.Remove(clienteSegmento);
             _context.SaveChanges();
             return Ok();
         }

@@ -26,7 +26,7 @@ function AddOrder() {
     generateIdOrder();
   }, [])
 
-  const [stock, setStock] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Montezuma", sku: "EC-07-1-CL", cantidad: "45", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-13-1-CL", cantidad: "20", dimensiones: "20x30" }])
+  const [stock, setStock] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Montezuma", sku: "EC-07-1-CL", cantidad: "45", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-17-JA", cantidad: "20", dimensiones: "20x30" }])
 
   const [matchingProducts, setMatchingProducts] = useState([])
 
@@ -70,7 +70,6 @@ function AddOrder() {
 
   const [eventName, setEventName] = useState("");
   const handleEvent = (event) => {
-    console.log(event.target.value);
     setEventName(event.target.value);
   }
 
@@ -114,13 +113,41 @@ function AddOrder() {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    var eventId = null;
+    if (eventName !== "") {
+      // verify the event doesn´t exist
+      const responseEventExists = await fetch(`api/evento/findEvento/${eventName}`)
+      if (responseEventExists.ok) {
+        const data = await responseEventExists.json();
+        console.log(data)
+        if (data.exist) {
+          console.log("El evento ya existe!")
+        } else {
+          //add event
+          const responseEvent = await fetch("api/evento/AddEvento", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ eventoId: 0, nombreEvento: eventName, descripcionEvento: '' })
+          });
+        }
+      }
+      const responseEventId = await fetch(`api/evento/GetEventId/${eventName}`)
+      if (responseEventId.ok) {
+        const data = await responseEventId.json();
+        eventId = data.id;
+      }
+    }
+    
 
     const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ idOrden: orderId, fechaAlquiler: deliveryDate, usuario: 1, cliente: clientId, registroLimpieza: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
+      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: 1, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
     });
     if (responseOrder.ok) {
       console.log("Orden agregada")
@@ -131,17 +158,14 @@ function AddOrder() {
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
           },
-          body: JSON.stringify({ idReserva: orderId, producto: selectedProducts[i].sku, pedidos: selectedProducts[i].cantidad, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
+          body: JSON.stringify({ ordenId: orderId, productoId: selectedProducts[i].sku, pedidos: selectedProducts[i].cantidad, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
         });
         if (responseDetail.ok) {
 
         }
       }
     }
-    //add event
-    if (eventName !== "") {
-
-    }
+    
     navigate('/clientes/informacion', { state: clientId });
   }
 

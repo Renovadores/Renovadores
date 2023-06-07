@@ -10,9 +10,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class OrdenController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public OrdenController(FicusDbContext context)
+        public OrdenController(FicusContext context)
         {
             _context = context;
         }
@@ -29,10 +29,15 @@ namespace FicusApp.Controllers
         [Route("GetNewCode")]
         public async Task<IActionResult> GetNewCode()
         {
-            string code = "OR-";
-            string number = (_context.Orden.Count() + 1).ToString();
-            number = number.PadLeft(4, '0');
-            code += number;
+            //string code = "OR-";
+            //string number = (_context.Orden.Count() + 1).ToString();
+            //number = number.PadLeft(4, '0');
+            //code += number;
+            //NewCode response = new()
+            //{
+            //    Id = code
+            //};
+            int code = _context.Orden.Count() + 1;
             NewCode response = new()
             {
                 Id = code
@@ -44,6 +49,7 @@ namespace FicusApp.Controllers
         [Route("AddOrder")]
         public async Task<IActionResult> AddOrder([FromBody] Orden request)
         {
+            // ID is int
             await _context.Orden.AddAsync(request);
             await _context.SaveChangesAsync();
             return Ok();
@@ -52,6 +58,6 @@ namespace FicusApp.Controllers
 
     public class NewCode
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }
