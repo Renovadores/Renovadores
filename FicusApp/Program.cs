@@ -1,5 +1,6 @@
 // reference to Models (context)
 using FicusApp.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,11 @@ builder.Services.AddControllersWithViews();
 
 //access to Models (for controllers)
 builder.Services.AddDbContext<FicusContext>();
+
+// Avoid error when inner join (include method) is executed
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 
 var app = builder.Build();
 

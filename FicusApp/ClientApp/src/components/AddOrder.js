@@ -26,14 +26,11 @@ function AddOrder() {
     generateIdOrder();
   }, [])
 
-  const [stock, setStock] = useState([{ nombre: "Montezuma", sku: "EC-07-1-JA", cantidad: "14", dimensiones: "20x30" }, { nombre: "Montezuma", sku: "EC-07-1-CL", cantidad: "45", dimensiones: "20x30" }, { nombre: "Tapanti", sku: "EC-12-1-CL", cantidad: "20", dimensiones: "20x30" }, { nombre: "Corcovado", sku: "EC-17-JA", cantidad: "20", dimensiones: "20x30" }])
-
   const [matchingProducts, setMatchingProducts] = useState([])
 
   const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
-  const dateDB = dateFormatBD();
   //TO-DO: Get user name automatically from login info
   const [clientName, setClientName] = useState("");
   
@@ -73,41 +70,115 @@ function AddOrder() {
     setEventName(event.target.value);
   }
 
-  const handleProductInput = (event) => {
-    let input = event.target.value
-    console.log(input)
-    if (input === "") {
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
       setMatchingProducts([])
     } else {
-      setMatchingProducts(stock.filter(product => product.nombre.indexOf(input) !== -1));
+      getMatchProducts(productInput);
+    }
+  }
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+    if (event.target.value === "") {
+      setMatchingProducts([])
+    } else {
+      getMatchProducts(event.target.value);
+    }
+  }
+
+  const [searchByCodeOrName, setSearchByCodeOrName] = useState(false);
+  const handleSearchCriteria = (event) => {
+    setSearchByCodeOrName(event.target.checked)
+  }
+
+  useEffect(() => {
+    searchProductInput()
+  }, [searchByCodeOrName])
+
+  const getMatchProducts = async (input) => {
+    //get some products from stock that match with input
+    const responseInventory = await fetch(`api/inventario/GetMatchProducts/${input}/${searchByCodeOrName}`)
+    if (responseInventory.ok) {
+      const matchProducts = await responseInventory.json();
+      setMatchingProducts(matchProducts)
     }
   }
 
   const [cost, setCost] = useState(0);
-  const handleSelectedProduct = (sku) => {
+  const handleSelectedProduct = async (sku) => {
     //TO-DO: verify if the cuantity is valid and decrease total products
-    if (cuantity !== "" && cuantity > 0) {
-      var selectedProduct = JSON.parse(JSON.stringify(stock.find(selectedProduct => selectedProduct.sku === sku)));
-      selectedProduct.cantidad = cuantity;
-      setSelectedProducts([...selectedProducts, selectedProduct]);
-      setCost(cost + (cuantity * 1000));
-      stock.find(product => product.sku === sku).cantidad -= cuantity;
+    if (sku !== "" && cuantity !== "" && cuantity > 0) {
+
+      var selectedProduct = JSON.parse(JSON.stringify(matchingProducts.find(selectedProduct => selectedProduct.productoId === sku)));
+      var productCost = selectedProduct.producto.alquilerRetail;
+      setCost(cost + (cuantity * productCost));
+      var productName = selectedProduct.producto.nombre;
+      var productSize = selectedProduct.producto.nombre;
+
+      var selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail:productCost }
+      setSelectedProducts([...selectedProducts, selectedProductInfo])
+
+      // Go to stock and reduce product cuantity
+      const responseStock = await fetch(`api/inventario/GetProductInventory/${sku}/${1}`);
+      if (responseStock.ok) {
+        const productStock = await responseStock.json();
+        productStock.cantidad -= cuantity;
+        // Edit record
+        const response = await fetch("api/inventario/EditInventory", {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify(productStock)
+        });
+        if (response.ok) {
+
+        }
+      } else {
+        // notify error
+      }
+      setProductInput("");
+      setMatchingProducts([])
     }
     setCuantity("");
   }
 
   const [cuantity, setCuantity] = useState("")
   const handleCuantity = (event) => {
-    console.log(event.target.value);
     setCuantity(event.target.value)
   }
 
-  const handleDelete = (sku) => {
-    console.log("Se elimino el producto");
-    setCost(cost - selectedProducts.find(product=>product.sku === sku).cantidad*1000)
-    setSelectedProducts((currentProduct) =>
-      currentProduct.filter((product) => product.sku !== sku)
-    )
+  const handleDelete = async (sku) => {
+    var productToDelete = selectedProducts.find(product => product.productoId === sku);
+    setCost(cost - (productToDelete.pedidos * productToDelete.alquilerRetail));
+    
+    // Go to stock and increase product cuantity
+    const responseStock = await fetch(`api/inventario/GetProductInventory/${sku}/${1}`);
+    if (responseStock.ok) {
+      const productStock = await responseStock.json();
+      // get requested cuantity 
+      var requestedCuantity = parseInt(productToDelete.pedidos);
+      productStock.cantidad += requestedCuantity;
+      // Edit record
+      const response = await fetch("api/inventario/EditInventory", {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(productStock)
+      });
+      if (response.ok) {
+
+      }
+    } else {
+      // notify error
+    }
+
+    setSelectedProducts((currentProduct) => currentProduct.filter((product) => product.productoId !== sku))
+    setCuantity("");
   }
 
   const navigate = useNavigate();
@@ -132,6 +203,9 @@ function AddOrder() {
             },
             body: JSON.stringify({ eventoId: 0, nombreEvento: eventName, descripcionEvento: '' })
           });
+          if (responseEvent.ok) {
+
+          }
         }
       }
       const responseEventId = await fetch(`api/evento/GetEventId/${eventName}`)
@@ -158,7 +232,7 @@ function AddOrder() {
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
           },
-          body: JSON.stringify({ ordenId: orderId, productoId: selectedProducts[i].sku, pedidos: selectedProducts[i].cantidad, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
+          body: JSON.stringify({ ordenId: orderId, productoId: selectedProducts[i].productoId, pedidos: selectedProducts[i].pedidos, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
         });
         if (responseDetail.ok) {
 
@@ -196,17 +270,30 @@ function AddOrder() {
 
               <label htmlFor="endDate" className="my-3">Fecha de recepcion de la orden</label>
               <input id="endDate" className="form-control w-50 mb-4" type="date" value={collectionDate} onChange={handleCollectionDate} />
-
             </form>
           </div>
         </div>
 
         <div className="col-md">
           <div className="row">
-            <h3 className="mb-4">Seleccion de Productos</h3>
+            <h3 className="mb-4 d-flex justify-content-center">Seleccion de Productos</h3>
           </div>
 
-          <MatchingProductsInput handler={handleProductInput} />
+          <div className="row mb-2">
+            <div className="col d-flex justify-content-end">
+              <label className="form-check-label">Buscar por nombre</label>
+            </div>
+            <div className="col-1 d-flex justify-content-center">
+              <div className="form-check form-switch">
+                <input className="form-check-input" type="checkbox" role="switch" onChange={handleSearchCriteria} />
+              </div>
+            </div>
+            <div className="col d-flex justify-content-start">
+              <label className="form-check-label">Buscar por codigo</label>
+            </div>
+          </div>
+          
+          <MatchingProductsInput productInput={productInput} handler={handleProductInput} />
           <MatchingProductList products={matchingProducts} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
 
           <h5 className="mt-4">Productos seleccionados:</h5>
@@ -234,20 +321,6 @@ function currentDateFormat() {
   const year = current.getFullYear();
   const date = `${day}-${month}-${year}`;
 
-  return date;
-}
-
-function dateFormatBD() {
-  const current = new Date();
-  var month = `${current.getMonth() + 1}`;
-  if (month < 10) {
-    month = '0' + month;
-  }
-  var day = `${current.getDate()}`;
-  if (day < 10) {
-    day = '0' + day;
-  }
-  const date = `${current.getFullYear()}-${month}-${day}`;
   return date;
 }
 
