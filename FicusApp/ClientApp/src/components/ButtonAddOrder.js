@@ -1,16 +1,18 @@
-import { useNavigate } from 'react-router-dom';
-
 function ButtonAddOrder(props) {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/ordenes/nueva-orden', { state: props.clientId });
-  }
   return (
-    <div className="row m-3 my-5 d-flex justify-content-center">
-      <div className="col p-0 d-flex justify-content-center">
-        <button className="btn btn-primary" onClick={handleClick}>
-          Nueva Orden
-        </button>
+    <div className="row mx-5 mt-3 d-flex justify-content-center">
+      <div className="col-8 p-0 d-flex justify-content-center">
+        {
+          props.enable === true ?
+            <button className="btn btn-primary" form="order-form" type="submit" >
+              Generar Orden
+            </button>
+            :
+            <button className="btn btn-primary" form="order-form" type="submit" disabled>
+              Generar Orden
+            </button>
+        }
+        
       </div>
     </div>
   );

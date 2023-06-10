@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import BelongToEvent from "./BelongToEvent";
+import ButtonAddOrder from "./ButtonAddOrder";
 import MatchingProductList from "./MatchingProductList";
 import MatchingProductsInput from "./MatchingProductsInput";
+import SearchCriteriaSwitch from "./SearchCriteriaSwitch";
 import SelectedProductList from "./SelectedProductList";
 
 function AddOrder() {
@@ -72,6 +74,7 @@ function AddOrder() {
 
   // this method is used when search criteria is changed
   const searchProductInput = () => {
+    console.log("Input: ", productInput)
     if (productInput === "") {
       setMatchingProducts([])
     } else {
@@ -103,13 +106,26 @@ function AddOrder() {
     const responseInventory = await fetch(`api/inventario/GetMatchProducts/${input}/${searchByCodeOrName}`)
     if (responseInventory.ok) {
       const matchProducts = await responseInventory.json();
+      // verify if cuantity of some product was already changed
+      console.log(matchingProducts, selectedProducts)
+      for (var i = 0; i < matchProducts.length; i++) {
+        for (var j = 0; j < selectedProducts.length; j++) {
+          if (matchProducts[i].productoId === selectedProducts[j].productoId) {
+            matchProducts[i].cantidad -= selectedProducts[j].pedidos;
+          }
+        }
+      }
       setMatchingProducts(matchProducts)
     }
   }
 
+  const [cuantity, setCuantity] = useState("")
+  const handleCuantity = (event) => {
+    setCuantity(event.target.value)
+  }
+
   const [cost, setCost] = useState(0);
   const handleSelectedProduct = async (sku) => {
-    //TO-DO: verify if the cuantity is valid and decrease total products
     if (sku !== "" && cuantity !== "" && cuantity > 0) {
 
       var selectedProduct = JSON.parse(JSON.stringify(matchingProducts.find(selectedProduct => selectedProduct.productoId === sku)));
@@ -118,65 +134,28 @@ function AddOrder() {
       var productName = selectedProduct.producto.nombre;
       var productSize = selectedProduct.producto.nombre;
 
-      var selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail:productCost }
-      setSelectedProducts([...selectedProducts, selectedProductInfo])
-
-      // Go to stock and reduce product cuantity
-      const responseStock = await fetch(`api/inventario/GetProductInventory/${sku}/${1}`);
-      if (responseStock.ok) {
-        const productStock = await responseStock.json();
-        productStock.cantidad -= cuantity;
-        // Edit record
-        const response = await fetch("api/inventario/EditInventory", {
-          method: "PUT",
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify(productStock)
-        });
-        if (response.ok) {
-
-        }
+      //Verify if the product is already added
+      var selectedProductInfo = selectedProducts.find(selectedProduct => selectedProduct.productoId === sku);
+      if (selectedProductInfo) {
+        var newCuantity = parseInt(selectedProductInfo.pedidos) + parseInt(cuantity);
+        selectedProductInfo.pedidos = newCuantity;
+        ////delete old info
+        //setSelectedProducts((currentProduct) => currentProduct.find((product) => product.productoId !== sku))
       } else {
-        // notify error
+        selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
+        setSelectedProducts([...selectedProducts, selectedProductInfo])
       }
+      
+      
       setProductInput("");
       setMatchingProducts([])
     }
     setCuantity("");
   }
 
-  const [cuantity, setCuantity] = useState("")
-  const handleCuantity = (event) => {
-    setCuantity(event.target.value)
-  }
-
   const handleDelete = async (sku) => {
     var productToDelete = selectedProducts.find(product => product.productoId === sku);
     setCost(cost - (productToDelete.pedidos * productToDelete.alquilerRetail));
-    
-    // Go to stock and increase product cuantity
-    const responseStock = await fetch(`api/inventario/GetProductInventory/${sku}/${1}`);
-    if (responseStock.ok) {
-      const productStock = await responseStock.json();
-      // get requested cuantity 
-      var requestedCuantity = parseInt(productToDelete.pedidos);
-      productStock.cantidad += requestedCuantity;
-      // Edit record
-      const response = await fetch("api/inventario/EditInventory", {
-        method: "PUT",
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(productStock)
-      });
-      if (response.ok) {
-
-      }
-    } else {
-      // notify error
-    }
-
     setSelectedProducts((currentProduct) => currentProduct.filter((product) => product.productoId !== sku))
     setCuantity("");
   }
@@ -227,17 +206,39 @@ function AddOrder() {
       console.log("Orden agregada")
       //Add selected products to data base
       for (let i = 0; i < selectedProducts.length; i++) {
+        var productId = selectedProducts[i].productoId;
+        var pedidos = selectedProducts[i].pedidos;
         var responseDetail = await fetch("api/detalle/AddDetalle", {
           method: "POST",
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
           },
-          body: JSON.stringify({ ordenId: orderId, productoId: selectedProducts[i].productoId, pedidos: selectedProducts[i].pedidos, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
+          body: JSON.stringify({ ordenId: orderId, productoId: productId, pedidos: pedidos, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
         });
         if (responseDetail.ok) {
+          // Go to stock and reduce product cuantity
+          const responseStock = await fetch(`api/inventario/GetProductInventory/${productId}/${1}`);
+          if (responseStock.ok) {
+            const productStock = await responseStock.json();
+            productStock.cantidad -= pedidos;
+            // Edit record
+            const response = await fetch("api/inventario/EditInventory", {
+              method: "PUT",
+              headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+              },
+              body: JSON.stringify(productStock)
+            });
+            if (response.ok) {
 
+            }
+          } else {
+            // notify error
+          }
         }
       }
+      //Modify cuantity in Stock
+      
     }
     
     navigate('/clientes/informacion', { state: clientId });
@@ -263,13 +264,13 @@ function AddOrder() {
         
             <form id="order-form" onSubmit={handleSubmit} >
               
-              <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
-
               <label htmlFor="startDate" className="mt-3">Fecha de entrega de la orden</label>
-              <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} />
+              <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} autoFocus />
 
-              <label htmlFor="endDate" className="my-3">Fecha de recepcion de la orden</label>
+              <label htmlFor="endDate" className="mt-3">Fecha de recepcion de la orden</label>
               <input id="endDate" className="form-control w-50 mb-4" type="date" value={collectionDate} onChange={handleCollectionDate} />
+
+              <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
             </form>
           </div>
         </div>
@@ -279,35 +280,37 @@ function AddOrder() {
             <h3 className="mb-4 d-flex justify-content-center">Seleccion de Productos</h3>
           </div>
 
-          <div className="row mb-2">
-            <div className="col d-flex justify-content-end">
-              <label className="form-check-label">Buscar por nombre</label>
-            </div>
-            <div className="col-1 d-flex justify-content-center">
-              <div className="form-check form-switch">
-                <input className="form-check-input" type="checkbox" role="switch" onChange={handleSearchCriteria} />
-              </div>
-            </div>
-            <div className="col d-flex justify-content-start">
-              <label className="form-check-label">Buscar por codigo</label>
-            </div>
-          </div>
-          
+          <SearchCriteriaSwitch handle={handleSearchCriteria} />
           <MatchingProductsInput productInput={productInput} handler={handleProductInput} />
-          <MatchingProductList products={matchingProducts} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
-
-          <h5 className="mt-4">Productos seleccionados:</h5>
-          <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
-          <div className="row mt-5 mb-5">
-            <h5>Costo de la orden: {"\u20A1" + cost}</h5>
-          </div>
-          <div className="row mx-5 d-flex justify-content-center">
-            <div className="col-8 p-0 d-flex justify-content-center">
-              <button className="btn btn-primary" form="order-form" type="submit">
-                Generar Orden
-              </button>
-            </div>
-          </div>
+          {
+            matchingProducts.length === 0 && productInput !== "" ?
+              <label>No se encontro el producto</label>
+              :
+              matchingProducts.length !== 0 && productInput !== "" ?
+                <MatchingProductList products={matchingProducts} cuantity={cuantity} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
+                :
+                <></>
+          }
+          
+          {
+            selectedProducts.length > 0 ?
+              <>
+                <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
+                <div className="container mt-5 mb-5">
+                  <label>Costo de la orden: {"\u20A1" + cost}</label>
+                </div>
+              </>
+              :
+              <></>
+              
+          }
+          {
+            deliveryDate === "" || selectedProducts.length === 0 ?
+              <ButtonAddOrder enable= {false} />
+              :
+              <ButtonAddOrder enable= {true} />
+          }
+          
         </div>
       </div>
     </div>

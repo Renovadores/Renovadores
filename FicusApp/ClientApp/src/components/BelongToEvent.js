@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 function BelongToEvent(props) {
-  //TO-DO: Get events from DB
   const [events, setEvents] = useState([]);
   useEffect(() => {
     const getEvents = async () => {
@@ -17,7 +16,7 @@ function BelongToEvent(props) {
 
   return (
     <div>
-      <div className="form-check form-switch">
+      <div className={props.belongToEvent === true ? "form-check form-switch" : "form-check form-switch mb-3"}>
         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked={props.belongToEvent} onChange={props.handleBelongToEvent} />
         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Pertenece a un evento</label>
       </div>

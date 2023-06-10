@@ -4,11 +4,12 @@ function SelectedProductList(props) {
 
   return (
     <div className="container">
+      <label className="mt-4">Productos seleccionados:</label>
       <ol className="list-group list-group-numbered">
         {
           props.products.map((product, index) => (
             <div key={index}>
-              <li className="list-group-item d-flex justify-content-between align-items-center"  key={product.productoId}>
+              <li className="list-group-item d-flex justify-content-between align-items-center border border-info mb-1"  key={product.productoId}>
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">{product.nombre} <span className="badge bg-primary rounded-pill">{product.pedidos}</span> </div>
                   {product.productoId}  {product.dimensiones}

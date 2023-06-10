@@ -7,7 +7,7 @@ import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
-import ButtonAddOrder from "./ButtonAddOrder";
+import ButtonOrder from "./ButtonOrder";
 
 function ClientInformation() {
   // get client id sent by navigate function in Client.js
@@ -446,7 +446,7 @@ function ClientInformation() {
               </div>
               <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
             </div>
-            <ButtonAddOrder clientId={clientId} />
+            <ButtonOrder clientId={clientId} />
           </div>
       }
     </div> 

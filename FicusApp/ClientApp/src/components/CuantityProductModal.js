@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useState } from "react";
 
 function CuantityProductModal(props) {
   return (
@@ -13,14 +13,20 @@ function CuantityProductModal(props) {
             <label>Total disponible: {props.cantidad}</label>
 
             <div className="form-floating mt-3 mb-3">
-              <input type="number" className="form-control" id="floatingInput2" placeholder="name@example.com" onChange={props.handleCuantity} autoComplete="off" />
+              <input type="number" className="form-control" id="floatingInput2" placeholder="name@example.com" onChange={props.handleCuantity} value={props.cuantity} autoComplete="off" />
               <label htmlFor="floatingInput">Indique la cantidad</label>
             </div>
 
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={props.handleCancell}>Cancelar</button>
-            <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => props.handleSelectedProduct(props.sku)}>Aceptar</button>
+            {
+              props.cuantity > 0 && props.cuantity <= props.cantidad  ?
+                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => props.handleSelectedProduct(props.sku)}>Aceptar</button>
+                :
+                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => props.handleSelectedProduct(props.sku)} disabled >Aceptar</button>
+            }
+            
           </div>
         </div>
       </div>
