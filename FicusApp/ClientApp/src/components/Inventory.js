@@ -123,6 +123,44 @@ function Inventory() {
     }
   };
 
+  const [inventorySelected, setInventorySelected] = useState();
+  const handleOnSelectInventory = (product) => {
+    setInventorySelected(product);
+  };
+
+  const handleSubmitEdit = async (event, inventoryRow) => {
+    event.preventDefault();
+    console.log(inventoryRow + " inventoryrow");
+    console.dir({
+      iD_Inventario: inventoryRow.iD_Inventario,
+      producto: inventoryRow.producto,
+      estado: inventoryRow.estado,
+      cantidad: inventoryRow.cantidad,
+      lote: inventoryRow.lote,
+      fecha_ingreso: inventoryRow.fecha_ingreso,
+    });
+    const responseInventory = await fetch("api/inventario/EditInventory", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({
+        iD_Inventario: inventoryRow.iD_Inventario,
+        producto: inventoryRow.producto,
+        estado: inventoryRow.estado,
+        cantidad: inventoryRow.cantidad,
+        lote: inventoryRow.lote,
+        fecha_ingreso: inventoryRow.fecha_ingreso,
+      }),
+    });
+    if (responseInventory.ok) {
+      handleCancel();
+      getInventory();
+    } else {
+      console.log(responseInventory.text + " Error handleSubmit");
+    }
+  };
+
   return (
     <div>
       <section>
@@ -271,11 +309,50 @@ function Inventory() {
             ></div>
           </div>
         ) : (
-          <InventoryList inventory={inventory} />
+          <InventoryList
+            inventory={inventory}
+            inventoryRow={inventorySelected}
+            states={inventoryStates}
+            onSelectInventory={handleOnSelectInventory}
+            onSubmit={handleSubmitEdit}
+          />
         )}
       </section>
     </div>
   );
 }
 
+export function GetInventory() {
+  // get inventory from data base
+  //const [inventoryChecked, setInventoryChecked] = useState(false);
+  const [inventory, setInventory] = useState([]);
+  const getInventory = async () => {
+    const response = await fetch("api/inventario/GetInventory");
+    if (response.ok) {
+      const data = await response.json();
+      setInventory(data);
+      //setInventoryChecked(true);
+    } else {
+      console.log(response.text);
+    }
+  };
+  getInventory();
+  return inventory;
+}
+
+export function GetInventoryStates() {
+  // Get inventory states from DB
+  const [inventoryStates, setInventoryStates] = useState([]);
+  const getInventoryStates = async () => {
+    const response = await fetch("api/inventario/GetState");
+    if (response.ok) {
+      const data = await response.json();
+      setInventoryStates(data);
+    } else {
+      console.log(response.text);
+    }
+  };
+  getInventoryStates();
+  return inventoryStates;
+}
 export default Inventory;
