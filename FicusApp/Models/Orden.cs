@@ -32,7 +32,7 @@ public partial class Orden
 
     [ForeignKey("ClienteId")]
     [InverseProperty("Orden")]
-    public virtual Cliente? Cliente { get; set; } = null!;
+    public virtual Cliente Cliente { get; set; } = null!;
 
     [InverseProperty("Orden")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
@@ -46,5 +46,5 @@ public partial class Orden
 
     [ForeignKey("UsuarioId")]
     [InverseProperty("Orden")]
-    public virtual Usuario? Usuario { get; set; } = null!;
+    public virtual Usuario Usuario { get; set; } = null!;
 }

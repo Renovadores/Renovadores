@@ -25,9 +25,9 @@ public partial class Inventario
 
     [ForeignKey("EstadoId")]
     [InverseProperty("Inventario")]
-    public virtual Estado? Estado { get; set; } = null!;
+    public virtual Estado Estado { get; set; } = null!;
 
     [ForeignKey("ProductoId")]
     [InverseProperty("Inventario")]
-    public virtual Producto? Producto { get; set; } = null!;
+    public virtual Producto Producto { get; set; } = null!;
 }

@@ -139,14 +139,10 @@ function AddOrder() {
       if (selectedProductInfo) {
         var newCuantity = parseInt(selectedProductInfo.pedidos) + parseInt(cuantity);
         selectedProductInfo.pedidos = newCuantity;
-        ////delete old info
-        //setSelectedProducts((currentProduct) => currentProduct.find((product) => product.productoId !== sku))
       } else {
         selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
         setSelectedProducts([...selectedProducts, selectedProductInfo])
       }
-      
-      
       setProductInput("");
       setMatchingProducts([])
     }
