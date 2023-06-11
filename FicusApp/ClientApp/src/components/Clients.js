@@ -14,34 +14,58 @@ import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 
 function Clients() {
-    // get clients from data base
-    //this variable allows to know if there are no clients in db (to stop spinner)
-    const [clientsChecked, setClientsChecked] = useState(false);
-    const [clients, setClients] = useState([]);
-    const [users, setUsers] = useState([]);
-    const getClients = async () => {
-      setClientsChecked(false);
-      const response = await fetch("api/cliente/GetClientes");
-      if (response.ok) {
-        const data = await response.json();
-        setClients(data);
-        setClientsChecked(true);
-      } else {
-          console.log(response.text);
-      }
-      // get users
-      const responseUsers = await fetch("api/usuario/GetUsers");
-      if (responseUsers.ok) {
-        const dataUsers = await responseUsers.json();
-        setUsers(dataUsers);
-      }
+  // get clients from data base
+  //this variable allows to know if there are no clients in db (to stop spinner)
+  const [clientsChecked, setClientsChecked] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [token, setToken] = useState("");
+
+  const getToken = async () => {
+    // get token from DB
+    // TO-DO: GET CURRENT USER
+    var usuarioId = 1;
+    const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${usuarioId}`)
+    if (responseToken.ok) {
+      const data = await responseToken.json();
+      setToken(data.token);
     }
+  }
+
+  useEffect(() => {
+    if (token !== "") {
+      getClients()
+    }
+  }, [token])
+
+  const getClients = async () => {
+    setClientsChecked(false);
+    const response = await fetch("api/cliente/GetClientes", {
+      method: 'GET',
+      headers: {
+        'Authorization' : `Bearer ${token}`,
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setClients(data);
+      setClientsChecked(true);
+    } else {
+        console.log(response.text);
+    }
+    // get users
+    const responseUsers = await fetch("api/usuario/GetUsers");
+    if (responseUsers.ok) {
+      const dataUsers = await responseUsers.json();
+      setUsers(dataUsers);
+    }
+  }
 
 
     // this method allows to auto call getClients when page is started
-    useEffect(() => {
-        getClients();
-    }, []);
+  useEffect(() => {
+    getToken();
+  }, []);
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
