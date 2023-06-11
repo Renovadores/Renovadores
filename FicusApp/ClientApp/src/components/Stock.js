@@ -43,9 +43,9 @@ function Stock() {
   //   //second argument allows to pass parameters
   // };
   // Agregar producto
-  const [name, setName] = useState("");
-  const handleChangeName = (event) => {
-    setName(event.target.value);
+  const [nombre, setNombre] = useState("");
+  const handleChangeNombre = (event) => {
+    setNombre(event.target.value);
   };
 
   const [descripcion, setDescripcion] = useState("");
@@ -86,22 +86,22 @@ function Stock() {
     current.getMonth() + 1
   }-${current.getFullYear()}`;
 
-  const [family, setFamily] = useState(1);
-  const handleChangeFamily = (event) => {
-    setFamily(event.target.value);
+  const [familia, setFamilia] = useState(1);
+  const handleChangeFamilia = (event) => {
+    setFamilia(event.target.value);
   };
   const [color, setColor] = useState(1);
   const handleChangeColor = (event) => {
     setColor(event.target.value);
   };
-  const [category, setCategory] = useState(1);
-  const handleChangeCategory = (event) => {
-    setCategory(event.target.value);
+  const [categoria, setCategoria] = useState(1);
+  const handleChangeCategoria = (event) => {
+    setCategoria(event.target.value);
   }
 
   const handleCancel = () => {
     setSKU("");
-    setName("");
+    setNombre("");
     setDescripcion("");
     setDimensiones("");
     setPeso_recipiente(0);
@@ -109,8 +109,8 @@ function Stock() {
     setAlquiler_Comercios(0);
     setAlquiler_Retail(0);
     setColor(0);
-    setCategory(0);
-    setFamily(0);
+    setCategoria(0);
+    setFamilia(0);
   };
   //Add Product to data base
   const handleSubmit = async (event) => {
@@ -118,7 +118,7 @@ function Stock() {
     console.log(
       date,
       sku,
-      name,
+      nombre,
       color,
       descripcion,
       dimensiones,
@@ -126,32 +126,31 @@ function Stock() {
       peso_desechable,
       alquiler_comercios,
       alquiler_retail,
-      category,
-      family
+      categoria,
+      familia
     );
-    const responseCliente = await fetch("api/producto/AddProducto", {
+    const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
-        fecha_Agregado: date,
         color: color,
         sku: sku,
-        name: name,
+        nombre: nombre,
         descripcion: descripcion,
         dimensiones: dimensiones,
         peso_recipiente: peso_recipiente,
         peso_desechable: peso_desechable,
         alquiler_comercios: alquiler_comercios,
         alquiler_retail: alquiler_retail,
-        category: category,
-        family: family,
+        categoria: categoria,
+        familia: familia,
       }),
     });
-    console.log(responseCliente);
+    console.log(responseProduct);
 
-    if (responseCliente.ok) {
+    if (responseProduct.ok) {
       handleCancel();
       getProducts();
     }
@@ -208,8 +207,8 @@ function Stock() {
                 <form onSubmit={handleSubmit}>
                   <Input variable={sku} handler={handleChangeSKU} text="SKU" />
                   <Input
-                    variable={name}
-                    handler={handleChangeName}
+                    variable={nombre}
+                    handler={handleChangeNombre}
                     text="Nombre"
                   />
                   <div className="mb-3">
@@ -252,12 +251,12 @@ function Stock() {
                   />
 
                   <SelectCategory
-                    variable={category}
-                    handler={handleChangeCategory}
+                    variable={categoria}
+                    handler={handleChangeCategoria}
                   />
                   <SelectFamily
-                    variable={family}
-                    handler={handleChangeFamily}
+                    variable={familia}
+                    handler={handleChangeFamilia}
                   />
                   <SelectColor variable={color} handler={handleChangeColor} />
 

@@ -30,14 +30,16 @@ function ProductInformation() {
         getProduct();
     }, []);
 
-    const [SKUId, setSKUId] = useState("");
+
+
+    const [sku, setSKU] = useState("");
     const handleChangeSKU = (event) => {
-        setSKUId(event.target.value);
+        setSKU(event.target.value);
     };
 
-    const [name, setName] = useState("");
-    const handleChangeName = (event) => {
-        setName(event.target.value);
+    const [nombre, setNombre] = useState("");
+    const handleChangeNombre = (event) => {
+        setNombre(event.target.value);
     };
 
     const [color, setColor] = useState("");
@@ -45,44 +47,44 @@ function ProductInformation() {
         setColor(event.target.value);
     };
 
-    const [description, setDescription] = useState("");
-    const handleChangeDescription = (event) => {
-        setDescription(event.target.value);
+    const [descripcion, setDescripcion] = useState("");
+    const handleChangeDescripcion = (event) => {
+        setDescripcion(event.target.value);
     };
 
-    const [dimentions, setDimentions] = useState("");
-    const handleChangeDimentions = (event) => {
-        setDimentions(event.target.value);
+    const [dimensiones, setDimensiones] = useState("");
+    const handleChangeDimensiones = (event) => {
+        setDimensiones(event.target.value);
     };
 
-    const [bowlWeight, setBowlWeight] = useState("");
-    const handleChangeBowlWeight = (event) => {
-        setBowlWeight(event.target.value);
+    const [peso_recipiente, setPeso_recipiente] = useState("");
+    const handleChangePeso_recipiente = (event) => {
+        setPeso_recipiente(event.target.value);
     };
 
-    const [notReusable, setNotReusable] = useState("");
-    const handleChangeNotReusable = (event) => {
-        setNotReusable(event.target.value);
+    const [peso_desechable, setPeso_desechable] = useState("");
+    const handleChangePeso_desechable = (event) => {
+        setPeso_desechable(event.target.value);
     };
 
-    const [comercialP, setComercialP] = useState("");
-    const handleChangeComercialP = (event) => {
-        setComercialP(event.target.value);
+    const [alquiler_comercios, setAlquiler_comercios] = useState("");
+    const handleChangeAlquiler_comercios = (event) => {
+        setAlquiler_comercios(event.target.value);
     };
 
-    const [retailP, setRetailP] = useState("");
-    const handleChangeRetailP = (event) => {
-        setRetailP(event.target.value);
+    const [alquiler_retail, setAlquiler_retail] = useState("");
+    const handleChangeAlquiler_retail = (event) => {
+        setAlquiler_retail(event.target.value);
     };
 
-    const [category, setCategory] = useState("");
-    const handleChangeCategory = (event) => {
-        setCategory(event.target.value);
+    const [categoria, setCategoria] = useState("");
+    const handleChangeCategoria = (event) => {
+        setCategoria(event.target.value);
     };
 
-    const [family, setFamily] = useState("");
-    const handleChangeFamily = (event) => {
-        setFamily(event.target.value);
+    const [familia, setFamilia] = useState("");
+    const handleChangeFamilia = (event) => {
+        setFamilia(event.target.value);
     };
 
     const [image, setImage] = useState("");
@@ -90,18 +92,59 @@ function ProductInformation() {
         setImage(event.target.value);
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(
+            sku,
+            nombre,
+            color,
+            descripcion,
+            dimensiones,
+            peso_recipiente,
+            peso_desechable,
+            alquiler_comercios,
+            alquiler_retail,
+            categoria,
+            familia
+        );
+        const response = await fetch("api/producto/EditProducto", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                color: color,
+                sku: sku,
+                nombre: nombre,
+                descripcion: descripcion,
+                dimensiones: dimensiones,
+                peso_recipiente: peso_recipiente,
+                peso_desechable: peso_desechable,
+                alquiler_comercios: alquiler_comercios,
+                alquiler_retail: alquiler_retail,
+                categoria: categoria,
+                familia: familia,
+            }),
+        });
+        console.log(response);
+
+        if (response.ok) {
+            getProduct();
+        }
+    };
+
     const addDefaultEditForm = (data) => {
-        setSKUId(data.sku);
-        setName(data.nombre);
+        setSKU(data.sku);
+        setNombre(data.nombre);
         setColor(data.color);
-        setDescription(data.descripcion);
-        setDimentions(data.Dimensiones);
-        setBowlWeight(data.peso_recipiente);
-        setNotReusable(data.peso_desechable);
-        setComercialP(data.Alquiler_Comercios);
-        setRetailP(data.Alquiler_Retail);
-        setCategory(data.Categoria);
-        setFamily(data.Familia);
+        setDescripcion(data.descripcion);
+        setDimensiones(data.dimensiones);
+        setPeso_recipiente(data.peso_recipiente);
+        setPeso_desechable(data.peso_desechable);
+        setAlquiler_comercios(data.alquiler_Comercios);
+        setAlquiler_retail(data.alquiler_Retail);
+        setCategoria(data.categoria);
+        setFamilia(data.familia);
         setImage(data.Imagen);
     };
 
@@ -155,13 +198,55 @@ function ProductInformation() {
                                         aria-label="Close"
                                     ></button>
                                 </div>
+                                <div className="offcanvas-body">
+                                    <form onSubmit={handleSubmit}>
+                                        <Input variable={sku} handler={handleChangeSKU} text="SKU" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <Input variable={nombre} handler={handleChangeNombre} text="Nombre" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <Input variable={descripcion} handler={handleChangeDescripcion} text="Desripcion" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={peso_recipiente} handler={handleChangePeso_recipiente} text="Peso de Recipiente" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={alquiler_comercios} handler={handleChangeAlquiler_comercios} text="Precio Comercio" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_retail} text="Precio Retail" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <SelectCategory variable={categoria} handler={handleChangeCategoria} />
+                                        <SelectFamily variable={familia} handler={handleChangeFamilia} />
+                                        <SelectColor variable={color} handler={handleChangeColor} />
+
+                                        <div className="row">
+                                            <div className="col-6 d-flex justify-content-center">
+                                                <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct} >Agregar</button>
+                                            </div>
+                                            <div className="col-6 d-flex justify-content-center">
+                                                <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                            </div>
+                                        </div>
+                                        </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        SKU: {SKUId} </li>
+                        SKU: {sku} </li>
                     <li className="list-group-item">
                         Color: {productInfo.color} </li>
                     <li className="list-group-item">
@@ -183,6 +268,7 @@ function ProductInformation() {
                     <li className="list-group-item">
                         Imagen: {productInfo.imagen} </li>
                 </ul>
+                </div>
             </div>
         </div>
     );

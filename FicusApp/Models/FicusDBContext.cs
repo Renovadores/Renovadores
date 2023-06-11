@@ -21,7 +21,7 @@ public partial class FicusDbContext : DbContext
     public virtual DbSet<Usuario> Usuario { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=KEVIN\\BD_KEVIN; DataBase=Ficus; Integrated Security=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusData; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -61,12 +61,12 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Color).HasMaxLength(255);
             entity.Property(e => e.Dimensiones).HasMaxLength(255);
-            entity.Property(e => e.Peso_recipiente).HasMaxLength(50);
-            entity.Property(e => e.Peso_desechable).HasMaxLength(50);
-            entity.Property(e => e.Alquiler_Comercios).HasMaxLength(50);
-            entity.Property(e => e.Alquiler_Retail).HasMaxLength(50);
-            entity.Property(e => e.Categoria).HasMaxLength(50);
-            entity.Property(e => e.Familia).HasMaxLength(50);
+            entity.Property(e => e.Peso_recipiente).HasColumnType("int");
+            entity.Property(e => e.Peso_desechable).HasColumnType("int");
+            entity.Property(e => e.Alquiler_Comercios).HasColumnType("int");
+            entity.Property(e => e.Alquiler_Retail).HasColumnType("int");
+            entity.Property(e => e.Categoria).HasColumnType("int");
+            entity.Property(e => e.Familia).HasColumnType("int");
             entity.Property(e => e.Imagen).HasMaxLength(255);
 
         });
