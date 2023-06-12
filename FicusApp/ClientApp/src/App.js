@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Layout from "./components/Layout";
@@ -9,6 +9,15 @@ function App() {
   const NO_LOGIN = 0;
   const AUTHORIZED = 1;
   const NO_AUTHORIZED = 2;
+  const REFRESH = 3;
+
+  const [userState, setUserState] = useState(REFRESH);
+  const handleCloseSession = () => {
+    sessionStorage.setItem('userId', null);
+    setUserState(NO_LOGIN);
+  }
+
+  const [userId, setUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
 
   const [userName, setUserName] = useState("");
   const handleUserName = (event) => {
@@ -18,7 +27,9 @@ function App() {
   const handlePassword = (event) => {
     setPassword(event.target.value);
   }
-  const [authenticated, setAuthenticated] = useState(NO_LOGIN);
+  
+  const [token, setToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
 
   const authenticate = async () => {
     try {
@@ -32,9 +43,47 @@ function App() {
       if (responseAuthentication.ok) {
         const data = await responseAuthentication.json();
         if (data.msg === "Ok") {
-          setAuthenticated(AUTHORIZED);
+          setUserState(AUTHORIZED);
+          sessionStorage.setItem('userId', JSON.stringify(data.usuarioId));
+          setToken(data.token);
+          setRefreshToken(data.refreshToken);
         } else {
-          setAuthenticated(NO_AUTHORIZED);
+          setUserState(NO_AUTHORIZED);
+        }
+      } else {
+        setUserState(NO_AUTHORIZED);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const authenticateWithRefresh = async (tok, ref) => {
+    console.log(tok);
+    try {
+      const responseAuthentication = await fetch("api/usuario/ObtenerRefreshToken", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          "tokenExpirado": tok,
+          "refreshToken": ref })
+      });
+      if (responseAuthentication.ok) {
+        const data = await responseAuthentication.json();
+        if (data.msg === "Ok") {
+          setUserState(AUTHORIZED);
+          sessionStorage.setItem('userId', JSON.stringify(data.usuarioId));
+          setToken(data.token);
+          setRefreshToken(data.refreshToken);
+        } else {
+          if (data.msg === "Token no ha expirado") {
+            setUserState(AUTHORIZED);
+          } else {
+            // Refresh token expired
+            console.log("token expirado")
+          }
         }
       }
     } catch (error) {
@@ -42,19 +91,43 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    const getCurrentUserId = async () => {
+      console.log("Usuario: ", userId);
+      const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${userId}`)
+      if (responseToken.ok) {
+        const data = await responseToken.json();
+        setToken(data.token);
+        authenticateWithRefresh(data.token, data.refreshToken);
+      }
+    }
+    if (userId !== null) {
+      getCurrentUserId();
+    } else {
+      setUserState(NO_LOGIN);
+    }
+  }, [userId])
+
   return (
-    <div className={authenticated === AUTHORIZED ? "" : "container d-flex justify-content-center"}>
+    <div className={userState === AUTHORIZED ? "" : "container d-flex justify-content-center"}>
       {
-        authenticated === NO_LOGIN || authenticated === NO_AUTHORIZED ?
+        userState === NO_LOGIN ?
           <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
-        :
-          <Layout>
-            <Routes>
-              {AppRoutes.map((route, index) => {
-                return <Route key={index} {...route} />;
-              })}
-            </Routes>
-          </Layout>
+          :
+          userState === NO_AUTHORIZED ?
+            <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
+            :
+            userState === AUTHORIZED ?
+              <Layout userId={userId} handleCloseSession={handleCloseSession}>
+                <Routes>
+                  {AppRoutes.map((route, index) => {
+                    return <Route key={index} {...route} />;
+                  })}
+                </Routes>
+              </Layout>
+              :
+              <>
+              </>
       }
     </div>
   );

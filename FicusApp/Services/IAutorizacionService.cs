@@ -7,5 +7,6 @@ namespace FicusApp.Services
 
         Task<AutorizacionResponse> DevolverToken(AutorizacionRequest autorizacion);
         Task<AutorizacionResponse> DevolverRefreshToken(RefreshTokenRequest refreshTokenRequest, int idUsuario);
+        public Task<bool> CloseSession(int UsuarioId);
     }
 }

@@ -44,7 +44,8 @@ namespace FicusApp.Controllers
             var tokenExpiradoSupuestamente = tokenHandler.ReadJwtToken(request.TokenExpirado);
 
             if (tokenExpiradoSupuestamente.ValidTo > DateTime.UtcNow)
-                return BadRequest(new AutorizacionResponse { Resultado = false, Msg = "Token no ha expirado" });
+                // was: bad request
+                return Ok(new AutorizacionResponse { Resultado = false, Msg = "Token no ha expirado" });
 
             string idUsuario = tokenExpiradoSupuestamente.Claims.First(x =>
                 x.Type == JwtRegisteredClaimNames.NameId).Value.ToString();
@@ -72,6 +73,13 @@ namespace FicusApp.Controllers
         {
             Usuario usuario = _context.Usuario.Find(id);
             return Ok(usuario);
+        }
+
+        [HttpPost]
+        [Route ("CloseSession/{id}")]
+        public async Task<IActionResult> CloseSession(int id)
+        {
+            return Ok(await _autorizacionService.CloseSession(id));
         }
     }
 }

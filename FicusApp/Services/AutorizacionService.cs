@@ -65,26 +65,37 @@ namespace FicusApp.Services
         }
 
         private async Task<AutorizacionResponse> GuardarHistorialRefreshToken(
-            int idUsuario,
+            int UsuarioId,
             string token,
             string refreshToken
             ) {
-
-            var historialRefreshToken = new HistorialRefreshToken
+            // find user register
+            var userRecord = _context.HistorialRefreshToken
+                                               .Where(h => h.UsuarioId == UsuarioId).FirstOrDefault();
+            if (userRecord != null)
             {
-                UsuarioId = idUsuario,
-                Token = token,
-                RefreshToken = refreshToken,
-                FechaCreacion = DateTime.UtcNow,
-                FechaExpiracion = DateTime.UtcNow.AddMinutes(2)
-            };
+                userRecord.Token = token;
+                userRecord.RefreshToken = refreshToken;
+                userRecord.FechaCreacion = DateTime.UtcNow;
+                userRecord.FechaExpiracion = DateTime.UtcNow.AddMinutes(2);
+                _context.HistorialRefreshToken.Update(userRecord);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var historialRefreshToken = new HistorialRefreshToken
+                {
+                    UsuarioId = UsuarioId,
+                    Token = token,
+                    RefreshToken = refreshToken,
+                    FechaCreacion = DateTime.UtcNow,
+                    FechaExpiracion = DateTime.UtcNow.AddMinutes(2)
+                };
+                await _context.HistorialRefreshToken.AddAsync(historialRefreshToken);
+                await _context.SaveChangesAsync();
+            }
 
-
-            await _context.HistorialRefreshToken.AddAsync(historialRefreshToken);
-            await _context.SaveChangesAsync();
-
-            return new AutorizacionResponse { Token = token, RefreshToken = refreshToken, Resultado = true, Msg = "Ok" };
-        
+            return new AutorizacionResponse { Token = token, RefreshToken = refreshToken, UsuarioId = UsuarioId, Resultado = true, Msg = "Ok" };
         }
 
 
@@ -126,7 +137,19 @@ namespace FicusApp.Services
 
             return await GuardarHistorialRefreshToken(idUsuario, tokenCreado, refreshTokenCreado);
 
+        }
 
+        public async Task<bool> CloseSession(int UsuarioId)
+        {
+            var refreshTokenEncontrado = _context.HistorialRefreshToken.FirstOrDefault(x =>
+            x.UsuarioId == UsuarioId);
+            if (refreshTokenEncontrado != null)
+            {
+                refreshTokenEncontrado.EsActivo = false;
+                _context.HistorialRefreshToken.Update(refreshTokenEncontrado);
+                await _context.SaveChangesAsync();
+            }
+            return true;
         }
     }
 }
