@@ -72,6 +72,7 @@ Table Orden {
   UsuarioId integer [not null, note: "Responsable de agregar la orden"]
   ClienteId integer [not null]
   EventoId integer
+  FaseId integer [not null]
   RegistroLimpiezaId integer
   LimpiezaUnidad integer
   Limpieza integer
@@ -94,7 +95,7 @@ Table HistorialOrden {
   OrdenId integer [not null]
   FaseId integer [not null]
   Inicio date [not null, note: "Fecha de inicio de la fase actual"]
-  Final date [not null, note: "Fecha final de la fase actual"]
+  Final date [note: "Fecha final de la fase actual"]
 
   indexes {
     (OrdenId, FaseId) [pk]
@@ -166,6 +167,7 @@ Ref: Inventario.EstadoId > Estado.EstadoId
 Ref: Orden.UsuarioId > Usuario.UsuarioId
 Ref: Orden.ClienteId > Cliente.ClienteId
 Ref: Orden.EventoId > Evento.EventoId
+Ref: Orden.FaseId > Fase.FaseId
 Ref: HistorialOrden.OrdenId > Orden.OrdenId
 Ref: HistorialOrden.FaseId > Fase.FaseId
 Ref: Detalle.OrdenId > Orden.OrdenId

@@ -16,4 +16,7 @@ public partial class Fase
 
     [InverseProperty("Fase")]
     public virtual ICollection<HistorialOrden> HistorialOrden { get; set; } = new List<HistorialOrden>();
+
+    [InverseProperty("Fase")]
+    public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();
 }

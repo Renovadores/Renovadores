@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: SQL Server
--- Generated at: 2023-06-04T17:13:05.091Z
+-- Generated at: 2023-06-10T21:22:38.083Z
 
 CREATE TABLE [Usuario] (
   [UsuarioId] integer PRIMARY KEY,
@@ -74,6 +74,7 @@ CREATE TABLE [Orden] (
   [UsuarioId] integer NOT NULL,
   [ClienteId] integer NOT NULL,
   [EventoId] integer,
+  [FaseId] integer NOT NULL,
   [RegistroLimpiezaId] integer,
   [LimpiezaUnidad] integer,
   [Limpieza] integer,
@@ -99,7 +100,7 @@ CREATE TABLE [HistorialOrden] (
   [OrdenId] integer NOT NULL,
   [FaseId] integer NOT NULL,
   [Inicio] date NOT NULL,
-  [Final] date NOT NULL,
+  [Final] date,
   PRIMARY KEY ([OrdenId], [FaseId])
 )
 GO
@@ -370,6 +371,9 @@ ALTER TABLE [Orden] ADD FOREIGN KEY ([ClienteId]) REFERENCES [Cliente] ([Cliente
 GO
 
 ALTER TABLE [Orden] ADD FOREIGN KEY ([EventoId]) REFERENCES [Evento] ([EventoId])
+GO
+
+ALTER TABLE [Orden] ADD FOREIGN KEY ([FaseId]) REFERENCES [Fase] ([FaseId])
 GO
 
 ALTER TABLE [HistorialOrden] ADD FOREIGN KEY ([OrdenId]) REFERENCES [Orden] ([OrdenId])

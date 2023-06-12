@@ -20,6 +20,8 @@ public partial class Orden
 
     public int? EventoId { get; set; }
 
+    public int FaseId { get; set; }
+
     public int? RegistroLimpiezaId { get; set; }
 
     public int? LimpiezaUnidad { get; set; }
@@ -40,6 +42,10 @@ public partial class Orden
     [ForeignKey("EventoId")]
     [InverseProperty("Orden")]
     public virtual Evento? Evento { get; set; }
+
+    [ForeignKey("FaseId")]
+    [InverseProperty("Orden")]
+    public virtual Fase Fase { get; set; } = null!;
 
     [InverseProperty("Orden")]
     public virtual ICollection<HistorialOrden> HistorialOrden { get; set; } = new List<HistorialOrden>();

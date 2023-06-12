@@ -19,7 +19,7 @@ public partial class HistorialOrden
     public DateTime Inicio { get; set; }
 
     [Column(TypeName = "date")]
-    public DateTime Final { get; set; }
+    public DateTime? Final { get; set; }
 
     [ForeignKey("FaseId")]
     [InverseProperty("HistorialOrden")]

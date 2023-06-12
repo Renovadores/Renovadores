@@ -1,76 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import Dashboard from 'layouts/admin';
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  Box,
-} from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
+import moment from 'moment';
 
 
 const Vacio = () => {
-  const [orden, setOrden] = useState([]);
-  const [historial, setHistorial] = useState([]);
 
-  useEffect(() => {
-    // Tomar los datos de la orden
-    fetch('https://localhost:44493/api/orden/')
-      .then((response) => response.json())
-      .then((data) => {
-        setOrden(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-
-    // Tomar los datos del historial de ordenes
-    fetch('https://localhost:44493/api/historialorden/')
-      .then((response) => response.json())
-      .then((data) => {
-        setHistorial(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-
-  }, []);
-
-
-
-  console.log(historial);
-  historial.filter(h => h.orden === "ORD002");
 
   return (
     <Dashboard>
       <Box fontFamily="Overpass Light, sans-serif">
-        <Table bg='white'>
-          <Thead>
-            <Tr>
-              <Th scope="col">ID</Th>
-              <Th scope="col">Cliente</Th>
-              <Th scope="col">Fase</Th>
-              <Th scope="col">Fecha de Alquiler</Th>
-              <Th scope="col">Detalle</Th>
-            </Tr>
-          </Thead>
-          <Tbody class="table-group-divider">
-            {orden.map((orden) => (
-              <Tr>
-                <Th scope="row">{orden.ordeId}</Th>
-                <Td>{orden.clienteId}</Td>
-                <Td>{orden.fechaAlquiler}</Td>
-                <Td>{orden.datalle}</Td>
-
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-    </Box>
+        Vacio..af
+      </Box>
     </Dashboard>
   );
 };

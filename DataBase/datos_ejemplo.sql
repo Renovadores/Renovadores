@@ -123,27 +123,29 @@ VALUES
 (2, 'Taller de Marketing Digital', 'Taller práctico sobre estrategias de marketing en línea'),
 (3, 'Concierto Benéfico', 'Concierto para recaudar fondos para una causa social');
 
-INSERT INTO Orden (OrdenId, FechaAlquiler, UsuarioId, ClienteId, EventoId, RegistroLimpiezaId, LimpiezaUnidad, Limpieza, Monto, Descuento)
-VALUES
-(001, '2023-05-01', 1, 1, 1, NULL, NULL, NULL, 500, 50),
-(002, '2023-05-02', 2, 2, NULL, NULL, NULL, NULL, 1000, 0),
-(003, '2023-05-03', 2, 1, 2, NULL, NULL, NULL, 750, 25),
-(004, '2023-05-04', 3, 2, 2, NULL, NULL, NULL, 1200, 0),
-(005, '2023-05-05', 1, 1, 3, NULL, NULL, NULL, 900, 0);
-
 INSERT INTO Fase (FaseId, DescripcionEstado)
 VALUES
 (1, 'Reservada'),
 (2, 'Entregada'),
 (3, 'Finalizada');
 
+INSERT INTO Orden (OrdenId, FechaAlquiler, UsuarioId, ClienteId, EventoId, FaseId, RegistroLimpiezaId, LimpiezaUnidad, Limpieza, Monto, Descuento)
+VALUES
+(001, '2023-05-01', 1, 1, 1, 2, NULL, NULL, NULL, 500, 50),
+(002, '2023-05-02', 2, 2, NULL, 2, NULL, NULL, NULL, 1000, 0),
+(003, '2023-05-03', 2, 1, 2, 1, NULL, NULL, NULL, 750, 25),
+(004, '2023-05-04', 3, 2, 2, 1, NULL, NULL, NULL, 1200, 0),
+(005, '2023-05-05', 1, 1, 3, 1, NULL, NULL, NULL, 900, 0);
+
 INSERT INTO HistorialOrden (OrdenId, FaseId, Inicio, Final)
 VALUES
 (001, 1, '2023-05-01', '2023-05-03'),
-(001, 2, '2023-05-03', '2023-05-05'),
+(001, 2, '2023-05-03', NULL),
 (002, 1, '2023-05-02', '2023-05-04'),
-(002, 2, '2023-05-04', '2023-05-06'),
-(003, 1, '2023-05-03', '2023-05-05');
+(002, 2, '2023-05-04', NULL),
+(003, 1, '2023-05-03', NULL),
+(004, 1, '2023-05-01', NULL),
+(005, 1, '2023-05-03', NULL);
 
 INSERT INTO Detalle (OrdenId, ProductoId, Pedidos, SinUsar, Usados, Devueltos, Descuento)
 VALUES

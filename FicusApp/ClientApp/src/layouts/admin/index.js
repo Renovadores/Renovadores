@@ -149,7 +149,7 @@ export default function Dashboard({children}) {
                 {getRoutes(AppRoutes)}
                 <Route path="/" element={<Navigate to="/admin/default" />} />
               </Routes>*/}
-              <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+              <Box pt={{ base: "130px", md: "100", xl: "100px" }}>
                 <main>
                   {children}
                 </main>
