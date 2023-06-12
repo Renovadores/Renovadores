@@ -13,13 +13,13 @@ function App() {
 
   const [userState, setUserState] = useState(REFRESH);
   const handleCloseSession = async () => {
-    var currentUserId = JSON.parse(sessionStorage.getItem('userId'));
-    const responseLogout = await fetch(`api/usuario/CloseSession/${currentUserId}`);
+    //var currentUserId = JSON.parse(sessionStorage.getItem('userId'));
+    //const responseLogout = await fetch(`api/usuario/CloseSession/${currentUserId}`);
     sessionStorage.setItem('userId', null);
     setUserState(NO_LOGIN);
   }
 
-  const [userId, setUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
+  const [userId] = useState(JSON.parse(sessionStorage.getItem('userId')));
 
   const [userName, setUserName] = useState("");
   const handleUserName = (event) => {
@@ -29,9 +29,6 @@ function App() {
   const handlePassword = (event) => {
     setPassword(event.target.value);
   }
-  
-  const [token, setToken] = useState("");
-  const [refreshToken, setRefreshToken] = useState("");
 
   const authenticate = async () => {
     try {
@@ -47,8 +44,6 @@ function App() {
         if (data.msg === "Ok") {
           setUserState(AUTHORIZED);
           sessionStorage.setItem('userId', JSON.stringify(data.usuarioId));
-          setToken(data.token);
-          setRefreshToken(data.refreshToken);
         } else {
           setUserState(NO_AUTHORIZED);
         }
@@ -77,8 +72,6 @@ function App() {
         if (data.msg === "Ok") {
           setUserState(AUTHORIZED);
           sessionStorage.setItem('userId', JSON.stringify(data.usuarioId));
-          setToken(data.token);
-          setRefreshToken(data.refreshToken);
         } else {
           if (data.msg === "Token no ha expirado") {
             setUserState(AUTHORIZED);
@@ -98,7 +91,6 @@ function App() {
       const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${userId}`)
       if (responseToken.ok) {
         const data = await responseToken.json();
-        setToken(data.token);
         authenticateWithRefresh(data.token, data.refreshToken);
       }
     }

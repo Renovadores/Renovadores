@@ -9,9 +9,12 @@ import SearchCriteriaSwitch from "./SearchCriteriaSwitch";
 import SelectedProductList from "./SelectedProductList";
 
 function AddOrder() {
-  // get client id sent by navigate function in Client.js
   const location = useLocation();
   const [clientId] = useState(location.state);
+
+  const [currentUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
+  const [userName, setUserName] = useState("");
+  
   // get a new order id (order code)
   const [orderId, setIdOrder] = useState(0);
   const generateIdOrder = async () => {
@@ -25,8 +28,18 @@ function AddOrder() {
   }
   
   useEffect(() => {
+    const getUserName = async () => {
+      const response = await fetch(`api/usuario/GetUser/${currentUserId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUserName(data.nombre);
+      } else {
+        console.log(response.text);
+      }
+    }
+    getUserName();
     generateIdOrder();
-  }, [])
+  }, [currentUserId, userName])
 
   const [matchingProducts, setMatchingProducts] = useState([])
 
@@ -98,7 +111,7 @@ function AddOrder() {
   }
 
   useEffect(() => {
-    searchProductInput()
+    searchProductInput();
   }, [searchByCodeOrName])
 
   const getMatchProducts = async (input) => {
@@ -107,7 +120,6 @@ function AddOrder() {
     if (responseInventory.ok) {
       const matchProducts = await responseInventory.json();
       // verify if cuantity of some product was already changed
-      console.log(matchingProducts, selectedProducts)
       for (var i = 0; i < matchProducts.length; i++) {
         for (var j = 0; j < selectedProducts.length; j++) {
           if (matchProducts[i].productoId === selectedProducts[j].productoId) {
@@ -166,7 +178,6 @@ function AddOrder() {
       const responseEventExists = await fetch(`api/evento/findEvento/${eventName}`)
       if (responseEventExists.ok) {
         const data = await responseEventExists.json();
-        console.log(data)
         if (data.exist) {
           console.log("El evento ya existe!")
         } else {
@@ -233,8 +244,6 @@ function AddOrder() {
           }
         }
       }
-      //Modify cuantity in Stock
-      
     }
     
     navigate('/clientes/informacion', { state: clientId });
@@ -252,7 +261,7 @@ function AddOrder() {
               <li className="list-group-item">Codigo de la orden: {orderId}</li>
               <li className="list-group-item">Fecha de creacion: {date}</li>
               <li className="list-group-item">Cliente: {clientName}</li>
-              <li className="list-group-item">Responsable de la orden: Alejandro</li>
+              <li className="list-group-item">Responsable de la orden: {userName}</li>
               <li className="list-group-item"></li>
             </ul>
           </div>
