@@ -12,7 +12,9 @@ function App() {
   const REFRESH = 3;
 
   const [userState, setUserState] = useState(REFRESH);
-  const handleCloseSession = () => {
+  const handleCloseSession = async () => {
+    var currentUserId = JSON.parse(sessionStorage.getItem('userId'));
+    const responseLogout = await fetch(`api/usuario/CloseSession/${currentUserId}`);
     sessionStorage.setItem('userId', null);
     setUserState(NO_LOGIN);
   }
@@ -93,7 +95,6 @@ function App() {
 
   useEffect(() => {
     const getCurrentUserId = async () => {
-      console.log("Usuario: ", userId);
       const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${userId}`)
       if (responseToken.ok) {
         const data = await responseToken.json();

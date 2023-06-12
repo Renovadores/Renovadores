@@ -31,7 +31,6 @@ namespace FicusApp.Controllers
                 return Unauthorized();
 
             return Ok(resultado_autorizacion);
-
         }
 
 
@@ -75,7 +74,7 @@ namespace FicusApp.Controllers
             return Ok(usuario);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route ("CloseSession/{id}")]
         public async Task<IActionResult> CloseSession(int id)
         {

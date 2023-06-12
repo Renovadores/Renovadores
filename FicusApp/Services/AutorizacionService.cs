@@ -145,7 +145,7 @@ namespace FicusApp.Services
             x.UsuarioId == UsuarioId);
             if (refreshTokenEncontrado != null)
             {
-                refreshTokenEncontrado.EsActivo = false;
+                refreshTokenEncontrado.FechaExpiracion = DateTime.UtcNow;
                 _context.HistorialRefreshToken.Update(refreshTokenEncontrado);
                 await _context.SaveChangesAsync();
             }
