@@ -1,5 +1,4 @@
 import InputInt from "./InputInt";
-import SelectInventoryState from "./SelectInventoryState";
 import { useEffect, useState } from "react";
 
 const NoProducts = () => (
@@ -8,11 +7,14 @@ const NoProducts = () => (
   </h5>
 );
 
-const FormEditInventory = ({ product, states, onSubmit }) => {
+const FormEditInventory = ({ product, onSubmit }) => {
   const [inventoryRow, setInventory] = useState(product);
+  const [oldProductAmount, setOldProductAmount] = useState(0);
   useEffect(() => {
     setInventory(product);
+    setOldProductAmount(product?.cantidad);
   }, [product]);
+
   const handleChangeProductAmount = (event) =>
     setInventory({
       ...inventoryRow,
@@ -23,19 +25,16 @@ const FormEditInventory = ({ product, states, onSubmit }) => {
       ...inventoryRow,
       lote: event.target.value,
     });
-  const handleChangeInventoryState = (event) =>
-    setInventory({ ...inventoryRow, estado: event.target.value });
 
   const handleSubmit = (event) => {
     console.dir({
       iD_Inventario: inventoryRow.iD_Inventario,
       producto: inventoryRow.producto,
-      estado: inventoryRow.estado,
       cantidad: inventoryRow.cantidad,
       lote: inventoryRow.lote,
       fecha_ingreso: inventoryRow.fecha_ingreso + " handleSubmitEditForm",
     });
-    onSubmit(event, inventoryRow);
+    onSubmit(event, inventoryRow, oldProductAmount);
   };
 
   return (
@@ -66,12 +65,6 @@ const FormEditInventory = ({ product, states, onSubmit }) => {
                   SKU: {product.producto}
                 </label>
               </div>
-
-              <SelectInventoryState
-                inventories={states}
-                value={inventoryRow.estado}
-                onChange={handleChangeInventoryState}
-              />
               <InputInt
                 variable={inventoryRow.cantidad}
                 handler={handleChangeProductAmount}
@@ -114,7 +107,6 @@ const ProductRow = ({ product, onSelectInventory }) => (
   <tr>
     {/*<th scope="row">{product.id_Inventario}</th>*/}
     <td>{product.producto}</td>
-    <td>{product.estadoNavigation.descripcion_estadoproducto}</td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{product.fecha_ingreso}</td>
@@ -144,7 +136,6 @@ const ProductsTable = ({ inventory, onSelectInventory }) => (
       <tr>
         {/*<th scope="col">#</th>*/}
         <th scope="col">Producto</th>
-        <th scope="col">Estado</th>
         <th scope="col">Cantidad</th>
         <th scope="col">Lote</th>
         <th scope="col">Fecha Ingreso</th>
@@ -166,7 +157,6 @@ const ProductsTable = ({ inventory, onSelectInventory }) => (
 function InventoryList({
   inventory,
   inventoryRow,
-  states,
   onSelectInventory,
   onSubmit,
 }) {
@@ -174,7 +164,6 @@ function InventoryList({
     <div className="row">
       <FormEditInventory
         product={inventoryRow}
-        states={states}
         onSubmit={onSubmit}
         onSelectInventory={onSelectInventory}
       />

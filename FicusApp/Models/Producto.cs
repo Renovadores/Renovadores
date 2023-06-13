@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FicusApp.Models;
 
@@ -29,6 +27,16 @@ public partial class Producto
     public int? Familia { get; set; }
 
     public string? Imagen { get; set; }
+
+    public int TotalExistente { get; set; }
+
+    public int EnUso { get; set; }
+
+    public int Disponible { get; set; }
+
+    public int NoDevueltos { get; set; }
+
+    public int Descontinuado { get; set; }
 
     public virtual Categoria? CategoriaNavigation { get; set; }
 

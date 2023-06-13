@@ -22,7 +22,6 @@ namespace FicusApp.Controllers
         {
             //List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
             var Inventarios = _context.Inventario
-                .Include(inventario => inventario.EstadoNavigation)
                 .Include(inventario => inventario.ProductoNavigation)
                 .OrderByDescending(c => c.Producto)
                 .ToList();
@@ -54,6 +53,14 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetInventoryDetail(string SKU)
         {
             Inventario inventario = await _context.Inventario.FindAsync(SKU);
+            return Ok(inventario);
+        }
+
+        [HttpGet]
+        [Route("GetInventoryRow/{ID_Inventario}")]
+        public async Task<IActionResult> GetInventoryRow(int ID_Inventario)
+        {
+            Inventario inventario = await _context.Inventario.FindAsync(ID_Inventario);
             return Ok(inventario);
         }
 

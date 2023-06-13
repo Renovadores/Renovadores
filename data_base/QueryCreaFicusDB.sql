@@ -30,7 +30,13 @@ CREATE TABLE [Producto] (
   [Alquiler_Retail] integer NOT NULL,
   [Categoria] integer,
   [Familia] integer,
-  [Imagen] nvarchar(255)
+  [Imagen] nvarchar(255),
+  --[ID_Estado] integer, 
+  [Descontinuado] integer default 0,
+  [TotalExistente] integer default 0,
+  [EnUso] integer default 0,
+  [Disponible] integer default 0,
+  [NoDevueltos] integer default 0
 )
 GO
 
@@ -61,7 +67,6 @@ GO
 CREATE TABLE [Inventario] (
   [ID_Inventario] integer PRIMARY KEY,
   [Producto] nvarchar(255),
-  [Estado] integer,
   [Cantidad] integer,
   [Lote] integer,
   [Fecha_ingreso] date
@@ -353,10 +358,10 @@ GO
 ALTER TABLE [Producto] ADD FOREIGN KEY ([Color]) REFERENCES [Color] ([ID_Color])
 GO
 
-ALTER TABLE [Inventario] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
-GO
+/*ALTER TABLE [Producto] ADD FOREIGN KEY ([ID_Estado]) REFERENCES [Estado] ([ID_Estado])
+GO*/
 
-ALTER TABLE [Inventario] ADD FOREIGN KEY ([Estado]) REFERENCES [Estado] ([ID_Estado])
+ALTER TABLE [Inventario] ADD FOREIGN KEY ([Producto]) REFERENCES [Producto] ([SKU])
 GO
 
 ALTER TABLE [Orden] ADD FOREIGN KEY ([Usuario]) REFERENCES [Usuario] ([ID_Usuario])

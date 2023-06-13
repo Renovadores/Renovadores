@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import InventoryList from "./InventoryList";
 import { CurrentDateFormat, DateFormatBD } from "./Clients";
 import InputInt from "./InputInt";
-import SelectInventoryState from "./SelectInventoryState";
 import SelectProduct from "./SelectProduct";
 
 function Inventory() {
@@ -51,13 +50,12 @@ function Inventory() {
   }, []);
   const handleChangeSKUProduct = (event) => {
     setSKUProduct(event.target.value);
-    console.log(" handled " + SKUProduct);
   };
   // Get inventory states from DB
-  const [inventoryStates, setInventoryStates] = useState([]);
+  /*const [inventoryStates, setInventoryStates] = useState([]);
   const [inventoryState, setInventoryState] = useState(inventoryStates[0]);
 
-  const getInventoryStates = async () => {
+  /*const getInventoryStates = async () => {
     const response = await fetch("api/inventario/GetState");
     if (response.ok) {
       const data = await response.json();
@@ -69,11 +67,7 @@ function Inventory() {
   };
   useEffect(() => {
     getInventoryStates();
-  }, []);
-
-  const handleChangeInventoryState = (event) => {
-    setInventoryState(event.target.value);
-  };
+  }, []);*/
 
   const [productAmount, setProductAmount] = useState(10);
   const handleChangeProductAmount = (event) => {
@@ -87,58 +81,64 @@ function Inventory() {
 
   const handleCancel = () => {
     setSKUProduct(SKUProducts[0]);
-    setInventoryState(1);
     setProductAmount(0);
     setBatch(1);
     //setDate
   };
 
+  // const [newInventoryRow, setNewInventoryRow] = useState({});
   const handleSubmit = async (event) => {
     event.preventDefault();
     // generate id
     const responseId = await fetch("api/inventario/GetNewId");
     if (responseId.ok) {
       const newInventoryId = await responseId.json();
+
+      const newInventory = {
+        iD_Inventario: newInventoryId.id,
+        producto: SKUProduct,
+        cantidad: productAmount,
+        lote: batch,
+        fecha_ingreso: dateDB,
+      };
+
+      // setNewInventoryRow(newInventory);
+      const oldProductAmount = 0;
       // add inventory
       const responseInventory = await fetch("api/inventario/AddInventory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify({
-          ID_Inventario: newInventoryId.id,
-          producto: SKUProduct,
-          estado: inventoryState,
-          cantidad: productAmount,
-          lote: batch,
-          fecha_ingreso: dateDB,
-        }),
+        body: JSON.stringify(newInventory),
       });
       if (responseInventory.ok) {
-        handleCancel();
-        getInventory();
+        const responseRow = await fetch(
+          `api/inventario/GetInventoryRow/${newInventory.iD_Inventario}`
+        );
+        if (responseRow.ok) {
+          const dataRow = await responseRow.json();
+          console.dir(
+            dataRow.productoNavigation + " productNav, ",
+            dataRow.cantidad + " cantidad"
+          );
+          calculateNewProductTotal(dataRow, oldProductAmount);
+          handleCancel();
+          getInventory();
+        }
       } else {
         console.log(responseInventory.text + " Error handleSubmit");
       }
     }
   };
 
-  const [inventorySelected, setInventorySelected] = useState();
+  const [inventorySelected, setInventorySelected] = useState([]);
   const handleOnSelectInventory = (product) => {
     setInventorySelected(product);
   };
 
-  const handleSubmitEdit = async (event, inventoryRow) => {
+  const handleSubmitEdit = async (event, inventoryRow, oldProductAmount) => {
     event.preventDefault();
-    console.log(inventoryRow + " inventoryrow");
-    console.dir({
-      iD_Inventario: inventoryRow.iD_Inventario,
-      producto: inventoryRow.producto,
-      estado: inventoryRow.estado,
-      cantidad: inventoryRow.cantidad,
-      lote: inventoryRow.lote,
-      fecha_ingreso: inventoryRow.fecha_ingreso,
-    });
     const responseInventory = await fetch("api/inventario/EditInventory", {
       method: "PUT",
       headers: {
@@ -147,17 +147,17 @@ function Inventory() {
       body: JSON.stringify({
         iD_Inventario: inventoryRow.iD_Inventario,
         producto: inventoryRow.producto,
-        estado: inventoryRow.estado,
         cantidad: inventoryRow.cantidad,
         lote: inventoryRow.lote,
         fecha_ingreso: inventoryRow.fecha_ingreso,
       }),
     });
     if (responseInventory.ok) {
+      calculateNewProductTotal(inventoryRow, oldProductAmount);
       handleCancel();
       getInventory();
     } else {
-      console.log(responseInventory.text + " Error handleSubmit");
+      console.log(responseInventory.text + " Error submitting inventory");
     }
   };
 
@@ -217,11 +217,6 @@ function Inventory() {
                     * Si no ve el producto en la lista, agrégelo en la sección
                     productos
                   </small>
-                  <SelectInventoryState
-                    inventories={inventoryStates}
-                    value={inventoryState}
-                    onChange={handleChangeInventoryState}
-                  />
                   <InputInt
                     variable={productAmount}
                     handler={handleChangeProductAmount}
@@ -312,7 +307,6 @@ function Inventory() {
           <InventoryList
             inventory={inventory}
             inventoryRow={inventorySelected}
-            states={inventoryStates}
             onSelectInventory={handleOnSelectInventory}
             onSubmit={handleSubmitEdit}
           />
@@ -321,6 +315,26 @@ function Inventory() {
     </div>
   );
 }
+
+const calculateNewProductTotal = async (inventoryRow, oldProductAmount) => {
+  const difference = inventoryRow.cantidad - oldProductAmount;
+  console.log(inventoryRow.cantidad + " cantidad");
+  const newTotal = inventoryRow.productoNavigation.totalExistente + difference;
+  const newAvailable = inventoryRow.productoNavigation.disponible + difference;
+  const responseProduct = await fetch("api/producto/EditProducto", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      ...inventoryRow.productoNavigation,
+      totalExistente: newTotal,
+      disponible: newAvailable,
+    }),
+  });
+  console.log(responseProduct + "responseProduct");
+  return responseProduct;
+};
 
 export function GetInventory() {
   // get inventory from data base
