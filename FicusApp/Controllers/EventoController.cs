@@ -1,4 +1,6 @@
 ﻿using FicusApp.Models;
+using FicusApp.Pages;
+using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,18 +10,18 @@ namespace FicusApp.Controllers
     [ApiController]
     public class EventoController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly EventService _eventService;
 
-        public EventoController(FicusContext context)
+        public EventoController(EventService eventService)
         {
-            _context = context;
+            _eventService = eventService;
         }
 
         [HttpGet]
         [Route("GetEventos")]
         public async Task<IActionResult> GetEventos()
         {
-            List<Evento> eventos = _context.Evento.OrderByDescending(c => c.EventoId).ToList();
+            List<Evento> eventos =  await _eventService.GetEventos();
             return Ok(eventos);
         }
 
@@ -27,9 +29,7 @@ namespace FicusApp.Controllers
         [Route("AddEvento")]
         public async Task<IActionResult> AddEvento([FromBody] Evento request)
         {
-            request.EventoId = _context.Evento.Count() + 1;
-            await _context.Evento.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _eventService.AddEvento(request);
             return Ok();
         }
 
@@ -37,10 +37,10 @@ namespace FicusApp.Controllers
         [Route("FindEvento/{name}")]
         public async Task<IActionResult> FindEvento(string name)
         {
-            bool r = _context.Evento.Where(e => e.NombreEvento == name).FirstOrDefault() != null;
+            bool exists = await _eventService.FindEvento(name);
             Exist response = new()
             {
-                exist = r
+                exist = exists
             };
             return Ok(response);
         }
@@ -49,10 +49,10 @@ namespace FicusApp.Controllers
         [Route("GetEventId/{name}")]
         public async Task<IActionResult> GetEventId(string name)
         {
-            int r = _context.Evento.Where(e => e.NombreEvento == name).FirstOrDefault().EventoId;
+            int eventId = await _eventService.GetEventId(name);
             Id response = new()
             {
-                id = r
+                id = eventId
             };
             return Ok(response);
         }

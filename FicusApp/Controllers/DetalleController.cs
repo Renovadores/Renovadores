@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,19 +9,18 @@ namespace FicusApp.Controllers
     [ApiController]
     public class DetalleController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly DetailService _detailService;
 
-        public DetalleController(FicusContext context)
+        public DetalleController(DetailService detailService)
         {
-            _context = context;
+            _detailService = detailService;
         }
 
         [HttpPost]
         [Route("AddDetalle")]
         public async Task<IActionResult> AddDetalle([FromBody] Detalle request)
         {
-            await _context.Detalle.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _detailService.AddDetalle(request);
             return Ok();
         }
 
