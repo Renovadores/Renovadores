@@ -197,7 +197,6 @@ function Stock() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Inventario</title>
       </head>
-      <body>
         <section className="py-4">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
@@ -425,7 +424,7 @@ function Stock() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
   );
 }
 

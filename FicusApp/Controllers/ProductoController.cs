@@ -28,7 +28,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducto/{ProductoId}")]
         public async Task<IActionResult> GetProducto(string ProductoId)
         {
-            Producto producto = await _productService.GetProducto(SKU);
+            Producto producto = await _productService.GetProducto(ProductoId);
             return Ok(producto);
         }
 

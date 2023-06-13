@@ -55,6 +55,7 @@ public partial class FicusContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+
         => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusData; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -196,6 +197,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
+
             entity.HasKey(e => e.ProductoId).HasName("PK__Producto__CA1ECF0CA305D67A");
 
             entity.Property(e => e.ProductoId).HasMaxLength(255);
@@ -204,17 +206,31 @@ public partial class FicusContext : DbContext
             entity.Property(e => e.Imagen).HasMaxLength(255);
             entity.Property(e => e.Nombre).HasMaxLength(255);
 
-            entity.HasOne(d => d.CategoriaNavigation).WithMany(p => p.Producto)
+            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto)
                 .HasForeignKey(d => d.CategoriaId)
                 .HasConstraintName("FK__Producto__Catego__4222D4EF");
 
-            entity.HasOne(d => d.ColorNavigation).WithMany(p => p.Producto)
+            entity.HasOne(d => d.Color).WithMany(p => p.Producto)
                 .HasForeignKey(d => d.ColorId)
                 .HasConstraintName("FK__Producto__Color__440B1D61");
 
-            entity.HasOne(d => d.FamiliaNavigation).WithMany(p => p.Producto)
+            entity.HasOne(d => d.Familia).WithMany(p => p.Producto)
                 .HasForeignKey(d => d.FamiliaId)
                 .HasConstraintName("FK__Producto__Famili__4316F928");
+
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__A430AEA32A15B4AE");
+
+            entity.Property(e => e.Descontinuado).HasDefaultValueSql("((0))");
+            entity.Property(e => e.Disponible).HasDefaultValueSql("((0))");
+            entity.Property(e => e.EnUso).HasDefaultValueSql("((0))");
+            entity.Property(e => e.NoDevueltos).HasDefaultValueSql("((0))");
+            entity.Property(e => e.TotalExistente).HasDefaultValueSql("((0))");
+
+            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Catego__4D94879B");
+
+            entity.HasOne(d => d.Color).WithMany(p => p.Producto).HasConstraintName("FK__Producto__ColorI__4CA06362");
+
+            entity.HasOne(d => d.Familia).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Famili__4E88ABD4");
         });
 
         modelBuilder.Entity<Rol>(entity =>
