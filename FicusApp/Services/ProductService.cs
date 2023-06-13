@@ -16,7 +16,7 @@ namespace FicusApp.Services
 
         public async Task<List<Producto>> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c => c.Descontinuado == false).ToList();
+            List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c => c.Descontinuado == 0).ToList();
             return productos;
         }
 

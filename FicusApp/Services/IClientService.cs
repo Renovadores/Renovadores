@@ -11,5 +11,6 @@ namespace FicusApp.Services
         Task<Cliente> GetCliente(int id);
         Task<int> AddCliente([FromBody] Cliente request);
         Task<int> EditCliente([FromBody] Cliente cliente);
+        Task<int> DeleteCliente([FromBody] Cliente cliente);
     }
 }

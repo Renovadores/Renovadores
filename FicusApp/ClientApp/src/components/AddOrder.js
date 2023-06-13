@@ -219,7 +219,8 @@ function AddOrder() {
           if (responseStock.ok) {
             const productStock = await responseStock.json();
             productStock.disponible -= pedidos;
-            productStock.enUso += pedidos;
+            productStock.enUso = parseInt(productStock.enUso) + parseInt(pedidos);
+            console.log(productStock);
             // Edit record
             const response = await fetch("api/producto/EditProducto", {
               method: "PUT",

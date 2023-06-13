@@ -19,6 +19,15 @@ namespace FicusApp.Services
             return 1;
         }
 
+        public async Task<int> DeleteCliente([FromBody] Cliente cliente)
+        {
+            cliente.Estado = "Eliminado";
+            _context.Cliente.Update(cliente);
+            await _context.SaveChangesAsync();
+
+            return 1;
+        }
+
         public async Task<int> EditCliente([FromBody] Cliente cliente)
         {
             _context.Cliente.Update(cliente);
@@ -34,7 +43,7 @@ namespace FicusApp.Services
 
         public async Task<List<Cliente>> GetClientes()
         {
-            List<Cliente> clientes = _context.Cliente.OrderByDescending(c => c.ClienteId).ToList();
+            List<Cliente> clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
             return clientes;
         }
 

@@ -61,14 +61,14 @@ public partial class FicusContext : DbContext
     {
         modelBuilder.Entity<Categoria>(entity =>
         {
-            entity.HasKey(e => e.CategoriaId).HasName("PK__Categori__F353C1E5A09BD8AA");
+            entity.HasKey(e => e.CategoriaId).HasName("PK__Categori__F353C1E5157E45E4");
 
             entity.Property(e => e.CategoriaId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Cliente>(entity =>
         {
-            entity.HasKey(e => e.ClienteId).HasName("PK__Cliente__71ABD087E1E2228C");
+            entity.HasKey(e => e.ClienteId).HasName("PK__Cliente__71ABD087E32169B5");
 
             entity.Property(e => e.ClienteId).ValueGeneratedNever();
 
@@ -77,7 +77,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<ClienteComunicacion>(entity =>
         {
-            entity.HasKey(e => e.ClienteComunicacionId).HasName("PK__ClienteC__BA07486EE7D11BFE");
+            entity.HasKey(e => e.ClienteComunicacionId).HasName("PK__ClienteC__BA07486E401F65FA");
 
             entity.HasOne(d => d.Cliente).WithMany(p => p.ClienteComunicacion).HasConstraintName("FK__ClienteCo__Clien__6D0D32F4");
 
@@ -86,7 +86,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<ClienteSegmento>(entity =>
         {
-            entity.HasKey(e => e.ClienteSegmentoId).HasName("PK__ClienteS__644B55310149B66A");
+            entity.HasKey(e => e.ClienteSegmentoId).HasName("PK__ClienteS__644B55314E9D2119");
 
             entity.HasOne(d => d.Cliente).WithMany(p => p.ClienteSegmento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -99,14 +99,14 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Color>(entity =>
         {
-            entity.HasKey(e => e.ColorId).HasName("PK__Color__8DA7674DB12C382B");
+            entity.HasKey(e => e.ColorId).HasName("PK__Color__8DA7674DEA75503A");
 
             entity.Property(e => e.ColorId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Detalle>(entity =>
         {
-            entity.HasKey(e => new { e.OrdenId, e.ProductoId }).HasName("PK__Detalle__EACBAFEE759D6BF2");
+            entity.HasKey(e => new { e.OrdenId, e.ProductoId }).HasName("PK__Detalle__EACBAFEE417E505A");
 
             entity.HasOne(d => d.Orden).WithMany(p => p.Detalle)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -119,35 +119,35 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Estado>(entity =>
         {
-            entity.HasKey(e => e.EstadoId).HasName("PK__Estado__FEF86B00E91DC354");
+            entity.HasKey(e => e.EstadoId).HasName("PK__Estado__FEF86B009AC5FF9D");
 
             entity.Property(e => e.EstadoId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Evento>(entity =>
         {
-            entity.HasKey(e => e.EventoId).HasName("PK__Evento__1EEB592184A5AD0D");
+            entity.HasKey(e => e.EventoId).HasName("PK__Evento__1EEB5921AA5E912D");
 
             entity.Property(e => e.EventoId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Familia>(entity =>
         {
-            entity.HasKey(e => e.FamiliaId).HasName("PK__Familia__42DFCCC4EAD465D1");
+            entity.HasKey(e => e.FamiliaId).HasName("PK__Familia__42DFCCC48BCC2F4D");
 
             entity.Property(e => e.FamiliaId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Fase>(entity =>
         {
-            entity.HasKey(e => e.FaseId).HasName("PK__Fase__D04348750FA195BC");
+            entity.HasKey(e => e.FaseId).HasName("PK__Fase__D043487529C6E08C");
 
             entity.Property(e => e.FaseId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<HistorialOrden>(entity =>
         {
-            entity.HasKey(e => new { e.OrdenId, e.FaseId }).HasName("PK__Historia__8D8C918354878AC0");
+            entity.HasKey(e => new { e.OrdenId, e.FaseId }).HasName("PK__Historia__8D8C918317DD56D0");
 
             entity.HasOne(d => d.Fase).WithMany(p => p.HistorialOrden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -160,7 +160,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<HistorialRefreshToken>(entity =>
         {
-            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__03DC48A56F25AA9B");
+            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__03DC48A583FCE8D1");
 
             entity.Property(e => e.EsActivo).HasComputedColumnSql("(case when [FechaExpiracion]<getdate() then CONVERT([bit],(0)) else CONVERT([bit],(1)) end)", false);
 
@@ -174,12 +174,12 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<MedioComunicacion>(entity =>
         {
-            entity.HasKey(e => e.MedioId).HasName("PK__MedioCom__26B59BB6E7590C2F");
+            entity.HasKey(e => e.MedioId).HasName("PK__MedioCom__26B59BB6EFBBCE86");
         });
 
         modelBuilder.Entity<Orden>(entity =>
         {
-            entity.HasKey(e => e.OrdenId).HasName("PK__Orden__C088A504DC71456C");
+            entity.HasKey(e => e.OrdenId).HasName("PK__Orden__C088A5040064D9F6");
 
             entity.Property(e => e.OrdenId).ValueGeneratedNever();
 
@@ -196,7 +196,7 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__A430AEA32A897CD5");
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__A430AEA3E73EF60D");
 
             entity.Property(e => e.Descontinuado).HasDefaultValueSql("((0))");
             entity.Property(e => e.Disponible).HasDefaultValueSql("((0))");
@@ -213,19 +213,19 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity.HasKey(e => e.RolId).HasName("PK__Rol__F92302F146A8FABB");
+            entity.HasKey(e => e.RolId).HasName("PK__Rol__F92302F17EFC638A");
 
             entity.Property(e => e.RolId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Segmento>(entity =>
         {
-            entity.HasKey(e => e.SegmentoId).HasName("PK__Segmento__DC1DD0F346807E68");
+            entity.HasKey(e => e.SegmentoId).HasName("PK__Segmento__DC1DD0F31293479B");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.UsuarioId).HasName("PK__Usuario__2B3DE7B8EF938404");
+            entity.HasKey(e => e.UsuarioId).HasName("PK__Usuario__2B3DE7B887150203");
 
             entity.Property(e => e.UsuarioId).ValueGeneratedNever();
 

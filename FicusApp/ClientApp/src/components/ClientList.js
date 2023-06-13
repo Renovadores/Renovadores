@@ -1,6 +1,7 @@
 function ClientList(props) {
+
   return (
-    <div className="row m-2 mt-4 d-flex justify-content-center">
+    <div className="row m-2 mt-4">
       {
         props.clients.length !== 0 ?
           props.clients.map((client, index) => (
@@ -8,7 +9,7 @@ function ClientList(props) {
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">{client.nombreEmpresa}</h5>
-                  <p className="card-text">Some info.</p>
+                  <p className="card-text">Ordenes activas: </p>
                   <button className="btn btn-primary" onClick={() => props.handler(index)}>Ver cliente</button>
                 </div>
               </div>

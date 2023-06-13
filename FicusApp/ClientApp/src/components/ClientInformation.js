@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import CheckBox from './CheckBox';
 import Input from './Input';
@@ -8,6 +8,7 @@ import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
 import ButtonOrder from "./ButtonOrder";
+import ButtonDeleteClient from "./ButtonDeleteClient";
 
 function ClientInformation() {
   // get client id sent by navigate function in Client.js
@@ -289,11 +290,11 @@ function ClientInformation() {
     if (otra) {
       media.push("Otra")
     }
-    
+
     const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify({ clienteId: clientId, fechaAgregado: clientInfo.fechaAgregado, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
     });
@@ -322,7 +323,7 @@ function ClientInformation() {
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ clienteSegmentoId:0, clienteId: clientId, segmentoId: clientSegments[i] })
+            body: JSON.stringify({ clienteSegmentoId: 0, clienteId: clientId, segmentoId: clientSegments[i] })
           });
           if (!responseSegmento.ok) {
             // store or notify which segment fails
@@ -352,7 +353,7 @@ function ClientInformation() {
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ clienteComunicacionId:0, clienteId: clientId, medioId: clientMedia[i] })
+            body: JSON.stringify({ clienteComunicacionId: 0, clienteId: clientId, medioId: clientMedia[i] })
           });
           if (!responseMedia.ok) {
             // store or notify which segment fails
@@ -366,6 +367,22 @@ function ClientInformation() {
     media = [];
   }
 
+  const navigate = useNavigate();
+  const handleDeleteClient = async () => {
+
+    const responseDelete = await fetch("api/cliente/DeleteCliente", {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(clientInfo)
+      }
+    );
+    //TO-DO: use state to show a delete message
+    if (responseDelete.ok) {
+      navigate('/clientes', { state: clientId });
+    }
+  }
   return (
     <div className="container" >
       {
@@ -447,6 +464,7 @@ function ClientInformation() {
               <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
             </div>
             <ButtonOrder clientId={clientId} />
+            <ButtonDeleteClient clientId={clientId} clientName={clientInfo.nombreEmpresa} handler={handleDeleteClient} />
           </div>
       }
     </div> 

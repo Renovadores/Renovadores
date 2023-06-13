@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 function CuantityProductModal(props) {
   return (
     <div className="modal fade" id={"exampleModal" + props.index} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >

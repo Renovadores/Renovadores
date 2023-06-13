@@ -398,9 +398,6 @@ function Clients() {
                         </div>
                     </div>
                 </div>
-                <div className="col-sm-6 col-md-3  d-flex my-2 my-md-0">
-                    <button className="btn btn-warning text-light" >Eliminar Cliente</button>
-                </div>
                 <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
                     <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
                 </div>

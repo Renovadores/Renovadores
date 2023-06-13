@@ -60,6 +60,13 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("DeleteCliente")]
+        public async Task<IActionResult> DeleteCliente([FromBody] Cliente cliente)
+        {
+            int code = await _clientService.DeleteCliente(cliente);
+            return Ok();
+        }
     }
 
     public class newId
