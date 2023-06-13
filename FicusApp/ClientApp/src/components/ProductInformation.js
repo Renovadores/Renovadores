@@ -153,6 +153,9 @@ function ProductInformation() {
             
         }
     };
+    function irASeccionProductos() {
+        window.location.href = "/productos";
+    }
     const handleSubmitDelete = async (event) => {
         event.preventDefault();
         console.log(
@@ -277,9 +280,8 @@ function ProductInformation() {
                                         &#8205; &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
                                         <form onSubmit={handleSubmitDelete}>
                                         <div className="row">
-                                                <div className="col-6 d-flex justify-content-center">
-                                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct}>Eliminar</button>
-                                                    <Link to={`/producto`}></Link>
+                                                <div className="col-6 d-flex justify-content-center">                                                   
+                                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={irASeccionProductos}>Eliminar</button>
                                             </div>
                                                 <div className="col-6 d-flex justify-content-center">
                                                         <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
