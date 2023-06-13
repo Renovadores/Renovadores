@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
+using FicusApp.Services;
 
 namespace FicusApp.Controllers
 {
@@ -8,18 +9,18 @@ namespace FicusApp.Controllers
     [ApiController]
 public class ProductoController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly ProductService _productService;
 
-        public ProductoController(FicusContext context)
+        public ProductoController(ProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).Where(c =>c.Descontinuado == 0).ToList();
+            List<Producto> productos = await _productService.GetProducts();
             return Ok(productos);
         }
 
@@ -27,7 +28,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducto/{SKU}")]
         public async Task<IActionResult> GetProducto(string SKU)
         {
-            Producto producto = await _context.Producto.FindAsync(SKU);
+            Producto producto = await _productService.GetProducto(SKU);
             return Ok(producto);
         }
 
@@ -35,8 +36,7 @@ public class ProductoController : ControllerBase
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] Producto request)
         {
-            await _context.Producto.AddAsync(request);
-            await _context.SaveChangesAsync();
+            await _productService.AddProduct(request);
             return Ok();
         }
 
@@ -44,16 +44,14 @@ public class ProductoController : ControllerBase
         [Route("EditProducto")]
         public async Task<IActionResult> EditProduct([FromBody] Producto producto)
         {
-            _context.Producto.Update(producto);
-            _context.SaveChanges();
+            await _productService.EditProduct(producto);
             return Ok();
         }
         [HttpPut]
         [Route("DeleteProducto")]
         public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)
         {
-            _context.Producto.Update(producto);
-            _context.SaveChanges();
+            await _productService.DeleteProduct(producto);
             return Ok();
         }
     }
