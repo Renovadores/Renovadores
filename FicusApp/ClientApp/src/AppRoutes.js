@@ -3,6 +3,8 @@ import Clients from "./components/Clients";
 import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
 import ProductInformation from "./components/ProductInformation";
+import Inventory from "./components/Inventory";
+import AddOrder from './components/AddOrder';
 
 const AppRoutes = [
   {
@@ -16,7 +18,7 @@ const AppRoutes = [
   },
 
   {
-    path: "/clientes/informacion",
+    path: "/clientes/informacion/:iD_Cliente",
     element: <ClientInformation />,
   },
 
@@ -29,7 +31,29 @@ const AppRoutes = [
     path: "/productos/informacion/:SKU",
     element: <ProductInformation />,
   },
+  
+  {
+    path: '/clientes/informacion',
+    element: <ClientInformation />
+  },
 
+  {
+    path: "/inventario",
+    element: <Inventory />,
+  },
+
+  {
+      path: '/producto',
+      element: <Stock />
+  },
+  {
+  path: '/productos/informacion',
+  element: <ProductInformation />,
+  },
+  {
+    path: '/ordenes/nueva-orden',
+    element: <AddOrder />,
+  },
   {
     path: "/cerrarSesion",
     element: <Home />,
