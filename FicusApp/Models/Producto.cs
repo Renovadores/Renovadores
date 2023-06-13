@@ -4,26 +4,26 @@ namespace FicusApp.Models;
 
 public partial class Producto
 {
-    [Key] public string SKU { get; set; } = null!;
+    [Key] public string ProductoId { get; set; } = null!;
     public string? Nombre { get; set; }
 
-    public int? Color { get; set; }
+    public int? ColorId { get; set; }
 
     public string? Descripcion { get; set; }
 
     public string? Dimensiones { get; set; }
 
-    public int? Peso_recipiente { get; set; }
+    public int? PesoRecipiente { get; set; }
 
-    public int? Peso_desechable { get; set; }
+    public int? PesoDesechable { get; set; }
 
-    public int? Alquiler_Comercios { get; set; }
+    public int? AlquilerComercios { get; set; }
 
-    public int? Alquiler_Retail { get; set; }
+    public int? AlquilerRetail { get; set; }
 
-    public int? Categoria { get; set; }
+    public int? CategoriaId { get; set; }
 
-    public int? Familia { get; set; }
+    public int? FamiliaId { get; set; }
 
     public string? Imagen { get; set; }
 

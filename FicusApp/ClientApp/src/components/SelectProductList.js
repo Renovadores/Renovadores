@@ -23,7 +23,7 @@ function SelectProductList({ products, cuantity, handleCuantity }) {
             >
               <div className="ms-2 me-auto">
                 <div className="fw-bold">{product.nombre}</div>
-                {product.Sku} {product.dimensiones}
+                {product.ProductoId} {product.dimensiones}
               </div>
               <span className="badge bg-primary rounded-pill">
                 {product.cantidad}
@@ -40,7 +40,7 @@ function SelectProductList({ products, cuantity, handleCuantity }) {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h1 className="modal-title fs-5" id="exampleModalLabel">
-                      {product.nombre} {product.Sku}
+                      {product.nombre} {product.ProductoId}
                     </h1>
                     <button
                       type="button"

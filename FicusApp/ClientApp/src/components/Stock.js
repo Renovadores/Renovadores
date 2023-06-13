@@ -58,45 +58,45 @@ function Stock() {
     setDimensiones(event.target.value);
   };
 
-  const [peso_recipiente, setPeso_recipiente] = useState(0);
-  const handleChangePeso_recipiente = (event) => {
-    setPeso_recipiente(event.target.value);
+  const [pesoRecipiente, setPesoRecipiente] = useState(0);
+  const handleChangePesoRecipiente = (event) => {
+    setPesoRecipiente(event.target.value);
   };
 
-  const [peso_desechable, setPeso_desechable] = useState(0);
-  const handleChangePeso_desechable = (event) => {
-    setPeso_desechable(event.target.value);
+  const [pesoDesechable, setPesoDesechable] = useState(0);
+  const handleChangePesoDesechable = (event) => {
+    setPesoDesechable(event.target.value);
   };
 
-  const [alquiler_comercios, setAlquiler_Comercios] = useState(0);
-  const handleChangeAlquiler_Comercios = (event) => {
-    setAlquiler_Comercios(event.target.value);
+  const [alquilerComercios, setAlquilerComercios] = useState(0);
+  const handleChangeAlquilerComercios = (event) => {
+    setAlquilerComercios(event.target.value);
   };
 
-  const [alquiler_retail, setAlquiler_Retail] = useState(0);
-  const handleChangeAlquiler_Retail = (event) => {
-    setAlquiler_Retail(event.target.value);
+  const [alquilerRetail, setAlquilerRetail] = useState(0);
+  const handleChangeAlquilerRetail = (event) => {
+    setAlquilerRetail(event.target.value);
   };
-  const [sku, setSKU] = useState(0);
-  const handleChangeSKU = (event) => {
-    setSKU(event.target.value);
+  const [productoId, setProductoId] = useState(0);
+  const handleChangeProductoId = (event) => {
+    setProductoId(event.target.value);
   };
   const current = new Date();
   const date = `${current.getDate()}-${
     current.getMonth() + 1
   }-${current.getFullYear()}`;
 
-  const [familia, setFamilia] = useState(1);
-  const handleChangeFamilia = (event) => {
-    setFamilia(event.target.value);
+  const [familiaId, setFamiliaId] = useState(1);
+  const handleChangeFamiliaId = (event) => {
+    setFamiliaId(event.target.value);
   };
-  const [color, setColor] = useState(1);
-  const handleChangeColor = (event) => {
-    setColor(event.target.value);
+  const [colorId, setColorId] = useState(1);
+  const handleChangeColorId = (event) => {
+    setColorId(event.target.value);
   };
-  const [categoria, setCategoria] = useState(1);
-    const handleChangeCategoria = (event) => {
-        setCategoria(event.target.value);
+  const [categoriaId, setCategoriaId] = useState(1);
+    const handleChangeCategoriaId = (event) => {
+        setCategoriaId(event.target.value);
     };
     const [descontinuado, setDescontinuado] = useState(1);
     const handleChangeDescontinuado = (event) => {
@@ -120,17 +120,17 @@ function Stock() {
     };
 
   const handleCancel = () => {
-    setSKU("");
+    setProductoId("");
     setNombre("");
     setDescripcion("");
     setDimensiones("");
-    setPeso_recipiente(0);
-    setPeso_desechable(0);
-    setAlquiler_Comercios(0);
-    setAlquiler_Retail(0);
-    setColor(0);
-    setCategoria(0);
-    setFamilia(0);
+    setPesoRecipiente(0);
+    setPesoDesechable(0);
+    setAlquilerComercios(0);
+    setAlquilerRetail(0);
+    setColorId(0);
+    setCategoriaId(0);
+    setFamiliaId(0);
     setDescontinuado(0);
     setTotalExistente(0);
     setEnUso(0);
@@ -142,17 +142,17 @@ function Stock() {
     event.preventDefault();
     console.log(
         date,
-        sku,
+        productoId,
         nombre,
-        color,
+        colorId,
         descripcion,
         dimensiones,
-        peso_recipiente,
-        peso_desechable,
-        alquiler_comercios,
-        alquiler_retail,
-        categoria,
-        familia,
+        pesoRecipiente,
+        pesoDesechable,
+        alquilerComercios,
+        alquilerRetail,
+        categoriaId,
+        familiaId,
         totalExistente,
         enUso, 
         disponible,
@@ -164,17 +164,17 @@ function Stock() {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
-        color: color,
-        sku: sku,
+        colorId: colorId,
+        productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
         dimensiones: dimensiones,
-        peso_recipiente: peso_recipiente,
-        peso_desechable: peso_desechable,
-        alquiler_comercios: alquiler_comercios,
-        alquiler_retail: alquiler_retail,
-        categoria: categoria,
-        familia: familia,
+        pesoRecipiente: pesoRecipiente,
+        pesoDesechable: pesoDesechable,
+        alquilerComercios: alquilerComercios,
+        alquilerRetail: alquilerRetail,
+        categoriaId: categoriaId,
+        familiaId: familiaId,
         descontinuado: 0,
         totalExistente: totalExistente,
         enUso: enUso,
@@ -236,7 +236,7 @@ function Stock() {
               </div>
               <div className="offcanvas-body">
                 <form onSubmit={handleSubmit}>
-                  <Input variable={sku} handler={handleChangeSKU} text="SKU" />
+                  <Input variable={productoId} handler={handleChangeProductoId} text="Producto ID" />
                   <Input
                     variable={nombre}
                     handler={handleChangeNombre}
@@ -261,23 +261,23 @@ function Stock() {
                     text="Dimensiones"
                   />
                   <InputInt
-                    variable={peso_recipiente}
-                    handler={handleChangePeso_recipiente}
+                    variable={pesoRecipiente}
+                    handler={handleChangePesoRecipiente}
                     text="Peso de Recipiente"
                   />
                   <InputInt
-                    variable={peso_desechable}
-                    handler={handleChangePeso_desechable}
+                    variable={pesoDesechable}
+                    handler={handleChangePesoDesechable}
                     text="Peso Desechable"
                   />
                   <InputInt
-                    variable={alquiler_comercios}
-                    handler={handleChangeAlquiler_Comercios}
+                    variable={alquilerComercios}
+                    handler={handleChangeAlquilerComercios}
                     text="Precio Comercio"
                   />
                   <InputInt
-                    variable={alquiler_retail}
-                    handler={handleChangeAlquiler_Retail}
+                    variable={alquilerRetail}
+                    handler={handleChangeAlquilerRetail}
                     text="Precio Retail"
                                   />
                  <InputInt
@@ -303,14 +303,14 @@ function Stock() {
 
 
                   <SelectCategory
-                    variable={categoria}
-                    handler={handleChangeCategoria}
+                    variable={categoriaId}
+                    handler={handleChangeCategoriaId}
                   />
                   <SelectFamily
-                    variable={familia}
-                    handler={handleChangeFamilia}
+                    variable={familiaId}
+                    handler={handleChangeFamiliaId}
                   />
-                  <SelectColor variable={color} handler={handleChangeColor} />
+                  <SelectColor variable={colorId} handler={handleChangeColorId} />
 
                   <div className="row">
                     <div className="col-6 d-flex justify-content-center">
