@@ -14,16 +14,12 @@ namespace FicusApp.Services
             _context = context;
         }
 
-        [HttpGet]
-        [Route("GetProducts")]
         public async Task<List<Producto>> GetProducts()
         {
             List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c => c.Descontinuado == false).ToList();
             return productos;
         }
 
-        [HttpGet]
-        [Route("GetProducto/{SKU}")]
         public async Task<Producto> GetProducto(string SKU)
         {
             Producto producto = await _context.Producto.FindAsync(SKU);
@@ -53,8 +49,6 @@ namespace FicusApp.Services
             return matchProducts;
         }
 
-        [HttpPost]
-        [Route("AddProduct")]
         public async Task<Producto> AddProduct([FromBody] Producto request)
         {
             await _context.Producto.AddAsync(request);
@@ -62,16 +56,13 @@ namespace FicusApp.Services
             return request;
         }
 
-        [HttpPut]
-        [Route("EditProducto")]
         public async Task<Producto> EditProduct([FromBody] Producto producto)
         {
             _context.Producto.Update(producto);
             _context.SaveChanges();
             return producto;
         }
-        [HttpPut]
-        [Route("DeleteProducto")]
+        
         public async Task<Producto> DeleteProduct([FromBody] Producto producto)
         {
             _context.Producto.Update(producto);
