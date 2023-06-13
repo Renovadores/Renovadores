@@ -50,7 +50,7 @@ namespace FicusApp.Controllers
             Inventario inventario = await _inventarioService.GetInventoryDetail(ProductoId);
             return Ok(inventario);
         }
-
+        
         [HttpGet]
         [Route("GetInventoryRow/{InventarioId}")]
         public async Task<IActionResult> GetInventoryRow(int InventarioId)

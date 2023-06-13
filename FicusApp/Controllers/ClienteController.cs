@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using System.Linq;
+using FicusApp.Services;
 
 namespace FicusApp.Controllers
 {
@@ -9,18 +10,18 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly ClientService _clientService;
 
-        public ClienteController(FicusContext context)
+        public ClienteController(ClientService clientService)
         {
-            _context = context;
+            _clientService = clientService;
         }
 
         [HttpGet]
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
         {
-            List<Cliente> clientes = _context.Cliente.OrderByDescending(c => c.ClienteId).ToList();
+            List<Cliente> clientes = await _clientService.GetClientes();
             return Ok(clientes);
         }
 
@@ -28,8 +29,10 @@ namespace FicusApp.Controllers
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
         {
-            newId id = new newId();
-            id.Id = _context.Cliente.Count() + 1;
+            newId id = new()
+            {
+                Id = await _clientService.GetNewId()
+            };
             return Ok(id);
         }
 
@@ -37,8 +40,7 @@ namespace FicusApp.Controllers
         [Route("GetCliente/{ID_Cliente}")]
         public async Task<IActionResult> GetCliente(int ID_Cliente)
         {
-            Cliente cliente = await _context.Cliente.FindAsync(ID_Cliente);
-
+            Cliente cliente = await _clientService.GetCliente(id);
             return Ok(cliente);
         }
 
@@ -46,8 +48,7 @@ namespace FicusApp.Controllers
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
         {
-            await _context.Cliente.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _clientService.AddCliente(request);
             return Ok();
         }
 
@@ -55,11 +56,17 @@ namespace FicusApp.Controllers
         [Route("EditCliente")]
         public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
         {
-            _context.Cliente.Update(cliente);
-            _context.SaveChanges();
+            int  code = await _clientService.EditCliente(cliente);
             return Ok();
         }
 
+        [HttpPut]
+        [Route("DeleteCliente")]
+        public async Task<IActionResult> DeleteCliente([FromBody] Cliente cliente)
+        {
+            int code = await _clientService.DeleteCliente(cliente);
+            return Ok();
+        }
     }
 
     public class newId

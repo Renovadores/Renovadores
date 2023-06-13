@@ -6,11 +6,11 @@ namespace FicusApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Cliente_ComunicacionController : ControllerBase
+    public class ClienteComunicacionController : ControllerBase
     {
         private readonly FicusContext _context;
 
-        public Cliente_ComunicacionController(FicusContext context)
+        public ClienteComunicacionController(FicusContext context)
         {
             _context = context;
         }
@@ -42,7 +42,10 @@ namespace FicusApp.Controllers
         [Route("DeleteClientMedia")]
         public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)
         {
-            _context.ClienteComunicacion.Remove(request);
+            ClienteComunicacion clienteMedio = _context.ClienteComunicacion.Where(s => 
+                                                s.ClienteId == request.ClienteId 
+                                                && s.MedioId == request.MedioId).FirstOrDefault();
+            _context.ClienteComunicacion.Remove(clienteMedio);
             _context.SaveChanges();
             return Ok();
         }

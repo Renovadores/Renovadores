@@ -32,6 +32,14 @@ public class ProductoController : ControllerBase
             return Ok(producto);
         }
 
+        [HttpGet]
+        [Route("GetMatchProducts/{input}/{searchByCode}")]
+        public async Task<IActionResult> GetMatchProducts(string input, bool searchByCode)
+        {
+            List<Producto> matchProducts = await _productService.GetMatchProducts(input, searchByCode);
+            return Ok(matchProducts);
+        }
+
         [HttpPost]
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] Producto request)

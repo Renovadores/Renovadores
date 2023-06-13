@@ -214,260 +214,161 @@ function Clients() {
     setZoom("");
   };
 
-  //Add client to data base
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (cafeteria) {
-      segments.push("Cafeteria");
     }
-    if (catering) {
-      segments.push("Catering");
-    }
-    if (centroEducativo) {
-      segments.push("Centro Educativo");
-    }
-    if (comidaPreparada) {
-      segments.push("Comida Preparada");
-    }
-    if (empresa) {
-      segments.push("Empresa");
-    }
-    if (feria) {
-      segments.push("Feria");
-    }
-    if (otroSector) {
-      segments.push("Otro Sector");
-    }
-    if (panaderia) {
-      segments.push("Panaderia");
-    }
-    if (restaurante) {
-      segments.push("Restaurante");
-    }
-    if (usuarioFinal) {
-      segments.push("Usuario Final");
-    }
-    if (supermercado) {
-      segments.push("Supermercado");
-    }
-    if (otro) {
-      segments.push("Otro");
-    }
-    // get media
-    if (correo) {
-      media.push("Correo");
-    }
-    if (llamada) {
-      media.push("Llamada");
-    }
-    if (instagram) {
-      media.push("Instagram");
-    }
-    if (whatsapp) {
-      media.push("Whatsapp");
-    }
-    if (zoom) {
-      media.push("Zoom");
-    }
-    if (otra) {
-      media.push("Otra");
-    }
-    // generate id
-    const responseId = await fetch("api/cliente/GetNewId");
-    if (responseId.ok) {
-      const newClientId = await responseId.json();
-      // add client
-      const responseCliente = await fetch("api/cliente/AddCliente", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-          idCliente: newClientId.id,
-          fechaAgregado: dateDB,
-          responsable: personInCharge,
-          prioridad: priority,
-          estado: state,
-          nombreEmpresa: company,
-          contacto: contacto,
-          telefono: telefono,
-          correo: correoElectronico,
-          web: paginaWeb,
-        }),
-      });
-      if (responseCliente.ok) {
-        // add segments
-        for (let i = 0; i < segments.length; i++) {
-          const responseSegmento = await fetch(
-            "api/cliente_segmento/AddSegment",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
-              body: JSON.stringify({
-                cliente: newClientId.id,
-                segmento: segments[i],
-              }),
+
+    //Add client to data base
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (cafeteria) {
+            segments.push("Cafeteria");
+        }
+        if (catering) {
+            segments.push("Catering");
+        }
+        if (centroEducativo) {
+            segments.push("Centro Educativo");
+        }
+        if (comidaPreparada) {
+            segments.push("Comida Preparada");
+        }
+        if (empresa) {
+            segments.push("Empresa");
+        }
+        if (feria) {
+            segments.push("Feria");
+        }
+        if (otroSector) {
+            segments.push("Otro Sector");
+        }
+        if (panaderia) {
+            segments.push("Panaderia");
+        }
+        if (restaurante) {
+            segments.push("Restaurante");
+        }
+        if (usuarioFinal) {
+            segments.push("Usuario Final");
+        }
+        if (supermercado) {
+            segments.push("Supermercado");
+        }
+        if (otro) {
+            segments.push("Otro");
+        }
+        // get media
+        if (correo) {
+          media.push("Correo");
+        }
+        if (llamada) {
+          media.push("Llamada");
+        }
+        if (instagram) {
+          media.push("Instagram");
+        }
+        if (whatsapp) {
+          media.push("Whatsapp");
+        }
+        if (zoom) {
+          media.push("Zoom");
+        }
+        if (otra) {
+          media.push("Otra")
+        }
+        
+        // generate id
+        const responseId = await fetch("api/cliente/GetNewId");
+        if (responseId.ok) {
+          const newClientId = await responseId.json();
+          console.log(personInCharge, paginaWeb)
+          // add client
+          const responseCliente = await fetch("api/cliente/AddCliente", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+          });
+          if (responseCliente.ok) {
+            // add segments
+            for (let i = 0; i < segments.length; i++) {
+              const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ clienteId: newClientId.id, segmentoId: segments[i] })
+              });
+              if (!responseSegmento.ok) {
+                // store or notify which segment fails
+              }
             }
-          );
-          if (!responseSegmento.ok) {
-            // store or notify which segment fails
+            // add social media
+            for (let i = 0; i < media.length; i++) {
+              const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify({ clienteId: newClientId.id, medioId: media[i] })
+              });
+              if (!responseMedia.ok) {
+                // store or notify which media fails
+              }
+            }
+            handleCancel();
+            getClients();
           }
         }
-        // add social media
-        for (let i = 0; i < media.length; i++) {
-          const responseMedia = await fetch(
-            "api/cliente_comunicacion/AddClientMedia",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8",
-              },
-              body: JSON.stringify({
-                cliente: newClientId.id,
-                medio: media[i],
-              }),
-            }
-          );
-          if (!responseMedia.ok) {
-            // store or notify which media fails
-          }
-        }
-        handleCancel();
-        getClients();
-      }
+          
+        segments = [];
+        media = [];
     }
 
-    segments = [];
-    media = [];
-  };
+    // When user click on client button, 'navigate' redirect him to new page
+    const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
+    const handleClickViewClient = (clientIndex) => {
+        navigate('/clientes/informacion', { state: clients[clientIndex].clienteId });
+        //second argument "state" allows to pass parameters
+    };
 
-  // When user click on client button, 'navigate' redirect him to new page
-  const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
-  const handleClickViewClient = (clientIndex) => {
-    navigate("/clientes/informacion/", {
-      state: clients[clientIndex].iD_Cliente,
-    });
-    //second argument "state" allows to pass parameters
-    console.log(clients[clientIndex].iD_Cliente);
-  };
-
-  // TO-DO: separate in new components to simplify code
-  return (
-    <div className="container pt-3">
-      <div className="row m-2 mb-4">
-        <h4>Clientes</h4>
-      </div>
-      <div className="row m-2 mb-5">
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          <button
-            className="btn btn-success"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasWithBothOptions"
-            aria-controls="offcanvasWithBothOptions"
-          >
-            Agregar Cliente
-          </button>
-          <div
-            className="offcanvas offcanvas-start "
-            data-bs-scroll="true"
-            tabIndex="-1"
-            id="offcanvasWithBothOptions"
-            aria-labelledby="offcanvasWithBothOptionsLabel"
-          >
-            <div className="offcanvas-header">
-              <h5
-                className="offcanvas-title"
-                id="offcanvasWithBothOptionsLabel"
-              >
-                Informacion del nuevo cliente
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
+    // TO-DO: separate in new components to simplify code
+    return (
+        <div className="container pt-3">
+            <div className="row m-2 mb-4">
+                <h4>Clientes</h4>
             </div>
-            <div className="offcanvas-body">
-              <form onSubmit={handleSubmit}>
-                <Input
-                  variable={company}
-                  handler={handleChangeCompany}
-                  text="Empresa"
-                />
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">
-                    Agregado el: {date}
-                  </label>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">
-                    Segmento
-                  </label>
-                  <CheckBox
-                    variable={cafeteria}
-                    handler={handleCheckboxCafeteria}
-                    text="Cafeteria"
-                  />
-                  <CheckBox
-                    variable={catering}
-                    handler={handleCheckboxCatering}
-                    text="Catering"
-                  />
-                  <CheckBox
-                    variable={centroEducativo}
-                    handler={handleCheckboxCentroEducativo}
-                    text="Centro Educativo"
-                  />
-                  <CheckBox
-                    variable={comidaPreparada}
-                    handler={handleCheckboxComidaPreparada}
-                    text="Comida Preparada"
-                  />
-                  <CheckBox
-                    variable={empresa}
-                    handler={handleCheckboxEmpresa}
-                    text="Empresa"
-                  />
-                  <CheckBox
-                    variable={feria}
-                    handler={handleCheckboxFeria}
-                    text="Feria"
-                  />
-                  <CheckBox
-                    variable={otroSector}
-                    handler={handleCheckboxOtroSector}
-                    text="Otro Sector"
-                  />
-                  <CheckBox
-                    variable={panaderia}
-                    handler={handleCheckboxPanaderia}
-                    text="Panaderia"
-                  />
-                  <CheckBox
-                    variable={restaurante}
-                    handler={handleCheckboxRestaurante}
-                    text="Restaurante"
-                  />
-                  <CheckBox
-                    variable={usuarioFinal}
-                    handler={handleCheckboxUsuarioFinal}
-                    text="Usuario Final"
-                  />
-                  <CheckBox
-                    variable={supermercado}
-                    handler={handleCheckboxSupermercado}
-                    text="Supermercado"
-                  />
-                  <CheckBox
-                    variable={otro}
-                    handler={handleCheckboxOtro}
-                    text="Otro"
-                  />
-                </div>
+            <div className="row m-2 mb-5">
+                <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+                    <button className="btn btn-success" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                        Agregar Cliente
+                    </button>
+                    <div className="offcanvas offcanvas-start " data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                        <div className="offcanvas-header">
+                            <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del nuevo cliente</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div className="offcanvas-body">
+                            <form onSubmit={handleSubmit}>
+                                <Input variable={company} handler={handleChangeCompany} text="Nombre del cliente" />
+                                <div className="mb-3">
+                                    <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
+                                    <CheckBox variable={cafeteria} handler={handleCheckboxCafeteria} text="Cafeteria" />
+                                    <CheckBox variable={catering} handler={handleCheckboxCatering} text="Catering" />
+                                    <CheckBox variable={centroEducativo} handler={handleCheckboxCentroEducativo} text="Centro Educativo" />
+                                    <CheckBox variable={comidaPreparada} handler={handleCheckboxComidaPreparada} text="Comida Preparada" />
+                                    <CheckBox variable={empresa} handler={handleCheckboxEmpresa} text="Empresa" />
+                                    <CheckBox variable={feria} handler={handleCheckboxFeria} text="Feria" />
+                                    <CheckBox variable={otroSector} handler={handleCheckboxOtroSector} text="Otro Sector" />
+                                    <CheckBox variable={panaderia} handler={handleCheckboxPanaderia} text="Panaderia" />
+                                    <CheckBox variable={restaurante} handler={handleCheckboxRestaurante} text="Restaurante" />
+                                    <CheckBox variable={usuarioFinal} handler={handleCheckboxUsuarioFinal} text="Usuario Final" />
+                                    <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
+                                    <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
+                                </div>
 
                 <SelectPersonInCharge
                   variable={personInCharge}
@@ -537,54 +438,34 @@ function Clients() {
                   text="Pagina Web"
                 />
 
-                <div className="row">
-                  <div className="col-6 d-flex justify-content-center">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      data-bs-dismiss="offcanvas"
-                      onClick={getClients}
-                    >
-                      Agregar
-                    </button>
-                  </div>
-                  <div className="col-6 d-flex justify-content-center">
-                    <button
-                      className="btn btn-danger"
-                      type="button"
-                      onClick={handleCancel}
-                      data-bs-dismiss="offcanvas"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
+                                <div className="row">
+                                    <div className="col-6 d-flex justify-content-center">
+                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClients} >Agregar</button>
+                                    </div>
+                                    <div className="col-6 d-flex justify-content-center">
+                                        <button className="btn btn-warning text-light" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
                 </div>
-              </form>
+                <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+                    <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
+                </div>
+                <FilterClients />
             </div>
-          </div>
+            {
+              clientsChecked === false ?
+              <Spinner />
+              :
+              <ClientList clients={clients} handler={handleClickViewClient} />
+            }
+            {/*TO-DO: Pagination*/}
+            <Pagination />
         </div>
-        <div className="col-sm-6 col-md-3  d-flex my-2 my-md-0">
-          <button className="btn btn-danger">Eliminar Cliente</button>
-        </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar cliente..."
-          />
-        </div>
-        <FilterClients />
-      </div>
-      {clientsChecked === false ? (
-        <Spinner />
-      ) : (
-        <ClientList clients={clients} handler={handleClickViewClient} />
-      )}
-      {/*TO-DO: Pagination*/}
-      <Pagination />
-    </div>
-  );
+    );
 }
 
 export function DateFormatBD() {

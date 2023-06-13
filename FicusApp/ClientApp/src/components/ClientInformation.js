@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import CheckBox from './CheckBox';
 import Input from './Input';
@@ -7,7 +7,8 @@ import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
-import ButtonAddOrder from "./ButtonAddOrder";
+import ButtonOrder from "./ButtonOrder";
+import ButtonDeleteClient from "./ButtonDeleteClient";
 
 function ClientInformation() {
   // get client id sent by navigate function in Client.js
@@ -27,18 +28,19 @@ function ClientInformation() {
       setDate(dateFormat(dataClient.fecha_agregado));
       setInfo(dataClient);
       // get personInCharge name (in user table)
-      const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsable}`);
+      const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsableId}`);
       if (responseUser.ok) {
         const dataUser = await responseUser.json();
         setPersonInChargeName(dataUser.nombre);
       }
       // get segments (in client_Segment table)
-      const responseClientSegments = await fetch(`api/cliente_segmento/GetSegments/${clientId}`)
+      const responseClientSegments = await fetch(`api/clientesegmento/GetSegments/${clientId}`)
       if (responseClientSegments.ok) {
         const dataSegments = await responseClientSegments.json();
+        console.log(dataSegments);
         setClientSegments(dataSegments);
         // get media (in client_Comunication table)
-        const responseClientMedia = await fetch(`api/cliente_comunicacion/GetMedia/${clientId}`)
+        const responseClientMedia = await fetch(`api/clientecomunicacion/GetMedia/${clientId}`)
         if (responseClientMedia.ok) {
           const dataMedia = await responseClientMedia.json();
           setClientMedia(dataMedia);
@@ -87,7 +89,7 @@ function ClientInformation() {
     setZoom(dataMedia.includes("Zoom"));
     setOtra(dataMedia.includes("Otra"));
 
-    setPersonInCharge(dataClient.responsable);
+    setPersonInCharge(dataClient.responsableId);
     setPriority(dataClient.prioridad);
     setState(dataClient.estado);
   }
@@ -288,25 +290,25 @@ function ClientInformation() {
     if (otra) {
       media.push("Otra")
     }
-    console.log(segments, clientId, media);
+
     const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ idCliente: clientId, fechaAgregado: clientInfo.fechaAgregado, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+      body: JSON.stringify({ clienteId: clientId, fechaAgregado: clientInfo.fechaAgregado, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
     });
 
     if (response.ok) {
       // add new segments
       for (let i = 0; i < segments.length; i++) {
         if (!clientSegments.includes(segments[i])) {
-          const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+          const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ cliente: clientId, segmento: segments[i] })
+            body: JSON.stringify({ clienteId: clientId, segmentoId: segments[i] })
           });
           if (!responseSegmento.ok) {
             // store or notify which segment fails
@@ -316,13 +318,12 @@ function ClientInformation() {
       // delete unchecked segments
       for (let i = 0; i < clientSegments.length; i++) {
         if (!segments.includes(clientSegments[i])) {
-          // add new segment
-          const responseSegmento = await fetch("api/cliente_segmento/DeleteClient_Segment", {
+          const responseSegmento = await fetch("api/clientesegmento/DeleteClient_Segment", {
             method: "DELETE",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ cliente: clientId, segmento: clientSegments[i] })
+            body: JSON.stringify({ clienteSegmentoId: 0, clienteId: clientId, segmentoId: clientSegments[i] })
           });
           if (!responseSegmento.ok) {
             // store or notify which segment fails
@@ -332,12 +333,12 @@ function ClientInformation() {
       // add new media
       for (let i = 0; i < media.length; i++) {
         if (!clientMedia.includes(media[i])) {
-          const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
+          const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ cliente: clientId, medio: media[i] })
+            body: JSON.stringify({ clienteId: clientId, medioId: media[i] })
           });
           if (!responseMedia.ok) {
             // store or notify which media fails
@@ -347,13 +348,12 @@ function ClientInformation() {
       // delete unchecked media
       for (let i = 0; i < clientMedia.length; i++) {
         if (!media.includes(clientMedia[i])) {
-          // add new segment
-          const responseMedia = await fetch("api/cliente_comunicacion/DeleteClientMedia", {
+          const responseMedia = await fetch("api/clientecomunicacion/DeleteClientMedia", {
             method: "DELETE",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ cliente: clientId, medio: clientMedia[i] })
+            body: JSON.stringify({ clienteComunicacionId: 0, clienteId: clientId, medioId: clientMedia[i] })
           });
           if (!responseMedia.ok) {
             // store or notify which segment fails
@@ -367,6 +367,22 @@ function ClientInformation() {
     media = [];
   }
 
+  const navigate = useNavigate();
+  const handleDeleteClient = async () => {
+
+    const responseDelete = await fetch("api/cliente/DeleteCliente", {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(clientInfo)
+      }
+    );
+    //TO-DO: use state to show a delete message
+    if (responseDelete.ok) {
+      navigate('/clientes', { state: clientId });
+    }
+  }
   return (
     <div className="container" >
       {
@@ -392,7 +408,7 @@ function ClientInformation() {
                       </div>
                       <div className="offcanvas-body">
                         <form onSubmit={handleSubmit}>
-                          <Input variable={company} handler={handleChangeCompany} text="Empresa" />
+                          <Input variable={company} handler={handleChangeCompany} text="Nombre del cliente" />
                           <div className="mb-3">
                             <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date} </label>
                           </div>
@@ -436,7 +452,7 @@ function ClientInformation() {
                               <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
                             </div>
                             <div className="col-6 d-flex justify-content-center">
-                              <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
+                              <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
                             </div>
                           </div>
                         </form>
@@ -447,7 +463,8 @@ function ClientInformation() {
               </div>
               <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
             </div>
-            <ButtonAddOrder idCliente={clientId} />
+            <ButtonOrder clientId={clientId} />
+            <ButtonDeleteClient clientId={clientId} clientName={clientInfo.nombreEmpresa} handler={handleDeleteClient} />
           </div>
       }
     </div> 

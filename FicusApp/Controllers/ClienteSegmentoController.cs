@@ -8,11 +8,11 @@ namespace FicusApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Cliente_SegmentoController : ControllerBase
+    public class ClienteSegmentoController : ControllerBase
     {
         private readonly FicusContext _context;
 
-        public Cliente_SegmentoController(FicusContext context)
+        public ClienteSegmentoController(FicusContext context)
         {
             _context = context;
         }
@@ -44,7 +44,10 @@ namespace FicusApp.Controllers
         [Route("DeleteClient_Segment")] 
         public async Task<IActionResult> DeleteClient_Segment([FromBody] ClienteSegmento request)
         {
-            _context.ClienteSegmento.Remove(request);
+            ClienteSegmento clienteSegmento = _context.ClienteSegmento.Where(s =>
+                                                s.ClienteId == request.ClienteId
+                                                && s.SegmentoId == request.SegmentoId).FirstOrDefault();
+            _context.ClienteSegmento.Remove(clienteSegmento);
             _context.SaveChanges();
             return Ok();
         }
