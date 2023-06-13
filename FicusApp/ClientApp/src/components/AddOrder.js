@@ -74,7 +74,6 @@ function AddOrder() {
 
   // this method is used when search criteria is changed
   const searchProductInput = () => {
-    console.log("Input: ", productInput)
     if (productInput === "") {
       setMatchingProducts([])
     } else {
@@ -103,15 +102,15 @@ function AddOrder() {
 
   const getMatchProducts = async (input) => {
     //get some products from stock that match with input
-    const responseInventory = await fetch(`api/inventario/GetMatchProducts/${input}/${searchByCodeOrName}`)
+    const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`)
     if (responseInventory.ok) {
       const matchProducts = await responseInventory.json();
       // verify if cuantity of some product was already changed
-      console.log(matchingProducts, selectedProducts)
+      console.log(matchProducts, selectedProducts)
       for (var i = 0; i < matchProducts.length; i++) {
         for (var j = 0; j < selectedProducts.length; j++) {
           if (matchProducts[i].productoId === selectedProducts[j].productoId) {
-            matchProducts[i].cantidad -= selectedProducts[j].pedidos;
+            matchProducts[i].disponible -= selectedProducts[j].pedidos;
           }
         }
       }
@@ -129,10 +128,10 @@ function AddOrder() {
     if (sku !== "" && cuantity !== "" && cuantity > 0) {
 
       var selectedProduct = JSON.parse(JSON.stringify(matchingProducts.find(selectedProduct => selectedProduct.productoId === sku)));
-      var productCost = selectedProduct.producto.alquilerRetail;
+      var productCost = selectedProduct.alquilerRetail;
       setCost(cost + (cuantity * productCost));
-      var productName = selectedProduct.producto.nombre;
-      var productSize = selectedProduct.producto.nombre;
+      var productName = selectedProduct.nombre;
+      var productSize = selectedProduct.dimensiones;
 
       //Verify if the product is already added
       var selectedProductInfo = selectedProducts.find(selectedProduct => selectedProduct.productoId === sku);
@@ -145,7 +144,6 @@ function AddOrder() {
         selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
         setSelectedProducts([...selectedProducts, selectedProductInfo])
       }
-      
       
       setProductInput("");
       setMatchingProducts([])
@@ -217,12 +215,13 @@ function AddOrder() {
         });
         if (responseDetail.ok) {
           // Go to stock and reduce product cuantity
-          const responseStock = await fetch(`api/inventario/GetProductInventory/${productId}/${1}`);
+          const responseStock = await fetch(`api/producto/GetProducto/${productId}`);
           if (responseStock.ok) {
             const productStock = await responseStock.json();
-            productStock.cantidad -= pedidos;
+            productStock.disponible -= pedidos;
+            productStock.enUso += pedidos;
             // Edit record
-            const response = await fetch("api/inventario/EditInventory", {
+            const response = await fetch("api/producto/EditProducto", {
               method: "PUT",
               headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -237,7 +236,6 @@ function AddOrder() {
           }
         }
       }
-      //Modify cuantity in Stock
       
     }
     

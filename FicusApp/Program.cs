@@ -1,5 +1,6 @@
 // reference to Models (context)
 using FicusApp.Models;
+using FicusApp.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ProductService>();
 
 //access to Models (for controllers)
 builder.Services.AddDbContext<FicusContext>();

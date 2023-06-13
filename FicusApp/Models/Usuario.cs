@@ -18,12 +18,18 @@ public partial class Usuario
     public string Apellidos { get; set; } = null!;
 
     [StringLength(255)]
+    public string NombreUsuario { get; set; } = null!;
+
+    [StringLength(255)]
     public string Contrasena { get; set; } = null!;
 
     public int? RolId { get; set; }
 
     [InverseProperty("Responsable")]
     public virtual ICollection<Cliente> Cliente { get; set; } = new List<Cliente>();
+
+    [InverseProperty("Usuario")]
+    public virtual ICollection<HistorialRefreshToken> HistorialRefreshToken { get; set; } = new List<HistorialRefreshToken>();
 
     [InverseProperty("Usuario")]
     public virtual ICollection<Orden> Orden { get; set; } = new List<Orden>();

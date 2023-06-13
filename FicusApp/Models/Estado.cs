@@ -13,7 +13,4 @@ public partial class Estado
 
     [StringLength(255)]
     public string DescripcionEstadoProducto { get; set; } = null!;
-
-    [InverseProperty("Estado")]
-    public virtual ICollection<Inventario> Inventario { get; set; } = new List<Inventario>();
 }

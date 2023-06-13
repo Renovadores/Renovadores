@@ -38,6 +38,16 @@ public partial class Producto
     [StringLength(255)]
     public string? Imagen { get; set; }
 
+    public bool? Descontinuado { get; set; }
+
+    public int? TotalExistente { get; set; }
+
+    public int? EnUso { get; set; }
+
+    public int? Disponible { get; set; }
+
+    public int? NoDevueltos { get; set; }
+
     [ForeignKey("CategoriaId")]
     [InverseProperty("Producto")]
     public virtual Categoria? Categoria { get; set; }
@@ -52,7 +62,4 @@ public partial class Producto
     [ForeignKey("FamiliaId")]
     [InverseProperty("Producto")]
     public virtual Familia? Familia { get; set; }
-
-    [InverseProperty("Producto")]
-    public virtual ICollection<Inventario> Inventario { get; set; } = new List<Inventario>();
 }
