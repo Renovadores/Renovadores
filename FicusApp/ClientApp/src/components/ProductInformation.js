@@ -8,6 +8,7 @@ import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import { useParams, useLocation, Link } from "react-router-dom";
+import InputDelete from "./InputDelete";
 
 function ProductInformation() {
     const params = useParams();
@@ -91,6 +92,26 @@ function ProductInformation() {
     const handleChangeImage = (event) => {
         setImage(event.target.value);
     };
+    const [descontinuado, setDescontinuado] = useState(1);
+    const handleChangeDescontinuado = (event) => {
+        setDescontinuado(event.target.value);
+    };
+    const [totalExistente, setTotalExistente] = useState(1);
+    const handleChangeTotalExistente = (event) => {
+        setTotalExistente(event.target.value);
+    };
+    const [enUso, setEnUso] = useState(1);
+    const handleChangeEnUso = (event) => {
+        setEnUso(event.target.value);
+    };
+    const [disponible, setDisponible] = useState(1);
+    const handleChangeDisponible = (event) => {
+        setDisponible(event.target.value);
+    };
+    const [noDevueltos, setNoDevueltos] = useState(1);
+    const handleChangeNoDevueltos = (event) => {
+        setNoDevueltos(event.target.value);
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -105,7 +126,8 @@ function ProductInformation() {
             alquiler_comercios,
             alquiler_retail,
             categoria,
-            familia
+            familia,
+            descontinuado
         );
         const response = await fetch("api/producto/EditProducto", {
             method: "PUT",
@@ -124,13 +146,20 @@ function ProductInformation() {
                 alquiler_retail: alquiler_retail,
                 categoria: categoria,
                 familia: familia,
+                descontinuado: descontinuado,
             }),
         });
         console.log(response);
 
         if (response.ok) {
-            getProduct();
+            
         }
+    };
+    const handleSubmitDelete = async (event) => {
+        const responseDelete = await fetch("api/producto/DeleteProducto");
+            if (responseDelete.ok) {
+                getProduct();
+            }
     };
 
     const addDefaultEditForm = (data) => {
@@ -177,6 +206,55 @@ function ProductInformation() {
                             >
                                 Editar
                             </button>
+                            <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
+                                <button
+                                    className="btn btn-primary"
+                                    type="button"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWithBothOptions2"
+                                    aria-controls="offcanvasWithBothOptions"
+                                >
+                                    Eliminar
+                                </button>
+
+                                <div
+                                    className="offcanvas offcanvas-start "
+                                    data-bs-scroll="true"
+                                    tabIndex="-1"
+                                    id="offcanvasWithBothOptions2"
+                                    aria-labelledby="offcanvasWithBothOptionsLabel"
+                                >
+                                    <div className="offcanvas-header">
+                                        <h5
+                                            className="offcanvas-title"
+                                            id="offcanvasWithBothOptionsLabel"
+                                        >
+                                            Eliminar
+                                        </h5>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            data-bs-dismiss="offcanvas"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div className="offcanvas-body">
+                                        Estas seguro que deseas eliminar este producto?
+                                        &#8205; &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
+                                        <form onSubmit={handleSubmit}>
+                                        <div className="row">
+                                                <div className="col-6 d-flex justify-content-center">
+                                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct}>Eliminar</button>
+                                                    <Link to={`/producto`}></Link>
+                                            </div>
+                                                <div className="col-6 d-flex justify-content-center">
+                                                        <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                            </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>  
+                                </div>
                             <div
                                 className="offcanvas offcanvas-start "
                                 data-bs-scroll="true"
@@ -200,9 +278,7 @@ function ProductInformation() {
                                 </div>
                                 <div className="offcanvas-body">
                                     <form onSubmit={handleSubmit}>
-                                        <Input variable={sku} handler={handleChangeSKU} text="SKU" />
-                                        <div className="mb-3">
-                                        </div>
+
                                         <Input variable={nombre} handler={handleChangeNombre} text="Nombre" />
                                         <div className="mb-3">
                                         </div>
@@ -224,7 +300,6 @@ function ProductInformation() {
                                         <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_retail} text="Precio Retail" />
                                         <div className="mb-3">
                                         </div>
-                                        <InputInt variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
                                         <div className="mb-3">
                                         </div>
                                         <SelectCategory variable={categoria} handler={handleChangeCategoria} />
@@ -266,11 +341,21 @@ function ProductInformation() {
                     <li className="list-group-item">
                         Categoria: {productInfo.categoria}{" "}</li>
                     <li className="list-group-item">
-                        Imagen: {productInfo.imagen} </li>
-                </ul>
+                            Imagen: {productInfo.imagen} </li>
+                        <li className="list-group-item">
+                            Total Producto: {productInfo.totalExistente} </li>
+                        <li className="list-group-item">
+                            En Uso: {productInfo.enUso} </li>
+                        <li className="list-group-item">
+                            Disponibles: {productInfo.disponible} </li>
+                        <li className="list-group-item">
+                            No Devueltos: {productInfo.noDevueltos} </li>
+                        <li className="list-group-item">
+                            Descontinuado: {productInfo.descontinuado} </li>
+                    </ul>
                 </div>
             </div>
-        </div>
+            </div>
     );
 }
 

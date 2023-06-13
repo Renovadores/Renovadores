@@ -21,7 +21,7 @@ public partial class FicusDbContext : DbContext
     public virtual DbSet<Usuario> Usuario { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusData; Integrated Security=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusDataBase; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -68,6 +68,11 @@ public partial class FicusDbContext : DbContext
             entity.Property(e => e.Categoria).HasColumnType("int");
             entity.Property(e => e.Familia).HasColumnType("int");
             entity.Property(e => e.Imagen).HasMaxLength(255);
+            entity.Property(e => e.Descontinuado).HasColumnType("int");
+            entity.Property(e => e.TotalExistente).HasColumnType("int");
+            entity.Property(e => e.EnUso).HasColumnType("int");
+            entity.Property(e => e.Disponible).HasColumnType("int");
+            entity.Property(e => e.NoDevueltos).HasColumnType("int");
 
         });
 

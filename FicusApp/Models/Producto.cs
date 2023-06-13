@@ -18,4 +18,9 @@ public partial class Producto
     public int Categoria { get; set; }
     public int Familia { get; set; }
     public string? Imagen { get; set; }
+    public  int Descontinuado { get; set; }
+    public int  TotalExistente { get; set; } = 0;
+    public int EnUso { get; set; } = 0;
+    public int Disponible { get; set; } = 0;
+    public int NoDevueltos { get; set; } = 0;
 }

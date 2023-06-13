@@ -95,9 +95,29 @@ function Stock() {
     setColor(event.target.value);
   };
   const [categoria, setCategoria] = useState(1);
-  const handleChangeCategoria = (event) => {
-    setCategoria(event.target.value);
-  }
+    const handleChangeCategoria = (event) => {
+        setCategoria(event.target.value);
+    };
+    const [descontinuado, setDescontinuado] = useState(1);
+    const handleChangeDescontinuado = (event) => {
+        setDescontinuado(event.target.value);
+    };
+    const [totalExistente, setTotalExistente] = useState(1);
+    const handleChangeTotalExistente = (event) => {
+        setTotalExistente(event.target.value);
+    };
+    const [enUso, setEnUso] = useState(1);
+    const handleChangeEnUso = (event) => {
+        setEnUso(event.target.value);
+    };
+    const [disponible, setDisponible] = useState(1);
+    const handleChangeDisponible = (event) => {
+        setDisponible(event.target.value);
+    };
+    const [noDevueltos, setNoDevueltos] = useState(1);
+    const handleChangeNoDevueltos = (event) => {
+        setNoDevueltos(event.target.value);
+    };
 
   const handleCancel = () => {
     setSKU("");
@@ -111,23 +131,32 @@ function Stock() {
     setColor(0);
     setCategoria(0);
     setFamilia(0);
+    setDescontinuado(0);
+    setTotalExistente(0);
+    setEnUso(0);
+    setDisponible(0);
+    setNoDevueltos(0);
   };
   //Add Product to data base
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(
-      date,
-      sku,
-      nombre,
-      color,
-      descripcion,
-      dimensiones,
-      peso_recipiente,
-      peso_desechable,
-      alquiler_comercios,
-      alquiler_retail,
-      categoria,
-      familia
+        date,
+        sku,
+        nombre,
+        color,
+        descripcion,
+        dimensiones,
+        peso_recipiente,
+        peso_desechable,
+        alquiler_comercios,
+        alquiler_retail,
+        categoria,
+        familia,
+        totalExistente,
+        enUso, 
+        disponible,
+        noDevueltos
     );
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
@@ -146,6 +175,11 @@ function Stock() {
         alquiler_retail: alquiler_retail,
         categoria: categoria,
         familia: familia,
+        descontinuado: 0,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
       }),
     });
     console.log(responseProduct);
@@ -176,9 +210,6 @@ function Stock() {
                   aria-controls="offcanvasWithBothOptions"
                 >
                   Agregar Producto
-                </button>
-                <button className="btn btn-warning text-light" type="button">
-                  Eliminar Producto
                 </button>
               </div>
             </div>
@@ -248,7 +279,28 @@ function Stock() {
                     variable={alquiler_retail}
                     handler={handleChangeAlquiler_Retail}
                     text="Precio Retail"
-                  />
+                                  />
+                 <InputInt
+                    variable={totalExistente}
+                    handler={handleChangeTotalExistente}
+                    text="Total de Productos Existentes"
+                />
+                  <InputInt
+                    variable={enUso}
+                    handler={handleChangeEnUso}
+                    text="Productos en Uso"
+                                  />
+                  <InputInt
+                    variable={disponible}
+                    handler={handleChangeDisponible}
+                    text="Productos Disponibles"
+                                  />
+                  <InputInt
+                    variable={noDevueltos}
+                    handler={handleChangeNoDevueltos}
+                    text="Productos No Devueltos"
+                />
+
 
                   <SelectCategory
                     variable={categoria}

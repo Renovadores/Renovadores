@@ -19,7 +19,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).ToList();
+            List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).Where(c =>c.Descontinuado == 0).ToList();
             return Ok(productos);
         }
 
@@ -46,6 +46,14 @@ public class ProductoController : ControllerBase
         {
             _context.Producto.Update(producto);
             _context.SaveChanges();
+            return Ok();
+        }
+        [HttpPut]
+        [Route("DeleteProducto")]
+        public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)
+        {
+            _context.Producto.Update(producto);
+            await _context.SaveChangesAsync();
             return Ok();
         }
     }
