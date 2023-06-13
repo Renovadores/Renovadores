@@ -201,15 +201,20 @@ function Stock() {
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
               <div className="d-grid gap-2 mb-4">
-                <button
-                  className="btn btn-success"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasWithBothOptions"
-                  aria-controls="offcanvasWithBothOptions"
-                >
-                  Agregar Producto
-                </button>
+                <div className="row">
+                    <div className="col-6 d-flex justify-content-start">
+                        <button
+                            className="btn btn-success"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasWithBothOptions"
+                            aria-controls="offcanvasWithBothOptions"
+                        >
+                            Agregar Producto
+                        </button>
+                    </div>
+                </div>
+
               </div>
             </div>
             <div

@@ -37,10 +37,10 @@ namespace FicusApp.Controllers
         }
 
         [HttpGet]
-        [Route("GetCliente/{ID_Cliente}")]
-        public async Task<IActionResult> GetCliente(int ID_Cliente)
+        [Route("GetCliente/{ClienteId}")]
+        public async Task<IActionResult> GetCliente(int ClienteId)
         {
-            Cliente cliente = await _clientService.GetCliente(id);
+            Cliente cliente = await _clientService.GetCliente(ClienteId);
             return Ok(cliente);
         }
 
