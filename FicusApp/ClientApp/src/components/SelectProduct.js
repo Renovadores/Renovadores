@@ -1,23 +1,22 @@
-function SelectPersonInCharge(props) {
+function SelectProduct({ products, value, onChange }) {
   return (
     <div className="mb-3">
       <label htmlFor="formGroupExampleInput" className="form-label">
-        Responsable
+        Producto
       </label>
       <select
         className="form-select"
         aria-label="Default select example"
-        value={props.variable}
-        onChange={props.handler}
+        value={value}
+        onChange={onChange}
       >
-        {props.users.map((user, index) => (
-          <option value={user.idUsuario} key={index}>
-            {user.nombre}
+        {products.map((product, index) => (
+          <option value={product.sku} key={index}>
+            {product.sku}
           </option>
         ))}
       </select>
     </div>
   );
 }
-
-export default SelectPersonInCharge;
+export default SelectProduct;

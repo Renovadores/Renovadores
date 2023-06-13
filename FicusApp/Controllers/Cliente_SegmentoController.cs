@@ -10,9 +10,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class Cliente_SegmentoController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public Cliente_SegmentoController(FicusDbContext context)
+        public Cliente_SegmentoController(FicusContext context)
         {
             _context = context;
         }
@@ -41,7 +41,7 @@ namespace FicusApp.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteClient_Segment")]
+        [Route("DeleteClient_Segment")] 
         public async Task<IActionResult> DeleteClient_Segment([FromBody] Cliente_Segmento request)
         {
             _context.Cliente_Segmento.Remove(request);

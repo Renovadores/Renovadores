@@ -8,9 +8,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly FicusDbContext _context;
+        private readonly FicusContext _context;
 
-        public UsuarioController(FicusDbContext context)
+        public UsuarioController(FicusContext context)
         {
             _context = context;
         }
