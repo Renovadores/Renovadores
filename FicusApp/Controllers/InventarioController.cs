@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using Microsoft.EntityFrameworkCore;
+using FicusApp.Services;
 
 namespace FicusApp.Controllers
 {
@@ -9,11 +10,11 @@ namespace FicusApp.Controllers
     [ApiController]
     public class InventarioController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly InventarioService _inventarioService;
 
-        public InventarioController(FicusContext context)
+        public InventarioController(InventarioService inventarioService)
         {
-            _context = context;
+            _inventarioService = inventarioService;
         }
 
         [HttpGet]
@@ -21,11 +22,7 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetInventory()
         {
             //List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
-            var Inventarios = _context.Inventario
-                .Include(inventario => inventario.ProductoNavigation)
-                .OrderByDescending(c => c.Producto)
-                .ToList();
-
+            var Inventarios = await _inventarioService.GetInventory();
             return Ok(Inventarios);
         }
 
@@ -34,7 +31,7 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetNewId()
         {
             newId id = new newId();
-            id.Id = _context.Inventario.Count() + 1;
+            id.Id = (await _inventarioService.GetNewId()).Id;
             return Ok(id);
         }
 
@@ -42,25 +39,23 @@ namespace FicusApp.Controllers
         [Route("GetState")]
         public async Task<IActionResult> GetState()
         {
-            var Estados = _context.Estado
-                .ToList();
-
+            var Estados = await _inventarioService.GetState();
             return Ok(Estados);
         }
 
         [HttpGet]
-        [Route("GetInventory/{SKU}")]
-        public async Task<IActionResult> GetInventoryDetail(string SKU)
+        [Route("GetInventory/{ProductoId}")]
+        public async Task<IActionResult> GetInventoryDetail(string ProductoId)
         {
-            Inventario inventario = await _context.Inventario.FindAsync(SKU);
+            Inventario inventario = await _inventarioService.GetInventoryDetail(ProductoId);
             return Ok(inventario);
         }
 
         [HttpGet]
-        [Route("GetInventoryRow/{ID_Inventario}")]
-        public async Task<IActionResult> GetInventoryRow(int ID_Inventario)
+        [Route("GetInventoryRow/{InventarioId}")]
+        public async Task<IActionResult> GetInventoryRow(int InventarioId)
         {
-            Inventario inventario = await _context.Inventario.FindAsync(ID_Inventario);
+            Inventario inventario = await _inventarioService.GetInventoryRow(InventarioId);
             return Ok(inventario);
         }
 
@@ -68,17 +63,15 @@ namespace FicusApp.Controllers
         [Route("AddInventory")]
         public async Task<IActionResult> AddInventory([FromBody] Inventario request)
         {
-            await _context.Inventario.AddAsync(request);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var inventario = await _inventarioService.AddInventory(request);
+            return Ok(inventario);
         }
 
         [HttpPut]
         [Route("EditInventory")]
         public async Task<IActionResult> EditInventory([FromBody] Inventario inventario)
         {
-            _context.Inventario.Update(inventario);
-            _context.SaveChanges();
+            await _inventarioService.EditInventory(inventario);
             return Ok();
         }
     }

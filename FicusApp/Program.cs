@@ -1,5 +1,6 @@
-// reference to Models (context)
+//reference to Models (context)
 using FicusApp.Models;
+using FicusApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 
 //access to Models (for controllers)
 builder.Services.AddDbContext<FicusContext>();
+
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<InventarioService>();
 
 var app = builder.Build();
 

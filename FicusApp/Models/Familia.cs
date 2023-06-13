@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
 public partial class Familia
 {
-    public int ID_Familia { get; set; }
+    [Key]
+    public int FamiliaId { get; set; }
 
-    public string Nombre_familia { get; set; } = null!;
+    [StringLength(255)]
+    public string NombreFamilia { get; set; } = null!;
 
+    [InverseProperty("Familia")]
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
 }

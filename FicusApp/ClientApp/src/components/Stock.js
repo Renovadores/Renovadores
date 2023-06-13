@@ -188,7 +188,7 @@ function Stock() {
       handleCancel();
       getProducts();
     }
-  };;
+  };
 
   return (
     <div>
@@ -285,20 +285,20 @@ function Stock() {
                     handler={handleChangeTotalExistente}
                     text="Total de Productos Existentes"
                 />
-                  <InputInt
-                    variable={enUso}
-                    handler={handleChangeEnUso}
-                    text="Productos en Uso"
-                                  />
-                  <InputInt
-                    variable={disponible}
-                    handler={handleChangeDisponible}
-                    text="Productos Disponibles"
-                                  />
-                  <InputInt
-                    variable={noDevueltos}
-                    handler={handleChangeNoDevueltos}
-                    text="Productos No Devueltos"
+                <InputInt
+                  variable={enUso}
+                  handler={handleChangeEnUso}
+                  text="Productos en Uso"
+                />
+                <InputInt
+                  variable={disponible}
+                  handler={handleChangeDisponible}
+                  text="Productos Disponibles"
+                />
+                <InputInt
+                  variable={noDevueltos}
+                  handler={handleChangeNoDevueltos}
+                  text="Productos No Devueltos"
                 />
 
 
@@ -312,120 +312,119 @@ function Stock() {
                   />
                   <SelectColor variable={colorId} handler={handleChangeColorId} />
 
-                  <div className="row">
-                    <div className="col-6 d-flex justify-content-center">
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        data-bs-dismiss="offcanvas"
-                        onClick={getProducts}
-                      >
-                        Agregar
-                      </button>
-                    </div>
-                    <div className="col-6 d-flex justify-content-center">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={handleCancel}
-                        data-bs-dismiss="offcanvas"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
+                <div className="row">
+                  <div className="col-6 d-flex justify-content-center">
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      data-bs-dismiss="offcanvas"
+                      onClick={getProducts}
+                    >
+                      Agregar
+                    </button>
                   </div>
-                </form>
-              </div>
+                  <div className="col-6 d-flex justify-content-center">
+                    <button
+                      className="btn btn-danger"
+                      type="button"
+                      onClick={handleCancel}
+                      data-bs-dismiss="offcanvas"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-                  <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-                      {/* Filter/Search text*/}
-                      <input
-                          className="form-control"
-                          list="datalistOptions"
-                          id="exampleDataList"
-                          placeholder="Buscar producto..."
-                      />
-                      {/* Filter/Search button*/}
-                      <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-                          <div className="dropdown">
-                              <button
-                                  className="btn btn-secondary dropdown-toggle"
-                                  type="button"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                              >
-                                  Filtrado
-                              </button>
-                              <ul className="dropdown-menu">
-                                  <li>
-                                      <a className="dropdown-item" href="#">
-                                          Prioridad
-                                      </a>
-                                  </li>
-                                  <li>
-                                      <a className="dropdown-item" href="#">
-                                          Recientes
-                                      </a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
-        </section>
-        <section className="py-4">
-          <div className="container fluid">
-            <div className="container">
-              <h2 className="display-3 fw-bold">Todos los productos</h2>
+        </div>
+        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+          {/* Filter/Search text*/}
+          <input
+            className="form-control"
+            list="datalistOptions"
+            id="exampleDataList"
+            placeholder="Buscar producto..."
+          />
+          {/* Filter/Search button*/}
+          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
+            <div className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Filtrado
+              </button>
+              <ul className="dropdown-menu">
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Prioridad
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Recientes
+                  </a>
+                </li>
+              </ul>
             </div>
+          </div>
+        </div>
+      </section>
+      <section className="py-4">
+        <div className="container fluid">
+          <div className="container">
+            <h2 className="display-3 fw-bold">Todos los productos</h2>
+          </div>
 
-            {productsChecked === false ? (
-              <div className="d-flex align-items-center justify-content-center">
-                <strong>Cargando... </strong>
-                <div
-                  className="spinner-border ml-auto"
-                  role="status"
-                  aria-hidden="true"
-                ></div>
-              </div>
-            ) : (
-              <ProductList
-                products={products}
-                // handler={handleClickViewProduct}
-              />
-            )}
-            <div className="row m-2 mt-4">
-              <nav aria-label="...">
-                <ul className="pagination justify-content-center">
-                  <li className="page-item disabled">
-                    <a className="page-link">Anterior</a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item" aria-current="page">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Siguiente
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+          {productsChecked === false ? (
+            <div className="d-flex align-items-center justify-content-center">
+              <strong>Cargando... </strong>
+              <div
+                className="spinner-border ml-auto"
+                role="status"
+                aria-hidden="true"
+              ></div>
             </div>
+          ) : (
+            <ProductList
+              products={products}
+              // handler={handleClickViewProduct}
+            />
+          )}
+          <div className="row m-2 mt-4">
+            <nav aria-label="...">
+              <ul className="pagination justify-content-center">
+                <li className="page-item disabled">
+                  <a className="page-link">Anterior</a>
+                </li>
+                <li className="page-item active">
+                  <a className="page-link" href="#">
+                    1
+                  </a>
+                </li>
+                <li className="page-item" aria-current="page">
+                  <a className="page-link" href="#">
+                    2
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    3
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    Siguiente
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-        </section>
-      </body>
+        </div>
+      </section>
     </div>
   );
 }

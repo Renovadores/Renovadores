@@ -28,11 +28,11 @@ const FormEditInventory = ({ product, onSubmit }) => {
 
   const handleSubmit = (event) => {
     console.dir({
-      iD_Inventario: inventoryRow.iD_Inventario,
-      producto: inventoryRow.producto,
+      inventarioId: inventoryRow.inventarioId,
+      productoId: inventoryRow.productoId,
       cantidad: inventoryRow.cantidad,
       lote: inventoryRow.lote,
-      fecha_ingreso: inventoryRow.fecha_ingreso + " handleSubmitEditForm",
+      fechaIngreso: inventoryRow.fechaIngreso + " handleSubmitEditForm",
     });
     onSubmit(event, inventoryRow, oldProductAmount);
   };
@@ -61,8 +61,8 @@ const FormEditInventory = ({ product, onSubmit }) => {
             <form value={inventoryRow} onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="formGroupExampleInput" className="form-label">
-                  Agregado el: {product.fecha_ingreso} <br />
-                  SKU: {product.producto}
+                  Agregado el: {product.fechaIngreso} <br />
+                  SKU: {product.productoId}
                 </label>
               </div>
               <InputInt
@@ -106,10 +106,10 @@ const FormEditInventory = ({ product, onSubmit }) => {
 const ProductRow = ({ product, onSelectInventory }) => (
   <tr>
     {/*<th scope="row">{product.id_Inventario}</th>*/}
-    <td>{product.producto}</td>
+    <td>{product.productoId}</td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
-    <td>{product.fecha_ingreso}</td>
+    <td>{product.fechaIngreso}</td>
     <td>
       <button
         className="btn btn-primary mx-2 text-light"

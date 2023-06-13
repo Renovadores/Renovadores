@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
@@ -9,8 +13,10 @@ public partial class Producto
 
     public int? ColorId { get; set; }
 
+    [StringLength(255)]
     public string? Descripcion { get; set; }
 
+    [StringLength(255)]
     public string? Dimensiones { get; set; }
 
     public int? PesoRecipiente { get; set; }
@@ -25,23 +31,31 @@ public partial class Producto
 
     public int? FamiliaId { get; set; }
 
+    [StringLength(255)]
     public string? Imagen { get; set; }
 
-    public int TotalExistente { get; set; }
+    public int? Descontinuado { get; set; }
 
-    public int EnUso { get; set; }
+    public int? TotalExistente { get; set; }
 
-    public int Disponible { get; set; }
+    public int? EnUso { get; set; }
 
-    public int NoDevueltos { get; set; }
+    public int? Disponible { get; set; }
 
-    public int Descontinuado { get; set; }
+    public int? NoDevueltos { get; set; }
 
-    public virtual Categoria? CategoriaNavigation { get; set; }
+    [ForeignKey("CategoriaId")]
+    [InverseProperty("Producto")]
+    public virtual Categoria? Categoria { get; set; }
 
-    public virtual Color? ColorNavigation { get; set; }
+    [ForeignKey("ColorId")]
+    [InverseProperty("Producto")]
+    public virtual Color? Color { get; set; }
 
+    [InverseProperty("Producto")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
 
-    public virtual Familia? FamiliaNavigation { get; set; }
+    [ForeignKey("FamiliaId")]
+    [InverseProperty("Producto")]
+    public virtual Familia? Familia { get; set; }
 }
