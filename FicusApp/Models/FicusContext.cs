@@ -53,7 +53,7 @@ public partial class FicusContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusDataBase; Integrated Security=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-LGDD36T\\SQLEXPRESS01; DataBase=FicusData; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -241,24 +241,24 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.SKU).HasName("PK__Producto__CA1ECF0CA305D67A");
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__CA1ECF0CA305D67A");
 
-            entity.Property(e => e.SKU).HasMaxLength(255);
+            entity.Property(e => e.ProductoId).HasMaxLength(255);
             entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Dimensiones).HasMaxLength(255);
             entity.Property(e => e.Imagen).HasMaxLength(255);
             entity.Property(e => e.Nombre).HasMaxLength(255);
 
             entity.HasOne(d => d.CategoriaNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Categoria)
+                .HasForeignKey(d => d.CategoriaId)
                 .HasConstraintName("FK__Producto__Catego__4222D4EF");
 
             entity.HasOne(d => d.ColorNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Color)
+                .HasForeignKey(d => d.ColorId)
                 .HasConstraintName("FK__Producto__Color__440B1D61");
 
             entity.HasOne(d => d.FamiliaNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Familia)
+                .HasForeignKey(d => d.FamiliaId)
                 .HasConstraintName("FK__Producto__Famili__4316F928");
         });
 
