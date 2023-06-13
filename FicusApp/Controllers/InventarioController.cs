@@ -22,7 +22,7 @@ namespace FicusApp.Controllers
         public async Task<IActionResult> GetInventory()
         {
             //List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
-            var Inventarios = _inventarioService.GetInventory();
+            var Inventarios = await _inventarioService.GetInventory();
             return Ok(Inventarios);
         }
 
@@ -39,23 +39,23 @@ namespace FicusApp.Controllers
         [Route("GetState")]
         public async Task<IActionResult> GetState()
         {
-            var Estados = _inventarioService.GetState();
+            var Estados = await _inventarioService.GetState();
             return Ok(Estados);
         }
 
         [HttpGet]
-        [Route("GetInventory/{SKU}")]
-        public async Task<IActionResult> GetInventoryDetail(string SKU)
+        [Route("GetInventory/{ProductoId}")]
+        public async Task<IActionResult> GetInventoryDetail(string ProductoId)
         {
-            Inventario inventario = await _inventarioService.GetInventoryDetail(SKU);
+            Inventario inventario = await _inventarioService.GetInventoryDetail(ProductoId);
             return Ok(inventario);
         }
 
         [HttpGet]
-        [Route("GetInventoryRow/{ID_Inventario}")]
-        public async Task<IActionResult> GetInventoryRow(int ID_Inventario)
+        [Route("GetInventoryRow/{InventarioId}")]
+        public async Task<IActionResult> GetInventoryRow(int InventarioId)
         {
-            Inventario inventario = await _inventarioService.GetInventoryRow(ID_Inventario);
+            Inventario inventario = await _inventarioService.GetInventoryRow(InventarioId);
             return Ok(inventario);
         }
 
@@ -63,8 +63,8 @@ namespace FicusApp.Controllers
         [Route("AddInventory")]
         public async Task<IActionResult> AddInventory([FromBody] Inventario request)
         {
-            await _inventarioService.AddInventory(request);
-            return Ok();
+            var inventario = await _inventarioService.AddInventory(request);
+            return Ok(inventario);
         }
 
         [HttpPut]

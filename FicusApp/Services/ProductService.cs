@@ -18,7 +18,7 @@ public class ProductService : IProductService
     [Route("GetProducts")]
     public async Task<List<Producto>> GetProducts()
     {
-        List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).Where(c => c.Descontinuado == 0).ToList();
+        List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c => c.Descontinuado == 0).ToList();
         return productos;
     }
 

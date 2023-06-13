@@ -1,18 +1,18 @@
-INSERT INTO Rol (ID_Rol, Tipo_rol, Detalles_rol)
+INSERT INTO Rol (RolId, TipoRol, DetallesRol)
 VALUES 
   (1, 'Administrador', 'Rol con acceso a todas las funcionalidades del sistema'),
   (2, 'Usuario normal', 'Rol con acceso limitado a ciertas funcionalidades del sistema'),
   (3, 'Invitado', 'Rol con acceso limitado a funcionalidades básicas del sistema');
 
-INSERT INTO Usuario (ID_Usuario, Nombre, Apellidos, Contrasena, ID_Rol)
+INSERT INTO Usuario (UsuarioId, Nombre, Apellidos, NombreUsuario, Contrasena, RolId)
 VALUES 
-  (1, 'Juan', 'Pérez García', 'contraseña1', 1),
-  (2, 'María', 'Rodríguez López', 'contraseña2', 2),
-  (3, 'Luis', 'González Pérez', 'contraseña3', 2),
-  (4, 'Ana', 'Martínez García', 'contraseña4', 3),
-  (5, 'Jorge', 'Hernández Ruiz', 'contraseña5', 3);
+  (1, 'Juan', 'Pérez García', 'juan01', 'contraseña1', 1),
+  (2, 'María', 'Rodríguez López', 'maria26', 'contraseña2', 2),
+  (3, 'Luis', 'González Pérez', 'luispq', 'contraseña3', 2),
+  (4, 'Ana', 'Martínez García', 'anita2001','contraseña4', 3),
+  (5, 'Jorge', 'Hernández Ruiz', 'jorgeelcurioso', 'contraseña5', 3);
 
-INSERT INTO Categoria (ID_Categoria, Nombre_categoria)
+INSERT INTO Categoria (CategoriaId, NombreCategoria)
 VALUES
   (1, 'Sopa'),
   (2, 'Sin división'),
@@ -22,14 +22,14 @@ VALUES
   (6, 'Plato'),
   (7, 'Plato sopa');
 
-INSERT INTO Familia (ID_Familia, Nombre_familia)
+INSERT INTO Familia (FamiliaId, NombreFamilia)
 VALUES
   (1, 'Costas'),
   (2, 'Bosques'),
   (3, 'Páramos'),
   (4, 'Otra');
 
-INSERT INTO Color (ID_Color, Descripcion)
+INSERT INTO Color (ColorId, Descripcion)
 VALUES
   (1, 'JA'),
   (2, 'CL'),
@@ -38,13 +38,13 @@ VALUES
   (5, 'RO'),
   (6, 'MO');
 
-INSERT INTO Estado (ID_Estado, Descripcion_estadoproducto)
+INSERT INTO Estado (EstadoId, DescripcionEstadoProducto)
 VALUES
   (1, 'Disponible'),
   (2, 'Descontinuado');
 
-INSERT INTO Producto (SKU, Nombre, Familia, Descripcion, Categoria, Color, Dimensiones, Imagen, Peso_recipiente, Peso_desechable,
-	Alquiler_Comercios, Alquiler_Retail, TotalExistente, Disponible)
+INSERT INTO Producto (ProductoId, Nombre, FamiliaId, Descripcion, CategoriaId, ColorId, Dimensiones, Imagen, PesoRecipiente, PesoDesechable,
+	AlquilerComercios, AlquilerRetail, TotalExistente, Disponible)
 VALUES
   ('EC-07-1-JA', 'Montezuma', 1,'Sopa pequeña', 1, 1,'12 oz (4,25"" Top Dia., 2,75"" Tall)', 'noimage.jpg', 0, 0,130,170,300,300),
   ('EC-08-1-JA', 'Ena', 3,'Sin compartimientos pequeño', 2, 1, '05,00""L-05,00""W-03,25""H', 'noimage.jpg', 0, 0,110,150,100,100),
@@ -69,7 +69,7 @@ VALUES
   ('M-273-RO','', 4,'Plato redondo principal', 6, 5,'23,50 cm Dia - 02,00 cm H', 'noimage.jpg',81.65,14,80.51,115,300,300),
   ('M-275-BL','', 4,'Plato semi hondo', 7, 3,'18,30 cm Dia - 03,70 cm H', 'noimage.jpg',58.6,8,55,90,100,100);
 
-INSERT INTO Inventario (Id_Inventario, Producto, Cantidad, Lote, Fecha_ingreso)
+INSERT INTO Inventario (InventarioId, ProductoIId, Cantidad, Lote, FechaIngreso)
 VALUES
   (1, 'EC-07-1-JA', 300, 1, '2023-05-09'),
   (2, 'EC-08-1-JA', 100, 1, '2023-05-09'),
@@ -94,28 +94,28 @@ VALUES
   (21,'M-273-RO', 300, 1, '2023-05-09'),
   (22,'M-275-BL', 100, 1, '2023-05-09');
 
-INSERT INTO Segmento (ID_Segmento, Detalles)
+INSERT INTO Segmento (SegmentoId, Detalles)
 VALUES
 ('Cafeteria', 'Caracteristicas de las cafeterias'),
 ('Panaderia', 'Caracteristicas de la panaderia');
 
-INSERT INTO MedioComunicacion (ID_Medio, Caracteristicas)
+INSERT INTO MedioComunicacion (MedioId, Caracteristicas)
 VALUES
   ('Medio1', 'Caracteristicas del medio 1'),
   ('Medio2', 'Caracteristicas del medio 2');
 
-INSERT INTO Cliente (ID_Cliente, Fecha_agregado, Responsable, Prioridad, Estado, Nombre_empresa, Contacto, Telefono, Correo, Web)
+INSERT INTO Cliente (ClienteId, FechaAgregado, ResponsableId, Prioridad, Estado, NombreEmpresa, Contacto, Telefono, Correo, Web)
 VALUES
 (1, '2022-05-01', 1, 'Alta', 'Clientes', 'Empresa A', 'Juan Perez', 5551234, 'juan.perez@empresaA.com', 'www.empresaA.com'),
 (2, '2022-05-02', 2, 'Baja', 'Clientes', 'Empresa B', 'Maria Garcia', 5555678, 'maria.garcia@empresaB.com', 'www.empresaB.com');
 
-INSERT INTO Cliente_Segmento (Cliente, Segmento)
+INSERT INTO ClienteSegmento (ClienteId, SegmentoId)
 VALUES
 (1, 'Cafeteria'),
 (2, 'Cafeteria'),
 (2, 'Panaderia');
 
-INSERT INTO Cliente_Comunicacion (Cliente, Medio)
+INSERT INTO ClienteComunicacion (ClienteId, MedioId)
 VALUES
   (1, 'Medio1'),
   (1, 'Medio2'),

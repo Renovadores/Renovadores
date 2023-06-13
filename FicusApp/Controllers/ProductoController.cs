@@ -47,6 +47,7 @@ public class ProductoController : ControllerBase
             await _productService.EditProduct(producto);
             return Ok();
         }
+        
         [HttpPut]
         [Route("DeleteProducto")]
         public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)

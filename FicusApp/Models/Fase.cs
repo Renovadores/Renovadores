@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
 public partial class Fase
 {
-    public int ID_Fase { get; set; }
+    [Key]
+    public int FaseId { get; set; }
 
-    public string Descripcion_estado { get; set; } = null!;
+    [StringLength(255)]
+    public string DescripcionEstado { get; set; } = null!;
+
+    [InverseProperty("Fase")]
+    public virtual ICollection<HistorialOrden> HistorialOrden { get; set; } = new List<HistorialOrden>();
 }

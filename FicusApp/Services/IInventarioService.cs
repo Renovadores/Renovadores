@@ -10,8 +10,8 @@ namespace FicusApp.Services;
         Task<List<Inventario>> GetInventory();
         Task<newId> GetNewId();
         Task<List<Estado>> GetState();
-        Task<Inventario> GetInventoryDetail(string SKU);
-        Task<Inventario> GetInventoryRow(int ID_Inventario);
+        Task<Inventario> GetInventoryDetail(string ProductoId);
+        Task<Inventario?> GetInventoryRow(int InventarioId);
         Task<Inventario> AddInventory([FromBody] Inventario request);
         Task<Inventario> EditInventory([FromBody] Inventario inventario);
     }

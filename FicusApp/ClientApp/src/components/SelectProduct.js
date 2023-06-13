@@ -11,8 +11,8 @@ function SelectProduct({ products, value, onChange }) {
         onChange={onChange}
       >
         {products.map((product, index) => (
-          <option value={product.sku} key={index}>
-            {product.sku}
+          <option value={product.productoId} key={index}>
+            {product.productoId}
           </option>
         ))}
       </select>

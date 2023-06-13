@@ -40,7 +40,7 @@ function Inventory() {
     if (response.ok) {
       const data = await response.json();
       setSKUProducts(data);
-      setSKUProduct(data[0].sku);
+      setSKUProduct(data[0].productoId);
     } else {
       console.log(response.text + " Error getSKUProducts");
     }
@@ -95,11 +95,11 @@ function Inventory() {
       const newInventoryId = await responseId.json();
 
       const newInventory = {
-        iD_Inventario: newInventoryId.id,
-        producto: SKUProduct,
+        inventarioId: newInventoryId.id,
+        productoId: SKUProduct,
         cantidad: productAmount,
         lote: batch,
-        fecha_ingreso: dateDB,
+        fechaIngreso: dateDB,
       };
 
       // setNewInventoryRow(newInventory);
@@ -146,11 +146,11 @@ function Inventory() {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
-        iD_Inventario: inventoryRow.iD_Inventario,
-        producto: inventoryRow.producto,
+        inventarioId: inventoryRow.inventarioId,
+        productoId: inventoryRow.productoId,
         cantidad: inventoryRow.cantidad,
         lote: inventoryRow.lote,
-        fecha_ingreso: inventoryRow.fecha_ingreso,
+        fechaIngreso: inventoryRow.fechaIngreso,
       }),
     });
     if (responseInventory.ok) {
@@ -320,15 +320,15 @@ function Inventory() {
 const calculateNewProductTotal = async (inventoryRow, oldProductAmount) => {
   const difference = inventoryRow.cantidad - oldProductAmount;
   console.log(inventoryRow.cantidad + " cantidad");
-  const newTotal = inventoryRow.productoNavigation.totalExistente + difference;
-  const newAvailable = inventoryRow.productoNavigation.disponible + difference;
+  const newTotal = inventoryRow.producto.totalExistente + difference;
+  const newAvailable = inventoryRow.producto.disponible + difference;
   const responseProduct = await fetch("api/producto/EditProducto", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify({
-      ...inventoryRow.productoNavigation,
+      ...inventoryRow.producto,
       totalExistente: newTotal,
       disponible: newAvailable,
     }),
