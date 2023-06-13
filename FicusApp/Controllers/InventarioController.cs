@@ -68,9 +68,25 @@ namespace FicusApp.Controllers
         [Route("AddInventory")]
         public async Task<IActionResult> AddInventory([FromBody] Inventario request)
         {
-            await _context.Inventario.AddAsync(request);
+            var task = await _context.Inventario.AddAsync(request);
             await _context.SaveChangesAsync();
-            return Ok();
+
+            var inventory = task.Entity;
+
+            // inventory.ProductoNavigation;
+
+            // inventory.
+
+            _context
+                .Entry(inventory)
+                .Reference(i => i.ProductoNavigation)
+                .Load();
+
+            System.Console.WriteLine(inventory.ToString());
+
+            // task
+            
+            return Ok(inventory);
         }
 
         [HttpPut]

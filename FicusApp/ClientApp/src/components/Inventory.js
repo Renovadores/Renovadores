@@ -113,19 +113,20 @@ function Inventory() {
         body: JSON.stringify(newInventory),
       });
       if (responseInventory.ok) {
-        const responseRow = await fetch(
-          `api/inventario/GetInventoryRow/${newInventory.iD_Inventario}`
-        );
-        if (responseRow.ok) {
-          const dataRow = await responseRow.json();
-          console.dir(
-            dataRow.productoNavigation + " productNav, ",
-            dataRow.cantidad + " cantidad"
-          );
-          calculateNewProductTotal(dataRow, oldProductAmount);
-          handleCancel();
-          getInventory();
-        }
+        // const responseRow = await fetch(
+        //   `api/inventario/GetInventoryRow/${newInventory.iD_Inventario}`
+        // );
+        // if (responseRow.ok) {
+        const dataRow = await responseInventory.json();
+        // console.dir(
+        //   dataRow.productoNavigation + " productNav, ",
+        //   dataRow.cantidad + " cantidad"
+        // );
+        console.dir(dataRow);
+        await calculateNewProductTotal(dataRow, oldProductAmount);
+        handleCancel();
+        getInventory();
+        // }
       } else {
         console.log(responseInventory.text + " Error handleSubmit");
       }
