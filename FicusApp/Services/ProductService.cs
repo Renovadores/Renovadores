@@ -18,15 +18,15 @@ public class ProductService : IProductService
     [Route("GetProducts")]
     public async Task<List<Producto>> GetProducts()
     {
-        List<Producto> productos = _context.Producto.OrderByDescending(c => c.SKU).Where(c => c.Descontinuado == 0).ToList();
+        List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c => c.Descontinuado == 0).ToList();
         return productos;
     }
 
     [HttpGet]
-    [Route("GetProducto/{SKU}")]
-    public async Task<Producto> GetProducto(string SKU)
+    [Route("GetProducto/{ProductoId}")]
+    public async Task<Producto> GetProducto(string ProductoId)
     {
-        Producto producto = await _context.Producto.FindAsync(SKU);
+        Producto producto = await _context.Producto.FindAsync(ProductoId);
         return producto;
     }
 

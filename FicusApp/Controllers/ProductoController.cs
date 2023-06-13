@@ -20,7 +20,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            List<Producto> productos = _context.Producto.OrderByDescending(c => c.ProductoId).Where(c =>c.Descontinuado == 0).ToList();
+            List<Producto> productos = await _productService.GetProducts();
             return Ok(productos);
         }
 
@@ -28,7 +28,7 @@ public class ProductoController : ControllerBase
         [Route("GetProducto/{ProductoId}")]
         public async Task<IActionResult> GetProducto(string ProductoId)
         {
-            Producto producto = await _context.Producto.FindAsync(SKU);
+            Producto producto = await _productService.GetProducto(ProductoId);
             return Ok(producto);
         }
 
