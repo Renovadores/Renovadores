@@ -127,9 +127,49 @@ function ProductInformation() {
             alquiler_retail,
             categoria,
             familia,
-            descontinuado
         );
         const response = await fetch("api/producto/EditProducto", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                color: color,
+                sku: sku,
+                nombre: nombre,
+                descripcion: descripcion,
+                dimensiones: dimensiones,
+                peso_recipiente: peso_recipiente,
+                peso_desechable: peso_desechable,
+                alquiler_comercios: alquiler_comercios,
+                alquiler_retail: alquiler_retail,
+                categoria: categoria,
+                familia: familia,
+            }),
+        });
+        console.log(response);
+
+        if (response.ok) {
+            
+        }
+    };
+    const handleSubmitDelete = async (event) => {
+        event.preventDefault();
+        console.log(
+            sku,
+            nombre,
+            color,
+            descripcion,
+            dimensiones,
+            peso_recipiente,
+            peso_desechable,
+            alquiler_comercios,
+            alquiler_retail,
+            categoria,
+            familia,
+            descontinuado
+        );
+        const response = await fetch("api/producto/DeleteProducto", {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -152,14 +192,8 @@ function ProductInformation() {
         console.log(response);
 
         if (response.ok) {
-            
+
         }
-    };
-    const handleSubmitDelete = async (event) => {
-        const responseDelete = await fetch("api/producto/DeleteProducto");
-            if (responseDelete.ok) {
-                getProduct();
-            }
     };
 
     const addDefaultEditForm = (data) => {
@@ -241,7 +275,7 @@ function ProductInformation() {
                                     <div className="offcanvas-body">
                                         Estas seguro que deseas eliminar este producto?
                                         &#8205; &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
-                                        <form onSubmit={handleSubmit}>
+                                        <form onSubmit={handleSubmitDelete}>
                                         <div className="row">
                                                 <div className="col-6 d-flex justify-content-center">
                                                         <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct}>Eliminar</button>

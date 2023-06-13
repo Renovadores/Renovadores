@@ -53,7 +53,7 @@ public class ProductoController : ControllerBase
         public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)
         {
             _context.Producto.Update(producto);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return Ok();
         }
     }
