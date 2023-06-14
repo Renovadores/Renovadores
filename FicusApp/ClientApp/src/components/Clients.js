@@ -23,33 +23,27 @@ function Clients() {
 
     const getToken = async () => {
       // get token from DB
-      // TO-DO: GET CURRENT USER
       var UserId = JSON.parse(sessionStorage.getItem('userId'));
-      const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${UserId}`)
-      if (responseToken.ok) {
-        const data = await responseToken.json();
-        setToken(data.token);
-      }
+      //const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${UserId}`)
+      //if (responseToken.ok) {
+      //  const data = await responseToken.json();
+      //  setToken(data.token);
+      //}
     }
 
     useEffect(() => {
-      getToken();
+      getClients();
     }, []);
 
-    useEffect(() => {
-      if (token !== "") {
-        getClients()
-      }
-    }, [token])
+    //useEffect(() => {
+    //  if (token !== "") {
+    //    getClients()
+    //  }
+    //}, [token])
 
     const getClients = async () => {
       setClientsChecked(false);
-      const response = await fetch("api/cliente/GetClientes", {
-        method: 'GET',
-        headers: {
-          'Authorization' : `Bearer ${token}`,
-        }
-      });
+      const response = await fetch("api/cliente/GetClientes");
       if (response.ok) {
         const data = await response.json();
         setClients(data);

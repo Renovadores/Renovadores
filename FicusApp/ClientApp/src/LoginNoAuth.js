@@ -34,6 +34,11 @@ function Login(props) {
             <button className="btn btn-info" onClick={props.handleAuthenticate}>Ingresar</button>
           </div>
         </div>
+        <div className="row d-flex justify-content-center mt-3">
+          <div className="col-6 d-flex justify-content-center">
+            <label className="text-danger">Usuario o contrasena incorrecta!</label>
+          </div>
+        </div>
       </div>
     </div>
   )

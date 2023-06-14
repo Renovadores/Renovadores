@@ -17,7 +17,7 @@ namespace FicusApp.Controllers
             _context = context;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()

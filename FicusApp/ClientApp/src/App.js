@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Layout from "./components/Layout";
 import Login from "./Login";
+import LoginNoAuth from "./LoginNoAuth";
 import "./custom.css";
 
 function App() {
@@ -108,7 +109,7 @@ function App() {
           <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
           :
           userState === NO_AUTHORIZED ?
-            <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
+            <LoginNoAuth userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
             :
             userState === AUTHORIZED ?
               <Layout userId={userId} handleCloseSession={handleCloseSession}>
