@@ -13,10 +13,10 @@ import InputDelete from "./InputDelete";
 function ProductInformation() {
     const params = useParams();
     // get info from URL
-    const SKU = params.SKU;
+    const ProductoId = params.ProductoId;
     const [productInfo, setInfo] = useState("");
     const getProduct = async () => {
-        const responseProduct = await fetch(`api/producto/GetProducto/${SKU}`);
+        const responseProduct = await fetch(`api/producto/GetProducto/${ProductoId}`);
         if (responseProduct.ok) {
             const data = await responseProduct.json();
             setInfo(data);
@@ -33,9 +33,9 @@ function ProductInformation() {
 
 
 
-    const [sku, setSKU] = useState("");
-    const handleChangeSKU = (event) => {
-        setSKU(event.target.value);
+    const [productoId, setProductoId] = useState("");
+    const handleChangeProductoId = (event) => {
+        setProductoId(event.target.value);
     };
 
     const [nombre, setNombre] = useState("");
@@ -43,9 +43,9 @@ function ProductInformation() {
         setNombre(event.target.value);
     };
 
-    const [color, setColor] = useState("");
-    const handleChangeColor = (event) => {
-        setColor(event.target.value);
+    const [colorId, setColorId] = useState("");
+    const handleChangeColorId = (event) => {
+        setColorId(event.target.value);
     };
 
     const [descripcion, setDescripcion] = useState("");
@@ -58,34 +58,34 @@ function ProductInformation() {
         setDimensiones(event.target.value);
     };
 
-    const [peso_recipiente, setPeso_recipiente] = useState("");
-    const handleChangePeso_recipiente = (event) => {
-        setPeso_recipiente(event.target.value);
+    const [pesoRecipiente, setPesoRecipiente] = useState("");
+    const handleChangePesoRecipiente = (event) => {
+        setPesoRecipiente(event.target.value);
     };
 
-    const [peso_desechable, setPeso_desechable] = useState("");
-    const handleChangePeso_desechable = (event) => {
-        setPeso_desechable(event.target.value);
+    const [pesoDesechable, setPesoDesechable] = useState("");
+    const handleChangePesoDesechable = (event) => {
+        setPesoDesechable(event.target.value);
     };
 
-    const [alquiler_comercios, setAlquiler_comercios] = useState("");
-    const handleChangeAlquiler_comercios = (event) => {
-        setAlquiler_comercios(event.target.value);
+    const [alquilerComercios, setAlquilerComercios] = useState("");
+    const handleChangeAlquilerComercios = (event) => {
+        setAlquilerComercios(event.target.value);
     };
 
-    const [alquiler_retail, setAlquiler_retail] = useState("");
-    const handleChangeAlquiler_retail = (event) => {
-        setAlquiler_retail(event.target.value);
+    const [alquilerRetail, setAlquilerRetail] = useState("");
+    const handleChangeAlquilerRetail = (event) => {
+        setAlquilerRetail(event.target.value);
     };
 
-    const [categoria, setCategoria] = useState("");
-    const handleChangeCategoria = (event) => {
-        setCategoria(event.target.value);
+    const [categoriaId, setCategoriaId] = useState("");
+    const handleChangeCategoriaId = (event) => {
+        setCategoriaId(event.target.value);
     };
 
-    const [familia, setFamilia] = useState("");
-    const handleChangeFamilia = (event) => {
-        setFamilia(event.target.value);
+    const [familiaId, setFamiliaId] = useState("");
+    const handleChangeFamiliaId = (event) => {
+        setFamiliaId(event.target.value);
     };
 
     const [image, setImage] = useState("");
@@ -116,17 +116,17 @@ function ProductInformation() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(
-            sku,
+            productoId,
             nombre,
-            color,
+            colorId,
             descripcion,
             dimensiones,
-            peso_recipiente,
-            peso_desechable,
-            alquiler_comercios,
-            alquiler_retail,
-            categoria,
-            familia,
+            pesoRecipiente,
+            pesoDesechable,
+            alquilerComercios,
+            alquilerRetail,
+            categoriaId,
+            familiaId,
         );
         const response = await fetch("api/producto/EditProducto", {
             method: "PUT",
@@ -134,17 +134,17 @@ function ProductInformation() {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                color: color,
-                sku: sku,
+                colorId: colorId,
+                productoId: productoId,
                 nombre: nombre,
                 descripcion: descripcion,
                 dimensiones: dimensiones,
-                peso_recipiente: peso_recipiente,
-                peso_desechable: peso_desechable,
-                alquiler_comercios: alquiler_comercios,
-                alquiler_retail: alquiler_retail,
-                categoria: categoria,
-                familia: familia,
+                pesoRecipiente: pesoRecipiente,
+                pesoDesechable: pesoDesechable,
+                alquilerComercios: alquilerComercios,
+                alquilerRetail: alquilerRetail,
+                categoriaId: categoriaId,
+                familiaId: familiaId,
             }),
         });
         console.log(response);
@@ -159,17 +159,17 @@ function ProductInformation() {
     const handleSubmitDelete = async (event) => {
         event.preventDefault();
         console.log(
-            sku,
+            productoId,
             nombre,
-            color,
+            colorId,
             descripcion,
             dimensiones,
-            peso_recipiente,
-            peso_desechable,
-            alquiler_comercios,
-            alquiler_retail,
-            categoria,
-            familia,
+            pesoRecipiente,
+            pesoDesechable,
+            alquilerComercios,
+            alquilerRetail,
+            categoriaId,
+            familiaId,
             descontinuado
         );
         const response = await fetch("api/producto/DeleteProducto", {
@@ -178,17 +178,17 @@ function ProductInformation() {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                color: color,
-                sku: sku,
+                colorId: colorId,
+                productoId: productoId,
                 nombre: nombre,
                 descripcion: descripcion,
                 dimensiones: dimensiones,
-                peso_recipiente: peso_recipiente,
-                peso_desechable: peso_desechable,
-                alquiler_comercios: alquiler_comercios,
-                alquiler_retail: alquiler_retail,
-                categoria: categoria,
-                familia: familia,
+                pesoRecipiente: pesoRecipiente,
+                pesoDesechable: pesoDesechable,
+                alquilerComercios: alquilerComercios,
+                alquilerRetail: alquilerRetail,
+                categoriaId: categoriaId,
+                familiaId: familiaId,
                 descontinuado: descontinuado,
             }),
         });
@@ -200,17 +200,17 @@ function ProductInformation() {
     };
 
     const addDefaultEditForm = (data) => {
-        setSKU(data.sku);
+        setProductoId(data.productoId);
         setNombre(data.nombre);
-        setColor(data.color);
+        setColorId(data.colorId);
         setDescripcion(data.descripcion);
         setDimensiones(data.dimensiones);
-        setPeso_recipiente(data.peso_recipiente);
-        setPeso_desechable(data.peso_desechable);
-        setAlquiler_comercios(data.alquiler_Comercios);
-        setAlquiler_retail(data.alquiler_Retail);
-        setCategoria(data.categoria);
-        setFamilia(data.familia);
+        setPesoRecipiente(data.pesoRecipiente);
+        setPesoDesechable(data.pesoDesechable);
+        setAlquilerComercios(data.alquilerComercios);
+        setAlquilerRetail(data.alquilerRetail);
+        setCategoriaId(data.categoriaId);
+        setFamiliaId(data.familiaId);
         setImage(data.Imagen);
     };
 
@@ -324,23 +324,23 @@ function ProductInformation() {
                                         <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
                                         <div className="mb-3">
                                         </div>
-                                        <InputInt variable={peso_recipiente} handler={handleChangePeso_recipiente} text="Peso de Recipiente" />
+                                        <InputInt variable={pesoRecipiente} handler={handleChangePesoRecipiente} text="Peso de Recipiente" />
                                         <div className="mb-3">
                                         </div>
-                                        <InputInt variable={peso_desechable} handler={handleChangePeso_desechable} text="Peso Desechable" />
+                                        <InputInt variable={pesoDesechable} handler={handleChangePesoDesechable} text="Peso Desechable" />
                                         <div className="mb-3">
                                         </div>
-                                        <InputInt variable={alquiler_comercios} handler={handleChangeAlquiler_comercios} text="Precio Comercio" />
+                                        <InputInt variable={alquilerComercios} handler={handleChangeAlquilerComercios} text="Precio Comercio" />
                                         <div className="mb-3">
                                         </div>
-                                        <InputInt variable={alquiler_retail} handler={handleChangeAlquiler_retail} text="Precio Retail" />
+                                        <InputInt variable={alquilerRetail} handler={handleChangeAlquilerRetail} text="Precio Retail" />
                                         <div className="mb-3">
                                         </div>
                                         <div className="mb-3">
                                         </div>
-                                        <SelectCategory variable={categoria} handler={handleChangeCategoria} />
-                                        <SelectFamily variable={familia} handler={handleChangeFamilia} />
-                                        <SelectColor variable={color} handler={handleChangeColor} />
+                                        <SelectCategory variable={categoriaId} handler={handleChangeCategoriaId} />
+                                        <SelectFamily variable={familiaId} handler={handleChangeFamiliaId} />
+                                        <SelectColor variable={colorId} handler={handleChangeColorId} />
 
                                         <div className="row">
                                             <div className="col-6 d-flex justify-content-center">
@@ -357,25 +357,25 @@ function ProductInformation() {
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        SKU: {sku} </li>
+                        Producto ID: {productoId} </li>
                     <li className="list-group-item">
-                        Color: {productInfo.color} </li>
+                        Color: {productInfo.colorId} </li>
                     <li className="list-group-item">
                         Descripcion: {productInfo.descripcion}{" "}</li>
                     <li className="list-group-item">
                         Dimensiones: {productInfo.dimensiones}{" "}</li>
                     <li className="list-group-item">
-                        Peso: {productInfo.peso_recipiente} </li>
+                        Peso: {productInfo.pesoRecipiente} </li>
                     <li className="list-group-item">
-                        Peso sustituido: {productInfo.peso_desechable} </li>
+                        Peso sustituido: {productInfo.pesoDesechable} </li>
                     <li className="list-group-item">
-                        Precio comercios: {productInfo.alquiler_Comercios} </li>
+                        Precio comercios: {productInfo.alquilerComercios} </li>
                     <li className="list-group-item">
-                        Precio retail: {productInfo.alquiler_Retail} </li>
+                        Precio retail: {productInfo.alquilerRetail} </li>
                     <li className="list-group-item">
-                        Familia: {productInfo.familia} </li>
+                        Familia: {productInfo.familiaId} </li>
                     <li className="list-group-item">
-                        Categoria: {productInfo.categoria}{" "}</li>
+                        Categoria: {productInfo.categoriaId}{" "}</li>
                     <li className="list-group-item">
                             Imagen: {productInfo.imagen} </li>
                         <li className="list-group-item">

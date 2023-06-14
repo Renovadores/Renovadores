@@ -58,79 +58,79 @@ function Stock() {
     setDimensiones(event.target.value);
   };
 
-  const [peso_recipiente, setPeso_recipiente] = useState(0);
-  const handleChangePeso_recipiente = (event) => {
-    setPeso_recipiente(event.target.value);
+  const [pesoRecipiente, setPesoRecipiente] = useState(0);
+  const handleChangePesoRecipiente = (event) => {
+    setPesoRecipiente(event.target.value);
   };
 
-  const [peso_desechable, setPeso_desechable] = useState(0);
-  const handleChangePeso_desechable = (event) => {
-    setPeso_desechable(event.target.value);
+  const [pesoDesechable, setPesoDesechable] = useState(0);
+  const handleChangePesoDesechable = (event) => {
+    setPesoDesechable(event.target.value);
   };
 
-  const [alquiler_comercios, setAlquiler_Comercios] = useState(0);
-  const handleChangeAlquiler_Comercios = (event) => {
-    setAlquiler_Comercios(event.target.value);
+  const [alquilerComercios, setAlquilerComercios] = useState(0);
+  const handleChangeAlquilerComercios = (event) => {
+    setAlquilerComercios(event.target.value);
   };
 
-  const [alquiler_retail, setAlquiler_Retail] = useState(0);
-  const handleChangeAlquiler_Retail = (event) => {
-    setAlquiler_Retail(event.target.value);
+  const [alquilerRetail, setAlquilerRetail] = useState(0);
+  const handleChangeAlquilerRetail = (event) => {
+    setAlquilerRetail(event.target.value);
   };
-  const [sku, setSKU] = useState(0);
-  const handleChangeSKU = (event) => {
-    setSKU(event.target.value);
+  const [productoId, setProductoId] = useState(0);
+  const handleChangeProductoId = (event) => {
+    setProductoId(event.target.value);
   };
   const current = new Date();
   const date = `${current.getDate()}-${
     current.getMonth() + 1
   }-${current.getFullYear()}`;
 
-  const [familia, setFamilia] = useState(1);
-  const handleChangeFamilia = (event) => {
-    setFamilia(event.target.value);
+  const [familiaId, setFamiliaId] = useState(1);
+  const handleChangeFamiliaId = (event) => {
+    setFamiliaId(event.target.value);
   };
-  const [color, setColor] = useState(1);
-  const handleChangeColor = (event) => {
-    setColor(event.target.value);
+  const [colorId, setColorId] = useState(1);
+  const handleChangeColorId = (event) => {
+    setColorId(event.target.value);
   };
-  const [categoria, setCategoria] = useState(1);
-  const handleChangeCategoria = (event) => {
-    setCategoria(event.target.value);
-  };
-  const [descontinuado, setDescontinuado] = useState(1);
-  const handleChangeDescontinuado = (event) => {
-    setDescontinuado(event.target.value);
-  };
-  const [totalExistente, setTotalExistente] = useState(1);
-  const handleChangeTotalExistente = (event) => {
-    setTotalExistente(event.target.value);
-  };
-  const [enUso, setEnUso] = useState(1);
-  const handleChangeEnUso = (event) => {
-    setEnUso(event.target.value);
-  };
-  const [disponible, setDisponible] = useState(1);
-  const handleChangeDisponible = (event) => {
-    setDisponible(event.target.value);
-  };
-  const [noDevueltos, setNoDevueltos] = useState(1);
-  const handleChangeNoDevueltos = (event) => {
-    setNoDevueltos(event.target.value);
-  };
+  const [categoriaId, setCategoriaId] = useState(1);
+    const handleChangeCategoriaId = (event) => {
+        setCategoriaId(event.target.value);
+    };
+    const [descontinuado, setDescontinuado] = useState(1);
+    const handleChangeDescontinuado = (event) => {
+        setDescontinuado(event.target.value);
+    };
+    const [totalExistente, setTotalExistente] = useState(1);
+    const handleChangeTotalExistente = (event) => {
+        setTotalExistente(event.target.value);
+    };
+    const [enUso, setEnUso] = useState(1);
+    const handleChangeEnUso = (event) => {
+        setEnUso(event.target.value);
+    };
+    const [disponible, setDisponible] = useState(1);
+    const handleChangeDisponible = (event) => {
+        setDisponible(event.target.value);
+    };
+    const [noDevueltos, setNoDevueltos] = useState(1);
+    const handleChangeNoDevueltos = (event) => {
+        setNoDevueltos(event.target.value);
+    };
 
   const handleCancel = () => {
-    setSKU("");
+    setProductoId("");
     setNombre("");
     setDescripcion("");
     setDimensiones("");
-    setPeso_recipiente(0);
-    setPeso_desechable(0);
-    setAlquiler_Comercios(0);
-    setAlquiler_Retail(0);
-    setColor(0);
-    setCategoria(0);
-    setFamilia(0);
+    setPesoRecipiente(0);
+    setPesoDesechable(0);
+    setAlquilerComercios(0);
+    setAlquilerRetail(0);
+    setColorId(0);
+    setCategoriaId(0);
+    setFamiliaId(0);
     setDescontinuado(0);
     setTotalExistente(0);
     setEnUso(0);
@@ -141,22 +141,22 @@ function Stock() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(
-      date,
-      sku,
-      nombre,
-      color,
-      descripcion,
-      dimensiones,
-      peso_recipiente,
-      peso_desechable,
-      alquiler_comercios,
-      alquiler_retail,
-      categoria,
-      familia,
-      totalExistente,
-      enUso,
-      disponible,
-      noDevueltos
+        date,
+        productoId,
+        nombre,
+        colorId,
+        descripcion,
+        dimensiones,
+        pesoRecipiente,
+        pesoDesechable,
+        alquilerComercios,
+        alquilerRetail,
+        categoriaId,
+        familiaId,
+        totalExistente,
+        enUso, 
+        disponible,
+        noDevueltos
     );
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
@@ -164,17 +164,17 @@ function Stock() {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
-        color: color,
-        sku: sku,
+        colorId: colorId,
+        productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
         dimensiones: dimensiones,
-        peso_recipiente: peso_recipiente,
-        peso_desechable: peso_desechable,
-        alquiler_comercios: alquiler_comercios,
-        alquiler_retail: alquiler_retail,
-        categoria: categoria,
-        familia: familia,
+        pesoRecipiente: pesoRecipiente,
+        pesoDesechable: pesoDesechable,
+        alquilerComercios: alquilerComercios,
+        alquilerRetail: alquilerRetail,
+        categoriaId: categoriaId,
+        familiaId: familiaId,
         descontinuado: 0,
         totalExistente: totalExistente,
         enUso: enUso,
@@ -192,89 +192,98 @@ function Stock() {
 
   return (
     <div>
-      <section className="py-4">
-        <div className="container-fluid">
-          <div className="d-grid gap-2 mb-4">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Inventario</title>
+      </head>
+      <body>
+        <section className="py-4">
+          <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
-              <button
-                className="btn btn-success"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasWithBothOptions"
-                aria-controls="offcanvasWithBothOptions"
-              >
-                Agregar Producto
-              </button>
+              <div className="d-grid gap-2 mb-4">
+                <button
+                  className="btn btn-success"
+                  type="button"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasWithBothOptions"
+                  aria-controls="offcanvasWithBothOptions"
+                >
+                  Agregar Producto
+                </button>
+              </div>
             </div>
-          </div>
-          <div
-            className="offcanvas offcanvas-start"
-            data-bs-scroll="true"
-            tabIndex="-1"
-            id="offcanvasWithBothOptions"
-            aria-labelledby="offcanvasWithBothOptionsLabel"
-          >
-            <div className="offcanvas-header">
-              <h5
-                className="offcanvas-title"
-                id="offcanvasWithBothOptionsLabel"
-              >
-                Informacion del nuevo producto
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="offcanvas-body">
-              <form onSubmit={handleSubmit}>
-                <Input variable={sku} handler={handleChangeSKU} text="SKU" />
-                <Input
-                  variable={nombre}
-                  handler={handleChangeNombre}
-                  text="Nombre"
-                />
-                <div className="mb-3">
-                  <label htmlFor="formGroupExampleInput" className="form-label">
-                    Agregado el: {date}
-                  </label>
-                </div>
-                <Input
-                  variable={descripcion}
-                  handler={handleChangeDescripcion}
-                  text="Descripción"
-                />
-                <Input
-                  variable={dimensiones}
-                  handler={handleChangeDimensiones}
-                  text="Dimensiones"
-                />
-                <InputInt
-                  variable={peso_recipiente}
-                  handler={handleChangePeso_recipiente}
-                  text="Peso de Recipiente"
-                />
-                <InputInt
-                  variable={peso_desechable}
-                  handler={handleChangePeso_desechable}
-                  text="Peso Desechable"
-                />
-                <InputInt
-                  variable={alquiler_comercios}
-                  handler={handleChangeAlquiler_Comercios}
-                  text="Precio Comercio"
-                />
-                <InputInt
-                  variable={alquiler_retail}
-                  handler={handleChangeAlquiler_Retail}
-                  text="Precio Retail"
-                />
-                <InputInt
-                  variable={totalExistente}
-                  handler={handleChangeTotalExistente}
-                  text="Total de Productos Existentes"
+            <div
+              className="offcanvas offcanvas-start"
+              data-bs-scroll="true"
+              tabIndex="-1"
+              id="offcanvasWithBothOptions"
+              aria-labelledby="offcanvasWithBothOptionsLabel"
+            >
+              <div className="offcanvas-header">
+                <h5
+                  className="offcanvas-title"
+                  id="offcanvasWithBothOptionsLabel"
+                >
+                  Informacion del nuevo producto
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="offcanvas-body">
+                <form onSubmit={handleSubmit}>
+                  <Input variable={productoId} handler={handleChangeProductoId} text="Producto ID" />
+                  <Input
+                    variable={nombre}
+                    handler={handleChangeNombre}
+                    text="Nombre"
+                  />
+                  <div className="mb-3">
+                    <label
+                      htmlFor="formGroupExampleInput"
+                      className="form-label"
+                    >
+                      Agregado el: {date}
+                    </label>
+                  </div>
+                  <Input
+                    variable={descripcion}
+                    handler={handleChangeDescripcion}
+                    text="Descripción"
+                  />
+                  <Input
+                    variable={dimensiones}
+                    handler={handleChangeDimensiones}
+                    text="Dimensiones"
+                  />
+                  <InputInt
+                    variable={pesoRecipiente}
+                    handler={handleChangePesoRecipiente}
+                    text="Peso de Recipiente"
+                  />
+                  <InputInt
+                    variable={pesoDesechable}
+                    handler={handleChangePesoDesechable}
+                    text="Peso Desechable"
+                  />
+                  <InputInt
+                    variable={alquilerComercios}
+                    handler={handleChangeAlquilerComercios}
+                    text="Precio Comercio"
+                  />
+                  <InputInt
+                    variable={alquilerRetail}
+                    handler={handleChangeAlquilerRetail}
+                    text="Precio Retail"
+                                  />
+                 <InputInt
+                    variable={totalExistente}
+                    handler={handleChangeTotalExistente}
+                    text="Total de Productos Existentes"
                 />
                 <InputInt
                   variable={enUso}
@@ -292,15 +301,16 @@ function Stock() {
                   text="Productos No Devueltos"
                 />
 
-                <SelectCategory
-                  variable={categoria}
-                  handler={handleChangeCategoria}
-                />
-                <SelectFamily
-                  variable={familia}
-                  handler={handleChangeFamilia}
-                />
-                <SelectColor variable={color} handler={handleChangeColor} />
+
+                  <SelectCategory
+                    variable={categoriaId}
+                    handler={handleChangeCategoriaId}
+                  />
+                  <SelectFamily
+                    variable={familiaId}
+                    handler={handleChangeFamiliaId}
+                  />
+                  <SelectColor variable={colorId} handler={handleChangeColorId} />
 
                 <div className="row">
                   <div className="col-6 d-flex justify-content-center">

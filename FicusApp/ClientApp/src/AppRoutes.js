@@ -28,7 +28,7 @@ const AppRoutes = [
   },
 
   {
-    path: "/productos/informacion/:SKU",
+    path: "/productos/informacion/:ProductoId",
     element: <ProductInformation />,
   },
   
