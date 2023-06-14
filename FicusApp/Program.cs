@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
-using FicusApp.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 
@@ -16,11 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<ClientService>();
 
 //access to Models (for controllers)
-builder.Services.AddDbContext<FicusContext>();
 
 builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
 
@@ -28,6 +23,8 @@ builder.Services.AddDbContext<FicusContext>();
 
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<InventarioService>();
+builder.Services.AddScoped<ClientService>();
+
 var key = builder.Configuration.GetValue<string>("JwtSettings:key");
 var keyBytes = Encoding.ASCII.GetBytes(key);
 

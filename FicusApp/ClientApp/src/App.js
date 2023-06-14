@@ -57,7 +57,6 @@ function App() {
   }
 
   const authenticateWithRefresh = async (tok, ref) => {
-    console.log(tok);
     try {
       const responseAuthentication = await fetch("api/usuario/ObtenerRefreshToken", {
         method: "POST",

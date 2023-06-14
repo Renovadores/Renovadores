@@ -50,7 +50,7 @@ public class ProductoController : ControllerBase
 
         [HttpPut]
         [Route("EditProducto")]
-        public async Task<IActionResult> EditProduct([FromBody] Producto producto)
+        public async Task<IActionResult> EditProducto([FromBody] Producto producto)
         {
             await _productService.EditProduct(producto);
             return Ok();
@@ -58,7 +58,7 @@ public class ProductoController : ControllerBase
         
         [HttpPut]
         [Route("DeleteProducto")]
-        public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)
+        public async Task<IActionResult> DeleteProducto([FromBody] Producto producto)
         {
             await _productService.DeleteProduct(producto);
             return Ok();

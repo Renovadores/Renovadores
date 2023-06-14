@@ -6,7 +6,7 @@ function Login(props) {
       <div className="row d-flex justify-content-center mb-5">
         <div className="row d-flex justify-content-center">
           <div className="col-6 d-flex justify-content-center">
-            <img src={Logotipo} alt="Logotipo de Ficus" height={200} />
+            <img src={Logotipo} alt="Logotipo de Ficus" height={100} />
           </div>
         </div>
         <div className="row d-flex justify-content-center">
