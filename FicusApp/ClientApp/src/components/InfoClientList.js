@@ -1,3 +1,4 @@
+import ButtonDeleteClient from "./ButtonDeleteClient";
 
 function InfoClientList({ clientInfo, clientSegments, clientMedia , date, personInChargeName}) {
   return (

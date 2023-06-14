@@ -19,35 +19,46 @@ function Clients() {
     const [clientsChecked, setClientsChecked] = useState(false);
     const [clients, setClients] = useState([]);
     const [users, setUsers] = useState([]);
-    const getClients = async () => {
-      setClientsChecked(false);
-      const response = await fetch("api/cliente/GetClientes");
-      if (response.ok) {
-        const data = await response.json();
-        setClients(data);
-        setClientsChecked(true);
-      } else {
-          console.log(response.text);
-      }
-      // get users
-      const responseUsers = await fetch("api/usuario/GetUsers");
-      if (responseUsers.ok) {
-        const dataUsers = await responseUsers.json();
-        setUsers(dataUsers);
-      }
+    const [token, setToken] = useState("");
+
+    const getToken = async () => {
+      // get token from DB
+      var UserId = JSON.parse(sessionStorage.getItem('userId'));
+      //const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${UserId}`)
+      //if (responseToken.ok) {
+      //  const data = await responseToken.json();
+      //  setToken(data.token);
+      //}
     }
 
-
-    // this method allows to auto call getClients when page is started
     useEffect(() => {
-        getClients();
+      getClients();
     }, []);
 
+    //useEffect(() => {
+    //  if (token !== "") {
+    //    getClients()
+    //  }
+    //}, [token])
 
-  useEffect(() => {
-    console.log(clients);
-  }, [clients]);
-
+    const getClients = async () => {
+        setClientsChecked(false);
+        const response = await fetch("api/cliente/GetClientes");
+        if (response.ok) {
+            const data = await response.json();
+            setClients(data);
+            setClientsChecked(true);
+        } else {
+            console.log(response.text);
+        }
+        // get users
+        const responseUsers = await fetch("api/usuario/GetUsers");
+        if (responseUsers.ok) {
+            const dataUsers = await responseUsers.json();
+            setUsers(dataUsers);
+        }
+    }
+    
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
@@ -259,67 +270,69 @@ function Clients() {
         }
         // get media
         if (correo) {
-          media.push("Correo");
+            media.push("Correo");
         }
         if (llamada) {
-          media.push("Llamada");
+            media.push("Llamada");
         }
         if (instagram) {
-          media.push("Instagram");
+            media.push("Instagram");
         }
         if (whatsapp) {
-          media.push("Whatsapp");
+            media.push("Whatsapp");
         }
         if (zoom) {
-          media.push("Zoom");
+            media.push("Zoom");
         }
         if (otra) {
-          media.push("Otra")
+            media.push("Otra")
         }
+
         // generate id
         const responseId = await fetch("api/cliente/GetNewId");
         if (responseId.ok) {
-          const newClientId = await responseId.json();
-          // add client
-          const responseCliente = await fetch("api/cliente/AddCliente", {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({ idCliente: newClientId.id, fechaAgregado: dateDB, responsable: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
-          });
-          if (responseCliente.ok) {
-            // add segments
-            for (let i = 0; i < segments.length; i++) {
-              const responseSegmento = await fetch("api/cliente_segmento/AddSegment", {
+            const newClientId = await responseId.json();
+            console.log(personInCharge, paginaWeb)
+            // add client
+            const responseCliente = await fetch("api/cliente/AddCliente", {
                 method: "POST",
                 headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ cliente: newClientId.id, segmento: segments[i] })
-              });
-              if (!responseSegmento.ok) {
-                // store or notify which segment fails
-              }
+                body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+            });
+            if (responseCliente.ok) {
+                // add segments
+                for (let i = 0; i < segments.length; i++) {
+                    const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ clienteId: newClientId.id, segmentoId: segments[i] })
+                    });
+                    if (!responseSegmento.ok) {
+                        // store or notify which segment fails
+                    }
+                }
+                // add social media
+                for (let i = 0; i < media.length; i++) {
+                    const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ clienteId: newClientId.id, medioId: media[i] })
+                    });
+                    if (!responseMedia.ok) {
+                        // store or notify which media fails
+                    }
+                }
+                handleCancel();
+                getClients();
             }
-            // add social media
-            for (let i = 0; i < media.length; i++) {
-              const responseMedia = await fetch("api/cliente_comunicacion/AddClientMedia", {
-                method: "POST",
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ cliente: newClientId.id, medio: media[i] })
-              });
-              if (!responseMedia.ok) {
-                // store or notify which media fails
-              }
-            }
-            handleCancel();
-            getClients();
-          }
         }
-          
+
         segments = [];
         media = [];
     }
@@ -327,9 +340,8 @@ function Clients() {
     // When user click on client button, 'navigate' redirect him to new page
     const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
     const handleClickViewClient = (clientIndex) => {
-        navigate('/clientes/informacion/', { state: clients[clientIndex].iD_Cliente });
+        navigate('/clientes/informacion', { state: clients[clientIndex].clienteId });
         //second argument "state" allows to pass parameters
-            console.log(clients[clientIndex].iD_Cliente);
     };
 
     // TO-DO: separate in new components to simplify code
@@ -351,7 +363,7 @@ function Clients() {
                         </div>
                         <div className="offcanvas-body">
                             <form onSubmit={handleSubmit}>
-                                <Input variable={company} handler={handleChangeCompany} text="Empresa" />
+                                <Input variable={company} handler={handleChangeCompany} text="Nombre del cliente" />
                                 <div className="mb-3">
                                     <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date}</label>
                                 </div>
@@ -395,7 +407,7 @@ function Clients() {
                                         <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClients} >Agregar</button>
                                     </div>
                                     <div className="col-6 d-flex justify-content-center">
-                                        <button className="btn btn-danger" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
+                                        <button className="btn btn-warning text-light" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>
                                     </div>
                                 </div>
 
@@ -403,19 +415,16 @@ function Clients() {
                         </div>
                     </div>
                 </div>
-                <div className="col-sm-6 col-md-3  d-flex my-2 my-md-0">
-                    <button className="btn btn-danger" >Eliminar Cliente</button>
-                </div>
                 <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
                     <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
                 </div>
                 <FilterClients />
             </div>
             {
-              clientsChecked === false ?
-              <Spinner />
-              :
-              <ClientList clients={clients} handler={handleClickViewClient} />
+                clientsChecked === false ?
+                    <Spinner />
+                    :
+                    <ClientList clients={clients} handler={handleClickViewClient} />
             }
             {/*TO-DO: Pagination*/}
             <Pagination />
@@ -423,7 +432,7 @@ function Clients() {
     );
 }
 
-function dateFormatBD() {
+export function dateFormatBD() {
     const current = new Date();
     var month = `${current.getMonth() + 1}`;
     if (month < 10) {
@@ -437,7 +446,7 @@ function dateFormatBD() {
     return date;
 }
 
-function currentDateFormat() {
+export function currentDateFormat() {
     const current = new Date();
     const day = current.getDate() < 10 ? "0" + current.getDate() : current.getDate();
     const month = (current.getMonth() + 1) < 10 ? "0" + (current.getMonth() + 1) : current.getMonth() + 1;

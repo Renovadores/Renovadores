@@ -1,40 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
 public partial class Producto
 {
-    [Key] public string SKU { get; set; } = null!;
-
+    [Key] public string ProductoId { get; set; } = null!;
     public string? Nombre { get; set; }
 
-    public int? Color { get; set; }
+    public int? ColorId { get; set; }
 
+    [StringLength(255)]
     public string? Descripcion { get; set; }
 
+    [StringLength(255)]
     public string? Dimensiones { get; set; }
 
-    public int? Peso_recipiente { get; set; }
+    public int? PesoRecipiente { get; set; }
 
-    public int? Peso_desechable { get; set; }
+    public int? PesoDesechable { get; set; }
 
-    public int? Alquiler_Comercios { get; set; }
+    public int? AlquilerComercios { get; set; }
 
-    public int? Alquiler_Retail { get; set; }
+    public int? AlquilerRetail { get; set; }
 
-    public int? Categoria { get; set; }
+    public int? CategoriaId { get; set; }
 
-    public int? Familia { get; set; }
+    public int? FamiliaId { get; set; }
 
+    [StringLength(255)]
     public string? Imagen { get; set; }
 
-    public virtual Categoria? CategoriaNavigation { get; set; }
+    public int? Descontinuado { get; set; } = 0;
 
-    public virtual Color? ColorNavigation { get; set; }
+    public int? TotalExistente { get; set; }
 
+    public int? EnUso { get; set; }
+
+    public int? Disponible { get; set; }
+
+    public int? NoDevueltos { get; set; }
+
+    [ForeignKey("CategoriaId")]
+    [InverseProperty("Producto")]
+    public virtual Categoria? Categoria { get; set; }
+
+    [ForeignKey("ColorId")]
+    [InverseProperty("Producto")]
+    public virtual Color? Color { get; set; }
+
+    [InverseProperty("Producto")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
 
-    public virtual Familia? FamiliaNavigation { get; set; }
+    [ForeignKey("FamiliaId")]
+    [InverseProperty("Producto")]
+    public virtual Familia? Familia { get; set; }
 }

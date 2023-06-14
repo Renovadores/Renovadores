@@ -5,15 +5,12 @@ function SelectPersonInCharge(props) {
       <select className="form-select" aria-label="Default select example" value={props.variable} onChange={props.handler}>
         {
           props.users.map((user, index) => (
-            <option value={user.idUsuario} key={index}>{user.nombre}</option>
+            <option value={user.usuarioId} key={index}>{user.nombre}</option>
           ))
         }
       </select>
-    </div >
+    </div>
   );
 }
 
 export default SelectPersonInCharge;
-
-
-  

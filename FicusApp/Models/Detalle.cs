@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Models;
 
+[PrimaryKey("OrdenId", "ProductoId")]
 public partial class Detalle
 {
-    public string ID_reserva { get; set; } = null!;
+    [Key]
+    public int OrdenId { get; set; }
 
-    public string? Producto { get; set; }
+    [Key]
+    [StringLength(255)]
+    public string ProductoId { get; set; } = null!;
 
     public int? Pedidos { get; set; }
 
-    public int? Sin_usar { get; set; }
+    public int? SinUsar { get; set; }
 
     public int? Usados { get; set; }
 
@@ -19,7 +26,11 @@ public partial class Detalle
 
     public int? Descuento { get; set; }
 
-    public virtual Orden ID_reservaNavigation { get; set; } = null!;
+    [ForeignKey("OrdenId")]
+    [InverseProperty("Detalle")]
+    public virtual Orden? Orden { get; set; } = null!;
 
-    public virtual Producto? ProductoNavigation { get; set; }
+    [ForeignKey("ProductoId")]
+    [InverseProperty("Detalle")]
+    public virtual Producto? Producto { get; set; } = null!;
 }

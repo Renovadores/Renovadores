@@ -43,9 +43,9 @@ function Stock() {
   //   //second argument allows to pass parameters
   // };
   // Agregar producto
-  const [name, setName] = useState("");
-  const handleChangeName = (event) => {
-    setName(event.target.value);
+  const [nombre, setNombre] = useState("");
+  const handleChangeNombre = (event) => {
+    setNombre(event.target.value);
   };
 
   const [descripcion, setDescripcion] = useState("");
@@ -58,104 +58,137 @@ function Stock() {
     setDimensiones(event.target.value);
   };
 
-  const [peso_recipiente, setPeso_recipiente] = useState(0);
-  const handleChangePeso_recipiente = (event) => {
-    setPeso_recipiente(event.target.value);
+  const [pesoRecipiente, setPesoRecipiente] = useState(0);
+  const handleChangePesoRecipiente = (event) => {
+    setPesoRecipiente(event.target.value);
   };
 
-  const [peso_desechable, setPeso_desechable] = useState(0);
-  const handleChangePeso_desechable = (event) => {
-    setPeso_desechable(event.target.value);
+  const [pesoDesechable, setPesoDesechable] = useState(0);
+  const handleChangePesoDesechable = (event) => {
+    setPesoDesechable(event.target.value);
   };
 
-  const [alquiler_comercios, setAlquiler_Comercios] = useState(0);
-  const handleChangeAlquiler_Comercios = (event) => {
-    setAlquiler_Comercios(event.target.value);
+  const [alquilerComercios, setAlquilerComercios] = useState(0);
+  const handleChangeAlquilerComercios = (event) => {
+    setAlquilerComercios(event.target.value);
   };
 
-  const [alquiler_retail, setAlquiler_Retail] = useState(0);
-  const handleChangeAlquiler_Retail = (event) => {
-    setAlquiler_Retail(event.target.value);
+  const [alquilerRetail, setAlquilerRetail] = useState(0);
+  const handleChangeAlquilerRetail = (event) => {
+    setAlquilerRetail(event.target.value);
   };
-  const [sku, setSKU] = useState(0);
-  const handleChangeSKU = (event) => {
-    setSKU(event.target.value);
+  const [productoId, setProductoId] = useState(0);
+  const handleChangeProductoId = (event) => {
+    setProductoId(event.target.value);
   };
   const current = new Date();
   const date = `${current.getDate()}-${
     current.getMonth() + 1
   }-${current.getFullYear()}`;
 
-  const [family, setFamily] = useState(1);
-  const handleChangeFamily = (event) => {
-    setFamily(event.target.value);
+  const [familiaId, setFamiliaId] = useState(1);
+  const handleChangeFamiliaId = (event) => {
+    setFamiliaId(event.target.value);
   };
-  const [color, setColor] = useState(1);
-  const handleChangeColor = (event) => {
-    setColor(event.target.value);
+  const [colorId, setColorId] = useState(1);
+  const handleChangeColorId = (event) => {
+    setColorId(event.target.value);
   };
-  const [category, setCategory] = useState(1);
-  const handleChangeCategory = (event) => {
-    setCategory(event.target.value);
-  }
+  const [categoriaId, setCategoriaId] = useState(1);
+    const handleChangeCategoriaId = (event) => {
+        setCategoriaId(event.target.value);
+    };
+    const [descontinuado, setDescontinuado] = useState(1);
+    const handleChangeDescontinuado = (event) => {
+        setDescontinuado(event.target.value);
+    };
+    const [totalExistente, setTotalExistente] = useState(1);
+    const handleChangeTotalExistente = (event) => {
+        setTotalExistente(event.target.value);
+    };
+    const [enUso, setEnUso] = useState(1);
+    const handleChangeEnUso = (event) => {
+        setEnUso(event.target.value);
+    };
+    const [disponible, setDisponible] = useState(1);
+    const handleChangeDisponible = (event) => {
+        setDisponible(event.target.value);
+    };
+    const [noDevueltos, setNoDevueltos] = useState(1);
+    const handleChangeNoDevueltos = (event) => {
+        setNoDevueltos(event.target.value);
+    };
 
   const handleCancel = () => {
-    setSKU("");
-    setName("");
+    setProductoId("");
+    setNombre("");
     setDescripcion("");
     setDimensiones("");
-    setPeso_recipiente(0);
-    setPeso_desechable(0);
-    setAlquiler_Comercios(0);
-    setAlquiler_Retail(0);
-    setColor(0);
-    setCategory(0);
-    setFamily(0);
+    setPesoRecipiente(0);
+    setPesoDesechable(0);
+    setAlquilerComercios(0);
+    setAlquilerRetail(0);
+    setColorId(0);
+    setCategoriaId(0);
+    setFamiliaId(0);
+    setDescontinuado(0);
+    setTotalExistente(0);
+    setEnUso(0);
+    setDisponible(0);
+    setNoDevueltos(0);
   };
   //Add Product to data base
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(
-      date,
-      sku,
-      name,
-      color,
-      descripcion,
-      dimensiones,
-      peso_recipiente,
-      peso_desechable,
-      alquiler_comercios,
-      alquiler_retail,
-      category,
-      family
+        date,
+        productoId,
+        nombre,
+        colorId,
+        descripcion,
+        dimensiones,
+        pesoRecipiente,
+        pesoDesechable,
+        alquilerComercios,
+        alquilerRetail,
+        categoriaId,
+        familiaId,
+        totalExistente,
+        enUso, 
+        disponible,
+        noDevueltos
     );
-    const responseCliente = await fetch("api/producto/AddProducto", {
+    const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
-        fecha_Agregado: date,
-        color: color,
-        sku: sku,
-        name: name,
+        colorId: colorId,
+        productoId: productoId,
+        nombre: nombre,
         descripcion: descripcion,
         dimensiones: dimensiones,
-        peso_recipiente: peso_recipiente,
-        peso_desechable: peso_desechable,
-        alquiler_comercios: alquiler_comercios,
-        alquiler_retail: alquiler_retail,
-        category: category,
-        family: family,
+        pesoRecipiente: pesoRecipiente,
+        pesoDesechable: pesoDesechable,
+        alquilerComercios: alquilerComercios,
+        alquilerRetail: alquilerRetail,
+        categoriaId: categoriaId,
+        familiaId: familiaId,
+        descontinuado: 0,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
       }),
     });
-    console.log(responseCliente);
+    console.log(responseProduct);
 
-    if (responseCliente.ok) {
+    if (responseProduct.ok) {
       handleCancel();
       getProducts();
     }
-  };;
+  };
 
   return (
     <div>
@@ -164,23 +197,24 @@ function Stock() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Inventario</title>
       </head>
-      <body>
         <section className="py-4">
           <div className="container-fluid">
             <div className="d-grid gap-2 mb-4">
               <div className="d-grid gap-2 mb-4">
-                <button
-                  className="btn btn-success"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasWithBothOptions"
-                  aria-controls="offcanvasWithBothOptions"
-                >
-                  Agregar Producto
-                </button>
-                <button className="btn btn-warning text-light" type="button">
-                  Eliminar Producto
-                </button>
+                <div className="row">
+                    <div className="col-6 d-flex justify-content-start">
+                        <button
+                            className="btn btn-success"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasWithBothOptions"
+                            aria-controls="offcanvasWithBothOptions"
+                        >
+                            Agregar Producto
+                        </button>
+                    </div>
+                </div>
+
               </div>
             </div>
             <div
@@ -206,10 +240,10 @@ function Stock() {
               </div>
               <div className="offcanvas-body">
                 <form onSubmit={handleSubmit}>
-                  <Input variable={sku} handler={handleChangeSKU} text="SKU" />
+                  <Input variable={productoId} handler={handleChangeProductoId} text="Producto ID" />
                   <Input
-                    variable={name}
-                    handler={handleChangeName}
+                    variable={nombre}
+                    handler={handleChangeNombre}
                     text="Nombre"
                   />
                   <div className="mb-3">
@@ -231,151 +265,171 @@ function Stock() {
                     text="Dimensiones"
                   />
                   <InputInt
-                    variable={peso_recipiente}
-                    handler={handleChangePeso_recipiente}
+                    variable={pesoRecipiente}
+                    handler={handleChangePesoRecipiente}
                     text="Peso de Recipiente"
                   />
                   <InputInt
-                    variable={peso_desechable}
-                    handler={handleChangePeso_desechable}
+                    variable={pesoDesechable}
+                    handler={handleChangePesoDesechable}
                     text="Peso Desechable"
                   />
                   <InputInt
-                    variable={alquiler_comercios}
-                    handler={handleChangeAlquiler_Comercios}
+                    variable={alquilerComercios}
+                    handler={handleChangeAlquilerComercios}
                     text="Precio Comercio"
                   />
                   <InputInt
-                    variable={alquiler_retail}
-                    handler={handleChangeAlquiler_Retail}
+                    variable={alquilerRetail}
+                    handler={handleChangeAlquilerRetail}
                     text="Precio Retail"
-                  />
+                                  />
+                 <InputInt
+                    variable={totalExistente}
+                    handler={handleChangeTotalExistente}
+                    text="Total de Productos Existentes"
+                />
+                <InputInt
+                  variable={enUso}
+                  handler={handleChangeEnUso}
+                  text="Productos en Uso"
+                />
+                <InputInt
+                  variable={disponible}
+                  handler={handleChangeDisponible}
+                  text="Productos Disponibles"
+                />
+                <InputInt
+                  variable={noDevueltos}
+                  handler={handleChangeNoDevueltos}
+                  text="Productos No Devueltos"
+                />
+
 
                   <SelectCategory
-                    variable={category}
-                    handler={handleChangeCategory}
+                    variable={categoriaId}
+                    handler={handleChangeCategoriaId}
                   />
                   <SelectFamily
-                    variable={family}
-                    handler={handleChangeFamily}
+                    variable={familiaId}
+                    handler={handleChangeFamiliaId}
                   />
-                  <SelectColor variable={color} handler={handleChangeColor} />
+                  <SelectColor variable={colorId} handler={handleChangeColorId} />
 
-                  <div className="row">
-                    <div className="col-6 d-flex justify-content-center">
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        data-bs-dismiss="offcanvas"
-                        onClick={getProducts}
-                      >
-                        Agregar
-                      </button>
-                    </div>
-                    <div className="col-6 d-flex justify-content-center">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={handleCancel}
-                        data-bs-dismiss="offcanvas"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
+                <div className="row">
+                  <div className="col-6 d-flex justify-content-center">
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      data-bs-dismiss="offcanvas"
+                      onClick={getProducts}
+                    >
+                      Agregar
+                    </button>
                   </div>
-                </form>
-              </div>
+                  <div className="col-6 d-flex justify-content-center">
+                    <button
+                      className="btn btn-danger"
+                      type="button"
+                      onClick={handleCancel}
+                      data-bs-dismiss="offcanvas"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-                  <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-                      {/* Filter/Search text*/}
-                      <input
-                          className="form-control"
-                          list="datalistOptions"
-                          id="exampleDataList"
-                          placeholder="Buscar producto..."
-                      />
-                      {/* Filter/Search button*/}
-                      <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-                          <div className="dropdown">
-                              <button
-                                  className="btn btn-secondary dropdown-toggle"
-                                  type="button"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                              >
-                                  Filtrado
-                              </button>
-                              <ul className="dropdown-menu">
-                                  <li>
-                                      <a className="dropdown-item" href="#">
-                                          Prioridad
-                                      </a>
-                                  </li>
-                                  <li>
-                                      <a className="dropdown-item" href="#">
-                                          Recientes
-                                      </a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
-        </section>
-        <section className="py-4">
-          <div className="container fluid">
-            <div className="container">
-              <h2 className="display-3 fw-bold">Todos los productos</h2>
-            </div>
-
-            {productsChecked === false ? (
-              <div className="d-flex align-items-center justify-content-center">
-                <strong>Cargando... </strong>
-                <div
-                  className="spinner-border ml-auto"
-                  role="status"
-                  aria-hidden="true"
-                ></div>
-              </div>
-            ) : (
-              <ProductList
-                products={products}
-                // handler={handleClickViewProduct}
-              />
-            )}
-            <div className="row m-2 mt-4">
-              <nav aria-label="...">
-                <ul className="pagination justify-content-center">
-                  <li className="page-item disabled">
-                    <a className="page-link">Anterior</a>
-                  </li>
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item" aria-current="page">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Siguiente
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+        </div>
+        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+          {/* Filter/Search text*/}
+          <input
+            className="form-control"
+            list="datalistOptions"
+            id="exampleDataList"
+            placeholder="Buscar producto..."
+          />
+          {/* Filter/Search button*/}
+          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
+            <div className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Filtrado
+              </button>
+              <ul className="dropdown-menu">
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Prioridad
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Recientes
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-      </body>
-    </div>
+        </div>
+      </section>
+      <section className="py-4">
+        <div className="container fluid">
+          <div className="container">
+            <h2 className="display-3 fw-bold">Todos los productos</h2>
+          </div>
+
+          {productsChecked === false ? (
+            <div className="d-flex align-items-center justify-content-center">
+              <strong>Cargando... </strong>
+              <div
+                className="spinner-border ml-auto"
+                role="status"
+                aria-hidden="true"
+              ></div>
+            </div>
+          ) : (
+            <ProductList
+              products={products}
+              // handler={handleClickViewProduct}
+            />
+          )}
+          <div className="row m-2 mt-4">
+            <nav aria-label="...">
+              <ul className="pagination justify-content-center">
+                <li className="page-item disabled">
+                  <a className="page-link">Anterior</a>
+                </li>
+                <li className="page-item active">
+                  <a className="page-link" href="#">
+                    1
+                  </a>
+                </li>
+                <li className="page-item" aria-current="page">
+                  <a className="page-link" href="#">
+                    2
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    3
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    Siguiente
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </section>
+      </div>
   );
 }
 

@@ -1,24 +1,49 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
-import InputInt from "./InputInt";
+import BelongToEvent from "./BelongToEvent";
+import ButtonAddOrder from "./ButtonAddOrder";
+import MatchingProductList from "./MatchingProductList";
+import MatchingProductsInput from "./MatchingProductsInput";
+import SearchCriteriaSwitch from "./SearchCriteriaSwitch";
+import SelectedProductList from "./SelectedProductList";
+
 function AddOrder() {
-  // get client id sent by navigate function in Client.js
   const location = useLocation();
-  const clientId = location.state;
+  const [clientId] = useState(location.state);
+
+  const [currentUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
+  const [userName, setUserName] = useState("");
+  
   // get a new order id (order code)
-  const [idOrder, setIdOrder] = useState("");
+  const [orderId, setIdOrder] = useState(0);
   const generateIdOrder = async () => {
-    //const responseId = await fetch("api/orden/GetNewId");
-    //if (responseId.ok) {
-    //  const id = responseId.json();
-        setIdOrder(1);
-    //} else {
-    //  console.log(responseId.text);
-    //}
+    const response = await fetch("api/orden/GetNewCode");
+    if (response.ok) {
+      const data = await response.json();
+      setIdOrder(data.id);
+    } else {
+      console.log(response.text);
+    }
   }
+  
   useEffect(() => {
+    const getUserName = async () => {
+      const response = await fetch(`api/usuario/GetUser/${currentUserId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUserName(data.nombre);
+      } else {
+        console.log(response.text);
+      }
+    }
+    getUserName();
     generateIdOrder();
-  }, [])
+  }, [currentUserId, userName])
+
+  const [matchingProducts, setMatchingProducts] = useState([])
+
+  const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
   //TO-DO: Get user name automatically from login info
@@ -26,7 +51,6 @@ function AddOrder() {
   
   useEffect(() => {
     const getClientName = async () => {
-      console.log(clientId)
       const responseClientName = await fetch(`api/cliente/GetCliente/${clientId}`)
       if (responseClientName.ok) {
         const data = await responseClientName.json();
@@ -56,24 +80,177 @@ function AddOrder() {
     setBelongToEvent(event.target.checked);
   }
 
+  const [eventName, setEventName] = useState("");
+  const handleEvent = (event) => {
+    setEventName(event.target.value);
+  }
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([])
+    } else {
+      getMatchProducts(productInput);
+    }
+  }
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+    if (event.target.value === "") {
+      setMatchingProducts([])
+    } else {
+      getMatchProducts(event.target.value);
+    }
+  }
+
+  const [searchByCodeOrName, setSearchByCodeOrName] = useState(false);
+  const handleSearchCriteria = (event) => {
+    setSearchByCodeOrName(event.target.checked)
+  }
+
+  useEffect(() => {
+    searchProductInput();
+  }, [searchByCodeOrName])
+
+  const getMatchProducts = async (input) => {
+    //get some products from stock that match with input
+    const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`)
+    if (responseInventory.ok) {
+      const matchProducts = await responseInventory.json();
+      // verify if cuantity of some product was already changed
+      for (var i = 0; i < matchProducts.length; i++) {
+        for (var j = 0; j < selectedProducts.length; j++) {
+          if (matchProducts[i].productoId === selectedProducts[j].productoId) {
+            matchProducts[i].disponible -= selectedProducts[j].pedidos;
+          }
+        }
+      }
+      setMatchingProducts(matchProducts)
+    }
+  }
+
   const [cuantity, setCuantity] = useState("")
   const handleCuantity = (event) => {
     setCuantity(event.target.value)
-    console.log(event.target.value);
   }
 
-  const [selectedProduct, setSelectProduct] = useState("")
-  const handleSelectedProduct = (index) => {
-    setSelectProduct(index)
-    console.log(index);
+  const [cost, setCost] = useState(0);
+  const handleSelectedProduct = async (sku) => {
+    if (sku !== "" && cuantity !== "" && cuantity > 0) {
+
+      var selectedProduct = JSON.parse(JSON.stringify(matchingProducts.find(selectedProduct => selectedProduct.productoId === sku)));
+      var productCost = selectedProduct.alquilerRetail;
+      setCost(cost + (cuantity * productCost));
+      var productName = selectedProduct.nombre;
+      var productSize = selectedProduct.dimensiones;
+
+      //Verify if the product is already added
+      var selectedProductInfo = selectedProducts.find(selectedProduct => selectedProduct.productoId === sku);
+      if (selectedProductInfo) {
+        var newCuantity = parseInt(selectedProductInfo.pedidos) + parseInt(cuantity);
+        selectedProductInfo.pedidos = newCuantity;
+      } else {
+        selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
+        setSelectedProducts([...selectedProducts, selectedProductInfo])
+      }
+      setProductInput("");
+      setMatchingProducts([])
+    }
+    setCuantity("");
   }
 
-  const handleDelete = (index) => {
-    console.log("Se elimino el producto")
+  const handleDelete = async (sku) => {
+    var productToDelete = selectedProducts.find(product => product.productoId === sku);
+    setCost(cost - (productToDelete.pedidos * productToDelete.alquilerRetail));
+    setSelectedProducts((currentProduct) => currentProduct.filter((product) => product.productoId !== sku))
+    setCuantity("");
   }
-  
-  const handleSubmit = () => {
+
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    var eventId = null;
+    if (eventName !== "") {
+      // verify the event doesn�t exist
+      const responseEventExists = await fetch(`api/evento/findEvento/${eventName}`)
+      if (responseEventExists.ok) {
+        const data = await responseEventExists.json();
+        if (data.exist) {
+          console.log("El evento ya existe!")
+        } else {
+          //add event
+          const responseEvent = await fetch("api/evento/AddEvento", {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ eventoId: 0, nombreEvento: eventName, descripcionEvento: '' })
+          });
+          if (responseEvent.ok) {
+
+          }
+        }
+      }
+      const responseEventId = await fetch(`api/evento/GetEventId/${eventName}`)
+      if (responseEventId.ok) {
+        const data = await responseEventId.json();
+        eventId = data.id;
+      }
+    }
+    
+
+    const responseOrder = await fetch("api/orden/AddOrder", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: 1, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
+    });
+    if (responseOrder.ok) {
+      console.log("Orden agregada")
+      //Add selected products to data base
+      for (let i = 0; i < selectedProducts.length; i++) {
+        var productId = selectedProducts[i].productoId;
+        var pedidos = selectedProducts[i].pedidos;
+        var responseDetail = await fetch("api/detalle/AddDetalle", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({ ordenId: orderId, productoId: productId, pedidos: pedidos, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
+        });
+        if (responseDetail.ok) {
+          // Go to stock and reduce product cuantity
+          const responseStock = await fetch(`api/producto/GetProducto/${productId}`);
+          if (responseStock.ok) {
+            const productStock = await responseStock.json();
+            productStock.disponible -= pedidos;
+            productStock.enUso = parseInt(productStock.enUso) + parseInt(pedidos);
+            console.log(productStock);
+            // Edit record
+            const response = await fetch("api/producto/EditProducto", {
+              method: "PUT",
+              headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+              },
+              body: JSON.stringify(productStock)
+            });
+            if (response.ok) {
+
+            }
+          } else {
+            // notify error
+          }
+        }
+      }
+      
+    }
+    
+    navigate('/clientes/informacion', { state: clientId });
   }
+
   return (
     <div className="container p-3">
       <div className="row">
@@ -83,122 +260,64 @@ function AddOrder() {
           </div>
           <div className="row mt-3">
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">Codigo de la orden: {idOrder}</li>
+              <li className="list-group-item">Codigo de la orden: {orderId}</li>
               <li className="list-group-item">Fecha de creacion: {date}</li>
               <li className="list-group-item">Cliente: {clientName}</li>
-              <li className="list-group-item">Responsable de la orden: Alejandro</li>
+              <li className="list-group-item">Responsable de la orden: {userName}</li>
               <li className="list-group-item"></li>
             </ul>
           </div>
           <div className="row">
         
-            <form onSubmit={handleSubmit}>
-              <div className="form-check form-switch">
-                <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked={belongToEvent} onChange={handleBelongToEvent} />
-                <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Pertenece a un evento</label>
-              </div>
-              {
-                belongToEvent === true ?
-                  <div>
-                    <label htmlFor="exampleDataList" className="form-label mt-3">Seleccionar evento (Si no existe se genera automaticamente)</label>
-                    <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." />
-                    <datalist id="datalistOptions">
-                      <option value="Feria Verde" />
-                      <option value="Feria 2" />
-                      <option value="Feria 3" />
-                      <option value="Feria 4" />
-                    </datalist>
-                  </div>
-                :
-                  <>
-                  </>
-              }
-
+            <form id="order-form" onSubmit={handleSubmit} >
+              
               <label htmlFor="startDate" className="mt-3">Fecha de entrega de la orden</label>
-              <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} />
+              <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} autoFocus />
 
-              <label htmlFor="endDate" className="my-3">Fecha de recepcion de la orden</label>
+              <label htmlFor="endDate" className="mt-3">Fecha de recepcion de la orden</label>
               <input id="endDate" className="form-control w-50 mb-4" type="date" value={collectionDate} onChange={handleCollectionDate} />
 
+              <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
             </form>
           </div>
         </div>
 
         <div className="col-md">
           <div className="row">
-            <h3 className="mb-4">Seleccion de Productos</h3>
+            <h3 className="mb-4 d-flex justify-content-center">Seleccion de Productos</h3>
           </div>
-          <div className="row my-2">
-            <div className="col">
-              <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar un producto..." />
-            </div>
-          </div>
-          <ol className="list-group list-group-numbered">
-            <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Montezuma</div>
-                EC-07-1-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="badge bg-primary rounded-pill">14</span>
-            </li>
-            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">Montezuma EC-07-1-JA</h1>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div className="modal-body">
-                    <label>Total disponible: 14</label>
-                    <InputInt variable={cuantity} handler={handleCuantity} text="Indique la cantidad"></InputInt>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" className="btn btn-primary">Aceptar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Subheading</div>
-                Content for list item
-              </div>
-              <span className="badge bg-primary rounded-pill">50</span>
-            </li>
-          </ol>
-          <h5 className="mt-4">Productos seleccionados:</h5>
-          <ol className="list-group list-group-numbered">
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Montezuma<span className="badge bg-primary rounded-pill mx-4">14</span></div>
-                EC-07-1-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{color:"white"}}>X</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Tapanti<span className="badge bg-primary rounded-pill mx-4">20</span></div>
-                EC-12-1-CL  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }}>X</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between align-items-start align-items-center">
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">Corcovado<span className="badge bg-primary rounded-pill mx-4">10</span></div>
-                EC-17-JA  L:06.50 W:02.00 H:1.12
-              </div>
-              <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }}>X</span>
-            </li>
-          </ol>
-          <div className="row m-5 d-flex justify-content-center">
-            <div className="col-8 p-0 d-flex justify-content-center">
-              <button className="btn btn-primary">
-                Generar Orden
-              </button>
-            </div>
-          </div>
+          <SearchCriteriaSwitch handle={handleSearchCriteria} />
+          <MatchingProductsInput productInput={productInput} handler={handleProductInput} />
+          {
+            matchingProducts.length === 0 && productInput !== "" ?
+              <label>No se encontro el producto</label>
+              :
+              matchingProducts.length !== 0 && productInput !== "" ?
+                <MatchingProductList products={matchingProducts} cuantity={cuantity} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
+                :
+                <></>
+          }
+          
+          {
+            selectedProducts.length > 0 ?
+              <>
+                <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
+                <div className="container mt-5 mb-5">
+                  <label>Costo de la orden: {"\u20A1" + cost}</label>
+                </div>
+              </>
+              :
+              <></>
+              
+          }
+          {
+            deliveryDate === "" || selectedProducts.length === 0 ?
+              <ButtonAddOrder enable= {false} />
+              :
+              <ButtonAddOrder enable= {true} />
+          }
+          
         </div>
       </div>
     </div>

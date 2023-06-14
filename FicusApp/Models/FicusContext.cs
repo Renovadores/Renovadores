@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,9 @@ public partial class FicusContext : DbContext
 
     public virtual DbSet<Cliente> Cliente { get; set; }
 
-    public virtual DbSet<Cliente_Comunicacion> Cliente_Comunicacion { get; set; }
+    public virtual DbSet<ClienteComunicacion> ClienteComunicacion { get; set; }
 
-    public virtual DbSet<Cliente_Segmento> Cliente_Segmento { get; set; }
+    public virtual DbSet<ClienteSegmento> ClienteSegmento { get; set; }
 
     public virtual DbSet<Color> Color { get; set; }
 
@@ -35,7 +36,9 @@ public partial class FicusContext : DbContext
 
     public virtual DbSet<Fase> Fase { get; set; }
 
-    public virtual DbSet<Historial_Orden> Historial_Orden { get; set; }
+    public virtual DbSet<HistorialOrden> HistorialOrden { get; set; }
+
+    public virtual DbSet<HistorialRefreshToken> HistorialRefreshToken { get; set; }
 
     public virtual DbSet<Inventario> Inventario { get; set; }
 
@@ -53,249 +56,203 @@ public partial class FicusContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-7EIA8UC; DataBase=FicusDataBase; Integrated Security=True; TrustServerCertificate=True;");
+
+        => optionsBuilder.UseSqlServer("Server=KEVIN\\BD_KEVIN; DataBase=Ficus; Integrated Security=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Categoria>(entity =>
         {
-            entity.HasKey(e => e.ID_Categoria).HasName("PK__Categori__02AA07858E2F7C00");
+            entity.HasKey(e => e.CategoriaId).HasName("PK__Categori__F353C1E56FB7B3F6");
 
-            entity.Property(e => e.ID_Categoria).ValueGeneratedNever();
-            entity.Property(e => e.Nombre_categoria).HasMaxLength(255);
+            entity.Property(e => e.CategoriaId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Cliente>(entity =>
         {
-            entity.HasKey(e => e.ID_Cliente).HasName("PK__Cliente__E005FBFF88E465D3");
+            entity.HasKey(e => e.ClienteId).HasName("PK__Cliente__71ABD087909B335C");
 
-            entity.Property(e => e.ID_Cliente).ValueGeneratedNever();
-            entity.Property(e => e.Contacto).HasMaxLength(255);
-            entity.Property(e => e.Correo).HasMaxLength(255);
-            entity.Property(e => e.Estado).HasMaxLength(255);
-            entity.Property(e => e.Fecha_agregado).HasColumnType("date");
-            entity.Property(e => e.Nombre_empresa).HasMaxLength(255);
-            entity.Property(e => e.Prioridad).HasMaxLength(255);
-            entity.Property(e => e.Web).HasMaxLength(255);
+            entity.Property(e => e.ClienteId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.ResponsableNavigation).WithMany(p => p.Cliente)
-                .HasForeignKey(d => d.Responsable)
-                .HasConstraintName("FK__Cliente__Respons__4D94879B");
+            entity.HasOne(d => d.Responsable).WithMany(p => p.Cliente).HasConstraintName("FK__Cliente__Respons__571DF1D5");
         });
 
-        modelBuilder.Entity<Cliente_Comunicacion>(entity =>
+        modelBuilder.Entity<ClienteComunicacion>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.ClienteComunicacionId).HasName("PK__ClienteC__BA07486E7A159379");
 
-            entity.Property(e => e.Medio).HasMaxLength(255);
+            entity.HasOne(d => d.Cliente).WithMany(p => p.ClienteComunicacion).HasConstraintName("FK__ClienteCo__Clien__59FA5E80");
 
-            entity.HasOne(d => d.ClienteNavigation).WithMany()
-                .HasForeignKey(d => d.Cliente)
-                .HasConstraintName("FK__Cliente_C__Clien__5070F446");
-
-            entity.HasOne(d => d.MedioNavigation).WithMany()
-                .HasForeignKey(d => d.Medio)
-                .HasConstraintName("FK__Cliente_C__Medio__5165187F");
+            entity.HasOne(d => d.Medio).WithMany(p => p.ClienteComunicacion).HasConstraintName("FK__ClienteCo__Medio__5AEE82B9");
         });
 
-        modelBuilder.Entity<Cliente_Segmento>(entity =>
+        modelBuilder.Entity<ClienteSegmento>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.ClienteSegmentoId).HasName("PK__ClienteS__644B553111D2E9EF");
 
-            entity.Property(e => e.Segmento).HasMaxLength(255);
-
-            entity.HasOne(d => d.ClienteNavigation).WithMany()
-                .HasForeignKey(d => d.Cliente)
+            entity.HasOne(d => d.Cliente).WithMany(p => p.ClienteSegmento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Cliente_S__Clien__4E88ABD4");
+                .HasConstraintName("FK__ClienteSe__Clien__5812160E");
 
-            entity.HasOne(d => d.SegmentoNavigation).WithMany()
-                .HasForeignKey(d => d.Segmento)
+            entity.HasOne(d => d.Segmento).WithMany(p => p.ClienteSegmento)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Cliente_S__Segme__4F7CD00D");
+                .HasConstraintName("FK__ClienteSe__Segme__59063A47");
         });
 
         modelBuilder.Entity<Color>(entity =>
         {
-            entity.HasKey(e => e.ID_Color).HasName("PK__Color__6E7EBE7C20D599A7");
+            entity.HasKey(e => e.ColorId).HasName("PK__Color__8DA7674D677C263F");
 
-            entity.Property(e => e.ID_Color).ValueGeneratedNever();
-            entity.Property(e => e.Descripcion).HasMaxLength(255);
+            entity.Property(e => e.ColorId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Detalle>(entity =>
         {
-            entity.HasKey(e => e.ID_reserva).HasName("PK__Detalle__CD692CB049BD3252");
+            entity.HasKey(e => new { e.OrdenId, e.ProductoId }).HasName("PK__Detalle__EACBAFEEFFA0F6CF");
 
-            entity.Property(e => e.ID_reserva).HasMaxLength(255);
-            entity.Property(e => e.Producto).HasMaxLength(255);
-
-            entity.HasOne(d => d.ID_reservaNavigation).WithOne(p => p.Detalle)
-                .HasForeignKey<Detalle>(d => d.ID_reserva)
+            entity.HasOne(d => d.Orden).WithMany(p => p.Detalle)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Detalle__ID_rese__4BAC3F29");
+                .HasConstraintName("FK__Detalle__OrdenId__5535A963");
 
-            entity.HasOne(d => d.ProductoNavigation).WithMany(p => p.Detalle)
-                .HasForeignKey(d => d.Producto)
-                .HasConstraintName("FK__Detalle__Product__4CA06362");
+            entity.HasOne(d => d.Producto).WithMany(p => p.Detalle)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Detalle__Product__5629CD9C");
         });
 
         modelBuilder.Entity<Estado>(entity =>
         {
-            entity.HasKey(e => e.ID_Estado).HasName("PK__Estado__9CF493959C18DF81");
+            entity.HasKey(e => e.EstadoId).HasName("PK__Estado__FEF86B000042F2F0");
 
-            entity.Property(e => e.ID_Estado).ValueGeneratedNever();
-            entity.Property(e => e.Descripcion_estadoproducto).HasMaxLength(255);
+            entity.Property(e => e.EstadoId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Evento>(entity =>
         {
-            entity.HasKey(e => e.ID_Evento).HasName("PK__Evento__929BD0C1B33EE5E6");
+            entity.HasKey(e => e.EventoId).HasName("PK__Evento__1EEB59214DEA0DA0");
 
-            entity.Property(e => e.ID_Evento).ValueGeneratedNever();
-            entity.Property(e => e.Descripcion_evento).HasMaxLength(255);
-            entity.Property(e => e.Nombre_evento).HasMaxLength(255);
-            entity.Property(e => e.Orden).HasMaxLength(255);
-
-            entity.HasOne(d => d.OrdenNavigation).WithMany(p => p.Evento)
-                .HasForeignKey(d => d.Orden)
-                .HasConstraintName("FK__Evento__Orden__48CFD27E");
+            entity.Property(e => e.EventoId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Familia>(entity =>
         {
-            entity.HasKey(e => e.ID_Familia).HasName("PK__Familia__1DA11CE88E1CC8C4");
+            entity.HasKey(e => e.FamiliaId).HasName("PK__Familia__42DFCCC4FA9719A6");
 
-            entity.Property(e => e.ID_Familia).ValueGeneratedNever();
-            entity.Property(e => e.Nombre_familia).HasMaxLength(255);
+            entity.Property(e => e.FamiliaId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Fase>(entity =>
         {
-            entity.HasKey(e => e.ID_Fase).HasName("PK__Fase__65509291F66EF7AB");
+            entity.HasKey(e => e.FaseId).HasName("PK__Fase__D04348754F13BE92");
 
-            entity.Property(e => e.ID_Fase).ValueGeneratedNever();
-            entity.Property(e => e.Descripcion_estado).HasMaxLength(255);
+            entity.Property(e => e.FaseId).ValueGeneratedNever();
         });
 
-        modelBuilder.Entity<Historial_Orden>(entity =>
+        modelBuilder.Entity<HistorialOrden>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => new { e.OrdenId, e.FaseId }).HasName("PK__Historia__8D8C918324F06348");
 
-            entity.Property(e => e.Final).HasColumnType("date");
-            entity.Property(e => e.Inicio).HasColumnType("date");
-            entity.Property(e => e.Orden).HasMaxLength(255);
-
-            entity.HasOne(d => d.FaseNavigation).WithMany()
-                .HasForeignKey(d => d.Fase)
+            entity.HasOne(d => d.Fase).WithMany(p => p.HistorialOrden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Historial___Fase__4AB81AF0");
+                .HasConstraintName("FK__Historial__FaseI__5441852A");
 
-            entity.HasOne(d => d.OrdenNavigation).WithMany()
-                .HasForeignKey(d => d.Orden)
+            entity.HasOne(d => d.Orden).WithMany(p => p.HistorialOrden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Historial__Orden__49C3F6B7");
+                .HasConstraintName("FK__Historial__Orden__534D60F1");
+        });
+
+        modelBuilder.Entity<HistorialRefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__03DC48A555DE18D7");
+
+            entity.Property(e => e.EsActivo).HasComputedColumnSql("(case when [FechaExpiracion]<getdate() then CONVERT([bit],(0)) else CONVERT([bit],(1)) end)", false);
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.HistorialRefreshToken).HasConstraintName("FK__Historial__Usuar__286302EC");
         });
 
         modelBuilder.Entity<Inventario>(entity =>
         {
-            entity.HasNoKey();
-
-            entity.Property(e => e.Fecha_ingreso).HasColumnType("date");
-            entity.Property(e => e.Producto).HasMaxLength(255);
-
-            entity.HasOne(d => d.EstadoNavigation)
-                .WithMany()
-                .HasForeignKey(d => d.Estado)
-                .HasConstraintName("FK__Inventari__Estad__45F365D3");
-
-            entity.HasOne(d => d.ProductoNavigation).WithMany()
-                .HasForeignKey(d => d.Producto)
-                .HasConstraintName("FK__Inventari__Produ__44FF419A");
+            entity.HasOne(d => d.Producto).WithMany().HasConstraintName("FK__Inventari__Produ__4F7CD00D");
         });
-
-        // modelBuilder.Entity<Inventario>()
-        //     .Navigation(e => e.EstadoNavigation)
-        //     .AutoInclude();
 
         modelBuilder.Entity<MedioComunicacion>(entity =>
         {
-            entity.HasKey(e => e.ID_Medio).HasName("PK__MedioCom__397340CE33110A4E");
-
-            entity.Property(e => e.ID_Medio).HasMaxLength(255);
-            entity.Property(e => e.Caracteristicas).HasMaxLength(255);
+            entity.HasKey(e => e.MedioId).HasName("PK__MedioCom__26B59BB6A847AEB2");
         });
 
         modelBuilder.Entity<Orden>(entity =>
         {
-            entity.HasKey(e => e.ID_Orden).HasName("PK__Orden__EC9FA9496CC64255");
+            entity.HasKey(e => e.OrdenId).HasName("PK__Orden__C088A5045D93431D");
 
-            entity.Property(e => e.ID_Orden).HasMaxLength(255);
-            entity.Property(e => e.Fecha_alquiler).HasColumnType("date");
+            entity.Property(e => e.OrdenId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.ClienteNavigation).WithMany(p => p.Orden)
-                .HasForeignKey(d => d.Cliente)
+            entity.HasOne(d => d.Cliente).WithMany(p => p.Orden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Orden__Cliente__47DBAE45");
+                .HasConstraintName("FK__Orden__ClienteId__5165187F");
 
-            entity.HasOne(d => d.UsuarioNavigation).WithMany(p => p.Orden)
-                .HasForeignKey(d => d.Usuario)
+            entity.HasOne(d => d.Evento).WithMany(p => p.Orden).HasConstraintName("FK__Orden__EventoId__52593CB8");
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.Orden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Orden__Usuario__46E78A0C");
+                .HasConstraintName("FK__Orden__UsuarioId__5070F446");
         });
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.SKU).HasName("PK__Producto__CA1ECF0CA305D67A");
 
-            entity.Property(e => e.SKU).HasMaxLength(255);
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__CA1ECF0CA305D67A");
+
+            entity.Property(e => e.ProductoId).HasMaxLength(255);
             entity.Property(e => e.Descripcion).HasMaxLength(255);
             entity.Property(e => e.Dimensiones).HasMaxLength(255);
             entity.Property(e => e.Imagen).HasMaxLength(255);
             entity.Property(e => e.Nombre).HasMaxLength(255);
 
-            entity.HasOne(d => d.CategoriaNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Categoria)
+            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.CategoriaId)
                 .HasConstraintName("FK__Producto__Catego__4222D4EF");
 
-            entity.HasOne(d => d.ColorNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Color)
+            entity.HasOne(d => d.Color).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.ColorId)
                 .HasConstraintName("FK__Producto__Color__440B1D61");
 
-            entity.HasOne(d => d.FamiliaNavigation).WithMany(p => p.Producto)
-                .HasForeignKey(d => d.Familia)
+            entity.HasOne(d => d.Familia).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.FamiliaId)
                 .HasConstraintName("FK__Producto__Famili__4316F928");
+
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__A430AEA32A15B4AE");
+
+            entity.Property(e => e.Descontinuado).HasDefaultValueSql("((0))");
+            entity.Property(e => e.Disponible).HasDefaultValueSql("((0))");
+            entity.Property(e => e.EnUso).HasDefaultValueSql("((0))");
+            entity.Property(e => e.NoDevueltos).HasDefaultValueSql("((0))");
+            entity.Property(e => e.TotalExistente).HasDefaultValueSql("((0))");
+
+            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Catego__4D94879B");
+
+            entity.HasOne(d => d.Color).WithMany(p => p.Producto).HasConstraintName("FK__Producto__ColorI__4CA06362");
+
+            entity.HasOne(d => d.Familia).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Famili__4E88ABD4");
         });
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity.HasKey(e => e.ID_Rol).HasName("PK__Rol__202AD22090D289A3");
+            entity.HasKey(e => e.RolId).HasName("PK__Rol__F92302F1A8B87EFD");
 
-            entity.Property(e => e.ID_Rol).ValueGeneratedNever();
-            entity.Property(e => e.Detalles_rol).HasMaxLength(255);
-            entity.Property(e => e.Tipo_rol).HasMaxLength(255);
+            entity.Property(e => e.RolId).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<Segmento>(entity =>
         {
-            entity.HasKey(e => e.ID_Segmento).HasName("PK__Segmento__A28E26A7A1B58CB3");
-
-            entity.Property(e => e.ID_Segmento).HasMaxLength(255);
-            entity.Property(e => e.Detalles).HasMaxLength(255);
+            entity.HasKey(e => e.SegmentoId).HasName("PK__Segmento__DC1DD0F37B84829B");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.ID_Usuario).HasName("PK__Usuario__DE4431C5D0E66D33");
+            entity.HasKey(e => e.UsuarioId).HasName("PK__Usuario__2B3DE7B889A05510");
 
-            entity.Property(e => e.ID_Usuario).ValueGeneratedNever();
-            entity.Property(e => e.Apellidos).HasMaxLength(255);
-            entity.Property(e => e.Contrasena).HasMaxLength(255);
-            entity.Property(e => e.Nombre).HasMaxLength(255);
+            entity.Property(e => e.UsuarioId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.ID_RolNavigation).WithMany(p => p.Usuario)
-                .HasForeignKey(d => d.ID_Rol)
-                .HasConstraintName("FK__Usuario__ID_Rol__412EB0B6");
+            entity.HasOne(d => d.Rol).WithMany(p => p.Usuario).HasConstraintName("FK__Usuario__RolId__4BAC3F29");
         });
 
         OnModelCreatingPartial(modelBuilder);

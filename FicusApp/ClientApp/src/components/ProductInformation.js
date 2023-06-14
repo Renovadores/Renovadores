@@ -8,14 +8,15 @@ import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import { useParams, useLocation, Link } from "react-router-dom";
+import InputDelete from "./InputDelete";
 
 function ProductInformation() {
     const params = useParams();
     // get info from URL
-    const SKU = params.SKU;
+    const ProductoId = params.ProductoId;
     const [productInfo, setInfo] = useState("");
     const getProduct = async () => {
-        const responseProduct = await fetch(`api/producto/GetProducto/${SKU}`);
+        const responseProduct = await fetch(`api/producto/GetProducto/${ProductoId}`);
         if (responseProduct.ok) {
             const data = await responseProduct.json();
             setInfo(data);
@@ -30,78 +31,185 @@ function ProductInformation() {
         getProduct();
     }, []);
 
-    const [SKUId, setSKUId] = useState("");
-    const handleChangeSKU = (event) => {
-        setSKUId(event.target.value);
+
+
+    const [productoId, setProductoId] = useState("");
+    const handleChangeProductoId = (event) => {
+        setProductoId(event.target.value);
     };
 
-    const [name, setName] = useState("");
-    const handleChangeName = (event) => {
-        setName(event.target.value);
+    const [nombre, setNombre] = useState("");
+    const handleChangeNombre = (event) => {
+        setNombre(event.target.value);
     };
 
-    const [color, setColor] = useState("");
-    const handleChangeColor = (event) => {
-        setColor(event.target.value);
+    const [colorId, setColorId] = useState("");
+    const handleChangeColorId = (event) => {
+        setColorId(event.target.value);
     };
 
-    const [description, setDescription] = useState("");
-    const handleChangeDescription = (event) => {
-        setDescription(event.target.value);
+    const [descripcion, setDescripcion] = useState("");
+    const handleChangeDescripcion = (event) => {
+        setDescripcion(event.target.value);
     };
 
-    const [dimentions, setDimentions] = useState("");
-    const handleChangeDimentions = (event) => {
-        setDimentions(event.target.value);
+    const [dimensiones, setDimensiones] = useState("");
+    const handleChangeDimensiones = (event) => {
+        setDimensiones(event.target.value);
     };
 
-    const [bowlWeight, setBowlWeight] = useState("");
-    const handleChangeBowlWeight = (event) => {
-        setBowlWeight(event.target.value);
+    const [pesoRecipiente, setPesoRecipiente] = useState("");
+    const handleChangePesoRecipiente = (event) => {
+        setPesoRecipiente(event.target.value);
     };
 
-    const [notReusable, setNotReusable] = useState("");
-    const handleChangeNotReusable = (event) => {
-        setNotReusable(event.target.value);
+    const [pesoDesechable, setPesoDesechable] = useState("");
+    const handleChangePesoDesechable = (event) => {
+        setPesoDesechable(event.target.value);
     };
 
-    const [comercialP, setComercialP] = useState("");
-    const handleChangeComercialP = (event) => {
-        setComercialP(event.target.value);
+    const [alquilerComercios, setAlquilerComercios] = useState("");
+    const handleChangeAlquilerComercios = (event) => {
+        setAlquilerComercios(event.target.value);
     };
 
-    const [retailP, setRetailP] = useState("");
-    const handleChangeRetailP = (event) => {
-        setRetailP(event.target.value);
+    const [alquilerRetail, setAlquilerRetail] = useState("");
+    const handleChangeAlquilerRetail = (event) => {
+        setAlquilerRetail(event.target.value);
     };
 
-    const [category, setCategory] = useState("");
-    const handleChangeCategory = (event) => {
-        setCategory(event.target.value);
+    const [categoriaId, setCategoriaId] = useState("");
+    const handleChangeCategoriaId = (event) => {
+        setCategoriaId(event.target.value);
     };
 
-    const [family, setFamily] = useState("");
-    const handleChangeFamily = (event) => {
-        setFamily(event.target.value);
+    const [familiaId, setFamiliaId] = useState("");
+    const handleChangeFamiliaId = (event) => {
+        setFamiliaId(event.target.value);
     };
 
     const [image, setImage] = useState("");
     const handleChangeImage = (event) => {
         setImage(event.target.value);
     };
+    const [descontinuado, setDescontinuado] = useState(1);
+    const handleChangeDescontinuado = (event) => {
+        setDescontinuado(event.target.value);
+    };
+    const [totalExistente, setTotalExistente] = useState(1);
+    const handleChangeTotalExistente = (event) => {
+        setTotalExistente(event.target.value);
+    };
+    const [enUso, setEnUso] = useState(1);
+    const handleChangeEnUso = (event) => {
+        setEnUso(event.target.value);
+    };
+    const [disponible, setDisponible] = useState(1);
+    const handleChangeDisponible = (event) => {
+        setDisponible(event.target.value);
+    };
+    const [noDevueltos, setNoDevueltos] = useState(1);
+    const handleChangeNoDevueltos = (event) => {
+        setNoDevueltos(event.target.value);
+    };
+
+    const handleSubmit = async (event) => {
+        console.log(
+            productoId,
+            nombre,
+            colorId,
+            descripcion,
+            dimensiones,
+            pesoRecipiente,
+            pesoDesechable,
+            alquilerComercios,
+            alquilerRetail,
+            categoriaId,
+            familiaId,
+        );
+        const response = await fetch("api/producto/EditProducto", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                colorId: colorId,
+                productoId: productoId,
+                nombre: nombre,
+                descripcion: descripcion,
+                dimensiones: dimensiones,
+                pesoRecipiente: pesoRecipiente,
+                pesoDesechable: pesoDesechable,
+                alquilerComercios: alquilerComercios,
+                alquilerRetail: alquilerRetail,
+                categoriaId: categoriaId,
+                familiaId: familiaId,
+            }),
+        });
+        console.log(response);
+
+        if (response.ok) {
+            
+        }
+    };
+    function irASeccionProductos() {
+        window.location.href = "/productos";
+    }
+    const handleSubmitDelete = async (event) => {
+        event.preventDefault();
+        console.log(
+            productoId,
+            nombre,
+            colorId,
+            descripcion,
+            dimensiones,
+            pesoRecipiente,
+            pesoDesechable,
+            alquilerComercios,
+            alquilerRetail,
+            categoriaId,
+            familiaId,
+            descontinuado
+        );
+        const response = await fetch("api/producto/DeleteProducto", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                colorId: colorId,
+                productoId: productoId,
+                nombre: nombre,
+                descripcion: descripcion,
+                dimensiones: dimensiones,
+                pesoRecipiente: pesoRecipiente,
+                pesoDesechable: pesoDesechable,
+                alquilerComercios: alquilerComercios,
+                alquilerRetail: alquilerRetail,
+                categoriaId: categoriaId,
+                familiaId: familiaId,
+                descontinuado: descontinuado,
+            }),
+        });
+        console.log(response);
+
+        if (response.ok) {
+
+        }
+    };
 
     const addDefaultEditForm = (data) => {
-        setSKUId(data.sku);
-        setName(data.nombre);
-        setColor(data.color);
-        setDescription(data.descripcion);
-        setDimentions(data.Dimensiones);
-        setBowlWeight(data.peso_recipiente);
-        setNotReusable(data.peso_desechable);
-        setComercialP(data.Alquiler_Comercios);
-        setRetailP(data.Alquiler_Retail);
-        setCategory(data.Categoria);
-        setFamily(data.Familia);
+        setProductoId(data.productoId);
+        setNombre(data.nombre);
+        setColorId(data.colorId);
+        setDescripcion(data.descripcion);
+        setDimensiones(data.dimensiones);
+        setPesoRecipiente(data.pesoRecipiente);
+        setPesoDesechable(data.pesoDesechable);
+        setAlquilerComercios(data.alquilerComercios);
+        setAlquilerRetail(data.alquilerRetail);
+        setCategoriaId(data.categoriaId);
+        setFamiliaId(data.familiaId);
         setImage(data.Imagen);
     };
 
@@ -134,6 +242,54 @@ function ProductInformation() {
                             >
                                 Editar
                             </button>
+                            <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
+                                <button
+                                    className="btn btn-primary"
+                                    type="button"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWithBothOptions2"
+                                    aria-controls="offcanvasWithBothOptions"
+                                >
+                                    Eliminar
+                                </button>
+
+                                <div
+                                    className="offcanvas offcanvas-start "
+                                    data-bs-scroll="true"
+                                    tabIndex="-1"
+                                    id="offcanvasWithBothOptions2"
+                                    aria-labelledby="offcanvasWithBothOptionsLabel"
+                                >
+                                    <div className="offcanvas-header">
+                                        <h5
+                                            className="offcanvas-title"
+                                            id="offcanvasWithBothOptionsLabel"
+                                        >
+                                            Eliminar
+                                        </h5>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            data-bs-dismiss="offcanvas"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div className="offcanvas-body">
+                                        Estas seguro que deseas eliminar este producto?
+                                        &#8205; &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
+                                        <form onSubmit={handleSubmitDelete}>
+                                        <div className="row">
+                                                <div className="col-6 d-flex justify-content-center">                                                   
+                                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={irASeccionProductos}>Eliminar</button>
+                                            </div>
+                                                <div className="col-6 d-flex justify-content-center">
+                                                        <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                            </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>  
+                                </div>
                             <div
                                 className="offcanvas offcanvas-start "
                                 data-bs-scroll="true"
@@ -155,36 +311,84 @@ function ProductInformation() {
                                         aria-label="Close"
                                     ></button>
                                 </div>
+                                <div className="offcanvas-body">
+                                    <form onSubmit={handleSubmit}>
+
+                                        <Input variable={nombre} handler={handleChangeNombre} text="Nombre" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <Input variable={descripcion} handler={handleChangeDescripcion} text="Desripcion" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={pesoRecipiente} handler={handleChangePesoRecipiente} text="Peso de Recipiente" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={pesoDesechable} handler={handleChangePesoDesechable} text="Peso Desechable" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={alquilerComercios} handler={handleChangeAlquilerComercios} text="Precio Comercio" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <InputInt variable={alquilerRetail} handler={handleChangeAlquilerRetail} text="Precio Retail" />
+                                        <div className="mb-3">
+                                        </div>
+                                        <div className="mb-3">
+                                        </div>
+                                        <SelectCategory variable={categoriaId} handler={handleChangeCategoriaId} />
+                                        <SelectFamily variable={familiaId} handler={handleChangeFamiliaId} />
+                                        <SelectColor variable={colorId} handler={handleChangeColorId} />
+
+                                        <div className="row">
+                                            <div className="col-6 d-flex justify-content-center">
+                                                <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct} >Agregar</button>
+                                            </div>
+                                            <div className="col-6 d-flex justify-content-center">
+                                                <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                            </div>
+                                        </div>
+                                        </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        SKU: {SKUId} </li>
+                        Producto ID: {productoId} </li>
                     <li className="list-group-item">
-                        Color: {productInfo.color} </li>
+                        Color: {productInfo.colorId} </li>
                     <li className="list-group-item">
                         Descripcion: {productInfo.descripcion}{" "}</li>
                     <li className="list-group-item">
                         Dimensiones: {productInfo.dimensiones}{" "}</li>
                     <li className="list-group-item">
-                        Peso: {productInfo.peso_recipiente} </li>
+                        Peso: {productInfo.pesoRecipiente} </li>
                     <li className="list-group-item">
-                        Peso sustituido: {productInfo.peso_desechable} </li>
+                        Peso sustituido: {productInfo.pesoDesechable} </li>
                     <li className="list-group-item">
-                        Precio comercios: {productInfo.alquiler_Comercios} </li>
+                        Precio comercios: {productInfo.alquilerComercios} </li>
                     <li className="list-group-item">
-                        Precio retail: {productInfo.alquiler_Retail} </li>
+                        Precio retail: {productInfo.alquilerRetail} </li>
                     <li className="list-group-item">
-                        Familia: {productInfo.familia} </li>
+                        Familia: {productInfo.familiaId} </li>
                     <li className="list-group-item">
-                        Categoria: {productInfo.categoria}{" "}</li>
+                        Categoria: {productInfo.categoriaId}{" "}</li>
                     <li className="list-group-item">
-                        Imagen: {productInfo.imagen} </li>
-                </ul>
+                            Imagen: {productInfo.imagen} </li>
+                        <li className="list-group-item">
+                            Total Producto: {productInfo.totalExistente} </li>
+                        <li className="list-group-item">
+                            En Uso: {productInfo.enUso} </li>
+                        <li className="list-group-item">
+                            Disponibles: {productInfo.disponible} </li>
+                        <li className="list-group-item">
+                            No Devueltos: {productInfo.noDevueltos} </li>
+                    </ul>
+                </div>
             </div>
-        </div>
+            </div>
     );
 }
 
