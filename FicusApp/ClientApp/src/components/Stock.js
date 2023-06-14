@@ -1,10 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Input from "./Input";
 import InputInt from "./InputInt";
-import CheckBox from "./CheckBox";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
@@ -95,29 +93,29 @@ function Stock() {
     setColorId(event.target.value);
   };
   const [categoriaId, setCategoriaId] = useState(1);
-    const handleChangeCategoriaId = (event) => {
-        setCategoriaId(event.target.value);
-    };
-    const [descontinuado, setDescontinuado] = useState(1);
-    const handleChangeDescontinuado = (event) => {
-        setDescontinuado(event.target.value);
-    };
-    const [totalExistente, setTotalExistente] = useState(1);
-    const handleChangeTotalExistente = (event) => {
-        setTotalExistente(event.target.value);
-    };
-    const [enUso, setEnUso] = useState(1);
-    const handleChangeEnUso = (event) => {
-        setEnUso(event.target.value);
-    };
-    const [disponible, setDisponible] = useState(1);
-    const handleChangeDisponible = (event) => {
-        setDisponible(event.target.value);
-    };
-    const [noDevueltos, setNoDevueltos] = useState(1);
-    const handleChangeNoDevueltos = (event) => {
-        setNoDevueltos(event.target.value);
-    };
+  const handleChangeCategoriaId = (event) => {
+    setCategoriaId(event.target.value);
+  };
+  const [descontinuado, setDescontinuado] = useState(1);
+  const handleChangeDescontinuado = (event) => {
+    setDescontinuado(event.target.value);
+  };
+  const [totalExistente, setTotalExistente] = useState(1);
+  const handleChangeTotalExistente = (event) => {
+    setTotalExistente(event.target.value);
+  };
+  const [enUso, setEnUso] = useState(1);
+  const handleChangeEnUso = (event) => {
+    setEnUso(event.target.value);
+  };
+  const [disponible, setDisponible] = useState(1);
+  const handleChangeDisponible = (event) => {
+    setDisponible(event.target.value);
+  };
+  const [noDevueltos, setNoDevueltos] = useState(1);
+  const handleChangeNoDevueltos = (event) => {
+    setNoDevueltos(event.target.value);
+  };
 
   const handleCancel = () => {
     setProductoId("");
@@ -141,22 +139,22 @@ function Stock() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(
-        date,
-        productoId,
-        nombre,
-        colorId,
-        descripcion,
-        dimensiones,
-        pesoRecipiente,
-        pesoDesechable,
-        alquilerComercios,
-        alquilerRetail,
-        categoriaId,
-        familiaId,
-        totalExistente,
-        enUso, 
-        disponible,
-        noDevueltos
+      date,
+      productoId,
+      nombre,
+      colorId,
+      descripcion,
+      dimensiones,
+      pesoRecipiente,
+      pesoDesechable,
+      alquilerComercios,
+      alquilerRetail,
+      categoriaId,
+      familiaId,
+      totalExistente,
+      enUso,
+      disponible,
+      noDevueltos
     );
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
@@ -192,98 +190,96 @@ function Stock() {
 
   return (
     <div>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Inventario</title>
-      </head>
-      <body>
-        <section className="py-4">
-          <div className="container-fluid">
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Inventario</title>
+      <section className="py-4">
+        <div className="container-fluid">
+          <div className="d-grid gap-2 mb-4">
             <div className="d-grid gap-2 mb-4">
-              <div className="d-grid gap-2 mb-4">
-                <button
-                  className="btn btn-success"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasWithBothOptions"
-                  aria-controls="offcanvasWithBothOptions"
-                >
-                  Agregar Producto
-                </button>
-              </div>
+              <button
+                className="btn btn-success"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasWithBothOptions"
+                aria-controls="offcanvasWithBothOptions"
+              >
+                Agregar Producto
+              </button>
             </div>
-            <div
-              className="offcanvas offcanvas-start"
-              data-bs-scroll="true"
-              tabIndex="-1"
-              id="offcanvasWithBothOptions"
-              aria-labelledby="offcanvasWithBothOptionsLabel"
-            >
-              <div className="offcanvas-header">
-                <h5
-                  className="offcanvas-title"
-                  id="offcanvasWithBothOptionsLabel"
-                >
-                  Informacion del nuevo producto
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="offcanvas"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="offcanvas-body">
-                <form onSubmit={handleSubmit}>
-                  <Input variable={productoId} handler={handleChangeProductoId} text="Producto ID" />
-                  <Input
-                    variable={nombre}
-                    handler={handleChangeNombre}
-                    text="Nombre"
-                  />
-                  <div className="mb-3">
-                    <label
-                      htmlFor="formGroupExampleInput"
-                      className="form-label"
-                    >
-                      Agregado el: {date}
-                    </label>
-                  </div>
-                  <Input
-                    variable={descripcion}
-                    handler={handleChangeDescripcion}
-                    text="Descripción"
-                  />
-                  <Input
-                    variable={dimensiones}
-                    handler={handleChangeDimensiones}
-                    text="Dimensiones"
-                  />
-                  <InputInt
-                    variable={pesoRecipiente}
-                    handler={handleChangePesoRecipiente}
-                    text="Peso de Recipiente"
-                  />
-                  <InputInt
-                    variable={pesoDesechable}
-                    handler={handleChangePesoDesechable}
-                    text="Peso Desechable"
-                  />
-                  <InputInt
-                    variable={alquilerComercios}
-                    handler={handleChangeAlquilerComercios}
-                    text="Precio Comercio"
-                  />
-                  <InputInt
-                    variable={alquilerRetail}
-                    handler={handleChangeAlquilerRetail}
-                    text="Precio Retail"
-                                  />
-                 <InputInt
-                    variable={totalExistente}
-                    handler={handleChangeTotalExistente}
-                    text="Total de Productos Existentes"
+          </div>
+          <div
+            className="offcanvas offcanvas-start"
+            data-bs-scroll="true"
+            tabIndex="-1"
+            id="offcanvasWithBothOptions"
+            aria-labelledby="offcanvasWithBothOptionsLabel"
+          >
+            <div className="offcanvas-header">
+              <h5
+                className="offcanvas-title"
+                id="offcanvasWithBothOptionsLabel"
+              >
+                Informacion del nuevo producto
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="offcanvas-body">
+              <form onSubmit={handleSubmit}>
+                <Input
+                  variable={productoId}
+                  handler={handleChangeProductoId}
+                  text="Producto ID"
+                />
+                <Input
+                  variable={nombre}
+                  handler={handleChangeNombre}
+                  text="Nombre"
+                />
+                <div className="mb-3">
+                  <label htmlFor="formGroupExampleInput" className="form-label">
+                    Agregado el: {date}
+                  </label>
+                </div>
+                <Input
+                  variable={descripcion}
+                  handler={handleChangeDescripcion}
+                  text="Descripción"
+                />
+                <Input
+                  variable={dimensiones}
+                  handler={handleChangeDimensiones}
+                  text="Dimensiones"
+                />
+                <InputInt
+                  variable={pesoRecipiente}
+                  handler={handleChangePesoRecipiente}
+                  text="Peso de Recipiente"
+                />
+                <InputInt
+                  variable={pesoDesechable}
+                  handler={handleChangePesoDesechable}
+                  text="Peso Desechable"
+                />
+                <InputInt
+                  variable={alquilerComercios}
+                  handler={handleChangeAlquilerComercios}
+                  text="Precio Comercio"
+                />
+                <InputInt
+                  variable={alquilerRetail}
+                  handler={handleChangeAlquilerRetail}
+                  text="Precio Retail"
+                />
+                <InputInt
+                  variable={totalExistente}
+                  handler={handleChangeTotalExistente}
+                  text="Total de Productos Existentes"
                 />
                 <InputInt
                   variable={enUso}
@@ -301,16 +297,15 @@ function Stock() {
                   text="Productos No Devueltos"
                 />
 
-
-                  <SelectCategory
-                    variable={categoriaId}
-                    handler={handleChangeCategoriaId}
-                  />
-                  <SelectFamily
-                    variable={familiaId}
-                    handler={handleChangeFamiliaId}
-                  />
-                  <SelectColor variable={colorId} handler={handleChangeColorId} />
+                <SelectCategory
+                  variable={categoriaId}
+                  handler={handleChangeCategoriaId}
+                />
+                <SelectFamily
+                  variable={familiaId}
+                  handler={handleChangeFamiliaId}
+                />
+                <SelectColor variable={colorId} handler={handleChangeColorId} />
 
                 <div className="row">
                   <div className="col-6 d-flex justify-content-center">
