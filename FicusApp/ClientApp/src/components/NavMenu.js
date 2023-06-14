@@ -9,7 +9,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function NavMenu() {
+function NavMenu(props) {
   const [collapsed, setState] = useState(true);
   const toggleNavbar = () => {
     setState(!collapsed);
@@ -52,7 +52,7 @@ function NavMenu() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/cerrarSesion">
+              <NavLink tag={Link} className="text-light" to="/cerrarSesion" onClick={props.handleCloseSession}>
                 Cerrar Sesion
               </NavLink>
             </NavItem>

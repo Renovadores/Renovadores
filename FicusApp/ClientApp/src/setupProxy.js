@@ -7,7 +7,7 @@ const target = env.ASPNETCORE_HTTPS_PORT
         ? env.ASPNETCORE_URLS.split(';')[0]
         : 'http://localhost:17998';
 
-const context = ['/api/cliente', '/api/clientesegmento', '/api/clientecomunicacion', '/api/inventario', '/api/usuario', '/api/producto', '/api/orden', '/api/detalle', '/api/evento'];
+const context = ['/api/cliente', '/api/clientesegmento', '/api/clientecomunicacion', '/api/inventario', '/api/usuario', '/api/producto', '/api/orden', '/api/detalle', '/api/evento', '/api/historialrefreshtoken'];
 
 const onError = (err, req, resp, target) => {
     console.error(`${err.message}`);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using System.Linq;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -17,6 +18,7 @@ namespace FicusApp.Controllers
             _clientService = clientService;
         }
 
+        //[Authorize]
         [HttpGet]
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()

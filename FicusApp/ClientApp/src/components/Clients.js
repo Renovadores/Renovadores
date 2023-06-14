@@ -19,6 +19,28 @@ function Clients() {
     const [clientsChecked, setClientsChecked] = useState(false);
     const [clients, setClients] = useState([]);
     const [users, setUsers] = useState([]);
+    const [token, setToken] = useState("");
+
+    const getToken = async () => {
+      // get token from DB
+      var UserId = JSON.parse(sessionStorage.getItem('userId'));
+      //const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${UserId}`)
+      //if (responseToken.ok) {
+      //  const data = await responseToken.json();
+      //  setToken(data.token);
+      //}
+    }
+
+    useEffect(() => {
+      getClients();
+    }, []);
+
+    //useEffect(() => {
+    //  if (token !== "") {
+    //    getClients()
+    //  }
+    //}, [token])
+
     const getClients = async () => {
         setClientsChecked(false);
         const response = await fetch("api/cliente/GetClientes");
@@ -36,12 +58,7 @@ function Clients() {
             setUsers(dataUsers);
         }
     }
-
-
-    // this method allows to auto call getClients when page is started
-    useEffect(() => {
-        getClients();
-    }, []);
+    
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();

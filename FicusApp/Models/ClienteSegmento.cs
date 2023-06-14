@@ -18,9 +18,9 @@ public partial class ClienteSegmento
 
     [ForeignKey("ClienteId")]
     [InverseProperty("ClienteSegmento")]
-    public virtual Cliente? Cliente { get; set; } = null!;
+    public virtual Cliente Cliente { get; set; } = null!;
 
     [ForeignKey("SegmentoId")]
     [InverseProperty("ClienteSegmento")]
-    public virtual Segmento? Segmento { get; set; } = null!;
+    public virtual Segmento Segmento { get; set; } = null!;
 }
