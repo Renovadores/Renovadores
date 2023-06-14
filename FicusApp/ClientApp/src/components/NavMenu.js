@@ -42,6 +42,11 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink tag={Link} className="text-light" to="/ordenes">
+                Ordenes
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink tag={Link} className="text-light" to="/productos">
                 Productos
               </NavLink>
