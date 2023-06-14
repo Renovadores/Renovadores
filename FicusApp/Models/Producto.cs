@@ -34,7 +34,7 @@ public partial class Producto
     [StringLength(255)]
     public string? Imagen { get; set; }
 
-    public int? Descontinuado { get; set; }
+    public int? Descontinuado { get; set; } = 0;
 
     public int? TotalExistente { get; set; }
 

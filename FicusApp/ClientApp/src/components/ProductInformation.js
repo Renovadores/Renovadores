@@ -114,7 +114,6 @@ function ProductInformation() {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
         console.log(
             productoId,
             nombre,
@@ -386,8 +385,6 @@ function ProductInformation() {
                             Disponibles: {productInfo.disponible} </li>
                         <li className="list-group-item">
                             No Devueltos: {productInfo.noDevueltos} </li>
-                        <li className="list-group-item">
-                            Descontinuado: {productInfo.descontinuado} </li>
                     </ul>
                 </div>
             </div>
