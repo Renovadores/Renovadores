@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
 import InventoryList from "./InventoryList";
-import { CurrentDateFormat, DateFormatBD } from "./Clients";
+import { currentDateFormat, dateFormatBD } from "./Clients";
 import InputInt from "./InputInt";
 import SelectProduct from "./SelectProduct";
 
@@ -30,8 +30,8 @@ function Inventory() {
     console.log(inventory);
   }, [inventory]);
 
-  const date = CurrentDateFormat();
-  const dateDB = DateFormatBD();
+  const date = currentDateFormat();
+  const dateDB = dateFormatBD();
   // get existent products from DB
   const [SKUProducts, setSKUProducts] = useState([]);
   const [SKUProduct, setSKUProduct] = useState(SKUProducts[0]);
@@ -167,15 +167,19 @@ function Inventory() {
       <section>
         <div className="d-grid gap-2 mb-4">
           <div className="d-grid gap-2 mb-4">
-            <button
-              className="btn btn-success"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions"
-            >
-              Agregar Inventario
-            </button>
+            <div className="row">
+                <div className="col-6 d-flex justify-content-start">
+                    <button
+                        className="btn btn-success"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasWithBothOptions"
+                        aria-controls="offcanvasWithBothOptions"
+                    >
+                        Agregar Producto
+                    </button>
+                </div>
+            </div>
             <div
               className="offcanvas offcanvas-start "
               data-bs-scroll="true"
@@ -254,9 +258,6 @@ function Inventory() {
                 </form>
               </div>
             </div>
-            <button className="btn btn-warning text-light" type="button">
-              Eliminar Inventario
-            </button>
           </div>
         </div>
         <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">

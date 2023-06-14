@@ -10,7 +10,8 @@ function ProductList(props) {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">{product.nombre}</h5>
-                <p className="card-text">{product.descripcion}</p>
+                    <p className="card-text">{product.descripcion}</p>
+                    <p className="card-text">{product.productoId}</p>
                 <Link to={`/productos/informacion/${product.productoId}`}>
                   <button
                     className="btn btn-primary"

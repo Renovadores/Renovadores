@@ -28,8 +28,16 @@ public class ProductoController : ControllerBase
         [Route("GetProducto/{ProductoId}")]
         public async Task<IActionResult> GetProducto(string ProductoId)
         {
-            Producto producto = await _productService.GetProducto(SKU);
+            Producto producto = await _productService.GetProducto(ProductoId);
             return Ok(producto);
+        }
+
+        [HttpGet]
+        [Route("GetMatchProducts/{input}/{searchByCode}")]
+        public async Task<IActionResult> GetMatchProducts(string input, bool searchByCode)
+        {
+            List<Producto> matchProducts = await _productService.GetMatchProducts(input, searchByCode);
+            return Ok(matchProducts);
         }
 
         [HttpPost]
@@ -42,7 +50,7 @@ public class ProductoController : ControllerBase
 
         [HttpPut]
         [Route("EditProducto")]
-        public async Task<IActionResult> EditProduct([FromBody] Producto producto)
+        public async Task<IActionResult> EditProducto([FromBody] Producto producto)
         {
             await _productService.EditProduct(producto);
             return Ok();
@@ -50,7 +58,7 @@ public class ProductoController : ControllerBase
         
         [HttpPut]
         [Route("DeleteProducto")]
-        public async Task<IActionResult> DeleteProduct([FromBody] Producto producto)
+        public async Task<IActionResult> DeleteProducto([FromBody] Producto producto)
         {
             await _productService.DeleteProduct(producto);
             return Ok();

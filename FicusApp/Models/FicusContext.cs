@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -196,6 +197,27 @@ public partial class FicusContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
+
+            entity.HasKey(e => e.ProductoId).HasName("PK__Producto__CA1ECF0CA305D67A");
+
+            entity.Property(e => e.ProductoId).HasMaxLength(255);
+            entity.Property(e => e.Descripcion).HasMaxLength(255);
+            entity.Property(e => e.Dimensiones).HasMaxLength(255);
+            entity.Property(e => e.Imagen).HasMaxLength(255);
+            entity.Property(e => e.Nombre).HasMaxLength(255);
+
+            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.CategoriaId)
+                .HasConstraintName("FK__Producto__Catego__4222D4EF");
+
+            entity.HasOne(d => d.Color).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.ColorId)
+                .HasConstraintName("FK__Producto__Color__440B1D61");
+
+            entity.HasOne(d => d.Familia).WithMany(p => p.Producto)
+                .HasForeignKey(d => d.FamiliaId)
+                .HasConstraintName("FK__Producto__Famili__4316F928");
+
             entity.HasKey(e => e.ProductoId).HasName("PK__Producto__A430AEA32A15B4AE");
 
             entity.Property(e => e.Descontinuado).HasDefaultValueSql("((0))");

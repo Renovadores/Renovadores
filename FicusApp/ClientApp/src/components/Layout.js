@@ -5,7 +5,7 @@ import NavMenu from './NavMenu';
 function Layout (props) {
   return (
     <div>
-      <NavMenu />
+      <NavMenu userId={props.userId} handleCloseSession={props.handleCloseSession} />
       <Container tag="main">
         {props.children}
       </Container>

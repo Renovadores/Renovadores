@@ -190,22 +190,28 @@ function Stock() {
 
   return (
     <div>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Inventario</title>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Inventario</title>
+      </head>
       <section className="py-4">
         <div className="container-fluid">
           <div className="d-grid gap-2 mb-4">
             <div className="d-grid gap-2 mb-4">
-              <button
-                className="btn btn-success"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasWithBothOptions"
-                aria-controls="offcanvasWithBothOptions"
-              >
-                Agregar Producto
-              </button>
+              <div className="row">
+                <div className="col-6 d-flex justify-content-start">
+                  <button
+                    className="btn btn-success"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBothOptions"
+                    aria-controls="offcanvasWithBothOptions"
+                  >
+                    Agregar Producto
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div
