@@ -96,10 +96,10 @@ function Stock() {
   const handleChangeCategoriaId = (event) => {
     setCategoriaId(event.target.value);
   };
-  const [descontinuado, setDescontinuado] = useState(1);
+  /* TO DO const [descontinuado, setDescontinuado] = useState(0);
   const handleChangeDescontinuado = (event) => {
     setDescontinuado(event.target.value);
-  };
+  };*/
   const [totalExistente, setTotalExistente] = useState(1);
   const handleChangeTotalExistente = (event) => {
     setTotalExistente(event.target.value);
@@ -129,7 +129,7 @@ function Stock() {
     setColorId(0);
     setCategoriaId(0);
     setFamiliaId(0);
-    setDescontinuado(0);
+    //setDescontinuado(0);
     setTotalExistente(0);
     setEnUso(0);
     setDisponible(0);
@@ -360,12 +360,12 @@ function Stock() {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/productos/informacion/">
                     Prioridad
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/productos/informacion/">
                     Recientes
                   </a>
                 </li>
@@ -399,25 +399,27 @@ function Stock() {
             <nav aria-label="...">
               <ul className="pagination justify-content-center">
                 <li className="page-item disabled">
-                  <a className="page-link">Anterior</a>
+                  <a className="page-link" href="/productos/informacion/">
+                    Anterior
+                  </a>
                 </li>
                 <li className="page-item active">
-                  <a className="page-link" href="#">
+                  <a className="page-link" href="/productos/informacion/">
                     1
                   </a>
                 </li>
                 <li className="page-item" aria-current="page">
-                  <a className="page-link" href="#">
+                  <a className="page-link" href="/productos/informacion/">
                     2
                   </a>
                 </li>
                 <li className="page-item">
-                  <a className="page-link" href="#">
+                  <a className="page-link" href="/productos/informacion/">
                     3
                   </a>
                 </li>
                 <li className="page-item">
-                  <a className="page-link" href="#">
+                  <a className="page-link" href="/productos/informacion/">
                     Siguiente
                   </a>
                 </li>
