@@ -1,6 +1,11 @@
-﻿using FicusApp.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using FicusApp.Models;
 
 namespace FicusApp.Controllers
 {
@@ -13,6 +18,17 @@ namespace FicusApp.Controllers
         public DetalleController(FicusContext context)
         {
             _context = context;
+        }
+
+        // GET: api/Detalle
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Detalle>>> GetDetalle()
+        {
+            if (_context.Detalle == null)
+            {
+                return NotFound();
+            }
+            return await _context.Detalle.ToListAsync();
         }
 
         [HttpPost]

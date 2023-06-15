@@ -4,7 +4,9 @@ import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
 import ProductInformation from "./components/ProductInformation";
 import Inventory from "./components/Inventory";
-import AddOrder from './components/AddOrder';
+import AddOrder from "./components/AddOrder";
+import Orden from "./components/Ordenes";
+import OrdenInfo from "./components/Ordenes/components/OrdenInfo.js";
 
 const AppRoutes = [
   {
@@ -31,10 +33,10 @@ const AppRoutes = [
     path: "/productos/informacion/:ProductoId",
     element: <ProductInformation />,
   },
-  
+
   {
-    path: '/clientes/informacion',
-    element: <ClientInformation />
+    path: "/clientes/informacion",
+    element: <ClientInformation />,
   },
 
   {
@@ -43,15 +45,24 @@ const AppRoutes = [
   },
 
   {
-      path: '/producto',
-      element: <Stock />
+    path: "/producto",
+    element: <Stock />,
   },
   {
-  path: '/productos/informacion',
-  element: <ProductInformation />,
+    path: "/productos/informacion",
+    element: <ProductInformation />,
   },
   {
-    path: '/ordenes/nueva-orden',
+    path: "/ordenes",
+    element: <Orden />,
+  },
+  {
+    path: "/ordenes/:ordenId",
+    element: <OrdenInfo />,
+  },
+
+  {
+    path: "/ordenes/nueva-orden",
     element: <AddOrder />,
   },
   {
