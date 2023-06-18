@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,23 +11,22 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteSegmentoController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly IClientSegmentService _clientSegmentService;
 
-        public ClienteSegmentoController(FicusContext context)
+        public ClienteSegmentoController(IClientSegmentService clientSegmentService)
         {
-            _context = context;
+            _clientSegmentService = clientSegmentService;
         }
 
         [HttpGet]
         [Route("GetSegments/{id}")]
         public async Task<IActionResult> GetSegments(int id)
         {
-            List<ClienteSegmento> cliente_segmentos = _context.ClienteSegmento
-                                                       .Where(s => s.ClienteId == id).ToList();
+            List<ClienteSegmento> clienteSegmentos = _clientSegmentService.GetSegments(id);
             List<string> segmentos = new();
-            for (int i = 0; i < cliente_segmentos.Count; i++)
+            for (int i = 0; i < clienteSegmentos.Count; i++)
             {
-                segmentos.Add(cliente_segmentos[i].SegmentoId);
+                segmentos.Add(clienteSegmentos[i].SegmentoId);
             }
             return Ok(segmentos);
         }
@@ -35,8 +35,7 @@ namespace FicusApp.Controllers
         [Route("AddSegment")]
         public async Task<IActionResult> AddSegment([FromBody] ClienteSegmento request)
         {
-            await _context.ClienteSegmento.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _clientSegmentService.AddSegment(request);
             return Ok();
         }
 
@@ -44,11 +43,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClient_Segment")] 
         public async Task<IActionResult> DeleteClient_Segment([FromBody] ClienteSegmento request)
         {
-            ClienteSegmento clienteSegmento = _context.ClienteSegmento.Where(s =>
-                                                s.ClienteId == request.ClienteId
-                                                && s.SegmentoId == request.SegmentoId).FirstOrDefault();
-            _context.ClienteSegmento.Remove(clienteSegmento);
-            _context.SaveChanges();
+            int code = await _clientSegmentService.DeleteClientSegment(request);
             return Ok();
         }
 
