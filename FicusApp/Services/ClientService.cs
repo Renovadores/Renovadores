@@ -7,6 +7,9 @@ namespace FicusApp.Services
     public class ClientService : IClientService
     {
         private readonly FicusContext _context;
+        private const int SUCCESS_CODE = 0;
+        private const int OUT_OF_RANGE_CODE = 1;
+        private const int NOT_FOUND_CODE = -1;
 
         public ClientService(FicusContext context)
         {
@@ -35,10 +38,25 @@ namespace FicusApp.Services
             return 1;
         }
 
-        public async Task<Cliente> GetCliente(int id)
+        public async Task<(int, Cliente?)> GetCliente(int id)
         {
-            Cliente cliente = await _context.Cliente.FindAsync(id);
-            return cliente;
+            int code = SUCCESS_CODE;
+            Cliente? cliente = null;
+
+            if (_context.Cliente == null)
+            {
+                code = NOT_FOUND_CODE;
+            }
+            else if (id < 0 || id > _context.Cliente.Count() - 1)
+            {
+                code = OUT_OF_RANGE_CODE;
+            }
+            else
+            {
+                cliente = await _context.Cliente.FindAsync(id);
+            }
+            (int, Cliente?) response = (code, cliente);
+            return response;
         }
 
         public async Task<List<Cliente>> GetClientes()

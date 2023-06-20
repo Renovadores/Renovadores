@@ -23,7 +23,7 @@ namespace FicusApp.Services
         public bool FindEvento(string name)
         {
             bool exists = _context.Evento.Where(e => e.NombreEvento == name).FirstOrDefault() != null;
-            return true;
+            return exists;
         }
 
         public int GetEventId(string name)
