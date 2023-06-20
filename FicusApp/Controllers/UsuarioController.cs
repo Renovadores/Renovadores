@@ -13,13 +13,12 @@ namespace FicusApp.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly FicusContext _context;
         private readonly IAutorizacionService _autorizacionService;
-
-        public UsuarioController(FicusContext context, IAutorizacionService autorizacionService)
+        private readonly IUserService _userService;
+        public UsuarioController(IAutorizacionService autorizacionService, IUserService userService)
         {
-            _context = context;
             _autorizacionService = autorizacionService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -62,15 +61,15 @@ namespace FicusApp.Controllers
         [Route("GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
-            List<Usuario> usuarios = _context.Usuario.ToList();
-            return Ok(usuarios);
+            List<Usuario> users = _userService.GetUsers();
+            return Ok(users);
         }
 
         [HttpGet]
         [Route("GetUser/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            Usuario usuario = _context.Usuario.Find(id);
+            Usuario usuario = _userService.GetUser(id);
             return Ok(usuario);
         }
 

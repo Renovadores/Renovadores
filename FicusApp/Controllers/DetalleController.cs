@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
+using FicusApp.Services;
 
 namespace FicusApp.Controllers
 {
@@ -13,30 +14,30 @@ namespace FicusApp.Controllers
     [ApiController]
     public class DetalleController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly IDetailService _detailService;
 
-        public DetalleController(FicusContext context)
+        public DetalleController(IDetailService detailService)
         {
-            _context = context;
+            _detailService = detailService;
         }
 
         // GET: api/Detalle
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Detalle>>> GetDetalle()
         {
-            if (_context.Detalle == null)
+            List<Detalle> details = await _detailService.GetDetalle();
+            if (details == null)
             {
                 return NotFound();
             }
-            return await _context.Detalle.ToListAsync();
+            return details;
         }
 
         [HttpPost]
         [Route("AddDetalle")]
         public async Task<IActionResult> AddDetalle([FromBody] Detalle request)
         {
-            await _context.Detalle.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _detailService.AddDetalle(request);
             return Ok();
         }
 

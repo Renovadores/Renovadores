@@ -9,9 +9,9 @@ namespace FicusApp.Controllers
     [ApiController]
 public class ProductoController : ControllerBase
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
 
-        public ProductoController(ProductService productService)
+        public ProductoController(IProductService productService)
         {
             _productService = productService;
         }

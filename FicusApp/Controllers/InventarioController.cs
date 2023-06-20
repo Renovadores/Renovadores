@@ -10,9 +10,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class InventarioController : ControllerBase
     {
-        private readonly InventarioService _inventarioService;
+        private readonly IInventarioService _inventarioService;
 
-        public InventarioController(InventarioService inventarioService)
+        public InventarioController(IInventarioService inventarioService)
         {
             _inventarioService = inventarioService;
         }

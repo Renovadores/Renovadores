@@ -11,9 +11,9 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private readonly ClientService _clientService;
+        private readonly IClientService _clientService;
 
-        public ClienteController(ClientService clientService)
+        public ClienteController(IClientService clientService)
         {
             _clientService = clientService;
         }
