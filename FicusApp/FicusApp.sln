@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FicusApp", "FicusApp.csproj", "{3E15071D-2F96-4BF5-9D6F-32E9AC88B102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FicusApp", "FicusApp.csproj", "{3E15071D-2F96-4BF5-9D6F-32E9AC88B102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FicusAppTests", "..\FicusAppTests\FicusAppTests.csproj", "{61D40953-D9A4-46F9-9A5E-CEC5E002164E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3E15071D-2F96-4BF5-9D6F-32E9AC88B102}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E15071D-2F96-4BF5-9D6F-32E9AC88B102}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E15071D-2F96-4BF5-9D6F-32E9AC88B102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D40953-D9A4-46F9-9A5E-CEC5E002164E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D40953-D9A4-46F9-9A5E-CEC5E002164E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D40953-D9A4-46F9-9A5E-CEC5E002164E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D40953-D9A4-46F9-9A5E-CEC5E002164E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,14 +17,18 @@ builder.Services.AddControllersWithViews();
 
 //access to Models (for controllers)
 
-builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
-
 builder.Services.AddDbContext<FicusContext>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IInventarioService, InventarioService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClientSegmentService, ClientSegmentService>();
+builder.Services.AddScoped<IClientMediaService, ClientMediaService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IDetailService, DetailService>();
+builder.Services.AddScoped<IEventService, EventService>();
 
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<InventarioService>();
-builder.Services.AddScoped<ClientService>();
-
+builder.Services.AddScoped<IAutorizacionService, AutorizacionService>();
 var key = builder.Configuration.GetValue<string>("JwtSettings:key");
 var keyBytes = Encoding.ASCII.GetBytes(key);
 

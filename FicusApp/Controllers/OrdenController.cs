@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,18 +11,18 @@ namespace FicusApp.Controllers
     [ApiController]
     public class OrdenController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdenController(FicusContext context)
+        public OrdenController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
 
         [HttpGet]
         [Route("GetOrders")]
         public async Task<IActionResult> GetOrders()
         {
-            List<Orden> ordenes = _context.Orden.ToList();
+            List<Orden> ordenes = await _orderService.GetOrders();
             return Ok(ordenes);
         }
 
@@ -29,15 +30,7 @@ namespace FicusApp.Controllers
         [Route("GetNewCode")]
         public async Task<IActionResult> GetNewCode()
         {
-            //string code = "OR-";
-            //string number = (_context.Orden.Count() + 1).ToString();
-            //number = number.PadLeft(4, '0');
-            //code += number;
-            //NewCode response = new()
-            //{
-            //    Id = code
-            //};
-            int code = _context.Orden.Count() + 1;
+            int code = await _orderService.GetNewCode();
             NewCode response = new()
             {
                 Id = code
@@ -49,9 +42,7 @@ namespace FicusApp.Controllers
         [Route("AddOrder")]
         public async Task<IActionResult> AddOrder([FromBody] Orden request)
         {
-            // ID is int
-            await _context.Orden.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _orderService.AddOrder(request);
             return Ok();
         }
     }

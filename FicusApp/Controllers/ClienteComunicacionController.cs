@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,23 +9,22 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteComunicacionController : ControllerBase
     {
-        private readonly FicusContext _context;
+        private readonly IClientMediaService _clientMediaService;
 
-        public ClienteComunicacionController(FicusContext context)
+        public ClienteComunicacionController(IClientMediaService clientMediaService)
         {
-            _context = context;
+            _clientMediaService = clientMediaService;
         }
 
         [HttpGet]
         [Route("GetMedia/{id}")]
         public async Task<IActionResult> GetMedia(int id)
         {
-            List<ClienteComunicacion> cliente_medios = _context.ClienteComunicacion
-                                                       .Where(s => s.ClienteId == id).ToList();
+            List<ClienteComunicacion> clienteMedios = _clientMediaService.GetMedia(id);
             List<string> medios = new();
-            for (int i = 0; i < cliente_medios.Count; i++)
+            for (int i = 0; i < clienteMedios.Count; i++)
             {
-                medios.Add(cliente_medios[i].MedioId);
+                medios.Add(clienteMedios[i].MedioId);
             }
             return Ok(medios);
         }
@@ -33,8 +33,7 @@ namespace FicusApp.Controllers
         [Route("AddClientMedia")]
         public async Task<IActionResult> AddClientMedia([FromBody] ClienteComunicacion request)
         {
-            await _context.ClienteComunicacion.AddAsync(request);
-            await _context.SaveChangesAsync();
+            int code = await _clientMediaService.AddMedia(request);
             return Ok();
         }
 
@@ -42,11 +41,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClientMedia")]
         public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)
         {
-            ClienteComunicacion clienteMedio = _context.ClienteComunicacion.Where(s => 
-                                                s.ClienteId == request.ClienteId 
-                                                && s.MedioId == request.MedioId).FirstOrDefault();
-            _context.ClienteComunicacion.Remove(clienteMedio);
-            _context.SaveChanges();
+            int code = await _clientMediaService.DeleteClientMedia(request);
             return Ok();
         }
 

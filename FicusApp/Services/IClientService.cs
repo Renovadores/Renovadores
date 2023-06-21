@@ -8,7 +8,7 @@ namespace FicusApp.Services
     {
         Task<List<Cliente>> GetClientes();
         Task<int> GetNewId();
-        Task<Cliente> GetCliente(int id);
+        Task<(int, Cliente?)> GetCliente(int id);
         Task<int> AddCliente([FromBody] Cliente request);
         Task<int> EditCliente([FromBody] Cliente cliente);
         Task<int> DeleteCliente([FromBody] Cliente cliente);

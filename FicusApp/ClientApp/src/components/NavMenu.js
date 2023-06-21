@@ -24,7 +24,7 @@ function NavMenu(props) {
         <NavbarBrand tag={Link} className="text-light" to="/">
           FicusApp
         </NavbarBrand>
-        <NavbarToggler onClick={toggleNavbar} className="mr-2" />
+        <NavbarToggler onClick={toggleNavbar} className="mr-2 navbar-dark border border-2" />
         <Collapse
           className="d-sm-inline-flex flex-sm-row-reverse"
           isOpen={!collapsed}

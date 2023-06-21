@@ -11,9 +11,12 @@ namespace FicusApp.Controllers
     [ApiController]
     public class ClienteController : ControllerBase
     {
-        private readonly ClientService _clientService;
+        private readonly IClientService _clientService;
+        private const int SUCCESS_CODE = 0;
+        private const int OUT_OF_RANGE_CODE = 1;
+        private const int NOT_FOUND_CODE = -1;
 
-        public ClienteController(ClientService clientService)
+        public ClienteController(IClientService clientService)
         {
             _clientService = clientService;
         }
@@ -42,8 +45,21 @@ namespace FicusApp.Controllers
         [Route("GetCliente/{ClienteId}")]
         public async Task<IActionResult> GetCliente(int ClienteId)
         {
-            Cliente cliente = await _clientService.GetCliente(ClienteId);
-            return Ok(cliente);
+            (int code, Cliente? client) = await _clientService.GetCliente(ClienteId);
+            if (code == NOT_FOUND_CODE)
+            {
+                // There are no clients in the DB
+                return NotFound();
+            }
+            else if (code == OUT_OF_RANGE_CODE)
+            {
+                // The id doesn't exist
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(client);
+            }
         }
 
         [HttpPost]

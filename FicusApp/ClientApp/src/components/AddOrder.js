@@ -46,7 +46,7 @@ function AddOrder() {
   const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
-  //TO-DO: Get user name automatically from login info
+
   const [clientName, setClientName] = useState("");
   
   useEffect(() => {
@@ -199,14 +199,14 @@ function AddOrder() {
         eventId = data.id;
       }
     }
-    
+    console.log("id usuario", currentUserId);
 
     const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: 1, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
+      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: currentUserId, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
     });
     if (responseOrder.ok) {
       console.log("Orden agregada")
@@ -264,7 +264,6 @@ function AddOrder() {
               <li className="list-group-item">Fecha de creacion: {date}</li>
               <li className="list-group-item">Cliente: {clientName}</li>
               <li className="list-group-item">Responsable de la orden: {userName}</li>
-              <li className="list-group-item"></li>
             </ul>
           </div>
           <div className="row">
