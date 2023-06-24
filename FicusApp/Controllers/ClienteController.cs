@@ -21,7 +21,7 @@ namespace FicusApp.Controllers
             _clientService = clientService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
@@ -30,6 +30,7 @@ namespace FicusApp.Controllers
             return Ok(clientes);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
@@ -41,6 +42,7 @@ namespace FicusApp.Controllers
             return Ok(id);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetCliente/{ClienteId}")]
         public async Task<IActionResult> GetCliente(int ClienteId)
@@ -62,6 +64,7 @@ namespace FicusApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
@@ -70,6 +73,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("EditCliente")]
         public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
@@ -78,6 +82,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("DeleteCliente")]
         public async Task<IActionResult> DeleteCliente([FromBody] Cliente cliente)

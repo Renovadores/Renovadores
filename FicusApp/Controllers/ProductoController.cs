@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -32,6 +33,7 @@ public class ProductoController : ControllerBase
             return Ok(producto);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetMatchProducts/{input}/{searchByCode}")]
         public async Task<IActionResult> GetMatchProducts(string input, bool searchByCode)

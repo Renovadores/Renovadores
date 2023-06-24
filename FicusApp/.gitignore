@@ -179,6 +179,8 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+../FicusAppTests/bin
+../FicusAppTests/obj
 
 /node_modules
 

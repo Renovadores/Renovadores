@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import CheckBox from "./CheckBox";
 import ClientList from "./ClientList";
 import FilterClients from "./FilterClients";
+import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import Pagination from "./Pagination";
@@ -21,44 +22,45 @@ function Clients() {
     const [users, setUsers] = useState([]);
     const [token, setToken] = useState("");
 
-    const getToken = async () => {
-      // get token from DB
-      var UserId = JSON.parse(sessionStorage.getItem('userId'));
-      //const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${UserId}`)
-      //if (responseToken.ok) {
-      //  const data = await responseToken.json();
-      //  setToken(data.token);
-      //}
+    const getClients = async () => {
+      setClientsChecked(false);
+      const response = await fetch("api/cliente/GetClientes", {
+        method: 'GET',
+        headers: {
+          'Authorization' : `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setClients(data);
+        setClientsChecked(true);
+      } else {
+        console.log(response.text);
+      }
+      // get users
+      const responseUsers = await fetch("api/usuario/GetUsers", {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (responseUsers.ok) {
+        const dataUsers = await responseUsers.json();
+        setUsers(dataUsers);
+      }
     }
 
     useEffect(() => {
-      getClients();
-    }, []);
-
-    //useEffect(() => {
-    //  if (token !== "") {
-    //    getClients()
-    //  }
-    //}, [token])
-
-    const getClients = async () => {
-        setClientsChecked(false);
-        const response = await fetch("api/cliente/GetClientes");
-        if (response.ok) {
-            const data = await response.json();
-            setClients(data);
-            setClientsChecked(true);
+        if (token !== "") {
+          getClients();
         } else {
-            console.log(response.text);
+          const getToken = async () => {
+            const dbToken = await GetToken();
+            setToken(dbToken);
+          }
+          getToken();
         }
-        // get users
-        const responseUsers = await fetch("api/usuario/GetUsers");
-        if (responseUsers.ok) {
-            const dataUsers = await responseUsers.json();
-            setUsers(dataUsers);
-        }
-    }
-    
+    }, [token]);
 
     const date = currentDateFormat();
     const dateDB = dateFormatBD();
@@ -184,7 +186,7 @@ function Clients() {
         setContacto(event.target.value)
     }
 
-    const [telefono, setTelefono] = useState('');
+    const [telefono, setTelefono] = useState("");
     const handleChangeTelefono = (event) => {
         setTelefono(event.target.value)
     }
@@ -288,16 +290,22 @@ function Clients() {
             media.push("Otra")
         }
 
+        var currentToken = await GetToken();
         // generate id
-        const responseId = await fetch("api/cliente/GetNewId");
+        const responseId = await fetch("api/cliente/GetNewId", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${currentToken}`
+          }
+        });
         if (responseId.ok) {
             const newClientId = await responseId.json();
-            console.log(personInCharge, paginaWeb)
             // add client
             const responseCliente = await fetch("api/cliente/AddCliente", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                  'Content-Type': 'application/json;charset=utf-8',
+                  'Authorization': `Bearer ${currentToken}`
                 },
                 body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
             });
@@ -307,7 +315,8 @@ function Clients() {
                     const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteId: newClientId.id, segmentoId: segments[i] })
                     });
@@ -320,7 +329,8 @@ function Clients() {
                     const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteId: newClientId.id, medioId: media[i] })
                     });
@@ -329,7 +339,12 @@ function Clients() {
                     }
                 }
                 handleCancel();
-                getClients();
+                // this change autocall getClients
+                
+                if (token === currentToken) {
+                  getClients();
+                }
+                setToken(currentToken);
             }
         }
 
@@ -404,7 +419,7 @@ function Clients() {
 
                                 <div className="row">
                                     <div className="col-6 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClients} >Agregar</button>
+                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
                                     </div>
                                     <div className="col-6 d-flex justify-content-center">
                                         <button className="btn btn-warning text-light" type="button" onClick={handleCancel} data-bs-dismiss="offcanvas">Cancelar</button>

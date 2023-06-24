@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import BelongToEvent from "./BelongToEvent";
 import ButtonAddOrder from "./ButtonAddOrder";
+import { GetToken } from "../GetToken";
 import MatchingProductList from "./MatchingProductList";
 import MatchingProductsInput from "./MatchingProductsInput";
 import SearchCriteriaSwitch from "./SearchCriteriaSwitch";
@@ -11,6 +12,7 @@ import SelectedProductList from "./SelectedProductList";
 function AddOrder() {
   const location = useLocation();
   const [clientId] = useState(location.state);
+  const [token, setToken] = useState("");
 
   const [currentUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
   const [userName, setUserName] = useState("");
@@ -26,20 +28,48 @@ function AddOrder() {
       console.log(response.text);
     }
   }
-  
-  useEffect(() => {
-    const getUserName = async () => {
-      const response = await fetch(`api/usuario/GetUser/${currentUserId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setUserName(data.nombre);
-      } else {
-        console.log(response.text);
+
+  const getUserName = async () => {
+    const response = await fetch(`api/usuario/GetUser/${currentUserId}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setUserName(data.nombre);
+    } else {
+      console.log(response.text);
     }
-    getUserName();
-    generateIdOrder();
-  }, [currentUserId, userName])
+  }
+  const getClientName = async () => {
+    const responseClientName = await fetch(`api/cliente/GetCliente/${clientId}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    if (responseClientName.ok) {
+      const data = await responseClientName.json();
+      setClientName(data.nombreEmpresa);
+    } else {
+      console.log(responseClientName.text);
+    }
+  }
+  useEffect(() => {
+    if (token !== "") {
+      generateIdOrder();
+      getUserName();
+      getClientName();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
 
   const [matchingProducts, setMatchingProducts] = useState([])
 
@@ -48,19 +78,6 @@ function AddOrder() {
   const date = currentDateFormat();
 
   const [clientName, setClientName] = useState("");
-  
-  useEffect(() => {
-    const getClientName = async () => {
-      const responseClientName = await fetch(`api/cliente/GetCliente/${clientId}`)
-      if (responseClientName.ok) {
-        const data = await responseClientName.json();
-        setClientName(data.nombreEmpresa);
-      } else {
-        console.log(responseClientName.text);
-      }
-    }
-    getClientName();
-  }, [clientId])
 
   const [deliveryDate, setDeliveryDate] = useState("");
   const handleDeliveryDate = (event) => {
@@ -115,7 +132,13 @@ function AddOrder() {
 
   const getMatchProducts = async (input) => {
     //get some products from stock that match with input
-    const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`)
+    const currentToken = await GetToken();
+    const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${currentToken}`
+      }
+    })
     if (responseInventory.ok) {
       const matchProducts = await responseInventory.json();
       // verify if cuantity of some product was already changed
@@ -199,7 +222,6 @@ function AddOrder() {
         eventId = data.id;
       }
     }
-    console.log("id usuario", currentUserId);
 
     const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",

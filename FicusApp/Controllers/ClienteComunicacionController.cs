@@ -1,5 +1,6 @@
 ﻿using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace FicusApp.Controllers
             _clientMediaService = clientMediaService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetMedia/{id}")]
         public async Task<IActionResult> GetMedia(int id)
@@ -29,6 +31,7 @@ namespace FicusApp.Controllers
             return Ok(medios);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddClientMedia")]
         public async Task<IActionResult> AddClientMedia([FromBody] ClienteComunicacion request)
@@ -37,6 +40,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("DeleteClientMedia")]
         public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import RowOrden from "./components/RowOrden.js";
 import ActionsOrdenes from "./components/ActionsOrdenes.js";
+import { GetToken } from "../../GetToken";
 
 const Orden = () => {
+  const [token, setToken] = useState("");
   const [orden, setOrden] = useState([]);
   const fetchOrden = async () => {
     try {
@@ -29,7 +31,12 @@ const Orden = () => {
   const [cliente, setCliente] = useState([]);
     const fetchCliente = async () => {
       try {
-        const response = await fetch(`/api/cliente/GetClientes/`);
+        const response = await fetch(`/api/cliente/GetClientes/`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const data = await response.json();
         setCliente(data);
       } catch (error) {
@@ -40,8 +47,19 @@ const Orden = () => {
   useEffect(() => {
     fetchHistorial();
     fetchOrden();
-    fetchCliente();
   }, []);
+
+  useEffect(() => {
+    if (token !== "") {
+      fetchCliente();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
 
   const getFase = (ordenId) => {
     const fases = historial

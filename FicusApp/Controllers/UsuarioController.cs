@@ -57,6 +57,7 @@ namespace FicusApp.Controllers
                 return BadRequest(autorizacionResponse);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetUsers")]
         public async Task<IActionResult> GetUsers()
@@ -65,6 +66,7 @@ namespace FicusApp.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetUser/{id}")]
         public async Task<IActionResult> GetUser(int id)
