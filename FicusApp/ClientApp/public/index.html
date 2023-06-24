@@ -25,32 +25,30 @@
     <style>
       body {
         margin: 0;
+        min-height: 100vh;
+        height:auto;
       }
+      /*.bg-image{opacity: 0.5;}*/
     </style>
-
   </head>
-  <body class="d-flex flex-column min-vh-100">
-    <main>
-    
-    <div id="root"
-      class="bg-image" style="
-        background-image: url('/images/Recurso (7).jpg');
-        background-position: center;
-        background-size: cover;
-        background-repeat: repeat;
-        background-attachment: fixed;" >
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <body class="d-flex flex-column">
+      <div class="bg-image" style="
+          background-image: url('/images/Recurso (7).jpg');
+          background-position: center;
+          background-size: cover;
+          background-repeat: repeat;
+          background-attachment: fixed;
+          min-height: 100vh;
+          height: auto;
+          ">
+          <div id="root" style="background-color: rgba(255,255,255,0.5);
+            height: inherit; 
+            width: inherit; 
+            min-height: inherit;">
+          </div>
+      </div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-    </div>
-  </main>
     <!-- Footer-->
   <footer class="py-5 bg-primary mt-auto">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Renovadores 2023</p></div>

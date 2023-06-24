@@ -315,7 +315,6 @@ function Stock() {
                   </div>
                   <div className="col-6 d-flex justify-content-center">
                     <button
-                      //<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                       className="btn btn-danger text-light"
                       type="button"
                       onClick={handleCancel}
@@ -385,37 +384,6 @@ function Stock() {
               // handler={handleClickViewProduct}
             />
           )}
-          <div className="row m-2 mt-4">
-            <nav aria-label="...">
-              <ul className="pagination justify-content-center">
-                <li className="page-item disabled">
-                  <a className="page-link" href="/productos/informacion/">
-                    Anterior
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a className="page-link" href="/productos/informacion/">
-                    1
-                  </a>
-                </li>
-                <li className="page-item" aria-current="page">
-                  <a className="page-link" href="/productos/informacion/">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/productos/informacion/">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/productos/informacion/">
-                    Siguiente
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
         </div>
       </section>
     </div>
