@@ -77,7 +77,7 @@ CREATE TABLE [Estado] (
 GO
 
 CREATE TABLE [Inventario] (
-  [InventarioId] integer,
+  [InventarioId] integer PRIMARY KEY,
   [ProductoId] nvarchar(255),
   [Cantidad] integer,
   [Lote] integer,
@@ -201,7 +201,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Contraseña encriptada del usuario',
+@value = 'Contraseï¿½a encriptada del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
 @level2type = N'Column', @level2name = 'Contrasena';
@@ -281,7 +281,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Nombre de la categoría',
+@value = 'Nombre de la categorï¿½a',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Categoria',
 @level2type = N'Column', @level2name = 'NombreCategoria';
@@ -312,7 +312,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Table_Description',
-@value = 'Guarda las características de cada producto, si está disponible, reservado, etc...',
+@value = 'Guarda las caracterï¿½sticas de cada producto, si estï¿½ disponible, reservado, etc...',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Inventario';
 GO
@@ -327,7 +327,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Definición de la fase de una orden',
+@value = 'Definiciï¿½n de la fase de una orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Fase',
 @level2type = N'Column', @level2name = 'DescripcionEstado';
@@ -335,7 +335,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Table_Description',
-@value = 'Guarda en qué fase se encuentra cada orden',
+@value = 'Guarda en quï¿½ fase se encuentra cada orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'HistorialOrden';
 GO
