@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { GetToken } from "../../../GetToken";
 
 const ListaProductos = ({ ordenId }) => {
-
+  const [token, setToken] = useState("");
   const [detalle, setDetalle] = useState([]);
   const [producto, setProducto] = useState([]);
 
@@ -17,7 +18,12 @@ const ListaProductos = ({ ordenId }) => {
 
   const fetchProducto = async () => {
     try {
-      const response = await fetch(`/api/producto/GetProducts`);
+      const response = await fetch(`/api/producto/GetProducts`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setProducto(data);
     } catch (error) {
@@ -26,11 +32,18 @@ const ListaProductos = ({ ordenId }) => {
   };
 
   useEffect(() => {
-    // Tomar los datos de todas las ordenes
-    fetchDetalle();
-    fetchProducto();
-  }, []);
-
+    if (token !== "") {
+      // Tomar los datos de todas las ordenes
+      fetchDetalle();
+      fetchProducto();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
   
   return (
     <div class="list-group">

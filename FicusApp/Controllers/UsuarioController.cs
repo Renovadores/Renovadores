@@ -75,6 +75,7 @@ namespace FicusApp.Controllers
             return Ok(usuario);
         }
 
+        // TO-DO: delete this method
         [HttpGet]
         [Route ("CloseSession/{id}")]
         public async Task<IActionResult> CloseSession(int id)

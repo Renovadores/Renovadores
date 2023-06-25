@@ -193,7 +193,7 @@ function AddOrder() {
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+    const currentToken = await GetToken();
     var eventId = null;
     if (eventName !== "") {
       // verify the event doesn�t exist
@@ -245,7 +245,12 @@ function AddOrder() {
         });
         if (responseDetail.ok) {
           // Go to stock and reduce product cuantity
-          const responseStock = await fetch(`api/producto/GetProducto/${productId}`);
+          const responseStock = await fetch(`api/producto/GetProducto/${productId}`, {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${currentToken}`
+            }
+          });
           if (responseStock.ok) {
             const productStock = await responseStock.json();
             productStock.disponible -= pedidos;

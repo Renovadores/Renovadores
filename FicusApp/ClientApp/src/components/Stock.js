@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
+import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import SelectColor from "./SelectColor";
@@ -10,11 +11,18 @@ import ProductList from "./ProductList";
 
 function Stock() {
   // get products from data base
+  const [token, setToken] = useState("");
   const [productsChecked, setProductsChecked] = useState(false);
   const [products, setProducts] = useState([]);
+
   const getProducts = async () => {
     setProductsChecked(false);
-    const response = await fetch("api/producto/GetProducts");
+    const response = await fetch("api/producto/GetProducts", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     if (response.ok) {
       const data = await response.json();
       setProducts(data);
@@ -25,12 +33,16 @@ function Stock() {
   };
   // this method allows to auto call getProducts when page is started
   useEffect(() => {
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+    if (token === "") {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    } else {
+      getProducts();
+    }
+  }, [token]);
 
   // // When user click on client button, 'navigate hook' redirect him to new page
   // const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
@@ -126,9 +138,9 @@ function Stock() {
     setPesoDesechable(0);
     setAlquilerComercios(0);
     setAlquilerRetail(0);
-    setColorId(0);
-    setCategoriaId(0);
-    setFamiliaId(0);
+    setColorId(1);
+    setCategoriaId(1);
+    setFamiliaId(1);
     //setDescontinuado(0);
     setTotalExistente(0);
     setEnUso(0);
@@ -156,10 +168,12 @@ function Stock() {
       disponible,
       noDevueltos
     );
+    const currentToken = await GetToken();
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Authorization': `Bearer ${currentToken}`
       },
       body: JSON.stringify({
         colorId: colorId,
@@ -180,11 +194,14 @@ function Stock() {
         noDevueltos: noDevueltos,
       }),
     });
-    console.log(responseProduct);
 
     if (responseProduct.ok) {
       handleCancel();
-      getProducts();
+      if (token === currentToken) {
+        getProducts();
+      } else {
+        setToken(currentToken);
+      }
     }
   };
 
@@ -319,7 +336,6 @@ function Stock() {
                       type="submit"
                       className="btn btn-primary"
                       data-bs-dismiss="offcanvas"
-                      onClick={getProducts}
                     >
                       Agregar
                     </button>

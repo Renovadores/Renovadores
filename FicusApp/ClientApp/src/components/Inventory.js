@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
+import { GetToken } from "../GetToken";
 import InventoryList from "./InventoryList";
 import { currentDateFormat, dateFormatBD } from "./Clients";
 import InputInt from "./InputInt";
@@ -8,6 +9,7 @@ import SelectProduct from "./SelectProduct";
 
 function Inventory() {
   // get inventory from data base
+  const [token, setToken] = useState("");
   const [inventoryChecked, setInventoryChecked] = useState(false);
   const [inventory, setInventory] = useState([]);
   const getInventory = async () => {
@@ -21,14 +23,6 @@ function Inventory() {
       console.log(response.text);
     }
   };
-  // this method allows to auto call getinventory when page is started
-  useEffect(() => {
-    getInventory();
-  }, []);
-  // display inventory on console
-  useEffect(() => {
-    console.log(inventory);
-  }, [inventory]);
 
   const date = currentDateFormat();
   const dateDB = dateFormatBD();
@@ -36,7 +30,12 @@ function Inventory() {
   const [SKUProducts, setSKUProducts] = useState([]);
   const [SKUProduct, setSKUProduct] = useState(SKUProducts[0]);
   const getSKUProducts = async () => {
-    const response = await fetch("api/producto/GetProducts");
+    const response = await fetch("api/producto/GetProducts", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     if (response.ok) {
       const data = await response.json();
       setSKUProducts(data);
@@ -45,9 +44,25 @@ function Inventory() {
       console.log(response.text + " Error getSKUProducts");
     }
   };
+
+  // this method allows to auto call getinventory when page is started and the token has been obtained
   useEffect(() => {
-    getSKUProducts();
-  }, []);
+    if (token !== "") {
+      getSKUProducts();
+      getInventory();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
+  // display inventory on console
+  useEffect(() => {
+    console.log(inventory);
+  }, [inventory]);
+
   const handleChangeSKUProduct = (event) => {
     setSKUProduct(event.target.value);
   };
@@ -323,10 +338,12 @@ const calculateNewProductTotal = async (inventoryRow, oldProductAmount) => {
   console.log(inventoryRow.cantidad + " cantidad");
   const newTotal = inventoryRow.producto.totalExistente + difference;
   const newAvailable = inventoryRow.producto.disponible + difference;
+  const currentToken = await GetToken();
   const responseProduct = await fetch("api/producto/EditProducto", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
+      'Authorization': `Bearer ${currentToken}`
     },
     body: JSON.stringify({
       ...inventoryRow.producto,
