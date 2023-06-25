@@ -14,7 +14,12 @@ function Inventory() {
   const [inventory, setInventory] = useState([]);
   const getInventory = async () => {
     setInventoryChecked(false);
-    const response = await fetch("api/inventario/GetInventory");
+    const response = await fetch("api/inventario/GetInventory", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     if (response.ok) {
       const data = await response.json();
       setInventory(data);
@@ -104,8 +109,14 @@ function Inventory() {
   // const [newInventoryRow, setNewInventoryRow] = useState({});
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const currentToken = await GetToken();
     // generate id
-    const responseId = await fetch("api/inventario/GetNewId");
+    const responseId = await fetch("api/inventario/GetNewId", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${currentToken}`
+      }
+    });
     if (responseId.ok) {
       const newInventoryId = await responseId.json();
 
@@ -124,6 +135,7 @@ function Inventory() {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
+          'Authorization': `Bearer ${currentToken}`
         },
         body: JSON.stringify(newInventory),
       });
@@ -140,7 +152,11 @@ function Inventory() {
         console.dir(dataRow);
         await calculateNewProductTotal(dataRow, oldProductAmount);
         handleCancel();
-        getInventory();
+        if (token === currentToken) {
+          getInventory();
+        } else {
+          setToken(currentToken);
+        }
         // }
       } else {
         console.log(responseInventory.text + " Error handleSubmit");
@@ -254,7 +270,6 @@ function Inventory() {
                         type="submit"
                         className="btn btn-primary"
                         data-bs-dismiss="offcanvas"
-                        onClick={getInventory}
                       >
                         Agregar
                       </button>
@@ -360,7 +375,13 @@ export function GetInventory() {
   //const [inventoryChecked, setInventoryChecked] = useState(false);
   const [inventory, setInventory] = useState([]);
   const getInventory = async () => {
-    const response = await fetch("api/inventario/GetInventory");
+    const currentToken = await GetToken();
+    const response = await fetch("api/inventario/GetInventory", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${currentToken}`
+      }
+    });
     if (response.ok) {
       const data = await response.json();
       setInventory(data);

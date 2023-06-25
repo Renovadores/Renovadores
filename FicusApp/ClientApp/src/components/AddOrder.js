@@ -20,7 +20,12 @@ function AddOrder() {
   // get a new order id (order code)
   const [orderId, setIdOrder] = useState(0);
   const generateIdOrder = async () => {
-    const response = await fetch("api/orden/GetNewCode");
+    const response = await fetch("api/orden/GetNewCode", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     if (response.ok) {
       const data = await response.json();
       setIdOrder(data.id);
@@ -197,7 +202,12 @@ function AddOrder() {
     var eventId = null;
     if (eventName !== "") {
       // verify the event doesn�t exist
-      const responseEventExists = await fetch(`api/evento/findEvento/${eventName}`)
+      const responseEventExists = await fetch(`api/evento/findEvento/${eventName}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${currentToken}`
+        }
+      })
       if (responseEventExists.ok) {
         const data = await responseEventExists.json();
         if (data.exist) {
@@ -207,26 +217,32 @@ function AddOrder() {
           const responseEvent = await fetch("api/evento/AddEvento", {
             method: "POST",
             headers: {
-              'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({ eventoId: 0, nombreEvento: eventName, descripcionEvento: '' })
           });
           if (responseEvent.ok) {
-
+            console.log("Evento creado con éxito!")
           }
         }
       }
-      const responseEventId = await fetch(`api/evento/GetEventId/${eventName}`)
+      const responseEventId = await fetch(`api/evento/GetEventId/${eventName}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${currentToken}`
+        }
+      })
       if (responseEventId.ok) {
         const data = await responseEventId.json();
         eventId = data.id;
       }
     }
-
     const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${currentToken}`
       },
       body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: currentUserId, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
     });
@@ -239,7 +255,8 @@ function AddOrder() {
         var responseDetail = await fetch("api/detalle/AddDetalle", {
           method: "POST",
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': `Bearer ${currentToken}`
           },
           body: JSON.stringify({ ordenId: orderId, productoId: productId, pedidos: pedidos, sinUsar: 0, usados: 0, devueltos: 0, descuento: 0 })
         });
@@ -260,7 +277,8 @@ function AddOrder() {
             const response = await fetch("api/producto/EditProducto", {
               method: "PUT",
               headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${currentToken}`
               },
               body: JSON.stringify(productStock)
             });

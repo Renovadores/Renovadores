@@ -1,5 +1,6 @@
 ﻿using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,6 +19,7 @@ namespace FicusApp.Controllers
             _orderService = orderService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetOrders")]
         public async Task<IActionResult> GetOrders()
@@ -26,6 +28,7 @@ namespace FicusApp.Controllers
             return Ok(ordenes);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetNewCode")]
         public async Task<IActionResult> GetNewCode()
@@ -38,6 +41,7 @@ namespace FicusApp.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddOrder")]
         public async Task<IActionResult> AddOrder([FromBody] Orden request)

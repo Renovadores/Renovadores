@@ -9,7 +9,12 @@ const Orden = () => {
   const [orden, setOrden] = useState([]);
   const fetchOrden = async () => {
     try {
-      const response = await fetch("/api/orden/GetOrders");
+      const response = await fetch("/api/orden/GetOrders", {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setOrden(data);
     } catch (error) {
@@ -46,12 +51,12 @@ const Orden = () => {
 
   useEffect(() => {
     fetchHistorial();
-    fetchOrden();
   }, []);
 
   useEffect(() => {
     if (token !== "") {
       fetchCliente();
+      fetchOrden();
     } else {
       const getToken = async () => {
         const dbToken = await GetToken();

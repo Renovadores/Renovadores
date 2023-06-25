@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import { GetToken } from "../../../GetToken";
 import ListaProductos from "./ListaProductos.js";
 import HistorialOrden from "./HistorialOrdenes.js";
 import ClienteInfo from "./ClienteInfo.js";
 import GraficoOrdenes from "./GraficoOrdenes.js";
 
 const OrdenInfo = () => {
+  const [token, setToken] = useState("");
   // Toma el ID de la orden del URL
   const location = useLocation();
   const ordenId = parseInt(location.pathname.split("/").pop());
@@ -14,7 +15,12 @@ const OrdenInfo = () => {
   const [orden, setOrden] = useState([]);
   const fetchOrden = async () => {
     try {
-      const response = await fetch(`/api/orden/GetOrders`);
+      const response = await fetch(`/api/orden/GetOrders`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setOrden(data.filter(d => d.ordenId === ordenId)[0]);
     } catch (error) {
@@ -23,9 +29,17 @@ const OrdenInfo = () => {
   };
 
   useEffect(() => {
-    // Tomar los datos de todas las ordenes
-    fetchOrden();
-  }, []);
+    if (token !== "") {
+      // Tomar los datos de todas las ordenes
+      fetchOrden();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
 
   return (
         <div className="container">
@@ -34,7 +48,12 @@ const OrdenInfo = () => {
               <div className="card">
                 <div className="card-body">
                   <h5 class="card-title">Información del Cliente</h5>
-                  <ClienteInfo clienteId={orden.clienteId}/>
+                  {
+                    orden.length === 0 ?
+                      <></>
+                      :
+                      <ClienteInfo clienteId={orden.clienteId} />
+                  }
                 </div>
               </div>
             </div>

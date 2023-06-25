@@ -14,7 +14,7 @@ const ClienteInfo = ({ clienteId }) => {
         }
       });
       const data = await response.json();
-        setCliente(data);
+      setCliente(data);
     } catch (error) {
       console.log(error.message);
     }
