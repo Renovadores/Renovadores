@@ -70,5 +70,16 @@ namespace FicusApp.Services
             int id = _context.Cliente.Count() + 1;
             return id;
         }
+
+        public async Task<List<Cliente>> GetMatchClients(string input)
+        {
+            List<Cliente> matchClients;
+            matchClients = _context.Cliente
+                .Where(p => p.NombreEmpresa.StartsWith(input) && p.Estado != "Eliminado")
+                .OrderBy(p => p.NombreEmpresa)
+                .Take(8)
+                .ToList();
+            return matchClients;
+        }
     }
 }

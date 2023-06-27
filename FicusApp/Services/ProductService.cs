@@ -34,6 +34,8 @@ namespace FicusApp.Services;
                 matchProducts = _context.Producto
                 .Where(p => p.ProductoId.StartsWith(input))
                 .OrderBy(p => p.ProductoId)
+                .OrderBy(p => p.Descontinuado)
+                .OrderByDescending(p => p.Disponible)
                 .Take(8)
                 .ToList();
             }
@@ -43,6 +45,8 @@ namespace FicusApp.Services;
                 matchProducts = _context.Producto
                 .Where(p => p.Nombre.StartsWith(input))
                 .OrderBy(p => p.Nombre)
+                .OrderBy(p => p.Descontinuado)
+                .OrderByDescending(p => p.Disponible)
                 .Take(8)
                 .ToList();
             }

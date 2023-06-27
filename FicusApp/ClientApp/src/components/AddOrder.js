@@ -8,10 +8,13 @@ import MatchingProductList from "./MatchingProductList";
 import MatchingProductsInput from "./MatchingProductsInput";
 import SearchCriteriaSwitch from "./SearchCriteriaSwitch";
 import SelectedProductList from "./SelectedProductList";
+import MatchingClientInput from "./MatchingClientInput";
+import MatchingClientList from "./MatchingClientList";
+import SelectedClient from "./SelectedClient";
 
 function AddOrder() {
   const location = useLocation();
-  const [clientId] = useState(location.state);
+  const [clientId, setClientId] = useState(location.state);
   const [token, setToken] = useState("");
 
   const [currentUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
@@ -66,7 +69,9 @@ function AddOrder() {
     if (token !== "") {
       generateIdOrder();
       getUserName();
-      getClientName();
+      if (clientId !== null) {
+        getClientName();
+      }
     } else {
       const getToken = async () => {
         const dbToken = await GetToken();
@@ -74,7 +79,7 @@ function AddOrder() {
       }
       getToken();
     }
-  }, [token]);
+  }, [token, clientId]);
 
   const [matchingProducts, setMatchingProducts] = useState([])
 
@@ -134,6 +139,46 @@ function AddOrder() {
   useEffect(() => {
     searchProductInput();
   }, [searchByCodeOrName])
+
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [matchingClients, setMatchingClients] = useState([]);
+  const getMatchClients = async (input) => {
+    //get some products from stock that match with input
+    const currentToken = await GetToken();
+    const responseClients = await fetch(`api/cliente/GetMatchClients/${input}`, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${currentToken}`
+      }
+    })
+    if (responseClients.ok) {
+      const matchClients = await responseClients.json();
+      setMatchingClients(matchClients)
+    }
+  }
+
+  const [clientInput, setClientInput] = useState("");
+  const handleClientInput = (event) => {
+    setClientInput(event.target.value);
+    if (event.target.value === "") {
+      setMatchingClients([])
+    } else {
+      getMatchClients(event.target.value);
+    }
+  }
+
+  const handleSelectedClient = async (id) => {
+    if (id !== "") {
+      var client = JSON.parse(JSON.stringify(matchingClients.find(selectedClient => selectedClient.clienteId === id)));
+      setSelectedClient(client);
+      setClientInput("");
+      setMatchingClients([]);
+    }
+  }
+
+  const handleCancelClient = () => {
+    setSelectedClient(null);
+  }
 
   const getMatchProducts = async (input) => {
     //get some products from stock that match with input
@@ -238,13 +283,14 @@ function AddOrder() {
         eventId = data.id;
       }
     }
+    var clienteId = clientId !== null ? clientId : selectedClient.clienteId;
     const responseOrder = await fetch("api/orden/AddOrder", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${currentToken}`
       },
-      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: currentUserId, clienteId: clientId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
+      body: JSON.stringify({ ordenId: orderId, fechaAlquiler: deliveryDate, usuarioId: currentUserId, clienteId: clienteId, eventoId: eventId, registroLimpiezaId: 0, limpiezaUnidad: 0, limpieza: 0, monto: cost, descuento: 0 })
     });
     if (responseOrder.ok) {
       console.log("Orden agregada")
@@ -293,75 +339,104 @@ function AddOrder() {
       
     }
     
-    navigate('/clientes/informacion', { state: clientId });
+    navigate('/ordenes');
   }
 
   return (
     <div className="container p-3">
       <div className="row">
-        <div className="col-md">
-          <div className="row">
-            <h3>Informacion General de la Orden</h3>
+        <div className="col-md mx-md-3 card">
+          <div className="row card-head">
+            <h3 className="d-flex justify-content-center mt-2">Información General de la Orden</h3>
           </div>
-          <div className="row mt-3">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">Codigo de la orden: {orderId}</li>
-              <li className="list-group-item">Fecha de creacion: {date}</li>
-              <li className="list-group-item">Cliente: {clientName}</li>
+          <div className="row mt-2 card-body">
+            <ul className="list-group list-group-flush rounded">
+              <li className="list-group-item">Código de la orden: {orderId}</li>
+              <li className="list-group-item">Fecha de creación: {date}</li>
               <li className="list-group-item">Responsable de la orden: {userName}</li>
+              {
+                clientId !== null ?
+                  <li className="list-group-item">Cliente: {clientName}</li>
+                  :
+                  <></>
+              }
+              <form id="order-form" onSubmit={handleSubmit} >
+                {
+                  clientId === null && selectedClient === null ?
+                    <div className="row mt-3">
+                      <h5 className="mt-2 mb-4 d-flex justify-content-start">Selección del cliente: </h5>
+                      <MatchingClientInput clientInput={clientInput} handler={handleClientInput} />
+                      {
+                        matchingClients.length === 0 && clientInput !== "" ?
+                          <label>No se encontró el cliente</label>
+                          :
+                          matchingClients.length !== 0 && clientInput !== "" ?
+                            <MatchingClientList clients={matchingClients} handleSelectedClient={handleSelectedClient} />
+                            :
+                            <></>
+                      }
+                    </div>
+                    :
+                    <></>
+                }
+                {
+                  selectedClient !== null ?
+                    <SelectedClient client={selectedClient} handler={ handleCancelClient } />
+                    :
+                    <></>
+                }
+                <div className="px-2">
+                  <h5 className="mt-3 d-flex justify-content-start">Fechas: </h5>
+                  <label htmlFor="startDate">Fecha de entrega de la orden</label>
+                  <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} />
+
+                  <label htmlFor="endDate" className="mt-3">Fecha de recepción de la orden</label>
+                  <input id="endDate" className="form-control w-50 mb-4" type="date" value={collectionDate} onChange={handleCollectionDate} />
+
+                  <h5 className="mt-2 mb-2 d-flex justify-content-start">Evento: </h5>
+                  <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
+                </div>
+              </form>
             </ul>
-          </div>
-          <div className="row">
-        
-            <form id="order-form" onSubmit={handleSubmit} >
-              
-              <label htmlFor="startDate" className="mt-3">Fecha de entrega de la orden</label>
-              <input id="startDate" className="form-control w-50" type="date" value={deliveryDate} onChange={handleDeliveryDate} autoFocus />
-
-              <label htmlFor="endDate" className="mt-3">Fecha de recepcion de la orden</label>
-              <input id="endDate" className="form-control w-50 mb-4" type="date" value={collectionDate} onChange={handleCollectionDate} />
-
-              <BelongToEvent belongToEvent={belongToEvent} handleBelongToEvent={handleBelongToEvent} eventName={eventName} handleEvent={handleEvent} />
-            </form>
           </div>
         </div>
 
-        <div className="col-md">
-          <div className="row">
-            <h3 className="mb-4 d-flex justify-content-center">Seleccion de Productos</h3>
+        <div className="col-md mt-3 mx-md-3 mt-md-0 card">
+          <div className="row card-head">
+            <h3 className="mt-2 mb-4 d-flex justify-content-center">Selección de Productos</h3>
           </div>
+          <div className="card-body">
+            <SearchCriteriaSwitch handle={handleSearchCriteria} />
+            <MatchingProductsInput productInput={productInput} handler={handleProductInput} />
+            {
+              matchingProducts.length === 0 && productInput !== "" ?
+                <label>No se encontró el producto</label>
+                :
+                matchingProducts.length !== 0 && productInput !== "" ?
+                  <MatchingProductList products={matchingProducts} cuantity={cuantity} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
+                  :
+                  <></>
+            }
 
-          <SearchCriteriaSwitch handle={handleSearchCriteria} />
-          <MatchingProductsInput productInput={productInput} handler={handleProductInput} />
-          {
-            matchingProducts.length === 0 && productInput !== "" ?
-              <label>No se encontro el producto</label>
-              :
-              matchingProducts.length !== 0 && productInput !== "" ?
-                <MatchingProductList products={matchingProducts} cuantity={cuantity} handleCuantity={handleCuantity} handleSelectedProduct={handleSelectedProduct} />
+            {
+              selectedProducts.length > 0 ?
+                <>
+                  <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
+                  <div className="container mt-5 mb-5">
+                    <label>Costo de la orden: {"\u20A1" + cost}</label>
+                  </div>
+                </>
                 :
                 <></>
-          }
-          
-          {
-            selectedProducts.length > 0 ?
-              <>
-                <SelectedProductList products={selectedProducts} variable={cuantity} handler={handleDelete} />
-                <div className="container mt-5 mb-5">
-                  <label>Costo de la orden: {"\u20A1" + cost}</label>
-                </div>
-              </>
-              :
-              <></>
-              
-          }
-          {
-            deliveryDate === "" || selectedProducts.length === 0 ?
-              <ButtonAddOrder enable= {false} />
-              :
-              <ButtonAddOrder enable= {true} />
-          }
-          
+
+            }
+            {
+              deliveryDate === "" || selectedProducts.length === 0 || (selectedClient === null && clientId === null) ?
+                <ButtonAddOrder enable={false} />
+                :
+                <ButtonAddOrder enable={true} />
+            }
+          </div>
         </div>
       </div>
     </div>

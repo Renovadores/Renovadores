@@ -2,6 +2,7 @@ import Home from "./components/Home";
 import Clients from "./components/Clients";
 import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
+import Events from "./components/Events";
 import ProductInformation from "./components/ProductInformation";
 import Inventory from "./components/Inventory";
 import AddOrder from "./components/AddOrder";
@@ -64,6 +65,10 @@ const AppRoutes = [
   {
     path: "/ordenes/nueva-orden",
     element: <AddOrder />,
+  },
+  {
+    path: "/eventos",
+    element: <Events />,
   },
   {
     path: "/cerrarSesion",

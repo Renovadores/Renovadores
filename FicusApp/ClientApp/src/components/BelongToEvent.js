@@ -39,7 +39,7 @@ function BelongToEvent(props) {
       {
         props.belongToEvent === true ?
           <div>
-            <label htmlFor="exampleDataList" className="form-label mt-3">Seleccionar evento (Si no existe se genera automaticamente)</label>
+            <label htmlFor="exampleDataList" className="form-label mt-3">Seleccionar evento (Si no existe se genera automáticamente)</label>
             <div className="form-floating mb-3">
               <input type="text" className="form-control" id="floatingInput" placeholder="name@example.com" value={props.eventName} onChange={props.handleEvent} autoComplete="off" list="datalistOptions" />
               <label htmlFor="floatingInput">Nombre del evento</label>
