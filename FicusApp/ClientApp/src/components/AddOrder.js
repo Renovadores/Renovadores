@@ -48,7 +48,7 @@ function AddOrder() {
       const data = await response.json();
       setUserName(data.nombre);
     } else {
-      console.log(response.text);
+
     }
   }
   const getClientName = async () => {
@@ -79,7 +79,7 @@ function AddOrder() {
       }
       getToken();
     }
-  }, [token, clientId]);
+  }, [token]);
 
   const [matchingProducts, setMatchingProducts] = useState([])
 
@@ -347,7 +347,7 @@ function AddOrder() {
       <div className="row">
         <div className="col-md mx-md-3 card">
           <div className="row card-head">
-            <h3 className="d-flex justify-content-center mt-2">Información General de la Orden</h3>
+            <h3 className="d-flex justify-content-center text-center mt-2">Información General de la Orden</h3>
           </div>
           <div className="row mt-2 card-body">
             <ul className="list-group list-group-flush rounded">
@@ -364,7 +364,7 @@ function AddOrder() {
                 {
                   clientId === null && selectedClient === null ?
                     <div className="row mt-3">
-                      <h5 className="mt-2 mb-4 d-flex justify-content-start">Selección del cliente: </h5>
+                      <h5 className="mt-2 mb-4 mx-2 d-flex justify-content-start">Selección del cliente: </h5>
                       <MatchingClientInput clientInput={clientInput} handler={handleClientInput} />
                       {
                         matchingClients.length === 0 && clientInput !== "" ?

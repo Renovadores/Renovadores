@@ -41,7 +41,7 @@ namespace FicusApp.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenExpiradoSupuestamente = tokenHandler.ReadJwtToken(request.TokenExpirado);
 
-            if (tokenExpiradoSupuestamente.ValidTo > DateTime.UtcNow.AddSeconds(5))
+            if (tokenExpiradoSupuestamente.ValidTo > DateTime.UtcNow/*.AddSeconds(5)*/)
                 // was: bad request
                 return Ok(new AutorizacionResponse { Resultado = false, Msg = "Token no ha expirado" });
 

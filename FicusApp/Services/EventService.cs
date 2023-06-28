@@ -34,7 +34,7 @@ namespace FicusApp.Services
 
         public List<Evento> GetEventos()
         {
-            List<Evento> eventos = _context.Evento.OrderByDescending(c => c.EventoId).ToList();
+            List<Evento> eventos = _context.Evento.OrderBy(c => c.NombreEvento).ToList();
             return eventos;
         }
     }

@@ -30,6 +30,15 @@ namespace FicusApp.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("GetOrdersByDate/{eventId}")]
+        public async Task<IActionResult> GetOrdersByDate(int eventId)
+        {
+            List<List<Orden>> ordenes = await _orderService.GetOrdersByDate(eventId);
+            return Ok(ordenes);
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("GetNewCode")]
         public async Task<IActionResult> GetNewCode()
         {

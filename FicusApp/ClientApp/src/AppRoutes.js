@@ -8,6 +8,7 @@ import Inventory from "./components/Inventory";
 import AddOrder from "./components/AddOrder";
 import Orden from "./components/Ordenes";
 import OrdenInfo from "./components/Ordenes/components/OrdenInfo.js";
+import EventInformation from "./components/EventInformation";
 
 const AppRoutes = [
   {
@@ -69,6 +70,10 @@ const AppRoutes = [
   {
     path: "/eventos",
     element: <Events />,
+  },
+  {
+    path: "/eventos/informacion",
+    element: <EventInformation />,
   },
   {
     path: "/cerrarSesion",

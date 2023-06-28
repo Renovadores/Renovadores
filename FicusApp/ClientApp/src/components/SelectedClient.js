@@ -3,9 +3,9 @@ function SelectedClient({ client, handler }) {
     <div>
       <li className="list-group-item d-flex justify-content-between align-items-center border border-info mb-1">
         Cliente: {client.nombreEmpresa}
-        <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }} data-bs-toggle="modal" data-bs-target={"#exampleModal" + client.clienteId}>X</span>
+        <span className="btn badge bg-danger rounded-pill" style={{ color: "white" }} data-bs-toggle="modal" data-bs-target={"#clientModal" + client.clienteId}>X</span>
       </li>
-      <div className="modal fade" id={"exampleModal" + client.clienteId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div className="modal fade" id={"clientModal" + client.clienteId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header bg-info text-light">

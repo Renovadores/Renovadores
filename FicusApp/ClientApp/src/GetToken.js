@@ -7,9 +7,8 @@
     const data = await responseToken.json();
 
     // verify if token has expired
-    var currentToken = data.token;
-    var currentRefresh = data.refreshToken;
-    console.log(currentToken, currentRefresh);
+    const currentToken = data.token;
+    const currentRefresh = data.refreshToken;
     const responseAuthentication = await fetch("api/usuario/ObtenerRefreshToken", {
       method: "POST",
       headers: {

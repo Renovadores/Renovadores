@@ -359,7 +359,6 @@ function Clients() {
         //second argument "state" allows to pass parameters
     };
 
-    // TO-DO: separate in new components to simplify code
     return (
         <div className="container pt-3">
             <div className="row m-2 mb-4">
