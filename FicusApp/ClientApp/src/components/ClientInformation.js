@@ -514,7 +514,7 @@ function ClientInformation() {
     );
 }
 
-function dateFormat(dateDB) {
+export function dateFormat(dateDB) {
     var arrayDate = dateDB.split("-");
     const day = arrayDate[2].substring(0, 2);
     const date = day + "-" + arrayDate[1] + "-" + arrayDate[0];

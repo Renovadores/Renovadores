@@ -1,6 +1,6 @@
 import InputInt from "./InputInt";
 import { useEffect, useState } from "react";
-
+import { dateFormat } from "./ClientInformation"
 const NoProducts = () => (
   <h5 className="d-flex justify-content-center">
     No se encontraron productos en la base de datos.
@@ -61,7 +61,7 @@ const FormEditInventory = ({ product, onSubmit }) => {
             <form value={inventoryRow} onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="formGroupExampleInput" className="form-label">
-                  Agregado el: {product.fechaIngreso} <br />
+                  Agregado el: {product.length === 0 ? "" : dateFormat(product.fechaIngreso)} <br />
                   SKU: {product.productoId}
                 </label>
               </div>
@@ -109,7 +109,7 @@ const ProductRow = ({ product, onSelectInventory }) => (
     <td>{product.productoId}</td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
-    <td>{product.fechaIngreso}</td>
+    <td>{dateFormat(product.fechaIngreso)}</td>
     <td>
       <button
         className="btn btn-primary mx-2 text-light"
