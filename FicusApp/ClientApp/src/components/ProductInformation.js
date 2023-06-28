@@ -264,7 +264,7 @@ function ProductInformation() {
                             </button>
                             <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
                                 <button
-                                    className="btn btn-primary"
+                                    className="btn btn-danger text-light"
                                     type="button"
                                     data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasWithBothOptions2"
@@ -303,7 +303,7 @@ function ProductInformation() {
                                                     <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Eliminar</button>
                                             </div>
                                                 <div className="col-6 d-flex justify-content-center">
-                                                        <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                                        <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
                                             </div>
                                             </div>
                                         </form>
@@ -366,7 +366,7 @@ function ProductInformation() {
                                                 <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
                                             </div>
                                             <div className="col-6 d-flex justify-content-center">
-                                                <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                                <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
                                             </div>
                                         </div>
                                         </form>
@@ -408,8 +408,8 @@ function ProductInformation() {
                     </ul>
                 </div>
             </div>
-            </div>
-    );
+          </div>
+  );
 }
 
 export default ProductInformation;
