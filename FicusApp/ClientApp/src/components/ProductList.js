@@ -10,7 +10,7 @@ function ProductList(props) {
             <div className="card">
               <img
                 src="/images/Van Ficus.jpg"
-                classname="card-img-top"
+                className="card-img-top"
                 alt="imagen"
               />
               <div className="card-body">

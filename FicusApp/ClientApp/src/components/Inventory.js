@@ -5,6 +5,8 @@ import InventoryList from "./InventoryList";
 import { currentDateFormat, dateFormatBD } from "./Clients";
 import InputInt from "./InputInt";
 import SelectProduct from "./SelectProduct";
+import MatchingProductListInventory from "./MatchingProductListInventory";
+import MatchingProductsInput from "./MatchingProductsInput";
 
 function Inventory() {
   // get inventory from data base
@@ -69,7 +71,7 @@ function Inventory() {
     getInventoryStates();
   }, []);*/
 
-  const [productAmount, setProductAmount] = useState(10);
+  const [productAmount, setProductAmount] = useState(0);
   const handleChangeProductAmount = (event) => {
     setProductAmount(event.target.value);
   };
@@ -78,6 +80,29 @@ function Inventory() {
   const handleChangeBatch = (event) => {
     setBatch(event.target.value);
   };
+  // Search input
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const handleMatchProduct = (matched) => {
+    setMatchingProducts(matched);
+  };
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+  };
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([]);
+    } else {
+      getMatchProducts(productInput, handleMatchProduct);
+    }
+  };
+
+  useEffect(() => {
+    searchProductInput();
+  }, [productInput]);
 
   const handleCancel = () => {
     setSKUProduct(SKUProducts[0]);
@@ -102,8 +127,6 @@ function Inventory() {
         fechaIngreso: dateDB,
       };
 
-      // setNewInventoryRow(newInventory);
-      const oldProductAmount = 0;
       // add inventory
       const responseInventory = await fetch("api/inventario/AddInventory", {
         method: "POST",
@@ -113,16 +136,9 @@ function Inventory() {
         body: JSON.stringify(newInventory),
       });
       if (responseInventory.ok) {
-        // const responseRow = await fetch(
-        //   `api/inventario/GetInventoryRow/${newInventory.iD_Inventario}`
-        // );
-        // if (responseRow.ok) {
         const dataRow = await responseInventory.json();
-        // console.dir(
-        //   dataRow.productoNavigation + " productNav, ",
-        //   dataRow.cantidad + " cantidad"
-        // );
-        console.dir(dataRow);
+        //console.dir(dataRow+ " dataRow");
+        const oldProductAmount = 0; // 0 because product did't exist, needed when editing
         await calculateNewProductTotal(dataRow, oldProductAmount);
         handleCancel();
         getInventory();
@@ -176,7 +192,7 @@ function Inventory() {
                   data-bs-target="#offcanvasWithBothOptions"
                   aria-controls="offcanvasWithBothOptions"
                 >
-                  Agregar Producto al Inventario
+                  Agregar Productos al Inventario
                 </button>
               </div>
             </div>
@@ -211,17 +227,16 @@ function Inventory() {
                       Agregado el: {date}
                     </label>
                   </div>
-
+                  <small>
+                    * Si no ve el producto en la lista, agrégelo en la sección
+                    productos
+                  </small>
                   <SelectProduct
                     products={SKUProducts}
                     value={SKUProduct}
                     onChange={handleChangeSKUProduct}
                     text="SKU"
                   />
-                  <small>
-                    * Si no ve el producto en la lista, agrégelo en la sección
-                    productos
-                  </small>
                   <InputInt
                     variable={productAmount}
                     handler={handleChangeProductAmount}
@@ -246,7 +261,7 @@ function Inventory() {
                     </div>
                     <div className="col-6 d-flex justify-content-center">
                       <button
-                        className="btn btn-danger"
+                        className="btn btn-danger text-light"
                         type="button"
                         onClick={handleCancel}
                         data-bs-dismiss="offcanvas"
@@ -260,16 +275,26 @@ function Inventory() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          {/* Filter/Search text*/}
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar producto..."
-          />
+        <div className="row">
+          <div className="col">
+            {/* Filter/Search text*/}
+            <MatchingProductsInput
+              productInput={productInput}
+              handler={handleProductInput}
+            />
+            {matchingProducts.length === 0 && productInput !== "" ? (
+              <label>No se encontro el producto</label>
+            ) : matchingProducts.length !== 0 && productInput !== "" ? (
+              <MatchingProductListInventory
+                products={matchingProducts}
+                handleSelectedProduct={handleChangeSKUProduct}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
           {/* Filter/Search button*/}
-          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
+          <div className="col">
             <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle"
@@ -282,7 +307,7 @@ function Inventory() {
               <ul className="dropdown-menu">
                 <li>
                   <a className="dropdown-item" href="#">
-                    Prioridad
+                    SKU
                   </a>
                 </li>
                 <li>
@@ -371,4 +396,21 @@ export function GetInventoryStates() {
   getInventoryStates();
   return inventoryStates;
 }
+
+const getMatchProducts = async (input, handler) => {
+  //get some products from stock that match with input
+  const searchByCodeOrName = true;
+  const responseInventory = await fetch(
+    `api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`
+  );
+  if (responseInventory.ok) {
+    const matchProducts = await responseInventory.json();
+    handler(matchProducts);
+  } else {
+    console.log("error matching products");
+  }
+};
+
+function GetNextProductBatch(productoId) {}
+
 export default Inventory;

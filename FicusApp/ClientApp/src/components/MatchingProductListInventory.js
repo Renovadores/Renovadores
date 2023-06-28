@@ -16,40 +16,16 @@ function MatchingProductList(props) {
                   ? "btn list-group-item list-group-item-action d-flex justify-content-between align-items-center border border-danger"
                   : "btn list-group-item list-group-item-action d-flex justify-content-between align-items-center border border-primary"
               }
-              data-bs-toggle="modal"
-              data-bs-target={"#exampleModal" + index}
               key={product.productoId}
             >
               <div className="ms-2 me-auto">
                 <div className="fw-bold">{product.nombre}</div>
-                {product.productoId} {product.dimensiones}
+                {product.productoId} {product.descripcion}
               </div>
               <span className="badge bg-primary rounded-pill">
-                {product.disponible}
+                Total Existente: {product.totalExistente}
               </span>
             </li>
-            {product.disponible === 0 ? (
-              <DisableProductModal
-                index={index}
-                nombre={product.nombre}
-                sku={product.productoId}
-                cantidad={product.disponible}
-                handleCuantity={props.handleCuantity}
-                handleSelectedProduct={props.handleSelectedProduct}
-                handleCancell={handleCancell}
-              />
-            ) : (
-              <CuantityProductModal
-                index={index}
-                nombre={product.nombre}
-                sku={product.productoId}
-                cantidad={product.disponible}
-                cuantity={props.cuantity}
-                handleCuantity={props.handleCuantity}
-                handleSelectedProduct={props.handleSelectedProduct}
-                handleCancell={handleCancell}
-              />
-            )}
           </div>
         ))}
       </ol>
