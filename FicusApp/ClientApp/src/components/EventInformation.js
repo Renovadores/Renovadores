@@ -48,7 +48,7 @@ function EventInformation() {
                   <div className="card my-3" style={{ width: 288 }} key={index} >
                     <div className="card-body">
                       <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
-                      <p className="card-text">Descripcion del evento, lugar y hora.</p>
+                      <p className="card-text">Descripcion, lugar y hora.</p>
                     </div>
                     <ul className="list-group list-group-flush">
                       {
