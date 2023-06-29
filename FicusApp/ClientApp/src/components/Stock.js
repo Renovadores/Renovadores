@@ -58,7 +58,7 @@ function Stock() {
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
     setProductoId(event.target.value);
-    setAddedProductId(productoId);
+    setAddedProductId(event.target.value);
   };
 
   const [nombre, setNombre] = useState("");
@@ -297,21 +297,21 @@ function Stock() {
                 <div className="row" data-bs-dismiss="offcanvas">
                   <div className="col-6 d-flex justify-content-center">
                     {productoId !== "" &&
-                    nombre !== "" &&
-                    descripcion !== "" &&
-                    pesoRecipiente >= 0 &&
-                    pesoDesechable >= 0 &&
-                    alquilerComercios >= 0 &&
-                    alquilerRetail >= 0 &&
-                    colorId > 0 &&
-                    familiaId > 0 &&
-                    categoriaId > 0 ? (
+                      nombre !== "" &&
+                      descripcion !== "" &&
+                      pesoRecipiente >= 0 &&
+                      pesoDesechable >= 0 &&
+                      alquilerComercios >= 0 &&
+                      alquilerRetail >= 0 &&
+                      colorId > 0 &&
+                      familiaId > 0 &&
+                      categoriaId > 0 ? (
                       <button
                         type="submit"
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         Agregar
                       </button>
@@ -321,7 +321,7 @@ function Stock() {
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => {}}
+                        onClick={() => { }}
                         disabled
                       >
                         Agregar
@@ -396,7 +396,7 @@ function Stock() {
           ) : (
             <ProductList
               products={products}
-              // handler={handleClickViewProduct}
+            // handler={handleClickViewProduct}
             />
           )}
         </div>

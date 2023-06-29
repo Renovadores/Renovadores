@@ -25,7 +25,7 @@ function EventInformation() {
     getEventsGroupByDate();
   }, [])
   return (
-    <div className="container min-vh-100 d-flex justify-content-center">
+    <div className="container vh-min-100 d-flex justify-content-center">
       {
         eventDateList.length === 0 ?
           <div className="vh-min-100 mx-2 text-center">
@@ -44,26 +44,28 @@ function EventInformation() {
             </div>
             {
               eventDateList.map((date, index) => (
-                <div className="card my-3" style={{ width: 288 }} key={ index } >
-                  <div className="card-body">
-                    <h5 className="card-title">{dateFormat(date[0].fechaAlquiler)}</h5>
-                    <p className="card-text">Descripcion del evento, lugar y hora.</p>
+                <div className="d-flex justify-content-center">
+                  <div className="card my-3" style={{ width: 288 }} key={index} >
+                    <div className="card-body">
+                      <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
+                      <p className="card-text">Descripcion del evento, lugar y hora.</p>
+                    </div>
+                    <ul className="list-group list-group-flush">
+                      {
+                        date.map((order) => (
+                          <li className="list-group-item" key={order.ordenId}>
+                            <div>
+                              {order.cliente.nombreEmpresa}
+                            </div>
+
+                            <a href={"/ordenes/" + order.ordenId} className="card-link">
+                              Orden: {order.ordenId}
+                            </a>
+                          </li>
+                        ))
+                      }
+                    </ul>
                   </div>
-                  <ul className="list-group list-group-flush">
-                    {
-                      date.map((order) => (
-                        <li className="list-group-item" key={order.ordenId}>
-                          <div>
-                            {order.cliente.nombreEmpresa} 
-                          </div>
-                          
-                          <a href="#" className="card-link">
-                            Orden: {order.ordenId}
-                          </a>
-                        </li>
-                      ))
-                    }
-                  </ul>
                 </div>
               ))
             }

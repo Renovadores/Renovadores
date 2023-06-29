@@ -13,7 +13,7 @@ function EventList(props) {
               <div className="card h-100">
                 <div className="card-body">
                   <h5 className="card-title">{event.nombreEvento}</h5>
-                  <p className="card-text utf-8">Ordenes activas: </p>
+                  <p className="card-text utf-8">{event.descripcionEvento}</p>
                   <button className="btn btn-primary" onClick={() => handleClick(event) }>Ver evento</button>
                 </div>
               </div>
