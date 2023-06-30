@@ -59,10 +59,19 @@ namespace FicusApp.Services
             return response;
         }
 
-        public async Task<List<Cliente>> GetClientes()
+        public async Task<(int, List<Cliente>)> GetClientes()
         {
-            List<Cliente> clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
-            return clientes;
+            int code = SUCCESS_CODE;
+            List<Cliente> clientes = new();
+            if (_context.Cliente.Count() == 0)
+            {
+                code = NOT_FOUND_CODE;
+            }
+            else
+            {
+                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
+            }
+            return (code, clientes);
         }
 
         public async Task<int> GetNewId()

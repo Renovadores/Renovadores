@@ -26,8 +26,17 @@ namespace FicusApp.Controllers
         [Route("GetClientes")]
         public async Task<IActionResult> GetClientes()
         {
-            List<Cliente> clientes = await _clientService.GetClientes();
-            return Ok(clientes);
+            (int code, List<Cliente> clientes) = await _clientService.GetClientes();
+            if (code == NOT_FOUND_CODE)
+            {
+                // There are no clients in the DB
+                return Ok(clientes);
+            }
+            else
+            {
+                return Ok(clientes);
+            }
+            
         }
         
         [Authorize]
