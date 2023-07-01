@@ -59,7 +59,7 @@ namespace FicusApp.Services
             return response;
         }
 
-        public async Task<(int, List<Cliente>)> GetClientes()
+        public async Task<(int, List<Cliente>)> GetClientes(int index)
         {
             int code = SUCCESS_CODE;
             List<Cliente> clientes = new();
@@ -69,7 +69,7 @@ namespace FicusApp.Services
             }
             else
             {
-                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
+                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(4).ToList();
             }
             return (code, clientes);
         }
@@ -89,6 +89,11 @@ namespace FicusApp.Services
                 .Take(8)
                 .ToList();
             return matchClients;
+        }
+
+        public async Task<int> GetTotalClients()
+        {
+            return _context.Cliente.Where(c => c.Estado != "Eliminado").Count();
         }
     }
 }

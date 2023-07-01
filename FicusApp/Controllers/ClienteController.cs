@@ -23,22 +23,34 @@ namespace FicusApp.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("GetClientes")]
-        public async Task<IActionResult> GetClientes()
+        [Route("GetClientes/{index}")]
+        public async Task<IActionResult> GetClientes(int index)
         {
-            (int code, List<Cliente> clientes) = await _clientService.GetClientes();
+            (int code, List<Cliente> clientes) = await _clientService.GetClientes(index);
             if (code == NOT_FOUND_CODE)
             {
                 // There are no clients in the DB
                 return Ok(clientes);
             }
-            else
+            else if (code == OUT_OF_RANGE_CODE)
+            {
+                return BadRequest();
+            }
             {
                 return Ok(clientes);
             }
             
         }
-        
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetTotalClients")]
+        public async Task<IActionResult> GetTotalClients()
+        {
+            int totalClients = await _clientService.GetTotalClients();
+            return Ok(totalClients);
+        }
+
         [Authorize]
         [HttpGet]
         [Route("GetMatchClients/{nombre}")]

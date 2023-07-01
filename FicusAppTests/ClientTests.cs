@@ -141,7 +141,7 @@ namespace FicusAppTests
             var _clientService = new ClientService(mockDbContext.Object);
 
             // ACT
-            (int code, List<Cliente> clients) = await _clientService.GetClientes();
+            (int code, List<Cliente> clients) = await _clientService.GetClientes(0);
 
             // ASSERT
             Assert.Equal(expected, code);
@@ -173,7 +173,7 @@ namespace FicusAppTests
             var _clientService = new ClientService(mockDbContext.Object);
 
             // ACT
-            (int code, List<Cliente> clients) = await _clientService.GetClientes();
+            (int code, List<Cliente> clients) = await _clientService.GetClientes(0);
 
             // ASSERT
             Assert.Equal(expected, code);
