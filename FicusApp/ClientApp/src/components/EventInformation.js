@@ -44,21 +44,19 @@ function EventInformation() {
             </div>
             {
               eventDateList.map((date, index) => (
-                <div className="d-flex justify-content-center">
-                  <div className="card my-3" style={{ width: 288 }} key={index} >
+                <div className="d-flex justify-content-center" key={index}>
+                  <div className="card my-3" style={{ width: 288 }} >
                     <div className="card-body">
                       <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
-                      <p className="card-text">Descripcion, lugar y hora.</p>
                     </div>
                     <ul className="list-group list-group-flush">
                       {
                         date.map((order) => (
                           <li className="list-group-item" key={order.ordenId}>
-                            <div>
+                            <h6>
                               {order.cliente.nombreEmpresa}
-                            </div>
-
-                            <a href={"/ordenes/" + order.ordenId} className="card-link">
+                            </h6>
+                            <a href={"/ordenes/" + order.ordenId} className="card-link link-info">
                               Orden: {order.ordenId}
                             </a>
                           </li>

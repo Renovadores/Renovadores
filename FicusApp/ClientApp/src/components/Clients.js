@@ -342,9 +342,6 @@ function Clients() {
         handleCancel();
         // this change autocall getClients
 
-        if (token === currentToken) {
-          getClients();
-        }
         setToken(currentToken);
         setUpdatePagination(!updatePagination);
       }
@@ -364,7 +361,7 @@ function Clients() {
 
     <div className="container pt-3">
       <div className="row m-2 mb-4">
-        <h4>Clientes</h4>
+        <h2 className="display-3 fw-bold">Clientes</h2>
       </div>
       <div className="row m-2 mb-5">
         <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">

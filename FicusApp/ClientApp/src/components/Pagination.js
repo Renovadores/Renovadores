@@ -67,11 +67,12 @@ function Pagination(props) {
         if (size > 0) {
           var array = Array(size).fill(2);
           setPaginationLength(array);
+          getData(active);
         }
       }
     }
     getTotal();
-  }, [props.update, props.apiTotalElements]);
+  }, [props.update]);
   return (
     <div className="row m-2 mt-4 d-flex justify-content-center">
       <h6 className="d-flex justify-content-center text-center">
