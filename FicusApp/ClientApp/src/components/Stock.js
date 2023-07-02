@@ -20,10 +20,10 @@ function Stock() {
   const getProducts = async () => {
     setProductsChecked(false);
     const response = await fetch("api/producto/GetProducts", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -39,7 +39,7 @@ function Stock() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     } else {
       getProducts();
@@ -58,7 +58,7 @@ function Stock() {
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
     setProductoId(event.target.value);
-    setAddedProductId(productoId);
+    setAddedProductId(event.target.value);
   };
 
   const [nombre, setNombre] = useState("");
@@ -158,7 +158,7 @@ function Stock() {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Authorization': `Bearer ${currentToken}`
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
         colorId: colorId,

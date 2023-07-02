@@ -32,7 +32,7 @@ namespace FicusApp.Services;
             if (searchByCode)
             {
                 matchProducts = _context.Producto
-                .Where(p => p.ProductoId.StartsWith(input))
+                .Where(p => p.ProductoId.Contains(input))
                 .OrderBy(p => p.ProductoId)
                 .OrderBy(p => p.Descontinuado)
                 .OrderByDescending(p => p.Disponible)

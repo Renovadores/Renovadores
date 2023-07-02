@@ -17,10 +17,10 @@ function Inventory() {
   const getInventory = async () => {
     setInventoryChecked(false);
     const response = await fetch("api/inventario/GetInventory", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -38,10 +38,10 @@ function Inventory() {
   const [SKUProduct, setSKUProduct] = useState(SKUProducts[0]);
   const getSKUProducts = async () => {
     const response = await fetch("api/producto/GetProducts", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -61,7 +61,7 @@ function Inventory() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     }
   }, [token]);
@@ -137,10 +137,10 @@ function Inventory() {
     const currentToken = await GetToken();
     // generate id
     const responseId = await fetch("api/inventario/GetNewId", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${currentToken}`
-      }
+        Authorization: `Bearer ${currentToken}`,
+      },
     });
     if (responseId.ok) {
       const newInventoryId = await responseId.json();
@@ -158,7 +158,7 @@ function Inventory() {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
-          'Authorization': `Bearer ${currentToken}`
+          Authorization: `Bearer ${currentToken}`,
         },
         body: JSON.stringify(newInventory),
       });
@@ -281,13 +281,28 @@ function Inventory() {
 
                   <div className="row">
                     <div className="col-6 d-flex justify-content-center">
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        data-bs-dismiss="offcanvas"
-                      >
-                        Agregar
-                      </button>
+                      {SKUProduct !== "" && productAmount >= 0 && batch > 0 ? (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          //data-bs-toggle="modal"
+                          //data-bs-target="#goInventoryModal"
+                          onClick={() => {}}
+                        >
+                          Agregar
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          //data-bs-toggle="modal"
+                          //data-bs-target="#goInventoryModal"
+                          onClick={() => {}}
+                          disabled
+                        >
+                          Agregar
+                        </button>
+                      )}
                     </div>
                     <div className="col-6 d-flex justify-content-center">
                       <button
@@ -383,7 +398,7 @@ const calculateNewProductTotal = async (inventoryRow, oldProductAmount) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      'Authorization': `Bearer ${currentToken}`
+      Authorization: `Bearer ${currentToken}`,
     },
     body: JSON.stringify({
       ...inventoryRow.producto,
@@ -402,10 +417,10 @@ export function GetInventory() {
   const getInventory = async () => {
     const currentToken = await GetToken();
     const response = await fetch("api/inventario/GetInventory", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${currentToken}`
-      }
+        Authorization: `Bearer ${currentToken}`,
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -440,12 +455,14 @@ const getMatchProducts = async (input, handler) => {
   const searchByCodeOrName = true;
   const currentToken = await GetToken();
   const responseInventory = await fetch(
-    `api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${currentToken}`
+    `api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${currentToken}`,
+      },
     }
-  });
+  );
   if (responseInventory.ok) {
     const matchProducts = await responseInventory.json();
     handler(matchProducts);

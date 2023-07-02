@@ -1,6 +1,3 @@
-import CuantityProductModal from "./CuantityProductModal";
-import DisableProductModal from "./DisableProductModal";
-
 function MatchingProductList(props) {
   const handleCancell = () => {
     props.handleSelectedProduct("");
