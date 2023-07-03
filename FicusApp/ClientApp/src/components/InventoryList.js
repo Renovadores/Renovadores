@@ -138,7 +138,7 @@ const ProductRow = ({ product, onSelectInventory }) => (
         Editar
       </button>
 
-      <button className="btn btn-danger text-light" product={product}>
+      <button className="btn btn-danger text-light" product={product} disabled>
         Eliminar
       </button>
     </td>

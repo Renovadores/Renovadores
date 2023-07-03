@@ -81,10 +81,10 @@ namespace FicusApp.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("GetMatchInventory/{input}/{searchByCode}")]
-        public async Task<IActionResult> GetMatchInventory(string input, bool searchByCode)
+        [Route("GetMatchInventory/{input}")]
+        public async Task<IActionResult> GetMatchInventory(string input)
         {
-            List<Inventario> matchInventory = await _inventarioService.GetMatchInventory(input, searchByCode);
+            List<Inventario> matchInventory = await _inventarioService.GetMatchInventory(input);
             return Ok(matchInventory);
         }
     }

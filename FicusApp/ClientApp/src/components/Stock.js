@@ -9,6 +9,9 @@ import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import ProductList from "./ProductList";
 import AddInventoryModal from "./AddInventoryModal";
+import MatchingProductListStock from "./MatchingProductListStock";
+import MatchingProductsInput from "./MatchingProductsInput";
+import { getMatchProducts } from "./Inventory";
 
 function Stock() {
   // get products from data base
@@ -121,6 +124,30 @@ function Stock() {
   const handleAddInventoryProducts = () => {
     setAddedProductId();
   };
+
+  // Search input
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const handleMatchProduct = (matched) => {
+    setMatchingProducts(matched);
+  };
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+  };
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([]);
+    } else {
+      getMatchProducts(productInput, handleMatchProduct);
+    }
+  };
+
+  useEffect(() => {
+    searchProductInput();
+  }, [productInput]);
 
   const handleCancel = () => {
     setProductoId("");
@@ -343,14 +370,24 @@ function Stock() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          {/* Filter/Search text*/}
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar producto..."
-          />
+        <div className="col-md-6 d-flex my-2 my-md-0">
+          <div className="col">
+            {/* Filter/Search text*/}
+            <MatchingProductsInput
+              productInput={productInput}
+              handler={handleProductInput}
+            />
+            {matchingProducts.length === 0 && productInput !== "" ? (
+              <label>No se encontro el producto</label>
+            ) : matchingProducts.length !== 0 && productInput !== "" ? (
+              <MatchingProductListStock
+                products={matchingProducts}
+                handleSelectedProduct={handleChangeProductoId}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
           {/* Filter/Search button*/}
           <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
             <div className="dropdown">

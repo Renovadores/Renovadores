@@ -76,28 +76,15 @@ namespace FicusApp.Services;
             return inventario;
         }
 
-        public async Task<List<Inventario>> GetMatchInventory(string input, bool searchByCode)
+        public async Task<List<Inventario>> GetMatchInventory(string input)
         {
             List<Inventario> matchInventory;
-            if (searchByCode)
-            {
                 matchInventory = _context.Inventario
                 .Where(p => p.ProductoId.Contains(input))
                 .OrderBy(p => p.ProductoId)
                 .OrderByDescending(p => p.Producto.Disponible)
                 .Take(8)
                 .ToList();
-            }
-            else
-            {
-                //search by name
-                matchInventory = _context.Inventario
-                .Where(p => p.Producto.Nombre.StartsWith(input))
-                .OrderBy(p => p.Producto.Nombre)
-                .OrderByDescending(p => p.Producto.Disponible)
-                .Take(8)
-                .ToList();
-            }
             return matchInventory;
         }
     }

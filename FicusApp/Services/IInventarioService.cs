@@ -14,6 +14,6 @@ namespace FicusApp.Services;
         Task<Inventario?> GetInventoryRow(int InventarioId);
         Task<Inventario> AddInventory([FromBody] Inventario request);
         Task<Inventario> EditInventory([FromBody] Inventario inventario);
-        Task<List<Inventario>> GetMatchInventory(string input, bool searchByCode);
+        Task<List<Inventario>> GetMatchInventory(string input);
 }
 
