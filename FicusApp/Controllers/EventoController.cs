@@ -60,6 +60,15 @@ namespace FicusApp.Controllers
             };
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpPut]
+        [Route("EditDescription")]
+        public async Task<IActionResult> EditDescription([FromBody] Evento evento)
+        {
+            _eventService.EditDescription(evento);
+            return Ok();
+        }
     }
     public class Exist
     {

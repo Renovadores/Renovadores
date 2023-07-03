@@ -9,6 +9,6 @@ namespace FicusApp.Services
         Task<int> AddEvento([FromBody] Evento request);
         bool FindEvento(string name);
         int GetEventId(string name);
-
+        void EditDescription(Evento evento);
     }
 }

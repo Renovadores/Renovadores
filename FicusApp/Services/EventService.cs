@@ -20,6 +20,12 @@ namespace FicusApp.Services
             return 0;
         }
 
+        public async void EditDescription([FromBody] Evento evento)
+        {
+            _context.Evento.Update(evento);
+            _context.SaveChanges();
+        }
+
         public bool FindEvento(string name)
         {
             bool exists = _context.Evento.Where(e => e.NombreEvento == name).FirstOrDefault() != null;

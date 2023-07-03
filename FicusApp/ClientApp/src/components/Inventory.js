@@ -451,6 +451,9 @@ export function GetInventoryStates() {
 }
 
 export const getMatchProducts = async (input, handler) => {
+  input = input.replace(/^[ \t]+|[ \t]+$/gm, "");
+  input = input.replace(/[\s]+/g, ' ');
+  if (input !== null && input !== "") {
   //get some products from stock that match with input
   const searchByCodeOrName = true;
   const currentToken = await GetToken();

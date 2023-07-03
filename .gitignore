@@ -3,3 +3,6 @@
 *.dll
 *.dll
 *.pdb
+*.dll
+./FicusAppTests/bin/
+./FicusAppTests/obj/
