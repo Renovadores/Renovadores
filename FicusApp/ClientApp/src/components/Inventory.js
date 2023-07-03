@@ -436,21 +436,25 @@ export function GetInventoryStates() {
 }
 
 const getMatchProducts = async (input, handler) => {
+  input = input.replace(/^[ \t]+|[ \t]+$/gm, "");
+  input = input.replace(/[\s]+/g, ' ');
+  if (input !== null && input !== "") {
   //get some products from stock that match with input
-  const searchByCodeOrName = true;
-  const currentToken = await GetToken();
-  const responseInventory = await fetch(
-    `api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${currentToken}`
+    const searchByCodeOrName = true;
+    const currentToken = await GetToken();
+    const responseInventory = await fetch(
+      `api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${currentToken}`
+      }
+    });
+    if (responseInventory.ok) {
+      const matchProducts = await responseInventory.json();
+      handler(matchProducts);
+    } else {
+      console.log("error matching products");
     }
-  });
-  if (responseInventory.ok) {
-    const matchProducts = await responseInventory.json();
-    handler(matchProducts);
-  } else {
-    console.log("error matching products");
   }
 };
 

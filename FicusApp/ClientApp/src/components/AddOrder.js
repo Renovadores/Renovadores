@@ -143,17 +143,21 @@ function AddOrder() {
   const [selectedClient, setSelectedClient] = useState(null);
   const [matchingClients, setMatchingClients] = useState([]);
   const getMatchClients = async (input) => {
-    //get some products from stock that match with input
-    const currentToken = await GetToken();
-    const responseClients = await fetch(`api/cliente/GetMatchClients/${input}`, {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${currentToken}`
+    input = input.replace(/^[ \t]+|[ \t]+$/gm, "");
+    input = input.replace(/[\s]+/g, ' ');
+    if (input !== null && input !== ""){
+      //get some products from stock that match with input
+      const currentToken = await GetToken();
+      const responseClients = await fetch(`api/cliente/GetMatchClients/${input}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${currentToken}`
+        }
+      })
+      if (responseClients.ok) {
+        const matchClients = await responseClients.json();
+        setMatchingClients(matchClients)
       }
-    })
-    if (responseClients.ok) {
-      const matchClients = await responseClients.json();
-      setMatchingClients(matchClients)
     }
   }
 
@@ -181,25 +185,29 @@ function AddOrder() {
   }
 
   const getMatchProducts = async (input) => {
-    //get some products from stock that match with input
-    const currentToken = await GetToken();
-    const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${currentToken}`
-      }
-    })
-    if (responseInventory.ok) {
-      const matchProducts = await responseInventory.json();
-      // verify if cuantity of some product was already changed
-      for (var i = 0; i < matchProducts.length; i++) {
-        for (var j = 0; j < selectedProducts.length; j++) {
-          if (matchProducts[i].productoId === selectedProducts[j].productoId) {
-            matchProducts[i].disponible -= selectedProducts[j].pedidos;
+    input = input.replace(/^[ \t]+|[ \t]+$/gm, "");
+    input = input.replace(/[\s]+/g, ' ');
+    if (input !== null && input !== "") {
+      //get some products from stock that match with input
+      const currentToken = await GetToken();
+      const responseInventory = await fetch(`api/producto/GetMatchProducts/${input}/${searchByCodeOrName}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${currentToken}`
+        }
+      })
+      if (responseInventory.ok) {
+        const matchProducts = await responseInventory.json();
+        // verify if cuantity of some product was already changed
+        for (var i = 0; i < matchProducts.length; i++) {
+          for (var j = 0; j < selectedProducts.length; j++) {
+            if (matchProducts[i].productoId === selectedProducts[j].productoId) {
+              matchProducts[i].disponible -= selectedProducts[j].pedidos;
+            }
           }
         }
+        setMatchingProducts(matchProducts)
       }
-      setMatchingProducts(matchProducts)
     }
   }
 

@@ -84,7 +84,7 @@ namespace FicusApp.Services
         {
             List<Cliente> matchClients;
             matchClients = _context.Cliente
-                .Where(p => p.NombreEmpresa.StartsWith(input) && p.Estado != "Eliminado")
+                .Where(p => p.NombreEmpresa.Contains(input) && p.Estado != "Eliminado")
                 .OrderBy(p => p.NombreEmpresa)
                 .Take(8)
                 .ToList();

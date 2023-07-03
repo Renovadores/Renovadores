@@ -13,6 +13,7 @@ import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
+import MatchingClientList from "./MatchingClientList";
 
 function Clients() {
   // get clients from data base
@@ -350,10 +351,34 @@ function Clients() {
     media = [];
   }
 
+  const [matchingClients, setMatchingClients] = useState([]);
+  const handleSearch = async (event) => {
+    var input = event.target.value;
+    input = input.replace(/^[ \t]+|[ \t]+$/gm, "");
+    input = input.replace(/[\s]+/g, ' ');
+    if (input !== null && input !== "") {
+      const matchResponse = await fetch(`api/cliente/GetMatchClients/${input}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (matchResponse.ok) {
+        const match = await matchResponse.json();
+        setMatchingClients(match);
+      }
+    } else {
+      setMatchingClients([]);
+    }
+  }
+
+  useEffect(() => {
+    console.log(matchingClients);
+  }, [matchingClients])
   // When user click on client button, 'navigate' redirect him to new page
   const navigate = useNavigate(); // It allows referencing a specific path defined in AppRoutes
-  const handleClickViewClient = (clientIndex) => {
-    navigate('/clientes/informacion', { state: clients[clientIndex].clienteId });
+  const handleClickViewClient = (clientId) => {
+    navigate('/clientes/informacion', { state: clientId });
     //second argument "state" allows to pass parameters
   };
 
@@ -364,7 +389,7 @@ function Clients() {
         <h2 className="display-3 fw-bold">Clientes</h2>
       </div>
       <div className="row m-2 mb-5">
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+        <div className="col-sm-6 col-md-3 d-flex my-2">
           <button className="btn btn-success" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
             Agregar Cliente
@@ -428,22 +453,31 @@ function Clients() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." />
+        <div className="col d-flex justify-content-end my-2">
+          <FilterClients />
         </div>
-        <FilterClients />
+        <div className="row">
+          <div className="col-sm col-md-6 d-flex my-2">
+            <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." onChange={handleSearch} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <MatchingClientList clients={matchingClients} handleSelectedClient={(clientId) => handleClickViewClient(clientId) } />
+          </div>
+        </div>
       </div>
+      {
+        clientsChecked === false ?
+          <Spinner />
+          :
+          <ClientList clients={clients} handler={(clientId) => handleClickViewClient(clientId)} />
+      }
       <Pagination apiRoute="api/cliente/GetClientes"
         apiTotalElements="api/cliente/GetTotalClients"
         setElements={(data) => setClients(data)}
         update={updatePagination}
       />
-      {
-        clientsChecked === false ?
-          <Spinner />
-          :
-          <ClientList clients={clients} handler={handleClickViewClient} />
-      }
     </div>
   );
 }
