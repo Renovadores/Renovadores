@@ -87,7 +87,7 @@ function App() {
   }
 
   useEffect(() => {
-    const getCurrentUserId = async () => {
+    const getCurrentUserId = async () => { 
       const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${userId}`)
       if (responseToken.ok) {
         const data = await responseToken.json();

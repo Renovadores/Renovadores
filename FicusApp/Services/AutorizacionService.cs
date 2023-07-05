@@ -38,7 +38,7 @@ namespace FicusApp.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = credencialesToken
             };
 
@@ -77,7 +77,7 @@ namespace FicusApp.Services
                 userRecord.Token = token;
                 userRecord.RefreshToken = refreshToken;
                 userRecord.FechaCreacion = DateTime.UtcNow;
-                userRecord.FechaExpiracion = DateTime.UtcNow.AddMinutes(2);
+                userRecord.FechaExpiracion = DateTime.UtcNow.AddMinutes(60);
                 _context.HistorialRefreshToken.Update(userRecord);
                 await _context.SaveChangesAsync();
             }

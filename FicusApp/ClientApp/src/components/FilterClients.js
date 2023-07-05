@@ -1,6 +1,6 @@
 function FilterClients() {
   return (
-    <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
+    <div className="col-3 d-flex my-2 my-md-0">
       <div className="dropdown">
         <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Filtrado

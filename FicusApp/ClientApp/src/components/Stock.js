@@ -1,20 +1,33 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
+import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import ProductList from "./ProductList";
+import AddInventoryModal from "./AddInventoryModal";
+import MatchingProductListStock from "./MatchingProductListStock";
+import MatchingProductsInput from "./MatchingProductsInput";
+import { getMatchProducts } from "./Inventory";
 
 function Stock() {
   // get products from data base
+  const [token, setToken] = useState("");
   const [productsChecked, setProductsChecked] = useState(false);
   const [products, setProducts] = useState([]);
+  const [addedProductId, setAddedProductId] = useState();
+
   const getProducts = async () => {
     setProductsChecked(false);
-    const response = await fetch("api/producto/GetProducts");
+    const response = await fetch("api/producto/GetProducts", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (response.ok) {
       const data = await response.json();
       setProducts(data);
@@ -25,12 +38,16 @@ function Stock() {
   };
   // this method allows to auto call getProducts when page is started
   useEffect(() => {
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+    if (token === "") {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    } else {
+      getProducts();
+    }
+  }, [token]);
 
   // // When user click on client button, 'navigate hook' redirect him to new page
   // const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
@@ -41,6 +58,12 @@ function Stock() {
   //   //second argument allows to pass parameters
   // };
   // Agregar producto
+  const [productoId, setProductoId] = useState("");
+  const handleChangeProductoId = (event) => {
+    setProductoId(event.target.value);
+    setAddedProductId(event.target.value);
+  };
+
   const [nombre, setNombre] = useState("");
   const handleChangeNombre = (event) => {
     setNombre(event.target.value);
@@ -75,10 +98,7 @@ function Stock() {
   const handleChangeAlquilerRetail = (event) => {
     setAlquilerRetail(event.target.value);
   };
-  const [productoId, setProductoId] = useState(0);
-  const handleChangeProductoId = (event) => {
-    setProductoId(event.target.value);
-  };
+
   const current = new Date();
   const date = `${current.getDate()}-${
     current.getMonth() + 1
@@ -100,22 +120,34 @@ function Stock() {
   const handleChangeDescontinuado = (event) => {
     setDescontinuado(event.target.value);
   };*/
-  const [totalExistente, setTotalExistente] = useState(1);
-  const handleChangeTotalExistente = (event) => {
-    setTotalExistente(event.target.value);
+  // This is to close the modal when no product has been just created
+  const handleAddInventoryProducts = () => {
+    setAddedProductId();
   };
-  const [enUso, setEnUso] = useState(1);
-  const handleChangeEnUso = (event) => {
-    setEnUso(event.target.value);
+
+  // Search input
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const handleMatchProduct = (matched) => {
+    setMatchingProducts(matched);
   };
-  const [disponible, setDisponible] = useState(1);
-  const handleChangeDisponible = (event) => {
-    setDisponible(event.target.value);
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
   };
-  const [noDevueltos, setNoDevueltos] = useState(1);
-  const handleChangeNoDevueltos = (event) => {
-    setNoDevueltos(event.target.value);
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([]);
+    } else {
+      getMatchProducts(productInput, handleMatchProduct);
+    }
   };
+
+  useEffect(() => {
+    searchProductInput();
+  }, [productInput]);
 
   const handleCancel = () => {
     setProductoId("");
@@ -126,14 +158,10 @@ function Stock() {
     setPesoDesechable(0);
     setAlquilerComercios(0);
     setAlquilerRetail(0);
-    setColorId(0);
-    setCategoriaId(0);
-    setFamiliaId(0);
+    setColorId(1);
+    setCategoriaId(1);
+    setFamiliaId(1);
     //setDescontinuado(0);
-    setTotalExistente(0);
-    setEnUso(0);
-    setDisponible(0);
-    setNoDevueltos(0);
   };
   //Add Product to data base
   const handleSubmit = async (event) => {
@@ -150,16 +178,14 @@ function Stock() {
       alquilerComercios,
       alquilerRetail,
       categoriaId,
-      familiaId,
-      totalExistente,
-      enUso,
-      disponible,
-      noDevueltos
+      familiaId
     );
+    const currentToken = await GetToken();
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
         colorId: colorId,
@@ -174,29 +200,32 @@ function Stock() {
         categoriaId: categoriaId,
         familiaId: familiaId,
         descontinuado: 0,
-        totalExistente: totalExistente,
-        enUso: enUso,
-        disponible: disponible,
-        noDevueltos: noDevueltos,
       }),
     });
-    console.log(responseProduct);
 
     if (responseProduct.ok) {
       handleCancel();
-      getProducts();
+      if (token === currentToken) {
+        getProducts();
+      } else {
+        setToken(currentToken);
+      }
     }
   };
 
   return (
     <div>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Inventario</title>
-      </head>
-      <section className="py-4">
-        <div className="container-fluid">
+      {addedProductId ? (
+        <AddInventoryModal
+          productoId={addedProductId}
+          handleCancel={() => {
+            setAddedProductId();
+          }}
+          handler={handleAddInventoryProducts}
+        />
+      ) : null}
+      <section className="container-fluid py-4">
+        <div className="row">
           <div className="d-grid gap-2 mb-4">
             <div className="d-grid gap-2 mb-4">
               <div className="row">
@@ -240,12 +269,12 @@ function Stock() {
                 <Input
                   variable={productoId}
                   handler={handleChangeProductoId}
-                  text="Producto ID"
+                  text="Producto ID/SKU"
                 />
                 <Input
                   variable={nombre}
                   handler={handleChangeNombre}
-                  text="Nombre"
+                  text="Nombre del producto"
                 />
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">
@@ -265,44 +294,23 @@ function Stock() {
                 <InputInt
                   variable={pesoRecipiente}
                   handler={handleChangePesoRecipiente}
-                  text="Peso de Recipiente"
+                  text="Peso de recipiente Ficus en gramos"
                 />
                 <InputInt
                   variable={pesoDesechable}
                   handler={handleChangePesoDesechable}
-                  text="Peso Desechable"
+                  text="Peso del recipiente desechable en gramos"
                 />
                 <InputInt
                   variable={alquilerComercios}
                   handler={handleChangeAlquilerComercios}
-                  text="Precio Comercio"
+                  text="Precio comercio en colones"
                 />
                 <InputInt
                   variable={alquilerRetail}
                   handler={handleChangeAlquilerRetail}
-                  text="Precio Retail"
+                  text="Precio retail en colones"
                 />
-                <InputInt
-                  variable={totalExistente}
-                  handler={handleChangeTotalExistente}
-                  text="Total de Productos Existentes"
-                />
-                <InputInt
-                  variable={enUso}
-                  handler={handleChangeEnUso}
-                  text="Productos en Uso"
-                />
-                <InputInt
-                  variable={disponible}
-                  handler={handleChangeDisponible}
-                  text="Productos Disponibles"
-                />
-                <InputInt
-                  variable={noDevueltos}
-                  handler={handleChangeNoDevueltos}
-                  text="Productos No Devueltos"
-                />
-
                 <SelectCategory
                   variable={categoriaId}
                   handler={handleChangeCategoriaId}
@@ -313,20 +321,43 @@ function Stock() {
                 />
                 <SelectColor variable={colorId} handler={handleChangeColorId} />
 
-                <div className="row">
+                <div className="row" data-bs-dismiss="offcanvas">
                   <div className="col-6 d-flex justify-content-center">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      data-bs-dismiss="offcanvas"
-                      onClick={getProducts}
-                    >
-                      Agregar
-                    </button>
+                    {productoId !== "" &&
+                    nombre !== "" &&
+                    descripcion !== "" &&
+                    pesoRecipiente >= 0 &&
+                    pesoDesechable >= 0 &&
+                    alquilerComercios >= 0 &&
+                    alquilerRetail >= 0 &&
+                    colorId > 0 &&
+                    familiaId > 0 &&
+                    categoriaId > 0 ? (
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#goInventoryModal"
+                        onClick={() => {}}
+                      >
+                        Agregar
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#goInventoryModal"
+                        onClick={() => {}}
+                        disabled
+                      >
+                        Agregar
+                      </button>
+                    )}
                   </div>
                   <div className="col-6 d-flex justify-content-center">
                     <button
-                      className="btn btn-danger"
+                      className="btn btn-danger text-light"
                       type="button"
                       onClick={handleCancel}
                       data-bs-dismiss="offcanvas"
@@ -339,38 +370,27 @@ function Stock() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          {/* Filter/Search text*/}
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar producto..."
-          />
-          {/* Filter/Search button*/}
-          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Filtrado
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Prioridad
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Recientes
-                  </a>
-                </li>
-              </ul>
-            </div>
+        <div className="row">
+          <div className="col-sm-8 col-md-6 col-lg-4">
+            {/* Filter/Search text*/}
+            <MatchingProductsInput
+              productInput={productInput}
+              handler={handleProductInput}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            {matchingProducts.length === 0 && productInput !== "" ? (
+              <label>No se encontro el producto</label>
+            ) : matchingProducts.length !== 0 && productInput !== "" ? (
+              <MatchingProductListStock
+                products={matchingProducts}
+                handleSelectedProduct={handleChangeProductoId}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </section>
@@ -395,37 +415,6 @@ function Stock() {
               // handler={handleClickViewProduct}
             />
           )}
-          <div className="row m-2 mt-4">
-            <nav aria-label="...">
-              <ul className="pagination justify-content-center">
-                <li className="page-item disabled">
-                  <a className="page-link" href="/productos/informacion/">
-                    Anterior
-                  </a>
-                </li>
-                <li className="page-item active">
-                  <a className="page-link" href="/productos/informacion/">
-                    1
-                  </a>
-                </li>
-                <li className="page-item" aria-current="page">
-                  <a className="page-link" href="/productos/informacion/">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/productos/informacion/">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/productos/informacion/">
-                    Siguiente
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
         </div>
       </section>
     </div>

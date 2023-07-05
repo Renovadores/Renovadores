@@ -1,5 +1,6 @@
 ﻿using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace FicusApp.Controllers
             _clientSegmentService = clientSegmentService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetSegments/{id}")]
         public async Task<IActionResult> GetSegments(int id)
@@ -31,6 +33,7 @@ namespace FicusApp.Controllers
             return Ok(segmentos);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddSegment")]
         public async Task<IActionResult> AddSegment([FromBody] ClienteSegmento request)
@@ -39,9 +42,10 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete]
-        [Route("DeleteClient_Segment")] 
-        public async Task<IActionResult> DeleteClient_Segment([FromBody] ClienteSegmento request)
+        [Route("DeleteClientSegment")] 
+        public async Task<IActionResult> DeleteClientSegment([FromBody] ClienteSegmento request)
         {
             int code = await _clientSegmentService.DeleteClientSegment(request);
             return Ok();

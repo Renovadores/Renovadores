@@ -8,7 +8,11 @@ namespace FicusApp.Models;
 
 public partial class Producto
 {
-    [Key] public string ProductoId { get; set; } = null!;
+    [Key]
+    [StringLength(255)]
+    public string ProductoId { get; set; } = null!;
+
+    [StringLength(255)]
     public string? Nombre { get; set; }
 
     public int? ColorId { get; set; }

@@ -1,7 +1,10 @@
 ﻿using FicusApp.Controllers;
 using FicusApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using System.Runtime.Intrinsics.X86;
 using static NuGet.Packaging.PackagingConstants;
+using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Services
 {
@@ -31,6 +34,35 @@ namespace FicusApp.Services
         {
             List<Orden> orders = _context.Orden.ToList();
             return orders;
+        }
+
+        public async Task<List<List<Orden>>> GetOrdersByDate(int eventId)
+        {
+            List<Orden> orders = _context.Orden
+                                .Where(o => o.Evento != null && 
+                                       o.EventoId == eventId)
+                                .Include(o => o.Cliente)
+                                .OrderBy(O => O.FechaAlquiler)
+                                .ToList();
+            List<List<Orden>> filterOrders = new();
+            foreach (var o in orders)
+            {
+                bool added = false;
+                foreach (var subList in filterOrders)
+                {
+                    if (subList[0].FechaAlquiler == o.FechaAlquiler)
+                    {
+                        subList.Add(o);
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added)
+                {
+                    filterOrders.Add(new List<Orden>() {o});
+                }
+            }
+            return filterOrders;
         }
     }
 }

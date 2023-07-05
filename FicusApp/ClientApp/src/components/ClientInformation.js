@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import CheckBox from './CheckBox';
+import { GetToken } from "../GetToken";
 import Input from './Input';
 import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
@@ -14,7 +15,8 @@ function ClientInformation() {
     // get client id sent by navigate function in Client.js
     const location = useLocation();
     const clientId = location.state;
-
+    const [token, setToken] = useState("");
+    
     // get client info from data base
     const [clientInfo, setInfo] = useState("");
     const [clientSegments, setClientSegments] = useState([]);
@@ -22,25 +24,44 @@ function ClientInformation() {
     const [personInChargeName, setPersonInChargeName] = useState("");
     const [users, setUsers] = useState([]);
     const getClient = async () => {
-        const response = await fetch(`api/cliente/GetCliente/${clientId}`);
+        const response = await fetch(`api/cliente/GetCliente/${clientId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (response.ok) {
             const dataClient = await response.json();
             setDate(dateFormat(dataClient.fechaAgregado));
             setInfo(dataClient);
             // get personInCharge name (in user table)
-            const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsableId}`);
+            const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsableId}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
             if (responseUser.ok) {
                 const dataUser = await responseUser.json();
                 setPersonInChargeName(dataUser.nombre);
             }
             // get segments (in client_Segment table)
-            const responseClientSegments = await fetch(`api/clientesegmento/GetSegments/${clientId}`)
+            const responseClientSegments = await fetch(`api/clientesegmento/GetSegments/${clientId}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
             if (responseClientSegments.ok) {
                 const dataSegments = await responseClientSegments.json();
-                console.log(dataSegments);
                 setClientSegments(dataSegments);
                 // get media (in client_Comunication table)
-                const responseClientMedia = await fetch(`api/clientecomunicacion/GetMedia/${clientId}`)
+                const responseClientMedia = await fetch(`api/clientecomunicacion/GetMedia/${clientId}`, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+                })
                 if (responseClientMedia.ok) {
                     const dataMedia = await responseClientMedia.json();
                     setClientMedia(dataMedia);
@@ -48,7 +69,12 @@ function ClientInformation() {
                 }
             }
             // get users
-            const responseUsers = await fetch("api/usuario/GetUsers");
+            const responseUsers = await fetch("api/usuario/GetUsers", {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
             if (responseUsers.ok) {
                 const dataUsers = await responseUsers.json();
                 setUsers(dataUsers);
@@ -59,8 +85,16 @@ function ClientInformation() {
     }
 
     useEffect(() => {
+      if (token !== "") {
         getClient();
-    }, [clientId])
+      } else {
+        const getToken = async () => {
+          const dbToken = await GetToken();
+          setToken(dbToken);
+        }
+        getToken();
+      }
+    }, [token]);
 
     const addDefaultEditForm = (dataClient, dataSegments, dataMedia) => {
         setCompany(dataClient.nombreEmpresa);
@@ -290,11 +324,12 @@ function ClientInformation() {
         if (otra) {
             media.push("Otra")
         }
-
+        const currentToken = await GetToken();
         const response = await fetch("api/cliente/EditCliente", {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({ clienteId: clientId, fechaAgregado: clientInfo.fechaAgregado, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
         });
@@ -306,7 +341,8 @@ function ClientInformation() {
                     const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteId: clientId, segmentoId: segments[i] })
                     });
@@ -318,10 +354,11 @@ function ClientInformation() {
             // delete unchecked segments
             for (let i = 0; i < clientSegments.length; i++) {
                 if (!segments.includes(clientSegments[i])) {
-                    const responseSegmento = await fetch("api/clientesegmento/DeleteClient_Segment", {
+                    const responseSegmento = await fetch("api/clientesegmento/DeleteClientSegment", {
                         method: "DELETE",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteSegmentoId: 0, clienteId: clientId, segmentoId: clientSegments[i] })
                     });
@@ -336,7 +373,8 @@ function ClientInformation() {
                     const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteId: clientId, medioId: media[i] })
                     });
@@ -351,7 +389,8 @@ function ClientInformation() {
                     const responseMedia = await fetch("api/clientecomunicacion/DeleteClientMedia", {
                         method: "DELETE",
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                          'Content-Type': 'application/json;charset=utf-8',
+                          'Authorization': `Bearer ${currentToken}`
                         },
                         body: JSON.stringify({ clienteComunicacionId: 0, clienteId: clientId, medioId: clientMedia[i] })
                     });
@@ -360,7 +399,10 @@ function ClientInformation() {
                     }
                 }
             }
-            getClient();
+            if (token === currentToken) {
+              getClient();
+            }
+            setToken(currentToken);
         }
 
         segments = [];
@@ -369,11 +411,12 @@ function ClientInformation() {
 
     const navigate = useNavigate();
     const handleDeleteClient = async () => {
-
+        const currentToken = await GetToken();
         const responseDelete = await fetch("api/cliente/DeleteCliente", {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify(clientInfo)
         }
@@ -449,7 +492,7 @@ function ClientInformation() {
 
                                                     <div className="row">
                                                         <div className="col-6 d-flex justify-content-center">
-                                                            <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getClient} >Agregar</button>
+                                                            <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
                                                         </div>
                                                         <div className="col-6 d-flex justify-content-center">
                                                             <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
@@ -471,7 +514,7 @@ function ClientInformation() {
     );
 }
 
-function dateFormat(dateDB) {
+export function dateFormat(dateDB) {
     var arrayDate = dateDB.split("-");
     const day = arrayDate[2].substring(0, 2);
     const date = day + "-" + arrayDate[1] + "-" + arrayDate[0];

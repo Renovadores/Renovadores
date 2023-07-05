@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -16,6 +17,7 @@ public class ProductoController : ControllerBase
             _productService = productService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetProducts")]
         public async Task<IActionResult> GetProducts()
@@ -24,6 +26,7 @@ public class ProductoController : ControllerBase
             return Ok(productos);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetProducto/{ProductoId}")]
         public async Task<IActionResult> GetProducto(string ProductoId)
@@ -32,6 +35,7 @@ public class ProductoController : ControllerBase
             return Ok(producto);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetMatchProducts/{input}/{searchByCode}")]
         public async Task<IActionResult> GetMatchProducts(string input, bool searchByCode)
@@ -40,6 +44,7 @@ public class ProductoController : ControllerBase
             return Ok(matchProducts);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] Producto request)
@@ -48,6 +53,7 @@ public class ProductoController : ControllerBase
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("EditProducto")]
         public async Task<IActionResult> EditProducto([FromBody] Producto producto)
@@ -55,7 +61,8 @@ public class ProductoController : ControllerBase
             await _productService.EditProduct(producto);
             return Ok();
         }
-        
+
+        [Authorize]
         [HttpPut]
         [Route("DeleteProducto")]
         public async Task<IActionResult> DeleteProducto([FromBody] Producto producto)

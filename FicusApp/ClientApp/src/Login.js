@@ -2,7 +2,7 @@ import Logotipo from './images/Logotipo.png'
 
 function Login(props) {
   return (
-    <div className="container mt-0 p-5 pt-1 d-flex justify-content-center">
+    <div className="container p-5 pt-1 d-flex justify-content-center">
       <div className="row d-flex justify-content-center mb-5">
         <div className="row d-flex justify-content-center">
           <div className="col-6 d-flex justify-content-center">

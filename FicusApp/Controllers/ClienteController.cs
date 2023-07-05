@@ -21,15 +21,46 @@ namespace FicusApp.Controllers
             _clientService = clientService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
-        [Route("GetClientes")]
-        public async Task<IActionResult> GetClientes()
+        [Route("GetClientes/{index}")]
+        public async Task<IActionResult> GetClientes(int index)
         {
-            List<Cliente> clientes = await _clientService.GetClientes();
+            (int code, List<Cliente> clientes) = await _clientService.GetClientes(index);
+            if (code == NOT_FOUND_CODE)
+            {
+                // There are no clients in the DB
+                return Ok(clientes);
+            }
+            else if (code == OUT_OF_RANGE_CODE)
+            {
+                return BadRequest();
+            }
+            {
+                return Ok(clientes);
+            }
+            
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetTotalClients")]
+        public async Task<IActionResult> GetTotalClients()
+        {
+            int totalClients = await _clientService.GetTotalClients();
+            return Ok(totalClients);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetMatchClients/{nombre}")]
+        public async Task<IActionResult> GetMatchClients(string nombre)
+        {
+            List<Cliente> clientes = await _clientService.GetMatchClients(nombre);
             return Ok(clientes);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
@@ -41,6 +72,7 @@ namespace FicusApp.Controllers
             return Ok(id);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetCliente/{ClienteId}")]
         public async Task<IActionResult> GetCliente(int ClienteId)
@@ -62,6 +94,7 @@ namespace FicusApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
@@ -70,6 +103,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("EditCliente")]
         public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
@@ -78,6 +112,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("DeleteCliente")]
         public async Task<IActionResult> DeleteCliente([FromBody] Cliente cliente)
