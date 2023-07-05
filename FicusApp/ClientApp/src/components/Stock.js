@@ -224,8 +224,8 @@ function Stock() {
           handler={handleAddInventoryProducts}
         />
       ) : null}
-      <section className="py-4">
-        <div className="container-fluid">
+      <section className="container-fluid py-4">
+        <div className="row">
           <div className="d-grid gap-2 mb-4">
             <div className="d-grid gap-2 mb-4">
               <div className="row">
@@ -370,13 +370,17 @@ function Stock() {
             </div>
           </div>
         </div>
-        <div className="col-md-6 d-flex my-2 my-md-0">
-          <div className="col-8">
+        <div className="row">
+          <div className="col-sm-8 col-md-6 col-lg-4">
             {/* Filter/Search text*/}
             <MatchingProductsInput
               productInput={productInput}
               handler={handleProductInput}
             />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
             {matchingProducts.length === 0 && productInput !== "" ? (
               <label>No se encontro el producto</label>
             ) : matchingProducts.length !== 0 && productInput !== "" ? (

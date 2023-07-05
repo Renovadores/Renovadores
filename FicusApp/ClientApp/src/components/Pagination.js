@@ -9,7 +9,7 @@ function Pagination(props) {
 
   const getData = async (value) => {
     const currentToken = await GetToken();
-    const dataResponse = await fetch(props.apiRoute + `/${value * 4}`, {
+    const dataResponse = await fetch(props.apiRoute + `/${value * 8}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${currentToken}`
@@ -63,7 +63,7 @@ function Pagination(props) {
       });
       if (totalResponse.ok) {
         const total = await totalResponse.json();
-        const size = parseInt((total - 1) / 4);
+        const size = parseInt((total - 1) / 8);
         if (size > 0) {
           var array = Array(size).fill(2);
           setPaginationLength(array);

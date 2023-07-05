@@ -69,7 +69,7 @@ namespace FicusApp.Services
             }
             else
             {
-                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(4).ToList();
+                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(8).ToList();
             }
             return (code, clientes);
         }
