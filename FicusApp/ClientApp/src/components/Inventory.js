@@ -72,7 +72,7 @@ function Inventory() {
 
   const handleChangeSKUProduct = (event) => {
     setSKUProduct(event.target.value);
-    GetNextProductBatch(event.target.value, handleChangeBatch);
+    //GetNextProductBatch(event.target.value, handleChangeBatch);
   };
   // Get inventory states from DB
   /*const [inventoryStates, setInventoryStates] = useState([]);
