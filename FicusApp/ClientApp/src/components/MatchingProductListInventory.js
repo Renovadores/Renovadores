@@ -1,7 +1,4 @@
-import CuantityProductModal from "./CuantityProductModal";
-import DisableProductModal from "./DisableProductModal";
-
-function MatchingProductList(props) {
+function MatchingProductListInventory(props) {
   const handleCancell = () => {
     props.handleSelectedProduct("");
   };
@@ -22,9 +19,15 @@ function MatchingProductList(props) {
                 <div className="fw-bold">{product.nombre}</div>
                 {product.productoId} {product.descripcion}
               </div>
-              <span className="badge bg-primary rounded-pill">
-                Total Existente: {product.totalExistente}
-              </span>
+              <div className="col col-lg-3">
+                <span className="badge bg-primary rounded-pill">
+                  Total Existente: {product.totalExistente}
+                </span>
+
+                <span className="badge bg-primary rounded-pill">
+                  En uso: {product.enUso}
+                </span>
+              </div>
             </li>
           </div>
         ))}
@@ -32,4 +35,4 @@ function MatchingProductList(props) {
     </div>
   );
 }
-export default MatchingProductList;
+export default MatchingProductListInventory;

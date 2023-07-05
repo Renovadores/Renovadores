@@ -1,6 +1,6 @@
 import InputInt from "./InputInt";
 import { useEffect, useState } from "react";
-import { dateFormat } from "./ClientInformation"
+import { dateFormat } from "./ClientInformation";
 const NoProducts = () => (
   <h5 className="d-flex justify-content-center">
     No se encontraron productos en la base de datos.
@@ -61,7 +61,9 @@ const FormEditInventory = ({ product, onSubmit }) => {
             <form value={inventoryRow} onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="formGroupExampleInput" className="form-label">
-                  Agregado el: {product.length === 0 ? "" : dateFormat(product.fechaIngreso)} <br />
+                  Agregado el:{" "}
+                  {product.length === 0 ? "" : dateFormat(product.fechaIngreso)}{" "}
+                  <br />
                   SKU: {product.productoId}
                 </label>
               </div>
@@ -78,13 +80,26 @@ const FormEditInventory = ({ product, onSubmit }) => {
 
               <div className="row">
                 <div className="col-6 d-flex justify-content-center">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    data-bs-dismiss="offcanvas"
-                  >
-                    Editar
-                  </button>
+                  {inventoryRow.cantidad >= 0 && inventoryRow.lote > 0 ? (
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      data-bs-dismiss="offcanvas"
+                      onClick={() => {}}
+                    >
+                      Editar
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      data-bs-dismiss="offcanvas"
+                      onClick={() => {}}
+                      disabled
+                    >
+                      Editar
+                    </button>
+                  )}
                 </div>
                 <div className="col-6 d-flex justify-content-center">
                   <button
@@ -123,7 +138,7 @@ const ProductRow = ({ product, onSelectInventory }) => (
         Editar
       </button>
 
-      <button className="btn btn-danger text-light" product={product}>
+      <button className="btn btn-danger text-light" product={product} disabled>
         Eliminar
       </button>
     </td>

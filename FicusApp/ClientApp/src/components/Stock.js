@@ -9,6 +9,9 @@ import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import ProductList from "./ProductList";
 import AddInventoryModal from "./AddInventoryModal";
+import MatchingProductListStock from "./MatchingProductListStock";
+import MatchingProductsInput from "./MatchingProductsInput";
+import { getMatchProducts } from "./Inventory";
 
 function Stock() {
   // get products from data base
@@ -20,10 +23,10 @@ function Stock() {
   const getProducts = async () => {
     setProductsChecked(false);
     const response = await fetch("api/producto/GetProducts", {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -39,7 +42,7 @@ function Stock() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     } else {
       getProducts();
@@ -122,6 +125,30 @@ function Stock() {
     setAddedProductId();
   };
 
+  // Search input
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const handleMatchProduct = (matched) => {
+    setMatchingProducts(matched);
+  };
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+  };
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([]);
+    } else {
+      getMatchProducts(productInput, handleMatchProduct);
+    }
+  };
+
+  useEffect(() => {
+    searchProductInput();
+  }, [productInput]);
+
   const handleCancel = () => {
     setProductoId("");
     setNombre("");
@@ -158,7 +185,7 @@ function Stock() {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Authorization': `Bearer ${currentToken}`
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
         colorId: colorId,
@@ -297,21 +324,21 @@ function Stock() {
                 <div className="row" data-bs-dismiss="offcanvas">
                   <div className="col-6 d-flex justify-content-center">
                     {productoId !== "" &&
-                      nombre !== "" &&
-                      descripcion !== "" &&
-                      pesoRecipiente >= 0 &&
-                      pesoDesechable >= 0 &&
-                      alquilerComercios >= 0 &&
-                      alquilerRetail >= 0 &&
-                      colorId > 0 &&
-                      familiaId > 0 &&
-                      categoriaId > 0 ? (
+                    nombre !== "" &&
+                    descripcion !== "" &&
+                    pesoRecipiente >= 0 &&
+                    pesoDesechable >= 0 &&
+                    alquilerComercios >= 0 &&
+                    alquilerRetail >= 0 &&
+                    colorId > 0 &&
+                    familiaId > 0 &&
+                    categoriaId > 0 ? (
                       <button
                         type="submit"
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         Agregar
                       </button>
@@ -321,7 +348,7 @@ function Stock() {
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => { }}
+                        onClick={() => {}}
                         disabled
                       >
                         Agregar
@@ -343,38 +370,23 @@ function Stock() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          {/* Filter/Search text*/}
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar producto..."
-          />
-          {/* Filter/Search button*/}
-          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Filtrado
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Prioridad
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Recientes
-                  </a>
-                </li>
-              </ul>
-            </div>
+        <div className="col-md-6 d-flex my-2 my-md-0">
+          <div className="col-8">
+            {/* Filter/Search text*/}
+            <MatchingProductsInput
+              productInput={productInput}
+              handler={handleProductInput}
+            />
+            {matchingProducts.length === 0 && productInput !== "" ? (
+              <label>No se encontro el producto</label>
+            ) : matchingProducts.length !== 0 && productInput !== "" ? (
+              <MatchingProductListStock
+                products={matchingProducts}
+                handleSelectedProduct={handleChangeProductoId}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </section>
@@ -396,7 +408,7 @@ function Stock() {
           ) : (
             <ProductList
               products={products}
-            // handler={handleClickViewProduct}
+              // handler={handleClickViewProduct}
             />
           )}
         </div>

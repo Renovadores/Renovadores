@@ -38,13 +38,13 @@ namespace FicusApp.Controllers
             return Ok(id);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("GetState")]
         public async Task<IActionResult> GetState()
         {
             var Estados = await _inventarioService.GetState();
             return Ok(Estados);
-        }
+        }*/
 
         [HttpGet]
         [Route("GetInventory/{ProductoId}")]
@@ -77,6 +77,15 @@ namespace FicusApp.Controllers
         {
             await _inventarioService.EditInventory(inventario);
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetMatchInventory/{input}")]
+        public async Task<IActionResult> GetMatchInventory(string input)
+        {
+            List<Inventario> matchInventory = await _inventarioService.GetMatchInventory(input);
+            return Ok(matchInventory);
         }
     }
 }
