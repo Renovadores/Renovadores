@@ -324,21 +324,21 @@ function Stock() {
                 <div className="row" data-bs-dismiss="offcanvas">
                   <div className="col-6 d-flex justify-content-center">
                     {productoId !== "" &&
-                      nombre !== "" &&
-                      descripcion !== "" &&
-                      pesoRecipiente >= 0 &&
-                      pesoDesechable >= 0 &&
-                      alquilerComercios >= 0 &&
-                      alquilerRetail >= 0 &&
-                      colorId > 0 &&
-                      familiaId > 0 &&
-                      categoriaId > 0 ? (
+                    nombre !== "" &&
+                    descripcion !== "" &&
+                    pesoRecipiente >= 0 &&
+                    pesoDesechable >= 0 &&
+                    alquilerComercios >= 0 &&
+                    alquilerRetail >= 0 &&
+                    colorId > 0 &&
+                    familiaId > 0 &&
+                    categoriaId > 0 ? (
                       <button
                         type="submit"
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         Agregar
                       </button>
@@ -348,7 +348,7 @@ function Stock() {
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#goInventoryModal"
-                        onClick={() => { }}
+                        onClick={() => {}}
                         disabled
                       >
                         Agregar
@@ -371,7 +371,7 @@ function Stock() {
           </div>
         </div>
         <div className="col-md-6 d-flex my-2 my-md-0">
-          <div className="col">
+          <div className="col-8">
             {/* Filter/Search text*/}
             <MatchingProductsInput
               productInput={productInput}
@@ -387,31 +387,6 @@ function Stock() {
             ) : (
               <></>
             )}
-          </div>
-          {/* Filter/Search button*/}
-          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Filtrado
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Prioridad
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Recientes
-                  </a>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </section>
@@ -433,7 +408,7 @@ function Stock() {
           ) : (
             <ProductList
               products={products}
-            // handler={handleClickViewProduct}
+              // handler={handleClickViewProduct}
             />
           )}
         </div>
