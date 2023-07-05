@@ -12187,19 +12187,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kevin\\.nuget\\packages\\": {}
+    "C:\\Users\\XPC\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
+      "projectUniqueName": "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
       "projectName": "FicusAppTests",
-      "projectPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
-      "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\obj\\",
+      "projectPath": "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
+      "packagesPath": "C:\\Users\\XPC\\.nuget\\packages\\",
+      "outputPath": "F:\\ReposU\\Renovadores\\FicusAppTests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\XPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12213,8 +12218,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj": {
-              "projectPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj"
+            "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj": {
+              "projectPath": "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj"
             }
           }
         }
@@ -12270,7 +12275,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }
