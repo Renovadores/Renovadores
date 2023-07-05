@@ -57,9 +57,14 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/cerrarSesion" onClick={props.handleCloseSession}>
-                Cerrar Sesion
-              </NavLink>
+                <NavLink tag={Link} className="text-light" to="/reportes">
+                    Reportes
+                </NavLink>
+            </NavItem>
+            <NavItem>
+        <NavLink tag={Link} className="text-light" to="/cerrarSesion" onClick={props.handleCloseSession}>
+            Cerrar Sesion
+        </NavLink>
             </NavItem>
           </ul>
         </Collapse>
