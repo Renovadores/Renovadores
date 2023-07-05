@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj": {}
+    "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj": {}
   },
   "projects": {
-    "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj": {
+    "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
+        "projectUniqueName": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
         "projectName": "FicusAppTests",
-        "projectPath": "F:\\ReposU\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
-        "packagesPath": "C:\\Users\\XPC\\.nuget\\packages\\",
-        "outputPath": "F:\\ReposU\\Renovadores\\FicusAppTests\\obj\\",
+        "projectPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
+        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\XPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,8 +28,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj": {
-                "projectPath": "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj"
+              "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj": {
+                "projectPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj"
               }
             }
           }
@@ -89,25 +85,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj": {
+    "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj",
+        "projectUniqueName": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj",
         "projectName": "FicusApp",
-        "projectPath": "F:\\ReposU\\Renovadores\\FicusApp\\FicusApp.csproj",
-        "packagesPath": "C:\\Users\\XPC\\.nuget\\packages\\",
-        "outputPath": "F:\\ReposU\\Renovadores\\FicusApp\\obj\\",
+        "projectPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\FicusApp.csproj",
+        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\XPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -187,7 +179,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
