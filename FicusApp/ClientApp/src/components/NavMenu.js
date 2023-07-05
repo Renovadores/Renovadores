@@ -37,11 +37,6 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/clientes">
-                Clientes
-              </NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink tag={Link} className="text-light" to="/ordenes">
                 Ordenes
               </NavLink>
@@ -52,10 +47,18 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/inventario">
-                Inventario
+              <NavLink tag={Link} className="text-light" to="/clientes">
+                Clientes
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink tag={Link} className="text-light" to="/eventos">
+                Eventos
+              </NavLink>
+            </NavItem>
+            <NavLink tag={Link} className="text-light" to="/inventario">
+              Inventario
+            </NavLink>
             <NavItem>
                 <NavLink tag={Link} className="text-light" to="/reportes">
                     Reportes

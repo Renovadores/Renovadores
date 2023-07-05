@@ -19,10 +19,8 @@ namespace FicusApp.Controllers
         [Route("GetHistorialToken/{UsuarioId}")]
         public async Task<IActionResult> GetHistorialToken(int UsuarioId)
         {
-            var historialToken = _context.HistorialRefreshToken
-                                                        .Where(h => h.UsuarioId == UsuarioId)
-                                                        .OrderByDescending(h => h.FechaCreacion)
-                                                        .Take(1).SingleOrDefault();
+            HistorialRefreshToken historialToken = _context.HistorialRefreshToken
+                                         .Where(h => h.UsuarioId == UsuarioId).Single();
             return Ok(historialToken);
         }
 

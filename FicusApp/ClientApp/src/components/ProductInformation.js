@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import CheckBox from "./CheckBox";
+import { GetToken } from "../GetToken";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
@@ -11,12 +12,18 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import InputDelete from "./InputDelete";
 
 function ProductInformation() {
+    const [token, setToken] = useState("");
     const params = useParams();
     // get info from URL
     const ProductoId = params.ProductoId;
     const [productInfo, setInfo] = useState("");
     const getProduct = async () => {
-        const responseProduct = await fetch(`api/producto/GetProducto/${ProductoId}`);
+        const responseProduct = await fetch(`api/producto/GetProducto/${ProductoId}`, {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (responseProduct.ok) {
             const data = await responseProduct.json();
             setInfo(data);
@@ -28,10 +35,16 @@ function ProductInformation() {
     };
     // this method allows to auto call getProduct when page is started
     useEffect(() => {
+      if (token !== "") {
         getProduct();
-    }, []);
-
-
+      } else {
+        const getToken = async () => {
+          const dbToken = await GetToken();
+          setToken(dbToken);
+        }
+        getToken();
+      }
+    }, [token]);
 
     const [productoId, setProductoId] = useState("");
     const handleChangeProductoId = (event) => {
@@ -114,6 +127,7 @@ function ProductInformation() {
     };
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
         console.log(
             productoId,
             nombre,
@@ -127,29 +141,33 @@ function ProductInformation() {
             categoriaId,
             familiaId,
         );
+        const currentToken = await GetToken();
         const response = await fetch("api/producto/EditProducto", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                colorId: colorId,
-                productoId: productoId,
-                nombre: nombre,
-                descripcion: descripcion,
-                dimensiones: dimensiones,
-                pesoRecipiente: pesoRecipiente,
-                pesoDesechable: pesoDesechable,
-                alquilerComercios: alquilerComercios,
-                alquilerRetail: alquilerRetail,
-                categoriaId: categoriaId,
-                familiaId: familiaId,
-            }),
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': `Bearer ${currentToken}`
+          },
+          body: JSON.stringify({
+              colorId: colorId,
+              productoId: productoId,
+              nombre: nombre,
+              descripcion: descripcion,
+              dimensiones: dimensiones,
+              pesoRecipiente: pesoRecipiente,
+              pesoDesechable: pesoDesechable,
+              alquilerComercios: alquilerComercios,
+              alquilerRetail: alquilerRetail,
+              categoriaId: categoriaId,
+              familiaId: familiaId,
+          }),
         });
-        console.log(response);
-
         if (response.ok) {
-            
+          if (currentToken === token) {
+            getProduct();
+          } else {
+            setToken(currentToken);
+          }
         }
     };
     function irASeccionProductos() {
@@ -171,10 +189,12 @@ function ProductInformation() {
             familiaId,
             descontinuado
         );
+        const currentToken = await GetToken();
         const response = await fetch("api/producto/DeleteProducto", {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({
                 colorId: colorId,
@@ -194,7 +214,7 @@ function ProductInformation() {
         console.log(response);
 
         if (response.ok) {
-
+          irASeccionProductos();
         }
     };
 
@@ -244,7 +264,7 @@ function ProductInformation() {
                             </button>
                             <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
                                 <button
-                                    className="btn btn-primary"
+                                    className="btn btn-danger text-light"
                                     type="button"
                                     data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasWithBothOptions2"
@@ -280,10 +300,10 @@ function ProductInformation() {
                                         <form onSubmit={handleSubmitDelete}>
                                         <div className="row">
                                                 <div className="col-6 d-flex justify-content-center">                                                   
-                                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={irASeccionProductos}>Eliminar</button>
+                                                    <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Eliminar</button>
                                             </div>
                                                 <div className="col-6 d-flex justify-content-center">
-                                                        <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                                        <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
                                             </div>
                                             </div>
                                         </form>
@@ -343,10 +363,10 @@ function ProductInformation() {
 
                                         <div className="row">
                                             <div className="col-6 d-flex justify-content-center">
-                                                <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" onClick={getProduct} >Agregar</button>
+                                                <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
                                             </div>
                                             <div className="col-6 d-flex justify-content-center">
-                                                <button className="btn btn-danger" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                                                <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
                                             </div>
                                         </div>
                                         </form>
@@ -388,8 +408,8 @@ function ProductInformation() {
                     </ul>
                 </div>
             </div>
-            </div>
-    );
+          </div>
+  );
 }
 
 export default ProductInformation;
