@@ -2,6 +2,7 @@
   return (
     <div className="form-floating mb-3">
       <input
+        value={props.variable}
         type="number"
         min="0"
         className="form-control"

@@ -7,10 +7,10 @@ function ProductList(props) {
       {props.products.length !== 0 ? (
         props.products.map((product, productIndex) => (
           <div className="col-sm-6 col-md-3 mb-3" key={product.productoId}>
-            <div className="card">
+            <div className="card h-100">
               <img
                 src="/images/Van Ficus.jpg"
-                classname="card-img-top"
+                className="card-img-top"
                 alt="imagen"
               />
               <div className="card-body">

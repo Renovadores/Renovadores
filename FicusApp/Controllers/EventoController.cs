@@ -1,5 +1,6 @@
 ﻿using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace FicusApp.Controllers
             _eventService = eventService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetEventos")]
         public async Task<IActionResult> GetEventos()
@@ -24,6 +26,7 @@ namespace FicusApp.Controllers
             return Ok(eventos);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddEvento")]
         public async Task<IActionResult> AddEvento([FromBody] Evento request)
@@ -32,6 +35,7 @@ namespace FicusApp.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("FindEvento/{name}")]
         public async Task<IActionResult> FindEvento(string name)
@@ -44,6 +48,7 @@ namespace FicusApp.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetEventId/{name}")]
         public async Task<IActionResult> GetEventId(string name)
@@ -54,6 +59,15 @@ namespace FicusApp.Controllers
                 id = id
             };
             return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("EditDescription")]
+        public async Task<IActionResult> EditDescription([FromBody] Evento evento)
+        {
+            _eventService.EditDescription(evento);
+            return Ok();
         }
     }
     public class Exist

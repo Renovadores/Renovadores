@@ -1,18 +1,34 @@
 import { useEffect, useState } from "react";
+import { GetToken } from "../GetToken";
 
 function BelongToEvent(props) {
+  const [token, setToken] = useState("");
   const [events, setEvents] = useState([]);
+
   useEffect(() => {
-    const getEvents = async () => {
-      const eventResponse = await fetch("api/evento/GetEventos");
-      if (eventResponse.ok) {
-        const data = await eventResponse.json();
-        console.log(data)
-        setEvents(data);
+    if (token !== "") {
+      const getEvents = async () => {
+        const eventResponse = await fetch("api/evento/GetEventos", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (eventResponse.ok) {
+          const data = await eventResponse.json();
+          console.log(data)
+          setEvents(data);
+        }
       }
+      getEvents();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
     }
-    getEvents();
-  }, []);
+  }, [token]);
 
   return (
     <div>

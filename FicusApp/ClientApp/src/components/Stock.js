@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
+import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import SelectColor from "./SelectColor";
@@ -8,16 +9,25 @@ import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
 import ProductList from "./ProductList";
 import AddInventoryModal from "./AddInventoryModal";
+import MatchingProductListStock from "./MatchingProductListStock";
+import MatchingProductsInput from "./MatchingProductsInput";
+import { getMatchProducts } from "./Inventory";
 
 function Stock() {
   // get products from data base
+  const [token, setToken] = useState("");
   const [productsChecked, setProductsChecked] = useState(false);
   const [products, setProducts] = useState([]);
   const [addedProductId, setAddedProductId] = useState();
 
   const getProducts = async () => {
     setProductsChecked(false);
-    const response = await fetch("api/producto/GetProducts");
+    const response = await fetch("api/producto/GetProducts", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (response.ok) {
       const data = await response.json();
       setProducts(data);
@@ -28,12 +38,16 @@ function Stock() {
   };
   // this method allows to auto call getProducts when page is started
   useEffect(() => {
-    getProducts();
-  }, []);
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+    if (token === "") {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    } else {
+      getProducts();
+    }
+  }, [token]);
 
   // // When user click on client button, 'navigate hook' redirect him to new page
   // const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
@@ -47,7 +61,7 @@ function Stock() {
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
     setProductoId(event.target.value);
-    setAddedProductId(productoId);
+    setAddedProductId(event.target.value);
   };
 
   const [nombre, setNombre] = useState("");
@@ -111,6 +125,30 @@ function Stock() {
     setAddedProductId();
   };
 
+  // Search input
+  const [matchingProducts, setMatchingProducts] = useState([]);
+  const handleMatchProduct = (matched) => {
+    setMatchingProducts(matched);
+  };
+
+  const [productInput, setProductInput] = useState("");
+  const handleProductInput = (event) => {
+    setProductInput(event.target.value);
+  };
+
+  // this method is used when search criteria is changed
+  const searchProductInput = () => {
+    if (productInput === "") {
+      setMatchingProducts([]);
+    } else {
+      getMatchProducts(productInput, handleMatchProduct);
+    }
+  };
+
+  useEffect(() => {
+    searchProductInput();
+  }, [productInput]);
+
   const handleCancel = () => {
     setProductoId("");
     setNombre("");
@@ -142,10 +180,12 @@ function Stock() {
       categoriaId,
       familiaId
     );
+    const currentToken = await GetToken();
     const responseProduct = await fetch("api/producto/AddProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
         colorId: colorId,
@@ -162,12 +202,14 @@ function Stock() {
         descontinuado: 0,
       }),
     });
-    console.log(responseProduct);
 
     if (responseProduct.ok) {
       handleCancel();
-      getProducts();
-      //setAddedProductId();
+      if (token === currentToken) {
+        getProducts();
+      } else {
+        setToken(currentToken);
+      }
     }
   };
 
@@ -328,38 +370,23 @@ function Stock() {
             </div>
           </div>
         </div>
-        <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0">
-          {/* Filter/Search text*/}
-          <input
-            className="form-control"
-            list="datalistOptions"
-            id="exampleDataList"
-            placeholder="Buscar producto..."
-          />
-          {/* Filter/Search button*/}
-          <div className="col-sm-6 col-md-3 d-flex my-2 my-md-0 ms-2">
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Filtrado
-              </button>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Prioridad
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="/productos/informacion/">
-                    Recientes
-                  </a>
-                </li>
-              </ul>
-            </div>
+        <div className="col-md-6 d-flex my-2 my-md-0">
+          <div className="col-8">
+            {/* Filter/Search text*/}
+            <MatchingProductsInput
+              productInput={productInput}
+              handler={handleProductInput}
+            />
+            {matchingProducts.length === 0 && productInput !== "" ? (
+              <label>No se encontro el producto</label>
+            ) : matchingProducts.length !== 0 && productInput !== "" ? (
+              <MatchingProductListStock
+                products={matchingProducts}
+                handleSelectedProduct={handleChangeProductoId}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </section>

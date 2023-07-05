@@ -4,13 +4,13 @@ function ClientList(props) {
     <div className="row m-2 mt-4">
       {
         props.clients.length !== 0 ?
-          props.clients.map((client, index) => (
+          props.clients.map((client) => (
             <div className="col-sm-6 col-md-3 mb-3" key={client.clienteId}>
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">{client.nombreEmpresa}</h5>
-                  <p className="card-text">Ordenes activas: </p>
-                  <button className="btn btn-primary" onClick={() => props.handler(index)}>Ver cliente</button>
+                  <p className="card-text utf-8">Ordenes activas: </p>
+                  <button className="btn btn-primary" onClick={() => props.handler(client.clienteId)}>Ver cliente</button>
                 </div>
               </div>
             </div>

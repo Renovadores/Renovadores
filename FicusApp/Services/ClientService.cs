@@ -43,11 +43,11 @@ namespace FicusApp.Services
             int code = SUCCESS_CODE;
             Cliente? cliente = null;
 
-            if (_context.Cliente == null)
+            if (_context.Cliente.Count() == 0)
             {
                 code = NOT_FOUND_CODE;
             }
-            else if (id < 0 || id > _context.Cliente.Count() - 1)
+            else if (id < 0 || id > _context.Cliente.Max(c=>c.ClienteId))
             {
                 code = OUT_OF_RANGE_CODE;
             }
@@ -59,16 +59,41 @@ namespace FicusApp.Services
             return response;
         }
 
-        public async Task<List<Cliente>> GetClientes()
+        public async Task<(int, List<Cliente>)> GetClientes(int index)
         {
-            List<Cliente> clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
-            return clientes;
+            int code = SUCCESS_CODE;
+            List<Cliente> clientes = new();
+            if (_context.Cliente.Count() == 0)
+            {
+                code = NOT_FOUND_CODE;
+            }
+            else
+            {
+                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(4).ToList();
+            }
+            return (code, clientes);
         }
 
         public async Task<int> GetNewId()
         {
             int id = _context.Cliente.Count() + 1;
             return id;
+        }
+
+        public async Task<List<Cliente>> GetMatchClients(string input)
+        {
+            List<Cliente> matchClients;
+            matchClients = _context.Cliente
+                .Where(p => p.NombreEmpresa.Contains(input) && p.Estado != "Eliminado")
+                .OrderBy(p => p.NombreEmpresa)
+                .Take(8)
+                .ToList();
+            return matchClients;
+        }
+
+        public async Task<int> GetTotalClients()
+        {
+            return _context.Cliente.Where(c => c.Estado != "Eliminado").Count();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace FicusApp.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenExpiradoSupuestamente = tokenHandler.ReadJwtToken(request.TokenExpirado);
 
-            if (tokenExpiradoSupuestamente.ValidTo > DateTime.UtcNow)
+            if (tokenExpiradoSupuestamente.ValidTo > DateTime.UtcNow/*.AddSeconds(5)*/)
                 // was: bad request
                 return Ok(new AutorizacionResponse { Resultado = false, Msg = "Token no ha expirado" });
 
@@ -57,6 +57,7 @@ namespace FicusApp.Controllers
                 return BadRequest(autorizacionResponse);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetUsers")]
         public async Task<IActionResult> GetUsers()
@@ -65,6 +66,7 @@ namespace FicusApp.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetUser/{id}")]
         public async Task<IActionResult> GetUser(int id)
@@ -73,6 +75,7 @@ namespace FicusApp.Controllers
             return Ok(usuario);
         }
 
+        // TO-DO: delete this method
         [HttpGet]
         [Route ("CloseSession/{id}")]
         public async Task<IActionResult> CloseSession(int id)
