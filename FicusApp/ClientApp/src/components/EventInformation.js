@@ -38,13 +38,13 @@ function EventInformation() {
             }
           </div>
           :
-          <div>
+          <div className="row">
             <div className="vh-min-100 mx-2 text-center">
               <h1>{event.nombreEvento}</h1>
             </div>
             {
               eventDateList.map((date, index) => (
-                <div className="d-flex justify-content-center" key={index}>
+                <div className="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center" key={index}>
                   <div className="card my-3" style={{ width: 288 }} >
                     <div className="card-body">
                       <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
