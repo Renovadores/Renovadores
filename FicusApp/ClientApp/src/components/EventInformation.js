@@ -25,10 +25,10 @@ function EventInformation() {
     getEventsGroupByDate();
   }, [])
   return (
-    <div className="container vh-min-100 d-flex justify-content-center">
+    <div className="container d-flex justify-content-center">
       {
         eventDateList.length === 0 ?
-          <div className="vh-min-100 mx-2 text-center">
+          <div className=" mx-2 text-center">
             <h1>{event.nombreEvento}</h1>
             {
               eventsChecked ?
@@ -38,35 +38,39 @@ function EventInformation() {
             }
           </div>
           :
-          <div className="row">
-            <div className="vh-min-100 mx-2 text-center">
-              <h1>{event.nombreEvento}</h1>
+          <div className="container">
+            <div className="row">
+              <div className="col text-center">
+                <h1>{event.nombreEvento}</h1>
+              </div>
             </div>
-            {
-              eventDateList.map((date, index) => (
-                <div className="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center" key={index}>
-                  <div className="card my-3" style={{ width: 288 }} >
-                    <div className="card-body">
-                      <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
+            <div className="row">
+              {
+                eventDateList.map((date, index) => (
+                  <div className="h-25 col-sm-6 col-md-4 d-flex justify-content-center" key={index}>
+                    <div className="card my-3" style={{ width: 288 }} >
+                      <div className="card-body">
+                        <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
+                      </div>
+                      <ul className="list-group list-group-flush">
+                        {
+                          date.map((order) => (
+                            <li className="list-group-item" key={order.ordenId}>
+                              <h6>
+                                {order.cliente.nombreEmpresa}
+                              </h6>
+                              <a href={"/ordenes/" + order.ordenId} className="card-link link-info">
+                                Orden: {order.ordenId}
+                              </a>
+                            </li>
+                          ))
+                        }
+                      </ul>
                     </div>
-                    <ul className="list-group list-group-flush">
-                      {
-                        date.map((order) => (
-                          <li className="list-group-item" key={order.ordenId}>
-                            <h6>
-                              {order.cliente.nombreEmpresa}
-                            </h6>
-                            <a href={"/ordenes/" + order.ordenId} className="card-link link-info">
-                              Orden: {order.ordenId}
-                            </a>
-                          </li>
-                        ))
-                      }
-                    </ul>
                   </div>
-                </div>
-              ))
-            }
+                ))
+              }
+            </div>
           </div>
       }
     </div>
