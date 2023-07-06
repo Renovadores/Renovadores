@@ -1,8 +1,0 @@
-{
-"SpaProxyServer": {
-"ServerUrl": "https://localhost:44435",
-"LaunchCommand": "npm start",
-"WorkingDirectory": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusApp\\ClientApp\\",
-"MaxTimeoutInSeconds": "120"
-}
-}
