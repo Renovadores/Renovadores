@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PPyYbDtqKOmTv4KNwQvQxosFQs7i/3EbhV9OMeo+6+561QSsDQx8hHYgkuWmOlc8YLzCNIXh52UOX/nd8Hb9Bg==",
+  "dgSpecHash": "O0r+NyxmbNsFtju5ExNSz3hX4r09vApBlXT/A4yk+Ww18IE/2kkO7z62slUl+8uDw3A3W81aKaRTk4dFmxl7YA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\FicusAppTests.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,7 @@
     "C:\\Users\\Kevin\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\coverlet.collector\\3.1.2\\coverlet.collector.3.1.2.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
-    "C:\\Users\\Kevin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.5\\microsoft.aspnetcore.authentication.jwtbearer.7.0.5.nupkg.sha512",
+    "C:\\Users\\Kevin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.7\\microsoft.aspnetcore.authentication.jwtbearer.7.0.7.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.11\\microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\7.0.4\\microsoft.aspnetcore.spaproxy.7.0.4.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
@@ -205,5 +205,12 @@
     "C:\\Users\\Kevin\\.nuget\\packages\\xunit.extensibility.execution\\2.4.2\\xunit.extensibility.execution.2.4.2.nupkg.sha512",
     "C:\\Users\\Kevin\\.nuget\\packages\\xunit.runner.visualstudio\\2.4.5\\xunit.runner.visualstudio.2.4.5.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema al leer el archivo de caché C:\\Users\\Kevin\\Documents\\Curso_PI_software_y_bases\\Renovadores\\FicusAppTests\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
