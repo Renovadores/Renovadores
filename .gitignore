@@ -1,4 +1,5 @@
-
+FicusAppTests/bin/
+FicusAppTests/obj/
 *.dll
 *.dll
 *.dll
