@@ -26,24 +26,24 @@ namespace FicusApp.Services
 
         public async Task<int> GetNewCode()
         {
-            int code = _context.Orden.Count() + 1;
+            int code = await _context.Orden.CountAsync() + 1;
             return code;
         }
 
         public async Task<List<Orden>> GetOrders()
         {
-            List<Orden> orders = _context.Orden.ToList();
+            List<Orden> orders = await _context.Orden.ToListAsync();
             return orders;
         }
 
         public async Task<List<List<Orden>>> GetOrdersByDate(int eventId)
         {
-            List<Orden> orders = _context.Orden
+            List<Orden> orders = await _context.Orden
                                 .Where(o => o.Evento != null && 
                                        o.EventoId == eventId)
                                 .Include(o => o.Cliente)
                                 .OrderBy(O => O.FechaAlquiler)
-                                .ToList();
+                                .ToListAsync();
             List<List<Orden>> filterOrders = new();
             foreach (var o in orders)
             {
