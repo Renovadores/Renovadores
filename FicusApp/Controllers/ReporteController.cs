@@ -19,9 +19,32 @@ namespace FicusApp.Controllers
         [Route("GetAnnualEnvironmentalReport/{year}")]
         public async Task<IActionResult> GetAnnualEnvironmentalReport(int year)
         {
-            List<int> annualReport = await _reportService.GetAnnualEnvironmentReport(year);
+            List<int> annualReport = await _reportService.GetAnnualEnvironmentalReport(year);
             return Ok(annualReport);
         }
 
+        [HttpGet]
+        [Route("GetClientAnnualEnvironmentalReport/{clientId}/{year}")]
+        public async Task<IActionResult> GetClientAnnualEnvironmentalReport(int clientId, int year)
+        {
+            List<int> annualReport = await _reportService.GetClientAnnualEnvironmentalReport(clientId, year);
+            return Ok(annualReport);
+        }
+
+        [HttpGet]
+        [Route("GetAnnualOrderReport/{year}")]
+        public async Task<IActionResult> GetAnnualOrderReport(int year)
+        {
+            List<int> annualReport = await _reportService.GetAnnualOrderReport(year);
+            return Ok(annualReport);
+        }
+
+        [HttpGet]
+        [Route("GetClientAnnualOrderReport/{clientId}/{year}")]
+        public async Task<IActionResult> GetClientAnnualOrderReport(int clientId, int year)
+        {
+            List<int> annualReport = await _reportService.GetClientAnnualOrderReport(clientId, year);
+            return Ok(annualReport);
+        }
     }
 }
