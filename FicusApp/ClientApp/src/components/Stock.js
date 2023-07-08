@@ -32,6 +32,7 @@ function Stock() {
       const data = await response.json();
       setProducts(data);
       setProductsChecked(true);
+      console.log(products);
     } else {
       console.log(response.text);
     }
@@ -212,6 +213,24 @@ function Stock() {
       }
     }
   };
+
+  // Get inventory states from DB
+  /*const [inventoryStates, setInventoryStates] = useState([]);
+  const [inventoryState, setInventoryState] = useState(inventoryStates[0]);
+
+  /*const getInventoryStates = async () => {
+    const response = await fetch("api/inventario/GetState");
+    if (response.ok) {
+      const data = await response.json();
+      setInventoryStates(data);
+      setInventoryState(data[0].iD_estado);
+    } else {
+      console.log(response.text);
+    }
+  };
+  useEffect(() => {
+    getInventoryStates();
+  }, []);*/
 
   return (
     <div>
