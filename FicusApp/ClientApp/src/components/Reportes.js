@@ -33,7 +33,7 @@ const options = {
 
 const Reportes = () => {
     const [dataLine, setDataLine] = useState({});
-
+    const [environmentalReport, setEnvironmentalReport] = useState([]);
     useEffect(() => {
         const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
@@ -47,7 +47,14 @@ const Reportes = () => {
                 },
             ],
         };
-
+        const getReport = async () => {
+          const response = await fetch(`api/reporte/GetAnnualEnvironmentalReport/${2023}`);
+          if (response.ok) {
+            const report = await response.json();
+            console.log(report);
+          }
+        }
+        getReport();
         setDataLine(data);
     }, []);
 
