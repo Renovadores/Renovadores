@@ -10,6 +10,7 @@ import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
 import ButtonOrder from "./ButtonOrder";
 import ButtonDeleteClient from "./ButtonDeleteClient";
+import ComponentReport from "./ComponentReport";
 
 function ClientInformation() {
     // get client id sent by navigate function in Client.js
@@ -433,7 +434,9 @@ function ClientInformation() {
                     <Spinner />
                     :
                     <div className="container" >
-                        <div className="card m-3 mt-5" >
+                       <div className="row">
+                        <div className="col">
+                         <div className="card m-3 mt-5" >
                             <div className="card-body">
                                 <div className="row align-items-center responsive">
                                     <div className="col-8 col-sm-9">
@@ -505,6 +508,16 @@ function ClientInformation() {
                                 </div>
                             </div>
                             <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
+                        </div>
+                        </div>
+                        <div className="col py-4">
+                        <div className="m-2">
+                            <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${2022}`} texto="Reporte Huella Ambiental"/>
+                        </div>
+                        <div className="m-2">
+                            <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${2022}`}/>
+                        </div>
+                        </div>
                         </div>
                         <ButtonOrder clientId={clientId} />
                         <ButtonDeleteClient clientId={clientId} clientName={clientInfo.nombreEmpresa} handler={handleDeleteClient} />

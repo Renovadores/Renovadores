@@ -29,15 +29,20 @@ const options = {
     legend: {
       position: 'top',
     },
+    title: {
+      display: true,
+      text: "",
+    },
   },
 };
 
-const Reportes = () => {
+const ComponentReport = (props) => {
+  options.plugins.title.text = props.texto;
   const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const [environmentalReport, setEnvironmentalReport] = useState({});
   useEffect(() => {
     const getReport = async () => {
-    const response = await fetch(`api/reporte/GetAnnualEnvironmentalReport/${2022}`);
+      const response = await fetch(props.parametro);
       if (response.ok) {
         const report = await response.json();
         setEnvironmentalReport(
@@ -57,33 +62,18 @@ const Reportes = () => {
     }
     getReport();
   }, []);
-
   return (
-    <div className="container h-75">
+    <div className="bg-light m-0">
+    {
+      environmentalReport.datasets ?
+        <div>
+          <Line options={options} data={environmentalReport} />
 
-      <div className="row d-flex justify-content-center">
-        <div className="col-6">
-          <h4 className="text-center">Reporte Huella Ambiental</h4>
         </div>
-      </div>
-      <div className="row">
-        <div className="col p-0 mb-4">
-          <div className="bg-light m-0">
-            {
-              environmentalReport.datasets ?
-              <div>
-                  <Line options={options} data={environmentalReport} />
-                  
-              </div>
-                :
-                <p>Cargando datos...</p>
-            }
-          </div>
-        </div>
-      </div>
-
+        :
+        <p>Cargando datos...</p>
+    }
     </div>
-  );
-};
-
-export default Reportes;
+  )
+}
+export default ComponentReport;
