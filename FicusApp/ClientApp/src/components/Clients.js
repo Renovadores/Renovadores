@@ -4,12 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CheckBox from "./CheckBox";
 import ClientList from "./ClientList";
-import FilterClients from "./FilterClients";
 import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
 import Pagination from "./Pagination";
-import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
@@ -136,11 +134,6 @@ function Clients() {
     setOtro(event.target.checked)
   }
 
-  const [personInCharge, setPersonInCharge] = useState(1);
-  const handleChangePersonInCharge = (event) => {
-    setPersonInCharge(event.target.value)
-  }
-
   const [priority, setPriority] = useState("Baja");
   const handleChangePriority = (event) => {
     setPriority(event.target.value)
@@ -224,7 +217,6 @@ function Clients() {
     setLlamada(false);
     setOtra(false);
     setPaginaWeb("");
-    setPersonInCharge(1);
     setPriority("Baja");
     setState("Contacto");
     setTelefono('');
@@ -303,13 +295,14 @@ function Clients() {
     if (responseId.ok) {
       const newClientId = await responseId.json();
       // add client
+      const userId = JSON.parse(sessionStorage.getItem('userId'));
       const responseCliente = await fetch("api/cliente/AddCliente", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           'Authorization': `Bearer ${currentToken}`
         },
-        body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+        body: JSON.stringify({ clienteId: newClientId.id, fechaAgregado: dateDB, responsableId: userId, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
       });
       if (responseCliente.ok) {
         // add segments
@@ -420,8 +413,7 @@ function Clients() {
                   <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
                   <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
                 </div>
-
-                <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
+                
                 <SelectPriority variable={priority} handler={handleChangePriority} />
                 <SelectState variable={state} handler={handleChangeState} />
 
