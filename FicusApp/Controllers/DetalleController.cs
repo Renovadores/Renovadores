@@ -40,6 +40,27 @@ namespace FicusApp.Controllers
             int code = await _detailService.AddDetalle(request);
             return Ok();
         }
+        
+        // PUT: api/Detalle/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{OrdenId}/{ProductoId}")]
+        public async Task<IActionResult> PutDetalle(int OrdenId, string ProductoId, Detalle detalle)
+        {
+            if (OrdenId != detalle.OrdenId || ProductoId != detalle.ProductoId)
+            {
+                return BadRequest();
+            }
+
+            bool detalleExists = await _detailService.UpdateDetalleExists(OrdenId, ProductoId);
+            if (!detalleExists)
+            {
+                return NotFound();
+            }
+
+            await _detailService.UpdateDetalle(detalle);
+
+            return NoContent();
+        }
 
     }
 }

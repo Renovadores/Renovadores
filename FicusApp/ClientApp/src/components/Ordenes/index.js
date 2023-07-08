@@ -27,45 +27,44 @@ const Orden = () => {
   };
 
   const [cliente, setCliente] = useState([]);
-    const fetchCliente = async () => {
-      try {
-        const response = await fetch(`/api/cliente/GetClientes/`);
-        const data = await response.json();
-        setCliente(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+  const fetchCliente = async () => {
+    try {
+      const response = await fetch(`/api/cliente/GetClientes/`);
+      const data = await response.json();
+      setCliente(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const [fases, setFases] = useState([]);
+  // Pedir los datos de una fase con su ID
+  const fetchFases = async () => {
+    try {
+      const response = await fetch(`/api/fase/`);
+      const data = await response.json();
+      setFases(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     fetchHistorial();
     fetchOrden();
     fetchCliente();
+    fetchFases();
   }, []);
 
-  const getFase = (ordenId) => {
-    const fases = historial
-      .filter((d) => d.ordenId === ordenId)
-      .map((d) => d.faseId);
-
-    if (fases.length === 0) {
-      return null;
-    }
-
-    return fases.reduce((maxFaseId, faseId) => {
-      return Math.max(maxFaseId, faseId);
-    });
-  };
 
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
   const filteredOrden = orden.filter((orden) => {
-    return (
-      orden.ordenId.toString().includes(searchTerm)
-    );
+    return orden.ordenId.toString().includes(searchTerm);
   });
+
 
   return (
     <>
@@ -73,7 +72,7 @@ const Orden = () => {
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
       />
-      <div class="card overflow-y-scroll" style={{ height: "75vh" }}>
+      <div class="card overflow-y-scroll" style={{ height: "75vh", overflowY: "auto" }}>
         <table className="table table-hover ">
           <thead>
             <tr>
@@ -103,10 +102,11 @@ const Orden = () => {
               <RowOrden
                 ordenId={orden.ordenId}
                 clienteId={
-                  cliente.filter(c => c.clienteId === orden.clienteId)[0]?.nombreEmpresa
+                  cliente.filter((c) => c.clienteId === orden.clienteId)[0]
+                    ?.nombreEmpresa
                 }
                 fechaAlquiler={orden.fechaAlquiler}
-                faseId={getFase(orden.ordenId)}
+                fases={fases}
                 monto={orden.monto}
                 key={orden.ordenId}
               />

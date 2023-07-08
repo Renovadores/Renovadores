@@ -7,6 +7,9 @@ namespace FicusApp.Services
     {
         Task<List<Detalle>> GetDetalle();
         Task<int> AddDetalle([FromBody] Detalle request);
+        Task<bool> UpdateDetalleExists(int OrdenId, string ProductoId);
+        Task UpdateDetalle(Detalle detalle);
+        bool DetalleExists(int OrdenId, string ProductoId);
 
     }
 }

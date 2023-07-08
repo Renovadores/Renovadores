@@ -9,6 +9,7 @@ namespace FicusApp.Services
         Task<List<Orden>> GetOrders();
         Task<int> GetNewCode();
         Task<int> AddOrder([FromBody] Orden request);
-
+        Task UpdateOrden(Orden orden);
+        bool OrdenExists(int id);
     }
 }

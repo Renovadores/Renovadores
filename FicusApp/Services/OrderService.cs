@@ -1,4 +1,5 @@
 ﻿using FicusApp.Controllers;
+using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using static NuGet.Packaging.PackagingConstants;
@@ -31,6 +32,17 @@ namespace FicusApp.Services
         {
             List<Orden> orders = _context.Orden.ToList();
             return orders;
+        }
+
+        public async Task UpdateOrden(Orden orden)
+        {
+            _context.Entry(orden).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public bool OrdenExists(int id)
+        {
+            return _context.Orden.Any(e => e.OrdenId == id);
         }
     }
 }

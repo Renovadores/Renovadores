@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using Microsoft.EntityFrameworkCore;
 using FicusApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,36 @@ namespace FicusApp.Controllers
         {
             int code = await _orderService.AddOrder(request);
             return Ok();
+        }
+
+
+        // PUT: api/Orden/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOrden(int id, Orden orden)
+        {
+            if (id != orden.OrdenId)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _orderService.UpdateOrden(orden);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_orderService.OrdenExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
     }
 
