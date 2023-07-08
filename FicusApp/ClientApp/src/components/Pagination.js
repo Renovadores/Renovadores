@@ -74,7 +74,7 @@ function Pagination(props) {
     getTotal();
   }, [props.update]);
   return (
-    <div className="row m-2 mt-4 d-flex justify-content-center">
+    <div className="row mt-4 d-flex justify-content-center">
       <h6 className="d-flex justify-content-center text-center">
         {active + 1}/{paginationLength.length + 1}
       </h6>
