@@ -512,10 +512,10 @@ function ClientInformation() {
                         </div>
                         <div className="col py-4">
                         <div className="m-2">
-                            <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${2022}`} texto="Reporte Huella Ambiental"/>
+                            <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${2022}`} label="Kilogramos" texto="Reporte Huella Ambiental"/>
                         </div>
                         <div className="m-2">
-                            <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${2022}`}/>
+                                    <ComponentReport parametro={`api/reporte/GetClientAnnualOrderReport/${clientId}/${2022}`} label="Cantidad" texto="Reporte de Ordenes"/>
                         </div>
                         </div>
                         </div>

@@ -50,7 +50,7 @@ const ComponentReport = (props) => {
             labels: labels,
             datasets: [
               {
-                label: 'Kilogramos',
+                label: props.label,
                 data: report,
                 backgroundColor: 'rgba(255, 44, 44, 1)',
                 borderColor: 'rgba(84, 74, 221, 0.5)'
