@@ -39,6 +39,11 @@ function Login(props) {
               <button type="submit" className="btn btn-info" >Ingresar</button>
             </div>
           </div>
+          <div className="row d-flex justify-content-center mt-3">
+            <div className="col-8 d-flex justify-content-center">
+              <label className="text-danger">{props.message}</label>
+            </div>
+          </div>
         </form>
       </div>
     </div>
