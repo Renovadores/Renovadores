@@ -25,7 +25,7 @@ function EventInformation() {
     getEventsGroupByDate();
   }, [])
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container d-flex justify-content-center min-vh-100">
       {
         eventDateList.length === 0 ?
           <div className=" mx-2 text-center">
@@ -38,7 +38,7 @@ function EventInformation() {
             }
           </div>
           :
-          <div className="row">
+          <div className="row h-100">
             <div className=" mx-2 text-center">
               <h1>{event.nombreEvento}</h1>
             </div>
