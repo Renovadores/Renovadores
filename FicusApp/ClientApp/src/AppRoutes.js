@@ -78,15 +78,13 @@ const AppRoutes = [
     element: <EventInformation />,
   },
   {
-    },
-    {
-        path: "/reportes",
-        element: <Reportes />,
-    },
+      path: "/reportes",
+      element: <Reportes />,
+  },
   {
     path: "/cerrarSesion",
     element: <Home />,
-    },
+   },
 ];
 
 export default AppRoutes;

@@ -453,9 +453,6 @@ function Clients() {
             </div>
           </div>
         </div>
-        <div className="col d-flex justify-content-end my-2">
-          <FilterClients />
-        </div>
         <div className="row">
           <div className="col-sm col-md-6 d-flex my-2">
             <input className="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar cliente..." onChange={handleSearch} />

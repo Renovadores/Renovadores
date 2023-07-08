@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<FicusContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
+
 //access to Models (for controllers)
 
-builder.Services.AddDbContext<FicusContext>();
+// builder.Services.AddDbContext<FicusContext>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInventarioService, InventarioService>();
 builder.Services.AddScoped<IClientService, ClientService>();
@@ -27,6 +31,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDetailService, DetailService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

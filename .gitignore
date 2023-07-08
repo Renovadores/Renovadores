@@ -1,6 +1,8 @@
-
+FicusAppTests/bin/
+FicusAppTests/obj/
 *.dll
 *.dll
 *.dll
 *.pdb
 *.dll
+*.cache
