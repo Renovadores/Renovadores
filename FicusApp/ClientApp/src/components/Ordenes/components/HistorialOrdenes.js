@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {formatDate, getFaseBadge, calcularDuracion} from "./utils.js"
+import { formatDate, getFaseBadge, calcularDuracion } from "./utils.js";
+import { GetToken } from "../../../GetToken.js";
 
 const HistorialOrdenes = ({ ordenId }) => {
+  const [token, setToken] = useState("");
   const [historial, setHistorial] = useState([]);
   const fetchHistorial = async () => {
     try {
-      const response = await fetch(`/api/historialorden/`);
+      const response = await fetch(`/api/historialorden/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setHistorial(data.filter((d) => d.ordenId === ordenId));
     } catch (error) {
@@ -25,10 +32,17 @@ const HistorialOrdenes = ({ ordenId }) => {
   };
 
   useEffect(() => {
-    fetchHistorial();
-    fetchFase();
-  }, []);
-
+    if (token !== "") {
+      fetchHistorial();
+      fetchFase();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    }
+  }, [token]);
 
   return (
     <div>

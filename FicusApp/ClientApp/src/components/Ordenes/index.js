@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { GetToken } from "../../GetToken.js";
 
 import RowOrden from "./components/RowOrden.js";
 import ActionsOrdenes from "./components/ActionsOrdenes.js";
 
 const Orden = () => {
+
+   const [token, setToken] = useState("");
+
+
   const [orden, setOrden] = useState([]);
   const fetchOrden = async () => {
     try {
-      const response = await fetch("/api/orden/GetOrders");
+    const response = await fetch(`/api/orden/GetOrders`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
       const data = await response.json();
       setOrden(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const [historial, setHistorial] = useState([]);
-  const fetchHistorial = async () => {
-    try {
-      const response = await fetch(`/api/historialorden/`);
-      const data = await response.json();
-      setHistorial(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -29,7 +28,12 @@ const Orden = () => {
   const [cliente, setCliente] = useState([]);
   const fetchCliente = async () => {
     try {
-      const response = await fetch(`/api/cliente/GetClientes/`);
+      const response = await fetch(`api/cliente/GetAllClientes/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
       const data = await response.json();
       setCliente(data);
     } catch (error) {
@@ -41,7 +45,12 @@ const Orden = () => {
   // Pedir los datos de una fase con su ID
   const fetchFases = async () => {
     try {
-      const response = await fetch(`/api/fase/`);
+      const response = await fetch(`/api/fase/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
       const data = await response.json();
       setFases(data);
     } catch (error) {
@@ -50,11 +59,18 @@ const Orden = () => {
   };
 
   useEffect(() => {
-    fetchHistorial();
+    if (token !== "") {
     fetchOrden();
     fetchCliente();
     fetchFases();
-  }, []);
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      }
+      getToken();
+    }
+  }, [token]);
 
 
   const [searchTerm, setSearchTerm] = useState("");

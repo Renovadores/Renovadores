@@ -44,6 +44,15 @@ namespace FicusApp.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("GetAllClientes")]
+        public async Task<IActionResult> GetAllClientes()
+        {
+            List<Cliente> clientes = await _clientService.GetAllClientes();
+            return Ok(clientes);
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("GetTotalClients")]
         public async Task<IActionResult> GetTotalClients()
         {

@@ -46,6 +46,7 @@ namespace FicusApp.Services
         public bool OrdenExists(int id)
         {
             return _context.Orden.Any(e => e.OrdenId == id);
+        }
         public async Task<List<Orden>> GetTodayOrder()
         {
             List<Orden> orders = await _context.Orden

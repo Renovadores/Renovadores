@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { getFaseButton, getLatestFase } from "./utils.js";
+import { GetToken } from "../../../GetToken";
 
-// TODO: filtar segun hasta que momento se puede cambiar la fase
 const FaseDropDown = ({ ordenId, fases }) => {
+  const [token, setToken] = useState("");
   const [faseId, setFaseId] = useState();
 
   const [historial, setHistorial] = useState([]);
   const fetchHistorial = async () => {
     try {
-      const response = await fetch(`/api/historialorden/`);
+      const response = await fetch(`/api/historialorden/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setHistorial(data);
     } catch (error) {
@@ -17,11 +23,18 @@ const FaseDropDown = ({ ordenId, fases }) => {
   };
 
   useEffect(() => {
-    fetchHistorial();
-    setFaseId(getLatestFase(historial, ordenId)?.faseId);
-  }, [faseId, historial, ordenId]);
+    if (token !== "") {
+      fetchHistorial();
+      setFaseId(getLatestFase(historial, ordenId)?.faseId);
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    }
+  }, [token, faseId, historial, ordenId]);
 
-  // TODO: modificar para que DATE sea DATETIME
   const handleCambioFase = async ({ nuevaFaseId }) => {
     try {
       const url = `/api/historialorden/`;
@@ -42,6 +55,7 @@ const FaseDropDown = ({ ordenId, fases }) => {
 
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -82,12 +96,12 @@ const FaseDropDown = ({ ordenId, fases }) => {
       {getFaseButton({ fases, faseId })}
       <ul className="dropdown-menu">
         {!renderFases.every((element) => element === null) ? (
-            renderFases
+          renderFases
         ) : (
           <li>
-          <button className="dropdown-item" disabled>
-            No más fases disponibles
-          </button>
+            <button className="dropdown-item" disabled>
+              No más fases disponibles
+            </button>
           </li>
         )}
       </ul>

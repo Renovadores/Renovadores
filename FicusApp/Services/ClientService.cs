@@ -43,11 +43,11 @@ namespace FicusApp.Services
             int code = SUCCESS_CODE;
             Cliente? cliente = null;
 
-            if (_context.Cliente.Count() == 0)
+            if (_context.Cliente == null)
             {
                 code = NOT_FOUND_CODE;
             }
-            else if (id < 0 || id > _context.Cliente.Max(c=>c.ClienteId))
+            else if (id < 0 || id > _context.Cliente.Count() - 1)
             {
                 code = OUT_OF_RANGE_CODE;
             }
@@ -72,6 +72,12 @@ namespace FicusApp.Services
                 clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(8).ToList();
             }
             return (code, clientes);
+        }
+
+        public async Task<List<Cliente>> GetAllClientes()
+        {
+            List<Cliente> clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
+            return clientes;
         }
 
         public async Task<int> GetNewId()

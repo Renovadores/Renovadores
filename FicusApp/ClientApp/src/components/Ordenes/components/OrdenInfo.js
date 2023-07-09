@@ -17,12 +17,12 @@ const OrdenInfo = () => {
   const [orden, setOrden] = useState([]);
   const fetchOrden = async () => {
     try {
-      const response = await fetch(`/api/orden/GetOrders`, {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+    const response = await fetch(`/api/orden/GetOrders`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
       const data = await response.json();
       setOrden(data.filter((d) => d.ordenId === ordenId)[0]);
     } catch (error) {
@@ -34,7 +34,7 @@ const OrdenInfo = () => {
   const [isOrdenUpdated, setOrdenUpdated] = useState(false);
   const handleEditarOrden = (valor, updated) => {
     setIsOrdenEditable(valor);
-    if (typeof updated !== 'undefined') {
+    if (typeof updated !== "undefined") {
       setOrdenUpdated(updated);
     }
   };
@@ -47,26 +47,19 @@ const OrdenInfo = () => {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     }
   }, [token]);
 
-  return (
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6 mb-2">
-              <div className="card">
-                <div className="card-body">
-                  <h5 class="card-title">Información del Cliente</h5>
-                  {
-                    orden.length === 0 ?
-                      <></>
-                      :
-                      <ClienteInfo clienteId={orden.clienteId} />
-                  }
-                </div>
-              </div>
+return (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 mb-2">
+          <div className="card">
+            <div className="card-body">
+              <h5 class="card-title">Información del Cliente</h5>
+              <ClienteInfo clienteId={orden.clienteId} />
             </div>
           </div>
         </div>

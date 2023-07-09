@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { GetToken } from "../../../GetToken";
 
 const ListaProductos = ({
   ordenId,
@@ -6,125 +7,151 @@ const ListaProductos = ({
   isOrdenEditable,
   ordenUpdated,
 }) => {
-import React, { useState, useEffect } from "react";
-import { GetToken } from "../../../GetToken";
+    const [token, setToken] = useState("");
+    const [detalle, setDetalle] = useState([]);
+    const [producto, setProducto] = useState([]);
 
-const ListaProductos = ({ ordenId }) => {
-  const [token, setToken] = useState("");
-  const [detalle, setDetalle] = useState([]);
-  const [producto, setProducto] = useState([]);
-
-  const fetchDetalle = async () => {
-    try {
-      const response = await fetch(`/api/detalle/`);
-      const data = await response.json();
-      setDetalle(data.filter((d) => d.ordenId === ordenId));
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const fetchProducto = async () => {
-    try {
-      const response = await fetch(`/api/producto/GetProducts`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-      setProducto(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const updateDetalle = async (productoId) => {
-    const objetoDetalle = {
-      ordenId: ordenId,
-      productoId: productoId,
-      pedidos: inputValues[productoId].pedidos,
-      sinUsar: inputValues[productoId].pedidos,
-      usados: inputValues[productoId].usados,
-      devueltos: inputValues[productoId].devueltos,
-      descuento: inputValues[productoId].descuento,
+    const fetchDetalle = async () => {
+      try {
+        const response = await fetch(`/api/detalle/`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setDetalle(data.filter((d) => d.ordenId === ordenId));
+      } catch (error) {
+        console.log(error.message);
+      }
     };
 
-    try {
-      const response = await fetch(`api/Detalle/${ordenId}/${productoId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(objetoDetalle),
-      });
-
-      if (response.ok) {
-        // Reinicia el estado para volver a actualizar
-        fetchDetalle();
-      } else {
-        console.error("Error al actualizar el detalle:", response.status);
+    const fetchProducto = async () => {
+      try {
+    const response = await fetch("api/producto/GetProducts", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+        const data = await response.json();
+        setProducto(data);
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.error("Error en la solicitud PUT:", error);
-    }
-  };
+    };
 
-  const [inputValues, setInputValues] = useState({});
+    const updateDetalle = async (productoId) => {
+      const objetoDetalle = {
+        ordenId: ordenId,
+        productoId: productoId,
+        pedidos: inputValues[productoId].pedidos,
+        sinUsar: inputValues[productoId].pedidos,
+        usados: inputValues[productoId].usados,
+        devueltos: inputValues[productoId].devueltos,
+        descuento: inputValues[productoId].descuento,
+      };
 
-  useEffect(() => {
-    if (!isOrdenEditable || ordenUpdated) {
-      fetchDetalle();
-      fetchProducto();
-    }
-  }, [isOrdenEditable]);
-
-  useEffect(() => {
-    if (ordenUpdated && !isOrdenEditable) {
-      for (const id in inputValues) {
-        updateDetalle(id);
-      }
-    }
-  }, [ordenUpdated, isOrdenEditable]);
-
-  useEffect(() => {
-    if (!ordenUpdated) {
-      setInputValues((prevInputValues) => {
-        const updatedInputValues = {};
-
-        detalle.forEach((detalle) => {
-          updatedInputValues[detalle.productoId] = {
-            pedidos: detalle.pedidos,
-            usados: detalle.usados,
-            devueltos: detalle.devueltos,
-            descuento: detalle.descuento,
-          };
+      try {
+        const response = await fetch(`api/Detalle/${ordenId}/${productoId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(objetoDetalle),
         });
 
-        return updatedInputValues;
-      });
-    }
-  }, [ordenUpdated, detalle]);
-
-  const inputRef = useRef(null);
-  const handleInputChange = (event, productoId) => {
-    if (event.key === "Enter" || event.key === "Tab") {
-      if (isOrden) {
-        const { name, value } = event.target;
-
-        setInputValues((prevInputValues) => ({
-          ...prevInputValues,
-          [productoId]: {
-            ...prevInputValues[productoId],
-            [name]: value,
-          },
-        }));
-        updateDetalle(productoId);
+        if (response.ok) {
+          // Reinicia el estado para volver a actualizar
+          fetchDetalle();
+        } else {
+          console.error("Error al actualizar el detalle:", response.status);
+        }
+      } catch (error) {
+        console.error("Error en la solicitud PUT:", error);
       }
-      event.target.blur();
-      event.preventDefault();
-    }
-  };
+    };
+
+    const [inputValues, setInputValues] = useState({});
+
+    useEffect(() => {
+      if (token !== "") {
+        if (!isOrdenEditable || ordenUpdated) {
+          fetchDetalle();
+          fetchProducto();
+        }
+      } else {
+        const getToken = async () => {
+          const dbToken = await GetToken();
+          setToken(dbToken);
+        };
+        getToken();
+      }
+    }, [token, isOrdenEditable]);
+
+    useEffect(() => {
+      if (token !== "") {
+        if (ordenUpdated && !isOrdenEditable) {
+          for (const id in inputValues) {
+            updateDetalle(id);
+          }
+        }
+      } else {
+        const getToken = async () => {
+          const dbToken = await GetToken();
+          setToken(dbToken);
+        };
+        getToken();
+      }
+    }, [token, ordenUpdated, isOrdenEditable]);
+
+    useEffect(() => {
+      if (token !== "") {
+        if (!ordenUpdated) {
+          setInputValues((prevInputValues) => {
+            const updatedInputValues = {};
+
+            detalle.forEach((detalle) => {
+              updatedInputValues[detalle.productoId] = {
+                pedidos: detalle.pedidos,
+                usados: detalle.usados,
+                devueltos: detalle.devueltos,
+                descuento: detalle.descuento,
+              };
+            });
+
+            return updatedInputValues;
+          });
+        }
+      } else {
+        const getToken = async () => {
+          const dbToken = await GetToken();
+          setToken(dbToken);
+        };
+        getToken();
+      }
+    }, [token, ordenUpdated, detalle]);
+
+    const inputRef = useRef(null);
+    const handleInputChange = (event, productoId) => {
+      if (event.key === "Enter" || event.key === "Tab") {
+        if (isOrden) {
+          const { name, value } = event.target;
+
+          setInputValues((prevInputValues) => ({
+            ...prevInputValues,
+            [productoId]: {
+              ...prevInputValues[productoId],
+              [name]: value,
+            },
+          }));
+          updateDetalle(productoId);
+        }
+        event.target.blur();
+        event.preventDefault();
+      }
+    };
 
   return (
     <div class="list-group">
