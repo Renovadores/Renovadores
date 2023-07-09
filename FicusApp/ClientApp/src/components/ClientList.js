@@ -3,7 +3,7 @@ function ClientList(props) {
     <div className="row mx-2 px-3">
       {
         props.clients.length !== 0 ?
-          <div className="card overflow-auto mb-5 px-0" style={{ height: "75vh" }}>
+          <div className="card overflow-auto mb-5 px-0" style={{ maxHeight: "75vh" }}>
             <table className="table table-hover border-success">
               <thead className="bg-success">
                 <tr>
@@ -23,12 +23,12 @@ function ClientList(props) {
                 {
                   props.clients.map((client) => (
                     <tr key={client.clienteId}>
+                      <td className="text-center">{client.clienteId}</td>
                       <th scope="row" className="text-center">
                         <a className="link" type="button" onClick={() => props.handler(client.clienteId)}>
-                          {client.clienteId}
+                          {client.nombreEmpresa}
                         </a>
                       </th>
-                      <td className="text-center">{client.nombreEmpresa}</td>
                       <td className="text-center">{client.contacto}</td>
                     </tr>
                   ))

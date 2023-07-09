@@ -342,7 +342,7 @@ function AddOrder() {
               const responseHistorial = await fetch(`api/HistorialOrden`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ordenId: orderId, faseId: 1, inicio:dateDB, final: deliveryDate })
+                body: JSON.stringify({ ordenId: orderId, faseId: 1, inicio:dateDB })
               });
               if (responseHistorial.ok) {
 
