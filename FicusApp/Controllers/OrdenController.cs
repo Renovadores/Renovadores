@@ -50,7 +50,7 @@ namespace FicusApp.Controllers
 
         // PUT: api/Orden/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("PutOrden{id}")]
         public async Task<IActionResult> PutOrden(int id, Orden orden)
         {
             if (id != orden.OrdenId)
