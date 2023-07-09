@@ -47,6 +47,16 @@ function ProductInformation() {
     }
   }, [token]);
 
+    // Get from DB
+    const productCategories = useGetProductCategories();
+    const [productCategory, setProductCategory] = useState(productCategories[0]);
+
+    const productColors = useGetProductColors();
+    const [productColor, setProductColor] = useState(productColors[0]);
+
+    const productFamilies = useGetProductFamily();
+    const [productFamily, setProductFamily] = useState(productFamilies[0]);
+
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
     setProductoId(event.target.value);
@@ -59,7 +69,7 @@ function ProductInformation() {
 
   const [colorId, setColorId] = useState("");
   const handleChangeColorId = (event) => {
-    setColorId(event.target.value);
+      setColorId(event.target.value);
   };
 
   const [descripcion, setDescripcion] = useState("");
@@ -133,12 +143,15 @@ function ProductInformation() {
       productoId,
       nombre,
       colorId,
+      productColor,
       descripcion,
       dimensiones,
       pesoRecipiente,
       pesoDesechable,
       alquilerComercios,
       alquilerRetail,
+      productCategory,
+      productFamily,
       categoriaId,
       familiaId
     );
@@ -150,8 +163,6 @@ function ProductInformation() {
         Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
-        colorId: colorId,
-        //color: colorId,
         productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
@@ -161,6 +172,7 @@ function ProductInformation() {
         alquilerComercios: alquilerComercios,
         alquilerRetail: alquilerRetail,
         categoriaId: categoriaId,
+        colorId: colorId,
         familiaId: familiaId,
       }),
     });
@@ -199,7 +211,7 @@ function ProductInformation() {
         Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
-        colorId: colorId,
+        
         productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
@@ -209,6 +221,7 @@ function ProductInformation() {
         alquilerComercios: alquilerComercios,
         alquilerRetail: alquilerRetail,
         categoriaId: categoriaId,
+        colorId: colorId,
         familiaId: familiaId,
         descontinuado: descontinuado,
       }),
@@ -388,14 +401,17 @@ function ProductInformation() {
                     <div className="mb-3"></div>
                     <SelectCategory
                       variable={categoriaId}
+                      list={productCategories}
                       handler={handleChangeCategoriaId}
                     />
                     <SelectFamily
                       variable={familiaId}
+                      list={productFamilies}
                       handler={handleChangeFamiliaId}
                     />
                     <SelectColor
                       variable={colorId}
+                      list={productColors}
                       handler={handleChangeColorId}
                     />
 
@@ -470,72 +486,75 @@ function ProductInformation() {
   );
 }
 
-export function GetProductCategories() {
+export function useGetProductCategories() {
     // Get from DB
     const [productCategories, setProductCategories] = useState([]);
-    
-    const getProductCategories = async () => {
-        const currentToken = await GetToken();
-        const response = await fetch("api/producto/GetCategory", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${currentToken}`,
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setProductCategories(data);
-        } else {
-            console.log(response.text);
-        }
-    };
-    getProductCategories();
+    useEffect(() => {
+        const getProductCategories = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetCategory", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductCategories(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductCategories();
+    },[]);
     return productCategories;
 }
 
-export function GetProductColors() {
+export function useGetProductColors() {
     // Get from DB
     const [productColors, setProductColors] = useState([]);
-
-    const getProductColors = async () => {
-        const currentToken = await GetToken();
-        const response = await fetch("api/producto/GetColor", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${currentToken}`,
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setProductColors(data);
-        } else {
-            console.log(response.text);
-        }
-    };
-    getProductColors();
+    useEffect(() => {
+        const getProductColors = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetColor", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductColors(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductColors();
+    }, []);
     return productColors;
 }
 
-export function GetProductFamily() {
+export function useGetProductFamily() {
     // Get from DB
     const [productFamilies, setProductFamilies] = useState([]);
-
-    const getProductFamilies = async () => {
-        const currentToken = await GetToken();
-        const response = await fetch("api/producto/GetFamily", {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${currentToken}`,
-            },
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setProductFamilies(data);
-        } else {
-            console.log(response.text);
-        }
-    };
-    getProductFamilies();
+    useEffect(() => {
+        const getProductFamilies = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetFamily", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductFamilies(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductFamilies();
+    },[]);
     return productFamilies;
 }
 

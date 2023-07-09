@@ -48,12 +48,12 @@ public partial class Producto
 
     public int? NoDevueltos { get; set; }
 
-    public Categoria Categoria { get; set; } = null!;
+    public virtual Categoria? Categoria { get; set; }
 
-    public Color Color { get; set; } = null!;
+    public virtual Color? Color { get; set; }
 
     [InverseProperty("Producto")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
 
-    public Familia Familia { get; set; } = null!;
+    public virtual Familia? Familia { get; set; }
 }

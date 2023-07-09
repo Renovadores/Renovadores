@@ -65,6 +65,7 @@ function Inventory() {
       getToken();
     }
   }, [token]);
+
   // display inventory on console
   useEffect(() => {
     console.log(inventory);
@@ -74,23 +75,6 @@ function Inventory() {
     setSKUProduct(event.target.value);
     //GetNextProductBatch(event.target.value, handleChangeBatch);
   };
-  // Get inventory states from DB
-  /*const [inventoryStates, setInventoryStates] = useState([]);
-  const [inventoryState, setInventoryState] = useState(inventoryStates[0]);
-
-  /*const getInventoryStates = async () => {
-    const response = await fetch("api/inventario/GetState");
-    if (response.ok) {
-      const data = await response.json();
-      setInventoryStates(data);
-      setInventoryState(data[0].iD_estado);
-    } else {
-      console.log(response.text);
-    }
-  };
-  useEffect(() => {
-    getInventoryStates();
-  }, []);*/
 
   const [productAmount, setProductAmount] = useState(0);
   const handleChangeProductAmount = (event) => {
