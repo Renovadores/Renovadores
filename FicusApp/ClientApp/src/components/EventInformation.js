@@ -38,7 +38,7 @@ function EventInformation() {
             }
           </div>
           :
-          <div className="row h-100">
+          <div className="row w-100 h-100">
             <div className=" mx-2 text-center">
               <h1>{event.nombreEvento}</h1>
             </div>

@@ -1,16 +1,108 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import ComponentReport from "./ComponentReport";
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const [year] = useState(new Date().getFullYear());
+  const [todayOrders, setTodayOrders] = useState([]);
+  const navigate = useNavigate();
+  const handleEvent = (event) => {
+    navigate('/eventos/informacion', { state: event });
+  }
+
+  useEffect(() => {
+    const getTodayOrders = async () => {
+      const response = await fetch("api/orden/GetTodayOrders");
+      if (response.ok) {
+        const orders = await response.json();
+        setTodayOrders(orders);
+      }
+    }
+    getTodayOrders();
+  },[])
   return (
     <div>
-      <div className="bg-success py-5  mb-5">
+      <div className="bg-success py-2 mb-5">
         <div className="container px-4 px-lg-5 my-5">
-          <div className="text-center text-white">
-            <h1 className="display-8 fw-bolder">
-              Ayudamos a los comercios de alimentos a sustituir sus recipientes
-              desechables por retornables.
-            </h1>
-            <p className="lead fw-normal text-white-50 mb-0">- Ficus.</p>
+          <div className="row">
+            <div className="col">
+              <h1 className="text-center text-light mb-3">Para entregar hoy:</h1>
+              <table className="table table-hover">
+                <thead className="bg-light">
+                  <tr>
+                    <th scope="col" className="text-center text-dark">
+                      ID Orden
+                    </th>
+                    <th scope="col" className="text-center text-dark">
+                      Cliente
+                    </th>
+                    <th scope="col" className="text-center text-dark">
+                      Evento
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="bg-light">
+                  {
+                    todayOrders.length > 0 ?
+                      todayOrders.map((order) => (
+                        <tr key={order.ordenId}>
+                          <th scope="row" className="text-center">
+                            <Link to={`/ordenes/${order.ordenId}`}>{order.ordenId}</Link>
+                          </th>
+                          <td className="text-center">{order.cliente.nombreEmpresa}</td>
+                          <th scope="row" className="text-center">
+                            {
+                              order.evento !== null ?
+                                <a className="link" type="button" onClick={() => handleEvent(order.evento) }>
+                                  {order.evento.nombreEvento}
+                                </a>
+                                :
+                                <></>
+                            }
+                            
+                          </th>
+                        </tr>
+                      ))
+                      :
+                      <h4>No hay ordenes asignadas para hoy</h4>
+                  }
+                </tbody>
+              </table>
+            </div>
+            
+          </div>
+          <div className="row mt-3">
+            <div className="col">
+              <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
+                <div className="carousel-inner">
+                  <div className="carousel-item active">
+                    <div className="row">
+                      <div className="col">
+                        <h1 className="text-light text-center mb-3">Reporte Huella Ambiental</h1>
+                      </div>
+                    </div>
+                    <ComponentReport parametro={`api/reporte/GetAnnualEnvironmentalReport/${year}`} label="Gramos" />
+                  </div>
+                  <div className="carousel-item">
+                    <div className="row">
+                      <div className="col">
+                        <h1 className="text-light text-center mb-3">Reporte de Ordenes</h1>
+                      </div>
+                    </div>
+                    <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad"/>
+                  </div>
+                </div>
+                <button className="carousel-control-prev btn btn-info" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button className="carousel-control-next btn btn-info" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -18,3 +110,13 @@ function Home() {
   );
 }
 export default Home;
+
+export function currentDateFormat() {
+  const current = new Date();
+  const day = current.getDate() < 10 ? "0" + current.getDate() : current.getDate();
+  const month = (current.getMonth() + 1) < 10 ? "0" + (current.getMonth() + 1) : current.getMonth() + 1;
+  const year = current.getFullYear();
+  const date = `${day}-${month}-${year}`;
+
+  return date;
+}

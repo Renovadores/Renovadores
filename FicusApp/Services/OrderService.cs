@@ -36,6 +36,16 @@ namespace FicusApp.Services
             return orders;
         }
 
+        public async Task<List<Orden>> GetTodayOrder()
+        {
+            List<Orden> orders = await _context.Orden
+                                .Include(o => o.Cliente)
+                                .Include(o => o.Evento)
+                                .Where(o => o.FechaAlquiler == DateTime.Today)
+                                .ToListAsync();
+            return orders;
+        }
+
         public async Task<List<List<Orden>>> GetOrdersByDate(int eventId)
         {
             List<Orden> orders = await _context.Orden

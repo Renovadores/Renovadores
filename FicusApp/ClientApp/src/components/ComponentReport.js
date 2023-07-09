@@ -22,22 +22,21 @@ ChartJS.register(
   Legend
 );
 
-const options = {
-  maintainAspectRatio: true,
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: "",
-    },
-  },
-};
-
 const ComponentReport = (props) => {
-  options.plugins.title.text = props.texto;
+  const options = {
+    maintainAspectRatio: true,
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: props.texto,
+      },
+    },
+  };
+
   const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const [environmentalReport, setEnvironmentalReport] = useState({});
   useEffect(() => {
