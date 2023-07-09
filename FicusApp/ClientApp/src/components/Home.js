@@ -24,8 +24,8 @@ function Home() {
   }, [])
   return (
     <div>
-      <div className="bg-success py-2 mb-5">
-        <div className="container px-4 px-lg-5 my-5">
+      <div className="container py-2">
+        <div className="container bg-success px-4 px-lg-5 my-5 py-5">
           <div className="row">
             <div className="col">
               <h1 className="text-center text-light mb-3">Para entregar hoy:</h1>
@@ -71,7 +71,7 @@ function Home() {
                     </tbody>
                   </table>
                 :
-                  <h4 className="text-light">No hay ordenes asignadas para hoy</h4>
+                  <h4 className="text-light text-center mb-5">No hay ordenes asignadas para hoy</h4>
               }
             </div>
           </div>
