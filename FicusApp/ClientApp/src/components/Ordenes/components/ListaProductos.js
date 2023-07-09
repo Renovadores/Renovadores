@@ -6,6 +6,11 @@ const ListaProductos = ({
   isOrdenEditable,
   ordenUpdated,
 }) => {
+import React, { useState, useEffect } from "react";
+import { GetToken } from "../../../GetToken";
+
+const ListaProductos = ({ ordenId }) => {
+  const [token, setToken] = useState("");
   const [detalle, setDetalle] = useState([]);
   const [producto, setProducto] = useState([]);
 
@@ -21,7 +26,12 @@ const ListaProductos = ({
 
   const fetchProducto = async () => {
     try {
-      const response = await fetch(`/api/producto/GetProducts`);
+      const response = await fetch(`/api/producto/GetProducts`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setProducto(data);
     } catch (error) {

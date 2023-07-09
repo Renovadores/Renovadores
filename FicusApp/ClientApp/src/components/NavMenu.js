@@ -37,11 +37,6 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/clientes">
-                Clientes
-              </NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink tag={Link} className="text-light" to="/ordenes">
                 Ordenes
               </NavLink>
@@ -52,14 +47,27 @@ function NavMenu(props) {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/inventario">
-                Inventario
+              <NavLink tag={Link} className="text-light" to="/clientes">
+                Clientes
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} className="text-light" to="/cerrarSesion" onClick={props.handleCloseSession}>
-                Cerrar Sesion
+              <NavLink tag={Link} className="text-light" to="/eventos">
+                Eventos
               </NavLink>
+            </NavItem>
+            <NavLink tag={Link} className="text-light" to="/inventario">
+              Inventario
+            </NavLink>
+            <NavItem>
+                <NavLink tag={Link} className="text-light" to="/reportes">
+                    Reportes
+                </NavLink>
+            </NavItem>
+            <NavItem>
+        <NavLink tag={Link} className="text-light" to="/cerrarSesion" onClick={props.handleCloseSession}>
+            Cerrar Sesion
+        </NavLink>
             </NavItem>
           </ul>
         </Collapse>

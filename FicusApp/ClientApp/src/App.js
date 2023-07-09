@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import AppRoutes from "./AppRoutes";
 import Layout from "./components/Layout";
 import Login from "./Login";
-import LoginNoAuth from "./LoginNoAuth";
 import "./custom.css";
 
 function App() {
@@ -87,7 +86,7 @@ function App() {
   }
 
   useEffect(() => {
-    const getCurrentUserId = async () => {
+    const getCurrentUserId = async () => { 
       const responseToken = await fetch(`api/historialrefreshtoken/GetHistorialToken/${userId}`)
       if (responseToken.ok) {
         const data = await responseToken.json();
@@ -108,7 +107,7 @@ function App() {
           <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
           :
           userState === NO_AUTHORIZED ?
-            <LoginNoAuth userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} />
+            <Login userName={userName} handleUserName={handleUserName} password={password} handlePassword={handlePassword} handleAuthenticate={authenticate} message="Usuario o contrasena incorrecta!" />
             :
             userState === AUTHORIZED ?
               <Layout userId={userId} handleCloseSession={handleCloseSession}>

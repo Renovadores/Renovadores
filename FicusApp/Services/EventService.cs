@@ -20,6 +20,12 @@ namespace FicusApp.Services
             return 0;
         }
 
+        public async void EditDescription([FromBody] Evento evento)
+        {
+            _context.Evento.Update(evento);
+            _context.SaveChanges();
+        }
+
         public bool FindEvento(string name)
         {
             bool exists = _context.Evento.Where(e => e.NombreEvento == name).FirstOrDefault() != null;
@@ -34,7 +40,7 @@ namespace FicusApp.Services
 
         public List<Evento> GetEventos()
         {
-            List<Evento> eventos = _context.Evento.OrderByDescending(c => c.EventoId).ToList();
+            List<Evento> eventos = _context.Evento.OrderBy(c => c.NombreEvento).ToList();
             return eventos;
         }
     }

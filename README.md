@@ -37,10 +37,42 @@ Generar una propuesta de la aplicación web que ayude a la empresa Ficusbox a ma
 
 ## 📦 Guía de compilación
 
-Por hacer...
+- Cómo configurar y correr el proyecto en una máquina nueva
+
+Para poder correr el programa, la máquina debe contar previamente con las siguientes aplicaciones:
+
+Node.JS: necesario para poder ejecutar código de Javascript.
+
+Microsoft Visual Studio 2022: se requiere de este IDE para poder compilar y ejecutar el programa e instalar las dependencias anteriormente mencionadas. De igual forma se necesita instalar las siguientes herramientas y funcionalidades:
+
+Microsoft SQL Server 2019: DBA utilizado para administrar la base de datos del proyecto. Una vez instalado, se crea la base de datos Ficus y se ejecuta el script QueryCreaFicusDB.sql para crear las tablas necesarias. Posteriormente se ejecuta el script QueryDatosFicusDB.sql para agregar información a las tablas. Ambos scripts se encuentran en la carpeta data_base..
+
+Ejecutar el comando npm install: es necesario ejecutar el comando npm install en la carpeta de clientApp, para agregar paquetes requeridos por algunos componentes y así evitar errores de compilación.
+
+Configuración de la cadena de conexión: Para conectar el proyecto con la base de datos Ficus es necesario cambiar la cadena de conexión que se encuentra en el archivo FicusContext.cs (ubicado dentro de la carpeta Models) por la cadena que suministra Management Studio.
+
+Una vez hecho lo anterior, se puede ejecutar el programa. Cabe mencionar que para iniciar sesión se puede ingresar con los siguientes usuarios y sus contraseñas:
+
+Usuario     Contraseña
+Andrea      contrasena1
+Fabiola     contrasena2
+Alejandro   contrasena3
+
 ## 🧰 Funcionalidades básicas
 
-Por hacer...
+Las funcionalidades implementadas en el sistema, fueron las siguientes: 
+Primeramente productos, dentro de productos se implementaron todos los CRUD, es decir que se permite ver el listado de los productos, y la información detallada de cada uno de ellos; Ingresar un producto nuevo con todos sus detalles, además de poder editar aquellos que ya fueron introducidos en la base de datos, y finalmente el eliminar un producto.
+
+Clientes, se comporta de una manera similar a los productos, permite ver los clientes y sus detalles, además de poder añadir clientes nuevos y los que ya están en la base de datos editarlos, además de eliminar los clientes. 
+
+Orden, dentro de orden podemos generar nuevas órdenes las cuales nos muestran todos los detalles de estas, incluidos los productos y si pertenece a un evento, podemos ingresar nuevas órdenes, y se pueden editar estas, sin embargo aún hace falta la implementación de cambiar los estados de los productos dentro de una orden, y el estado de una orden como tal. 
+
+También se implementó el inventario, en donde se puede ver el detalle de todos los productos que hay disponibles, cantidad, en uso, etc. Se puede añadir nuevos lotes de productos dentro del inventario con sus cantidades, y se puede modificar los detalles del inventario, en caso de ser necesario, acá haría falta implementar el eliminar, aunque aún no sabemos si esto es del todo necesario, se discutirá para el último sprint.
+
+Por último se implementó el inicio de sesión de un usuario, en este caso con el rol administrador, aunque ya la base está lista para aceptar nuevos roles, y también se implementó un cerrar sesión, esto para no permitir que cualquier persona pueda entrar a la aplicación, si no solo el personal deseado.
+
+Importante aclarar que todos los borrados son de manera visual, ya que creemos que esta fue la manera más óptima y necesaria para el caso. 
+
 
 ## 🚀 Cómo usarlo
 

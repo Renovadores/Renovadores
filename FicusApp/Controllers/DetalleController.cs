@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -33,6 +34,7 @@ namespace FicusApp.Controllers
             return details;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddDetalle")]
         public async Task<IActionResult> AddDetalle([FromBody] Detalle request)

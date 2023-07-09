@@ -1,6 +1,18 @@
--- SQL dump generated using DBML (dbml-lang.org)
--- Database: SQL Server
--- Generated at: 2023-06-04T17:13:05.091Z
+-- Verificar si la base de datos Ficus ya existe
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'Ficus')
+BEGIN
+    -- Eliminar la base de datos Ficus si existe
+    EXEC sp_executesql N'DROP DATABASE Ficus';
+END
+GO
+
+-- Crear la base de datos Ficus
+CREATE DATABASE Ficus;
+GO
+
+-- Usar la base de datos Ficus
+USE Ficus;
+GO
 
 CREATE TABLE [Usuario] (
   [UsuarioId] integer PRIMARY KEY,
@@ -77,7 +89,7 @@ CREATE TABLE [Estado] (
 GO
 
 CREATE TABLE [Inventario] (
-  [InventarioId] integer,
+  [InventarioId] integer PRIMARY KEY,
   [ProductoId] nvarchar(255),
   [Cantidad] integer,
   [Lote] integer,
@@ -201,7 +213,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Contraseña encriptada del usuario',
+@value = 'Contraseï¿½a encriptada del usuario',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Usuario',
 @level2type = N'Column', @level2name = 'Contrasena';
@@ -281,7 +293,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Nombre de la categoría',
+@value = 'Nombre de la categorï¿½a',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Categoria',
 @level2type = N'Column', @level2name = 'NombreCategoria';
@@ -312,7 +324,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Table_Description',
-@value = 'Guarda las características de cada producto, si está disponible, reservado, etc...',
+@value = 'Guarda las caracterï¿½sticas de cada producto, si estï¿½ disponible, reservado, etc...',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Inventario';
 GO
@@ -327,7 +339,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Column_Description',
-@value = 'Definición de la fase de una orden',
+@value = 'Definiciï¿½n de la fase de una orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'Fase',
 @level2type = N'Column', @level2name = 'DescripcionEstado';
@@ -335,7 +347,7 @@ GO
 
 EXEC sp_addextendedproperty
 @name = N'Table_Description',
-@value = 'Guarda en qué fase se encuentra cada orden',
+@value = 'Guarda en quï¿½ fase se encuentra cada orden',
 @level0type = N'Schema', @level0name = 'dbo',
 @level1type = N'Table',  @level1name = 'HistorialOrden';
 GO

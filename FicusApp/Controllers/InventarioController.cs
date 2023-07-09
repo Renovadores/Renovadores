@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using FicusApp.Models;
 using Microsoft.EntityFrameworkCore;
 using FicusApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -17,6 +18,7 @@ namespace FicusApp.Controllers
             _inventarioService = inventarioService;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetInventory")]
         public async Task<IActionResult> GetInventory()
@@ -26,6 +28,7 @@ namespace FicusApp.Controllers
             return Ok(Inventarios);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
@@ -35,13 +38,13 @@ namespace FicusApp.Controllers
             return Ok(id);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("GetState")]
         public async Task<IActionResult> GetState()
         {
             var Estados = await _inventarioService.GetState();
             return Ok(Estados);
-        }
+        }*/
 
         [HttpGet]
         [Route("GetInventory/{ProductoId}")]
@@ -59,6 +62,7 @@ namespace FicusApp.Controllers
             return Ok(inventario);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddInventory")]
         public async Task<IActionResult> AddInventory([FromBody] Inventario request)
@@ -73,6 +77,15 @@ namespace FicusApp.Controllers
         {
             await _inventarioService.EditInventory(inventario);
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetMatchInventory/{input}")]
+        public async Task<IActionResult> GetMatchInventory(string input)
+        {
+            List<Inventario> matchInventory = await _inventarioService.GetMatchInventory(input);
+            return Ok(matchInventory);
         }
     }
 }

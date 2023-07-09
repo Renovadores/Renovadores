@@ -2,11 +2,15 @@ import Home from "./components/Home";
 import Clients from "./components/Clients";
 import ClientInformation from "./components/ClientInformation";
 import Stock from "./components/Stock";
+import Events from "./components/Events";
 import ProductInformation from "./components/ProductInformation";
 import Inventory from "./components/Inventory";
 import AddOrder from "./components/AddOrder";
 import Orden from "./components/Ordenes";
 import OrdenInfo from "./components/Ordenes/components/OrdenInfo.js";
+import GraficoOrdenes from "./components/Ordenes/components/GraficoOrdenes";
+import Reportes from "./components/Reportes";
+import EventInformation from "./components/EventInformation";
 
 const AppRoutes = [
   {
@@ -66,9 +70,21 @@ const AppRoutes = [
     element: <AddOrder />,
   },
   {
+    path: "/eventos",
+    element: <Events />,
+  },
+  {
+    path: "/eventos/informacion",
+    element: <EventInformation />,
+  },
+  {
+      path: "/reportes",
+      element: <Reportes />,
+  },
+  {
     path: "/cerrarSesion",
     element: <Home />,
-  },
+   },
 ];
 
 export default AppRoutes;
