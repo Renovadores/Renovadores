@@ -18,11 +18,6 @@ function Home() {
       if (response.ok) {
         const orders = await response.json();
         setTodayOrders(orders);
-        const responseH = await fetch("api/HistorialOrden");
-        if (responseH.ok) {
-          const data = await responseH.json();
-          console.log(data);
-        }
       }
     }
     getTodayOrders();
