@@ -55,6 +55,7 @@ namespace FicusApp.Services
                                 .Where(o => o.Evento != null && 
                                        o.EventoId == eventId)
                                 .Include(o => o.Cliente)
+                                .Include(o => o.HistorialOrden)
                                 .OrderBy(O => O.FechaAlquiler)
                                 .ToListAsync();
             List<List<Orden>> filterOrders = new();
@@ -73,6 +74,24 @@ namespace FicusApp.Services
                 if (!added)
                 {
                     filterOrders.Add(new List<Orden>() {o});
+                }
+            }
+            // verify if there are dates with all his orders in finished state
+            foreach (var date in filterOrders.ToList())
+            {
+                int totalOrders = date.Count();
+                int counterFinished = 0;
+                foreach (var order in date)
+                {
+                    if (order.HistorialOrden?.OrderByDescending(h => h.FaseId)?
+                        .FirstOrDefault()?.FaseId == 3)
+                    {
+                        counterFinished++;
+                    }
+                }
+                if (totalOrders == counterFinished)
+                {
+                    filterOrders.Remove(date);
                 }
             }
             return filterOrders;
