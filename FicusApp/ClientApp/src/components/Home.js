@@ -18,6 +18,11 @@ function Home() {
       if (response.ok) {
         const orders = await response.json();
         setTodayOrders(orders);
+        const responseH = await fetch("api/HistorialOrden");
+        if (responseH.ok) {
+          const data = await responseH.json();
+          console.log(data);
+        }
       }
     }
     getTodayOrders();
@@ -90,7 +95,7 @@ function Home() {
                   <div className="carousel-item">
                     <div className="row">
                       <div className="col">
-                        <h1 className="text-light text-center mb-3">Reporte de Ordenes</h1>
+                        <h1 className="text-light text-center mb-3">Reporte Cantidad Ordenes</h1>
                       </div>
                     </div>
                     <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad" />

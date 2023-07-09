@@ -86,6 +86,7 @@ function AddOrder() {
   const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
+  const dateDB = dateFormatBD();
 
   const [clientName, setClientName] = useState("");
 
@@ -337,7 +338,15 @@ function AddOrder() {
               body: JSON.stringify(productStock)
             });
             if (response.ok) {
+              console.log(deliveryDate);
+              const responseHistorial = await fetch(`api/HistorialOrden`,{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ordenId: orderId, faseId: 1, inicio:dateDB, final: deliveryDate })
+              });
+              if (responseHistorial.ok) {
 
+              }
             }
           } else {
             // notify error
@@ -449,6 +458,20 @@ function AddOrder() {
       </div>
     </div>
   );
+}
+
+function dateFormatBD() {
+  const current = new Date();
+  var month = `${current.getMonth() + 1}`;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  var day = `${current.getDate()}`;
+  if (day < 10) {
+    day = '0' + day;
+  }
+  const date = `${current.getFullYear()}-${month}-${day}`;
+  return date;
 }
 
 function currentDateFormat() {
