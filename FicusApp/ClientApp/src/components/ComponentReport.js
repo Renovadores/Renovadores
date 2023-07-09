@@ -60,7 +60,7 @@ const ComponentReport = (props) => {
       }
     }
     getReport();
-  }, []);
+  }, [props.parametro]);
   return (
     <div className="bg-light m-0">
     {

@@ -21,7 +21,7 @@ function Home() {
       }
     }
     getTodayOrders();
-  },[])
+  }, [])
   return (
     <div>
       <div className="bg-success py-2 mb-5">
@@ -29,50 +29,51 @@ function Home() {
           <div className="row">
             <div className="col">
               <h1 className="text-center text-light mb-3">Para entregar hoy:</h1>
-              <table className="table table-hover">
-                <thead className="bg-light">
-                  <tr>
-                    <th scope="col" className="text-center text-dark">
-                      ID Orden
-                    </th>
-                    <th scope="col" className="text-center text-dark">
-                      Cliente
-                    </th>
-                    <th scope="col" className="text-center text-dark">
-                      Evento
-                    </th>
-                  </tr>
-                </thead>
+              {
+                todayOrders.length > 0 ?
+                  <table className="table table-hover">
+                    <thead className="bg-light">
+                      <tr>
+                        <th scope="col" className="text-center text-dark">
+                          ID Orden
+                        </th>
+                        <th scope="col" className="text-center text-dark">
+                          Cliente
+                        </th>
+                        <th scope="col" className="text-center text-dark">
+                          Evento
+                        </th>
+                      </tr>
+                    </thead>
 
-                <tbody className="bg-light">
-                  {
-                    todayOrders.length > 0 ?
-                      todayOrders.map((order) => (
-                        <tr key={order.ordenId}>
-                          <th scope="row" className="text-center">
-                            <Link to={`/ordenes/${order.ordenId}`}>{order.ordenId}</Link>
-                          </th>
-                          <td className="text-center">{order.cliente.nombreEmpresa}</td>
-                          <th scope="row" className="text-center">
-                            {
-                              order.evento !== null ?
-                                <a className="link" type="button" onClick={() => handleEvent(order.evento) }>
-                                  {order.evento.nombreEvento}
-                                </a>
-                                :
-                                <></>
-                            }
-                            
-                          </th>
-                        </tr>
-                      ))
-                      :
-                      <h4>No hay ordenes asignadas para hoy</h4>
-                  }
-                </tbody>
-              </table>
+                    <tbody className="bg-light">
+                      {
+                        todayOrders.map((order) => (
+                          <tr key={order.ordenId}>
+                            <th scope="row" className="text-center">
+                              <Link to={`/ordenes/${order.ordenId}`}>{order.ordenId}</Link>
+                            </th>
+                            <td className="text-center">{order.cliente.nombreEmpresa}</td>
+                            <th scope="row" className="text-center">
+                              {
+                                order.evento !== null ?
+                                  <a className="link" type="button" onClick={() => handleEvent(order.evento)}>
+                                    {order.evento.nombreEvento}
+                                  </a>
+                                  :
+                                  <></>
+                              }
+
+                            </th>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                :
+                  <h4 className="text-light">No hay ordenes asignadas para hoy</h4>
+              }
             </div>
-            
           </div>
           <div className="row mt-3">
             <div className="col">
@@ -92,7 +93,7 @@ function Home() {
                         <h1 className="text-light text-center mb-3">Reporte de Ordenes</h1>
                       </div>
                     </div>
-                    <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad"/>
+                    <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad" />
                   </div>
                 </div>
                 <button className="carousel-control-prev btn btn-info" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">

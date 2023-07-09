@@ -3,7 +3,7 @@ function ButtonDeleteClient(props) {
     <div className="row mb-0 d-flex justify-content-center">
       <div className="col-8 p-0 d-flex justify-content-center">
         {
-          <button className="btn btn-danger text-light" type="button" data-bs-toggle="modal" data-bs-target="#deleteClientModal" >
+          <button className="btn btn-danger text-light mb-5" type="button" data-bs-toggle="modal" data-bs-target="#deleteClientModal" >
             Eliminar Cliente
           </button>
         }
