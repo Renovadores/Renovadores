@@ -24,19 +24,19 @@ namespace FicusApp.Services
             return 0;
         }
 
-        public async Task<int> GetNewCode()
+        public Task<int> GetNewCode()
         {
             int code = _context.Orden.Count() + 1;
-            return code;
+            return Task.FromResult(code);
         }
 
-        public async Task<List<Orden>> GetOrders()
+        public Task<List<Orden>> GetOrders()
         {
             List<Orden> orders = _context.Orden.ToList();
-            return orders;
+            return Task.FromResult(orders);
         }
 
-        public async Task<List<List<Orden>>> GetOrdersByDate(int eventId)
+        public Task<List<List<Orden>>> GetOrdersByDate(int eventId)
         {
             List<Orden> orders = _context.Orden
                                 .Where(o => o.Evento != null && 
@@ -62,7 +62,7 @@ namespace FicusApp.Services
                     filterOrders.Add(new List<Orden>() {o});
                 }
             }
-            return filterOrders;
+            return Task.FromResult(filterOrders);
         }
     }
 }

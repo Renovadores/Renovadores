@@ -14,7 +14,7 @@ namespace FicusApp.Services;
             _context = context;
         }
 
-        public async Task<List<Producto>> GetProducts()
+        public Task<List<Producto>> GetProducts()
         {
             var productos = _context.Producto
              //.Include(p => p.Color)
@@ -22,7 +22,7 @@ namespace FicusApp.Services;
              //.Include(p => p.Categoria)
             .OrderByDescending(p => p.ProductoId)
             .Where(p => p.Descontinuado == 0).ToList();
-            return productos;
+            return Task.FromResult(productos);
         }
 
         public async Task<Producto> GetProducto(string SKU)
@@ -35,7 +35,7 @@ namespace FicusApp.Services;
                 .FirstAsync();
         }
 
-        public async Task<List<Producto>> GetMatchProducts(string input, bool searchByCode)
+        public Task<List<Producto>> GetMatchProducts(string input, bool searchByCode)
         {
             List<Producto> matchProducts;
             if (searchByCode)
@@ -59,7 +59,7 @@ namespace FicusApp.Services;
                 .Take(8)
                 .ToList();
             }
-            return matchProducts;
+            return Task.FromResult(matchProducts);
         }
 
         public async Task<Producto> AddProduct([FromBody] Producto request)
@@ -69,17 +69,17 @@ namespace FicusApp.Services;
             return request;
         }
 
-        public async Task<Producto> EditProduct([FromBody] Producto producto)
+        public Task<Producto> EditProduct([FromBody] Producto producto)
         {
             _context.Producto.Update(producto);
             _context.SaveChanges();
-            return producto;
+            return Task.FromResult(producto);
         }
-        public async Task<Producto> DeleteProduct([FromBody] Producto producto)
+        public Task<Producto> DeleteProduct([FromBody] Producto producto)
         {
             _context.Producto.Update(producto);
             _context.SaveChanges();
-            return producto;
+            return Task.FromResult(producto);
         }
 
         /*
@@ -90,28 +90,28 @@ namespace FicusApp.Services;
 
             return Estados;
         }*/
-        public async Task<List<Categoria>> GetCategory()
+        public Task<List<Categoria>> GetCategory()
         {
             var Categorias = _context.Categoria
                 .ToList();
 
-            return Categorias;
+            return Task.FromResult(Categorias);
         }
 
-        public async Task<List<Color>> GetColor()
+        public Task<List<Color>> GetColor()
         {
             var Colores = _context.Color
                 .ToList();
 
-            return Colores;
+            return Task.FromResult(Colores);
         }
 
-        public async Task<List<Familia>> GetFamily()
+        public Task<List<Familia>> GetFamily()
         {
             var Familias = _context.Familia
                 .ToList();
 
-            return Familias;
+            return Task.FromResult(Familias);
         }
     }
 

@@ -31,11 +31,11 @@ namespace FicusApp.Services
             return 1;
         }
 
-        public async Task<int> EditCliente([FromBody] Cliente cliente)
+        public Task<int> EditCliente([FromBody] Cliente cliente)
         {
             _context.Cliente.Update(cliente);
             _context.SaveChanges();
-            return 1;
+            return Task.FromResult(1);
         }
 
         public async Task<(int, Cliente?)> GetCliente(int id)
@@ -59,7 +59,7 @@ namespace FicusApp.Services
             return response;
         }
 
-        public async Task<(int, List<Cliente>)> GetClientes(int index)
+        public Task<(int, List<Cliente>)> GetClientes(int index)
         {
             int code = SUCCESS_CODE;
             List<Cliente> clientes = new();
@@ -71,16 +71,16 @@ namespace FicusApp.Services
             {
                 clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(8).ToList();
             }
-            return (code, clientes);
+            return Task.FromResult<(int, List<Cliente>)>((code, clientes));
         }
 
-        public async Task<int> GetNewId()
+        public Task<int> GetNewId()
         {
             int id = _context.Cliente.Count() + 1;
-            return id;
+            return Task.FromResult(id);
         }
 
-        public async Task<List<Cliente>> GetMatchClients(string input)
+        public Task<List<Cliente>> GetMatchClients(string input)
         {
             List<Cliente> matchClients;
             matchClients = _context.Cliente
@@ -88,12 +88,12 @@ namespace FicusApp.Services
                 .OrderBy(p => p.NombreEmpresa)
                 .Take(8)
                 .ToList();
-            return matchClients;
+            return Task.FromResult(matchClients);
         }
 
-        public async Task<int> GetTotalClients()
+        public Task<int> GetTotalClients()
         {
-            return _context.Cliente.Where(c => c.Estado != "Eliminado").Count();
+            return Task.FromResult(_context.Cliente.Where(c => c.Estado != "Eliminado").Count());
         }
     }
 }

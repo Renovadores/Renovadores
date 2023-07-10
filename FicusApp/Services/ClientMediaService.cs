@@ -24,14 +24,14 @@ namespace FicusApp.Services
             await _context.SaveChangesAsync();
             return 0;
         }
-        public async Task<int> DeleteClientMedia([FromBody] ClienteComunicacion request)
+        public Task<int> DeleteClientMedia([FromBody] ClienteComunicacion request)
         {
             ClienteComunicacion clienteMedio = _context.ClienteComunicacion.Where(s =>
                                                 s.ClienteId == request.ClienteId
                                                 && s.MedioId == request.MedioId).FirstOrDefault();
             _context.ClienteComunicacion.Remove(clienteMedio);
             _context.SaveChanges();
-            return 0;
+            return Task.FromResult(0);
         }
     }
 }

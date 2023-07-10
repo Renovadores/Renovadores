@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CheckBox from "./CheckBox";
 import ClientList from "./ClientList";
-import FilterClients from "./FilterClients";
 import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
