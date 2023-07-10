@@ -3,12 +3,12 @@ function ButtonDeleteClient(props) {
     <div className="row mb-0 d-flex justify-content-center">
       <div className="col-8 p-0 d-flex justify-content-center">
         {
-          <button className="btn btn-danger text-light mb-5" type="button" data-bs-toggle="modal" data-bs-target="#deleteClientModal" >
+          <button className="btn btn-danger text-light mb-5" type="button" data-bs-toggle="modal" data-bs-target={"#deleteClientModal"+props.index} >
             Eliminar Cliente
           </button>
         }
       </div>
-      <div className="modal fade" id="deleteClientModal" tabIndex="-1" aria-labelledby="deleteClientModal" aria-hidden="true">
+      <div className="modal fade" id={"deleteClientModal"+props.index} tabIndex="-1" aria-labelledby="deleteClientModal" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header bg-danger text-light">

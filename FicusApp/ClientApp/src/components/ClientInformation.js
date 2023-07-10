@@ -444,7 +444,7 @@ function ClientInformation() {
           <Spinner />
           :
           <div className="container" >
-            <div className="row bg-success">
+            <div className="row">
               <div className="col">
                 <div className="card m-3 mt-5" >
                   <div className="card-body">
@@ -519,10 +519,22 @@ function ClientInformation() {
                   </div>
                   <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
                 </div>
+                <div className="d-md-block d-none">
+                  <ButtonOrder clientId={clientId} />
+                  <ButtonDeleteClient clientId={clientId}
+                    clientName={clientInfo.nombreEmpresa}
+                    index="0"
+                    handler={handleDeleteClient} />
+                </div>
               </div>
-              <div className="col mt-5 mb-3">
-                <div className="col-4 p-2">
-                  <InputInt text="Año" default="2022" handler={handleYear} />
+              <div className="col mt-5 mb-3 pt-3 bg-success">
+                <div className="row px-2">
+                  <div className="col-4">
+                    <InputInt text="Año" default="2022" handler={handleYear} />
+                  </div>
+                  <div className="col-8 d-flex justify-content-center align-items-center">
+                    <h3 className="text-center text-light">Reportes</h3>
+                  </div>
                 </div>
                 <div className="mx-2 mb-4">
                   <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${year}`} label="Gramos" texto="Reporte Huella Ambiental" />
@@ -532,8 +544,14 @@ function ClientInformation() {
                 </div>
               </div>
             </div>
-            <ButtonOrder clientId={clientId} />
-            <ButtonDeleteClient clientId={clientId} clientName={clientInfo.nombreEmpresa} handler={handleDeleteClient} />
+            <div className="d-md-none d-block">
+              <ButtonOrder clientId={clientId} />
+              <ButtonDeleteClient clientId={clientId}
+                clientName={clientInfo.nombreEmpresa}
+                index="1"
+                handler={handleDeleteClient} />
+            </div>
+            
           </div>
       }
     </div>

@@ -23,14 +23,14 @@ function Home() {
     getTodayOrders();
   }, [])
   return (
-    <div>
-      <div className="container py-2">
-        <div className="container bg-success px-4 px-lg-5 my-5 py-5">
-          <div className="row">
-            <div className="col">
-              <h1 className="text-center text-light mb-3">Para entregar hoy:</h1>
-              {
-                todayOrders.length > 0 ?
+    <div className="container py-2">
+      <div className="container card bg-success px-4 px-lg-5 my-5 py-5">
+        <div className="row">
+          <div className="col">
+            <h1 className="text-center text-light mb-3">Para entregar hoy:</h1>
+            {
+              todayOrders.length > 0 ?
+                <div className="card overflow-auto mb-5 px-0" style={{ maxHeight: "75vh" }}>
                   <table className="table table-hover">
                     <thead className="bg-light">
                       <tr>
@@ -70,39 +70,47 @@ function Home() {
                       }
                     </tbody>
                   </table>
-                :
-                  <h4 className="text-light text-center mb-5">No hay ordenes asignadas para hoy</h4>
-              }
-            </div>
+                </div>
+              :
+                <h4 className="text-light text-center mb-5">No hay ordenes asignadas para hoy</h4>
+            }
           </div>
-          <div className="row mt-3">
-            <div className="col">
-              <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                  <div className="carousel-item active">
-                    <div className="row">
-                      <div className="col">
-                        <h1 className="text-light text-center mb-3">Reporte Huella Ambiental</h1>
-                      </div>
+        </div>
+        <div className="row mt-3">
+          <div className="col">
+            <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
+              <div className="carousel-inner">
+                <div className="carousel-item active">
+                  <div className="row">
+                    <div className="col">
+                      <h1 className="text-light text-center mb-3">Reporte Huella Ambiental</h1>
                     </div>
-                    <ComponentReport parametro={`api/reporte/GetAnnualEnvironmentalReport/${year}`} label="Gramos" />
                   </div>
-                  <div className="carousel-item">
-                    <div className="row">
-                      <div className="col">
-                        <h1 className="text-light text-center mb-3">Reporte de Ordenes</h1>
-                      </div>
+                  <div className="card px-lg-5">
+                    <div className="px-lg-5">
+                      <ComponentReport parametro={`api/reporte/GetAnnualEnvironmentalReport/${year}`} label="Gramos" />
                     </div>
-                    <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad" />
                   </div>
                 </div>
-                <button className="carousel-control-prev btn btn-info" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                </button>
-                <button className="carousel-control-next btn btn-info" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                </button>
+                <div className="carousel-item">
+                  <div className="row">
+                    <div className="col">
+                      <h1 className="text-light text-center mb-3">Reporte Cantidad Ordenes</h1>
+                    </div>
+                  </div>
+                  <div className="card px-lg-5">
+                    <div className="px-lg-5">
+                      <ComponentReport parametro={`api/reporte/GetAnnualOrderReport/${year}`} label="Cantidad" />
+                    </div>
+                  </div>
+                </div>
               </div>
+              <button className="carousel-control-prev btn btn-danger" style={{width: "5vw"}} type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              </button>
+              <button className="carousel-control-next btn btn-danger" style={{ width: "5vw" }}type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              </button>
             </div>
           </div>
         </div>

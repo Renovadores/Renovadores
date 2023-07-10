@@ -6,7 +6,7 @@ namespace FicusApp.Services
 {
     public interface IClientService
     {
-        Task<(int, List<Cliente>)> GetClientes(int index);
+        Task<(int, List<Cliente>)> GetClientes();
         Task<List<Cliente>> GetMatchClients(string input);
         Task<int> GetTotalClients();
         Task<int> GetNewId();

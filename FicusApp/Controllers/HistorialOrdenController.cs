@@ -28,7 +28,7 @@ namespace FicusApp.Controllers
           {
               return NotFound();
           }
-            return await _context.HistorialOrden.ToListAsync();
+            return await _context.HistorialOrden.OrderByDescending(h => h.FaseId).ToListAsync();
         }
 
         // GET: api/HistorialOrden/5
