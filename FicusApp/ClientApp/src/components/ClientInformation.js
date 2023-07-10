@@ -523,6 +523,7 @@ function ClientInformation() {
                   <ButtonOrder clientId={clientId} />
                   <ButtonDeleteClient clientId={clientId}
                     clientName={clientInfo.nombreEmpresa}
+                    index="0"
                     handler={handleDeleteClient} />
                 </div>
               </div>
@@ -547,6 +548,7 @@ function ClientInformation() {
               <ButtonOrder clientId={clientId} />
               <ButtonDeleteClient clientId={clientId}
                 clientName={clientInfo.nombreEmpresa}
+                index="1"
                 handler={handleDeleteClient} />
             </div>
             
