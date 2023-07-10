@@ -47,7 +47,7 @@ namespace FicusApp.Services
             {
                 code = NOT_FOUND_CODE;
             }
-            else if (id < 0 || id > _context.Cliente.Count() - 1)
+            else if (id < 0 || id > _context.Cliente.Count())
             {
                 code = OUT_OF_RANGE_CODE;
             }
