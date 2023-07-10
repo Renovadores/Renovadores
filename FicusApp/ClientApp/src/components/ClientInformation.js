@@ -679,6 +679,7 @@ function ClientInformation() {
                               <button
                                 type="submit"
                                 className="btn btn-primary"
+                                data-bs-dismiss="offcanvas"
                                 onClick={() => {}}
                               >
                                 Agregar

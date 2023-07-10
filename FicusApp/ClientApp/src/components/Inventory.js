@@ -270,8 +270,7 @@ function Inventory() {
                         <button
                           type="submit"
                           className="btn btn-primary"
-                          //data-bs-toggle="modal"
-                          //data-bs-target="#goInventoryModal"
+                          data-bs-dismiss="offcanvas"
                           onClick={() => {}}
                         >
                           Agregar
@@ -280,8 +279,6 @@ function Inventory() {
                         <button
                           type="submit"
                           className="btn btn-primary"
-                          //data-bs-toggle="modal"
-                          //data-bs-target="#goInventoryModal"
                           onClick={() => {}}
                           disabled
                         >

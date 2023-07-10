@@ -449,7 +449,7 @@ function Clients() {
                 <Input
                   variable={company}
                   handler={handleChangeCompany}
-                  text="Nombre del cliente"
+                  text="Nombre del cliente *"
                 />
                 <div className="mb-3">
                   <label htmlFor="formGroupExampleInput" className="form-label">
@@ -572,12 +572,12 @@ function Clients() {
                 <Input
                   variable={contacto}
                   handler={handleChangeContacto}
-                  text="Contacto"
+                  text="Contacto *"
                 />
                 <InputInt
                   variable={telefono}
                   handler={handleChangeTelefono}
-                  text="Telefono"
+                  text="Telefono *"
                 />
                 <Input
                   variable={correoElectronico}
@@ -600,6 +600,7 @@ function Clients() {
                       <button
                         type="submit"
                         className="btn btn-primary"
+                        data-bs-dismiss="offcanvas"
                         onClick={() => {}}
                       >
                         Agregar
