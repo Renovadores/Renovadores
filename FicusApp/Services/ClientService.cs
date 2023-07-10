@@ -83,7 +83,7 @@ namespace FicusApp.Services
         public async Task<int> GetNewId()
         {
             int id = _context.Cliente.Count() + 1;
-            return Task.FromResult(id);
+            return id;
         }
 
         public Task<List<Cliente>> GetMatchClients(string input)
