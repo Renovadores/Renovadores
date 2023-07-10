@@ -22,7 +22,7 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetSegments/{id}")]
-        public async Task<IActionResult> GetSegments(int id)
+        public Task<IActionResult> GetSegments(int id)
         {
             List<ClienteSegmento> clienteSegmentos = _clientSegmentService.GetSegments(id);
             List<string> segmentos = new();
@@ -30,7 +30,7 @@ namespace FicusApp.Controllers
             {
                 segmentos.Add(clienteSegmentos[i].SegmentoId);
             }
-            return Ok(segmentos);
+            return Task.FromResult<IActionResult>(Ok(segmentos));
         }
 
         [Authorize]

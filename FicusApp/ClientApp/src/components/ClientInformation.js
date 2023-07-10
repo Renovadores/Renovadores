@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import CheckBox from './CheckBox';
+import { useEffect, useState } from "react";
+import CheckBox from "./CheckBox";
 import { GetToken } from "../GetToken";
-import Input from './Input';
+import Input from "./Input";
 import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
@@ -27,43 +27,52 @@ function ClientInformation() {
   const [users, setUsers] = useState([]);
   const getClient = async () => {
     const response = await fetch(`api/cliente/GetCliente/${clientId}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (response.ok) {
       const dataClient = await response.json();
       setDate(dateFormat(dataClient.fechaAgregado));
       setInfo(dataClient);
       // get personInCharge name (in user table)
-      const responseUser = await fetch(`api/usuario/GetUser/${dataClient.responsableId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const responseUser = await fetch(
+        `api/usuario/GetUser/${dataClient.responsableId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       if (responseUser.ok) {
         const dataUser = await responseUser.json();
         setPersonInChargeName(dataUser.nombre);
       }
       // get segments (in client_Segment table)
-      const responseClientSegments = await fetch(`api/clientesegmento/GetSegments/${clientId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const responseClientSegments = await fetch(
+        `api/clientesegmento/GetSegments/${clientId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      })
+      );
       if (responseClientSegments.ok) {
         const dataSegments = await responseClientSegments.json();
         setClientSegments(dataSegments);
         // get media (in client_Comunication table)
-        const responseClientMedia = await fetch(`api/clientecomunicacion/GetMedia/${clientId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
+        const responseClientMedia = await fetch(
+          `api/clientecomunicacion/GetMedia/${clientId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        })
+        );
         if (responseClientMedia.ok) {
           const dataMedia = await responseClientMedia.json();
           setClientMedia(dataMedia);
@@ -72,10 +81,10 @@ function ClientInformation() {
       }
       // get users
       const responseUsers = await fetch("api/usuario/GetUsers", {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (responseUsers.ok) {
         const dataUsers = await responseUsers.json();
@@ -84,7 +93,7 @@ function ClientInformation() {
     } else {
       console.log(response.text);
     }
-  }
+  };
 
   const [year, setYear] = useState(2022);
   const handleYear = (event) => {
@@ -93,7 +102,7 @@ function ClientInformation() {
     if (input >= 2022) {
       setYear(input);
     }
-  }
+  };
 
   useEffect(() => {
     if (token !== "") {
@@ -102,7 +111,7 @@ function ClientInformation() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     }
   }, [token]);
@@ -137,7 +146,7 @@ function ClientInformation() {
     setPersonInCharge(dataClient.responsableId);
     setPriority(dataClient.prioridad);
     setState(dataClient.estado);
-  }
+  };
 
   const [date, setDate] = useState("");
 
@@ -145,137 +154,144 @@ function ClientInformation() {
   // TO-DO: set variables in english
   const [company, setCompany] = useState("");
   const handleChangeCompany = (event) => {
-    setCompany(event.target.value)
-  }
+    setCompany(event.target.value);
+  };
 
-  var segments = []
+  var segments = [];
 
   const [cafeteria, setCafeteria] = useState(false);
   const handleCheckboxCafeteria = (event) => {
-    setCafeteria(event.target.checked)
-  }
+    setCafeteria(event.target.checked);
+  };
 
   const [catering, setCatering] = useState(false);
   const handleCheckboxCatering = (event) => {
-    setCatering(event.target.checked)
-  }
+    setCatering(event.target.checked);
+  };
 
   const [centroEducativo, setCentroEducativo] = useState(false);
   const handleCheckboxCentroEducativo = (event) => {
-    setCentroEducativo(event.target.checked)
-  }
+    setCentroEducativo(event.target.checked);
+  };
 
   const [comidaPreparada, setComidaPreparada] = useState(false);
   const handleCheckboxComidaPreparada = (event) => {
-    setComidaPreparada(event.target.checked)
-  }
+    setComidaPreparada(event.target.checked);
+  };
 
   const [empresa, setEmpresa] = useState(false);
   const handleCheckboxEmpresa = (event) => {
-    setEmpresa(event.target.checked)
-  }
+    setEmpresa(event.target.checked);
+  };
 
   const [feria, setFeria] = useState(false);
   const handleCheckboxFeria = (event) => {
-    setFeria(event.target.checked)
-  }
+    setFeria(event.target.checked);
+  };
 
   const [otroSector, setOtroSector] = useState(false);
   const handleCheckboxOtroSector = (event) => {
-    setOtroSector(event.target.checked)
-  }
+    setOtroSector(event.target.checked);
+  };
 
   const [panaderia, setPanaderia] = useState(false);
   const handleCheckboxPanaderia = (event) => {
-    setPanaderia(event.target.checked)
-  }
+    setPanaderia(event.target.checked);
+  };
 
   const [restaurante, setRestaurante] = useState(false);
   const handleCheckboxRestaurante = (event) => {
-    setRestaurante(event.target.checked)
-  }
+    setRestaurante(event.target.checked);
+  };
 
   const [usuarioFinal, setUsuarioFinal] = useState(false);
   const handleCheckboxUsuarioFinal = (event) => {
-    setUsuarioFinal(event.target.checked)
-  }
+    setUsuarioFinal(event.target.checked);
+  };
 
   const [supermercado, setSupermercado] = useState(false);
   const handleCheckboxSupermercado = (event) => {
-    setSupermercado(event.target.checked)
-  }
+    setSupermercado(event.target.checked);
+  };
 
   const [otro, setOtro] = useState(false);
   const handleCheckboxOtro = (event) => {
-    setOtro(event.target.checked)
-  }
+    setOtro(event.target.checked);
+  };
 
   const [personInCharge, setPersonInCharge] = useState(1);
   const handleChangePersonInCharge = (event) => {
-    setPersonInCharge(event.target.value)
-  }
+    setPersonInCharge(event.target.value);
+  };
 
   const [priority, setPriority] = useState("Baja");
   const handleChangePriority = (event) => {
-    setPriority(event.target.value)
-  }
+    setPriority(event.target.value);
+  };
 
   const [state, setState] = useState("Clientes");
   const handleChangeState = (event) => {
-    setState(event.target.value)
-  }
+    setState(event.target.value);
+  };
 
-  var media = []
+  var media = [];
 
   const [correo, setCorreo] = useState(false);
   const handleCheckboxCorreo = (event) => {
-    setCorreo(event.target.checked)
-  }
+    setCorreo(event.target.checked);
+  };
 
   const [llamada, setLlamada] = useState(false);
   const handleCheckboxLlamada = (event) => {
-    setLlamada(event.target.checked)
-  }
+    setLlamada(event.target.checked);
+  };
 
   const [instagram, setInstagram] = useState(false);
   const handleCheckboxInstagram = (event) => {
-    setInstagram(event.target.checked)
-  }
+    setInstagram(event.target.checked);
+  };
 
   const [whatsapp, setWhatsapp] = useState(false);
   const handleCheckboxWhatsapp = (event) => {
-    setWhatsapp(event.target.checked)
-  }
+    setWhatsapp(event.target.checked);
+  };
 
   const [zoom, setZoom] = useState(false);
   const handleCheckboxZoom = (event) => {
-    setZoom(event.target.checked)
-  }
+    setZoom(event.target.checked);
+  };
 
   const [otra, setOtra] = useState(false);
   const handleCheckboxOtra = (event) => {
-    setOtra(event.target.checked)
-  }
+    setOtra(event.target.checked);
+  };
 
   const [contacto, setContacto] = useState("");
   const handleChangeContacto = (event) => {
-    setContacto(event.target.value)
-  }
+    setContacto(event.target.value);
+  };
 
   const [telefono, setTelefono] = useState("");
+  const [telefonoValid, setTelefonoValid] = useState("");
   const handleChangeTelefono = (event) => {
-    setTelefono(event.target.value)
-  }
+    setTelefono(event.target.value);
+    if (event.target.value.match("^[1-9]{1}[0-9]{7}$")) {
+      setTelefonoValid(event.target.value);
+      console.log(telefono + " if");
+    } else {
+      setTelefonoValid("");
+    }
+  };
 
   const [correoElectronico, setCorreoElectronico] = useState("");
   const handleChangeCorreoElectronico = (event) => {
-    setCorreoElectronico(event.target.value)
-  }
+    setCorreoElectronico(event.target.value);
+  };
 
   const [paginaWeb, setPaginaWeb] = useState("");
   const handleChangePaginaWeb = (event) => {
-    setPaginaWeb(event.target.value)
-  }
+    setPaginaWeb(event.target.value);
+  };
 
   // Edit Client
   const handleSubmit = async (event) => {
@@ -333,30 +349,47 @@ function ClientInformation() {
       media.push("Zoom");
     }
     if (otra) {
-      media.push("Otra")
+      media.push("Otra");
     }
     const currentToken = await GetToken();
     const response = await fetch("api/cliente/EditCliente", {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': `Bearer ${currentToken}`
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
-      body: JSON.stringify({ clienteId: clientId, fechaAgregado: clientInfo.fechaAgregado, responsableId: personInCharge, prioridad: priority, estado: state, nombreEmpresa: company, contacto: contacto, telefono: telefono, correo: correoElectronico, web: paginaWeb })
+      body: JSON.stringify({
+        clienteId: clientId,
+        fechaAgregado: clientInfo.fechaAgregado,
+        responsableId: personInCharge,
+        prioridad: priority,
+        estado: state,
+        nombreEmpresa: company,
+        contacto: contacto,
+        telefono: telefono,
+        correo: correoElectronico,
+        web: paginaWeb,
+      }),
     });
 
     if (response.ok) {
       // add new segments
       for (let i = 0; i < segments.length; i++) {
         if (!clientSegments.includes(segments[i])) {
-          const responseSegmento = await fetch("api/clientesegmento/AddSegment", {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ clienteId: clientId, segmentoId: segments[i] })
-          });
+          const responseSegmento = await fetch(
+            "api/clientesegmento/AddSegment",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${currentToken}`,
+              },
+              body: JSON.stringify({
+                clienteId: clientId,
+                segmentoId: segments[i],
+              }),
+            }
+          );
           if (!responseSegmento.ok) {
             // store or notify which segment fails
           }
@@ -365,14 +398,21 @@ function ClientInformation() {
       // delete unchecked segments
       for (let i = 0; i < clientSegments.length; i++) {
         if (!segments.includes(clientSegments[i])) {
-          const responseSegmento = await fetch("api/clientesegmento/DeleteClientSegment", {
-            method: "DELETE",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ clienteSegmentoId: 0, clienteId: clientId, segmentoId: clientSegments[i] })
-          });
+          const responseSegmento = await fetch(
+            "api/clientesegmento/DeleteClientSegment",
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${currentToken}`,
+              },
+              body: JSON.stringify({
+                clienteSegmentoId: 0,
+                clienteId: clientId,
+                segmentoId: clientSegments[i],
+              }),
+            }
+          );
           if (!responseSegmento.ok) {
             // store or notify which segment fails
           }
@@ -381,14 +421,17 @@ function ClientInformation() {
       // add new media
       for (let i = 0; i < media.length; i++) {
         if (!clientMedia.includes(media[i])) {
-          const responseMedia = await fetch("api/clientecomunicacion/AddClientMedia", {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ clienteId: clientId, medioId: media[i] })
-          });
+          const responseMedia = await fetch(
+            "api/clientecomunicacion/AddClientMedia",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${currentToken}`,
+              },
+              body: JSON.stringify({ clienteId: clientId, medioId: media[i] }),
+            }
+          );
           if (!responseMedia.ok) {
             // store or notify which media fails
           }
@@ -397,14 +440,21 @@ function ClientInformation() {
       // delete unchecked media
       for (let i = 0; i < clientMedia.length; i++) {
         if (!media.includes(clientMedia[i])) {
-          const responseMedia = await fetch("api/clientecomunicacion/DeleteClientMedia", {
-            method: "DELETE",
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              'Authorization': `Bearer ${currentToken}`
-            },
-            body: JSON.stringify({ clienteComunicacionId: 0, clienteId: clientId, medioId: clientMedia[i] })
-          });
+          const responseMedia = await fetch(
+            "api/clientecomunicacion/DeleteClientMedia",
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${currentToken}`,
+              },
+              body: JSON.stringify({
+                clienteComunicacionId: 0,
+                clienteId: clientId,
+                medioId: clientMedia[i],
+              }),
+            }
+          );
           if (!responseMedia.ok) {
             // store or notify which segment fails
           }
@@ -418,7 +468,7 @@ function ClientInformation() {
 
     segments = [];
     media = [];
-  }
+  };
 
   const navigate = useNavigate();
   const handleDeleteClient = async () => {
@@ -426,134 +476,325 @@ function ClientInformation() {
     const responseDelete = await fetch("api/cliente/DeleteCliente", {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': `Bearer ${currentToken}`
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
-      body: JSON.stringify(clientInfo)
-    }
-    );
+      body: JSON.stringify(clientInfo),
+    });
     //TO-DO: use state to show a delete message
     if (responseDelete.ok) {
-      navigate('/clientes', { state: clientId });
+      navigate("/clientes", { state: clientId });
     }
-  }
+  };
   return (
-    <div className="container" >
-      {
-        clientInfo === "" ?
-          <Spinner />
-          :
-          <div className="container" >
-            <div className="row">
-              <div className="col">
-                <div className="card m-3 mt-5" >
-                  <div className="card-body">
-                    <div className="row align-items-center responsive">
-                      <div className="col-8 col-sm-9">
-                        <h5 className="card-title"> {clientInfo.nombreEmpresa} </h5>
-                      </div>
-                      <div className="col-4 col-sm-3 d-flex justify-content-md-end">
-                        <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                          data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                          Editar
-                        </button>
-                        <div className="offcanvas offcanvas-start " data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                          <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">Informacion del cliente</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                          </div>
-                          <div className="offcanvas-body">
-                            <form onSubmit={handleSubmit}>
-                              <Input variable={company} handler={handleChangeCompany} text="Nombre del cliente" />
-                              <div className="mb-3">
-                                <label htmlFor="formGroupExampleInput" className="form-label">Agregado el: {date} </label>
-                              </div>
-                              <div className="mb-3">
-                                <label htmlFor="formGroupExampleInput" className="form-label">Segmento</label>
-                                <CheckBox variable={cafeteria} handler={handleCheckboxCafeteria} text="Cafeteria" />
-                                <CheckBox variable={catering} handler={handleCheckboxCatering} text="Catering" />
-                                <CheckBox variable={centroEducativo} handler={handleCheckboxCentroEducativo} text="Centro Educativo" />
-                                <CheckBox variable={comidaPreparada} handler={handleCheckboxComidaPreparada} text="Comida Preparada" />
-                                <CheckBox variable={empresa} handler={handleCheckboxEmpresa} text="Empresa" />
-                                <CheckBox variable={feria} handler={handleCheckboxFeria} text="Feria" />
-                                <CheckBox variable={otroSector} handler={handleCheckboxOtroSector} text="Otro Sector" />
-                                <CheckBox variable={panaderia} handler={handleCheckboxPanaderia} text="Panaderia" />
-                                <CheckBox variable={restaurante} handler={handleCheckboxRestaurante} text="Restaurante" />
-                                <CheckBox variable={usuarioFinal} handler={handleCheckboxUsuarioFinal} text="Usuario Final" />
-                                <CheckBox variable={supermercado} handler={handleCheckboxSupermercado} text="Supermercado" />
-                                <CheckBox variable={otro} handler={handleCheckboxOtro} text="Otro" />
-                              </div>
+    <div className="container">
+      {clientInfo === "" ? (
+        <Spinner />
+      ) : (
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div className="card m-3 mt-5">
+                <div className="card-body">
+                  <div className="row align-items-center responsive">
+                    <div className="col-8 col-sm-9">
+                      <h5 className="card-title">
+                        {" "}
+                        {clientInfo.nombreEmpresa}{" "}
+                      </h5>
+                    </div>
+                    <div className="col-4 col-sm-3 d-flex justify-content-md-end">
+                      <button
+                        className="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasWithBothOptions"
+                        aria-controls="offcanvasWithBothOptions"
+                      >
+                        Editar
+                      </button>
+                      <div
+                        className="offcanvas offcanvas-start "
+                        data-bs-scroll="true"
+                        tabIndex="-1"
+                        id="offcanvasWithBothOptions"
+                        aria-labelledby="offcanvasWithBothOptionsLabel"
+                      >
+                        <div className="offcanvas-header">
+                          <h5
+                            className="offcanvas-title"
+                            id="offcanvasWithBothOptionsLabel"
+                          >
+                            Informacion del cliente
+                          </h5>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="offcanvas-body">
+                          <form onSubmit={handleSubmit}>
+                            <Input
+                              variable={company}
+                              handler={handleChangeCompany}
+                              text="Nombre del cliente"
+                            />
+                            <div className="mb-3">
+                              <label
+                                htmlFor="formGroupExampleInput"
+                                className="form-label"
+                              >
+                                Agregado el: {date}{" "}
+                              </label>
+                            </div>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="formGroupExampleInput"
+                                className="form-label"
+                              >
+                                Segmento
+                              </label>
+                              <CheckBox
+                                variable={cafeteria}
+                                handler={handleCheckboxCafeteria}
+                                text="Cafeteria"
+                              />
+                              <CheckBox
+                                variable={catering}
+                                handler={handleCheckboxCatering}
+                                text="Catering"
+                              />
+                              <CheckBox
+                                variable={centroEducativo}
+                                handler={handleCheckboxCentroEducativo}
+                                text="Centro Educativo"
+                              />
+                              <CheckBox
+                                variable={comidaPreparada}
+                                handler={handleCheckboxComidaPreparada}
+                                text="Comida Preparada"
+                              />
+                              <CheckBox
+                                variable={empresa}
+                                handler={handleCheckboxEmpresa}
+                                text="Empresa"
+                              />
+                              <CheckBox
+                                variable={feria}
+                                handler={handleCheckboxFeria}
+                                text="Feria"
+                              />
+                              <CheckBox
+                                variable={otroSector}
+                                handler={handleCheckboxOtroSector}
+                                text="Otro Sector"
+                              />
+                              <CheckBox
+                                variable={panaderia}
+                                handler={handleCheckboxPanaderia}
+                                text="Panaderia"
+                              />
+                              <CheckBox
+                                variable={restaurante}
+                                handler={handleCheckboxRestaurante}
+                                text="Restaurante"
+                              />
+                              <CheckBox
+                                variable={usuarioFinal}
+                                handler={handleCheckboxUsuarioFinal}
+                                text="Usuario Final"
+                              />
+                              <CheckBox
+                                variable={supermercado}
+                                handler={handleCheckboxSupermercado}
+                                text="Supermercado"
+                              />
+                              <CheckBox
+                                variable={otro}
+                                handler={handleCheckboxOtro}
+                                text="Otro"
+                              />
+                            </div>
 
-                              <SelectPersonInCharge variable={personInCharge} users={users} handler={handleChangePersonInCharge} />
-                              <SelectPriority variable={priority} handler={handleChangePriority} />
-                              <SelectState variable={state} handler={handleChangeState} />
+                            <SelectPersonInCharge
+                              variable={personInCharge}
+                              users={users}
+                              handler={handleChangePersonInCharge}
+                            />
+                            <SelectPriority
+                              variable={priority}
+                              handler={handleChangePriority}
+                            />
+                            <SelectState
+                              variable={state}
+                              handler={handleChangeState}
+                            />
 
-                              <div className="mb-3">
-                                <label htmlFor="formGroupExampleInput" className="form-label">Medio de Comunicacion</label>
-                                <CheckBox variable={correo} handler={handleCheckboxCorreo} text="Correo" />
-                                <CheckBox variable={llamada} handler={handleCheckboxLlamada} text="Llamada" />
-                                <CheckBox variable={instagram} handler={handleCheckboxInstagram} text="Instagram" />
-                                <CheckBox variable={whatsapp} handler={handleCheckboxWhatsapp} text="Whatsapp" />
-                                <CheckBox variable={zoom} handler={handleCheckboxZoom} text="Zoom" />
-                                <CheckBox variable={otra} handler={handleCheckboxOtra} text="Otra" />
+                            <div className="mb-3">
+                              <label
+                                htmlFor="formGroupExampleInput"
+                                className="form-label"
+                              >
+                                Medio de Comunicacion
+                              </label>
+                              <CheckBox
+                                variable={correo}
+                                handler={handleCheckboxCorreo}
+                                text="Correo"
+                              />
+                              <CheckBox
+                                variable={llamada}
+                                handler={handleCheckboxLlamada}
+                                text="Llamada"
+                              />
+                              <CheckBox
+                                variable={instagram}
+                                handler={handleCheckboxInstagram}
+                                text="Instagram"
+                              />
+                              <CheckBox
+                                variable={whatsapp}
+                                handler={handleCheckboxWhatsapp}
+                                text="Whatsapp"
+                              />
+                              <CheckBox
+                                variable={zoom}
+                                handler={handleCheckboxZoom}
+                                text="Zoom"
+                              />
+                              <CheckBox
+                                variable={otra}
+                                handler={handleCheckboxOtra}
+                                text="Otra"
+                              />
+                            </div>
+
+                            <Input
+                              variable={contacto}
+                              handler={handleChangeContacto}
+                              text="Contacto"
+                            />
+                            <Input
+                              variable={telefono}
+                              handler={handleChangeTelefono}
+                              text="Telefono"
+                            />
+                            <Input
+                              variable={correoElectronico}
+                              handler={handleChangeCorreoElectronico}
+                              text="Correo Electronico"
+                            />
+                            <Input
+                              variable={paginaWeb}
+                              handler={handleChangePaginaWeb}
+                              text="Pagina Web"
+                            />
+
+                            <div className="row">
+                              <div className="col-6 d-flex justify-content-center">
+                                {company !== "" &&
+                                contacto !== "" &&
+                                telefonoValid !== "" &&
+                                //segments.length > 0 &&
+                                personInCharge > 0 ? (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    data-bs-dismiss="offcanvas"
+                                    onClick={() => {}}
+                                  >
+                                    Agregar
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    onClick={() => {}}
+                                    disabled
+                                  >
+                                    Agregar
+                                  </button>
+                                )}
                               </div>
-
-                              <Input variable={contacto} handler={handleChangeContacto} text="Contacto" />
-                              <Input variable={telefono} handler={handleChangeTelefono} text="Telefono" />
-                              <Input variable={correoElectronico} handler={handleChangeCorreoElectronico} text="Correo Electronico" />
-                              <Input variable={paginaWeb} handler={handleChangePaginaWeb} text="Pagina Web" />
-
-                              <div className="row">
-                                <div className="col-6 d-flex justify-content-center">
-                                  <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
-                                </div>
-                                <div className="col-6 d-flex justify-content-center">
-                                  <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(clientInfo, clientSegments, clientMedia)} data-bs-dismiss="offcanvas">Cancelar</button>
-                                </div>
+                              <div className="col-6 d-flex justify-content-center">
+                                <button
+                                  className="btn btn-danger text-light"
+                                  type="button"
+                                  onClick={() =>
+                                    addDefaultEditForm(
+                                      clientInfo,
+                                      clientSegments,
+                                      clientMedia
+                                    )
+                                  }
+                                  data-bs-dismiss="offcanvas"
+                                >
+                                  Cancelar
+                                </button>
                               </div>
-                            </form>
-                          </div>
+                            </div>
+                          </form>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <InfoClientList clientInfo={clientInfo} clientSegments={clientSegments} clientMedia={clientMedia} date={date} personInChargeName={personInChargeName} />
                 </div>
-                <div className="d-md-block d-none">
-                  <ButtonOrder clientId={clientId} />
-                  <ButtonDeleteClient clientId={clientId}
-                    clientName={clientInfo.nombreEmpresa}
-                    index="0"
-                    handler={handleDeleteClient} />
-                </div>
+                <InfoClientList
+                  clientInfo={clientInfo}
+                  clientSegments={clientSegments}
+                  clientMedia={clientMedia}
+                  date={date}
+                  personInChargeName={personInChargeName}
+                />
               </div>
-              <div className="col mt-5 mb-3 pt-3 bg-success">
-                <div className="row px-2">
-                  <div className="col-4">
-                    <InputInt text="Año" default="2022" handler={handleYear} />
-                  </div>
-                  <div className="col-8 d-flex justify-content-center align-items-center">
-                    <h3 className="text-center text-light">Reportes</h3>
-                  </div>
-                </div>
-                <div className="mx-2 mb-4">
-                  <ComponentReport parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${year}`} label="Gramos" texto="Reporte Huella Ambiental" />
-                </div>
-                <div className="mx-2 mb-5">
-                  <ComponentReport parametro={`api/reporte/GetClientAnnualOrderReport/${clientId}/${year}`} label="Cantidad" texto="Reporte de Ordenes" />
-                </div>
+              <div className="d-md-block d-none">
+                <ButtonOrder clientId={clientId} />
+                <ButtonDeleteClient
+                  clientId={clientId}
+                  clientName={clientInfo.nombreEmpresa}
+                  index="0"
+                  handler={handleDeleteClient}
+                />
               </div>
             </div>
-            <div className="d-md-none d-block">
-              <ButtonOrder clientId={clientId} />
-              <ButtonDeleteClient clientId={clientId}
-                clientName={clientInfo.nombreEmpresa}
-                index="1"
-                handler={handleDeleteClient} />
+            <div className="col mt-5 mb-3 pt-3 bg-success">
+              <div className="row px-2">
+                <div className="col-4">
+                  <InputInt text="AÃ±o" default="2022" handler={handleYear} />
+                </div>
+                <div className="col-8 d-flex justify-content-center align-items-center">
+                  <h3 className="text-center text-light">Reportes</h3>
+                </div>
+              </div>
+              <div className="mx-2 mb-4">
+                <ComponentReport
+                  parametro={`api/reporte/GetClientAnnualEnvironmentalReport/${clientId}/${year}`}
+                  label="Gramos"
+                  texto="Reporte Huella Ambiental"
+                />
+              </div>
+              <div className="mx-2 mb-5">
+                <ComponentReport
+                  parametro={`api/reporte/GetClientAnnualOrderReport/${clientId}/${year}`}
+                  label="Cantidad"
+                  texto="Reporte de Ordenes"
+                />
+              </div>
             </div>
-            
           </div>
-      }
+          <div className="d-md-none d-block">
+            <ButtonOrder clientId={clientId} />
+            <ButtonDeleteClient
+              clientId={clientId}
+              clientName={clientInfo.nombreEmpresa}
+              index="1"
+              handler={handleDeleteClient}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

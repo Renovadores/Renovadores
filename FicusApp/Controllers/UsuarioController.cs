@@ -60,19 +60,19 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetUsers")]
-        public async Task<IActionResult> GetUsers()
+        public Task<IActionResult> GetUsers()
         {
             List<Usuario> users = _userService.GetUsers();
-            return Ok(users);
+            return Task.FromResult<IActionResult>(Ok(users));
         }
 
         [Authorize]
         [HttpGet]
         [Route("GetUser/{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public Task<IActionResult> GetUser(int id)
         {
             Usuario usuario = _userService.GetUser(id);
-            return Ok(usuario);
+            return Task.FromResult<IActionResult>(Ok(usuario));
         }
 
         // TO-DO: delete this method

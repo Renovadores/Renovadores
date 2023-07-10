@@ -25,16 +25,16 @@ namespace FicusApp.Services
             return 0;
         }
 
-        public async Task<int> GetNewCode()
+        public Task<int> GetNewCode()
         {
-            int code = await _context.Orden.CountAsync() + 1;
-            return code;
+            int code = _context.Orden.Count() + 1;
+            return Task.FromResult(code);
         }
 
-        public async Task<List<Orden>> GetOrders()
+        public Task<List<Orden>> GetOrders()
         {
-            List<Orden> orders = await _context.Orden.ToListAsync();
-            return orders;
+            List<Orden> orders = _context.Orden.ToList();
+            return Task.FromResult(orders);
         }
 
         public async Task UpdateOrden(Orden orden)

@@ -20,7 +20,7 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetMedia/{id}")]
-        public async Task<IActionResult> GetMedia(int id)
+        public Task<IActionResult> GetMedia(int id)
         {
             List<ClienteComunicacion> clienteMedios = _clientMediaService.GetMedia(id);
             List<string> medios = new();
@@ -28,7 +28,7 @@ namespace FicusApp.Controllers
             {
                 medios.Add(clienteMedios[i].MedioId);
             }
-            return Ok(medios);
+            return Task.FromResult<IActionResult>(Ok(medios));
         }
 
         [Authorize]

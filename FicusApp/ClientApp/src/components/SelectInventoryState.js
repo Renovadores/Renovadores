@@ -11,8 +11,8 @@ function SelectInventoryState({ inventories, value, onChange }) {
         onChange={onChange}
       >
         {inventories.map((state, index) => (
-          <option value={state.iD_Estado} key={index}>
-            {state.descripcion_estadoproducto}
+          <option value={state.idEstado} key={index}>
+            {state.descripcionEstadoproducto}
           </option>
         ))}
       </select>

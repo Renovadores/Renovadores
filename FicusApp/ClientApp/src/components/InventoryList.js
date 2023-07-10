@@ -93,7 +93,7 @@ const FormEditInventory = ({ product, onSubmit }) => {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      data-bs-dismiss="offcanvas"
+                      //data-bs-dismiss="offcanvas"
                       onClick={() => {}}
                       disabled
                     >

@@ -19,14 +19,14 @@ namespace FicusApp.Services
             return 0;
         }
 
-        public async Task<int> DeleteClientSegment([FromBody] ClienteSegmento request)
+        public Task<int> DeleteClientSegment([FromBody] ClienteSegmento request)
         {
             ClienteSegmento clienteSegmento = _context.ClienteSegmento.Where(s =>
                                                 s.ClienteId == request.ClienteId
                                                 && s.SegmentoId == request.SegmentoId).FirstOrDefault();
             _context.ClienteSegmento.Remove(clienteSegmento);
             _context.SaveChanges();
-            return 0;
+            return Task.FromResult(0);
         }
 
         public List<ClienteSegmento> GetSegments(int id)
