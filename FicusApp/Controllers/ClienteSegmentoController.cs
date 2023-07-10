@@ -38,7 +38,7 @@ namespace FicusApp.Controllers
         [Route("AddSegment")]
         public async Task<IActionResult> AddSegment([FromBody] ClienteSegmento request)
         {
-            int code = await _clientSegmentService.AddSegment(request);
+            await _clientSegmentService.AddSegment(request);
             return Ok();
         }
 
@@ -47,7 +47,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClientSegment")] 
         public async Task<IActionResult> DeleteClientSegment([FromBody] ClienteSegmento request)
         {
-            int code = await _clientSegmentService.DeleteClientSegment(request);
+            await _clientSegmentService.DeleteClientSegment(request);
             return Ok();
         }
 

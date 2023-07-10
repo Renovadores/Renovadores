@@ -36,7 +36,7 @@ namespace FicusApp.Controllers
         [Route("AddClientMedia")]
         public async Task<IActionResult> AddClientMedia([FromBody] ClienteComunicacion request)
         {
-            int code = await _clientMediaService.AddMedia(request);
+            await _clientMediaService.AddMedia(request);
             return Ok();
         }
 
@@ -45,7 +45,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClientMedia")]
         public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)
         {
-            int code = await _clientMediaService.DeleteClientMedia(request);
+            await _clientMediaService.DeleteClientMedia(request);
             return Ok();
         }
 

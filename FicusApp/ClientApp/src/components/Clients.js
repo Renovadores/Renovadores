@@ -11,7 +11,6 @@ import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import MatchingClientList from "./MatchingClientList";
-import SelectPersonInCharge from "./SelectPersonInCharge";
 
 function Clients() {
   // get clients from data base
@@ -24,7 +23,7 @@ function Clients() {
   const getClients = async () => {
     setClientsChecked(false);
     const response = await fetch(`api/cliente/GetClientes`, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -133,11 +132,6 @@ function Clients() {
     setOtro(event.target.checked);
   };
 
-  const [personInCharge, setPersonInCharge] = useState(1);
-  const handleChangePersonInCharge = (event) => {
-    setPersonInCharge(event.target.value);
-  };
-
   const [priority, setPriority] = useState("Baja");
   const handleChangePriority = (event) => {
     setPriority(event.target.value);
@@ -185,17 +179,17 @@ function Clients() {
     setContacto(event.target.value);
   };
 
-const [telefono, setTelefono] = useState("");
-const [telefonoValid, setTelefonoValid] = useState("");
-const handleChangeTelefono = (event) => {
+  const [telefono, setTelefono] = useState("");
+  const [telefonoValid, setTelefonoValid] = useState("");
+  const handleChangeTelefono = (event) => {
     setTelefono(event.target.value);
     if (event.target.value.match("^[1-9]{1}[0-9]{7}$")) {
-        setTelefonoValid(event.target.value);
-        console.log(telefono + " if");
+      setTelefonoValid(event.target.value);
+      console.log(telefono + " if");
     } else {
-        setTelefonoValid("");
+      setTelefonoValid("");
     }
-};
+  };
 
   const [correoElectronico, setCorreoElectronico] = useState("");
   const handleChangeCorreoElectronico = (event) => {
@@ -305,7 +299,7 @@ const handleChangeTelefono = (event) => {
     if (responseId.ok) {
       const newClientId = await responseId.json();
       // add client
-      const userId = JSON.parse(sessionStorage.getItem('userId'));
+      const userId = JSON.parse(sessionStorage.getItem("userId"));
       const responseCliente = await fetch("api/cliente/AddCliente", {
         method: "POST",
         headers: {
@@ -315,7 +309,7 @@ const handleChangeTelefono = (event) => {
         body: JSON.stringify({
           clienteId: newClientId.id,
           fechaAgregado: dateDB,
-          responsableId: personInCharge,
+          responsableId: userId,
           prioridad: priority,
           estado: state,
           nombreEmpresa: company,
@@ -528,11 +522,6 @@ const handleChangeTelefono = (event) => {
                   />
                 </div>
 
-                <SelectPersonInCharge
-                  variable={personInCharge}
-                  users={users}
-                  handler={handleChangePersonInCharge}
-                />
                 <SelectPriority
                   variable={priority}
                   handler={handleChangePriority}
@@ -600,9 +589,7 @@ const handleChangeTelefono = (event) => {
                   <div className="col-6 d-flex justify-content-center">
                     {company !== "" &&
                     contacto !== "" &&
-                    telefonoValid !== "" &&
-                    //&& segments.length > 0
-                    personInCharge > 0 ? (
+                    telefonoValid !== "" ? (
                       <button
                         type="submit"
                         className="btn btn-primary"
@@ -659,15 +646,16 @@ const handleChangeTelefono = (event) => {
           </div>
         </div>
       </div>
-      {
-        clientsChecked === false ?
-          <Spinner />
-          :
-          <div className="row">
-            <ClientList clients={clients} handler={(clientId) => handleClickViewClient(clientId)} />
-          </div>
-          
-      }
+      {clientsChecked === false ? (
+        <Spinner />
+      ) : (
+        <div className="row">
+          <ClientList
+            clients={clients}
+            handler={(clientId) => handleClickViewClient(clientId)}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -23,11 +23,13 @@ namespace FicusApp.Services;
 
             return Task.FromResult(Inventarios);
         }
-        public Task<newId> GetNewId()
+        public Task<NewId> GetNewId()
         {
-            newId id = new newId();
-            id.Id = _context.Inventario.Count() + 1;
-            return Task.FromResult(id);
+        NewId id = new()
+        {
+            Id = _context.Inventario.Count() + 1
+        };
+        return Task.FromResult(id);
         }
 
     /*

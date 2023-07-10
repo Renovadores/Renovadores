@@ -17,11 +17,11 @@ namespace FicusApp.Controllers
 
         [HttpGet]
         [Route("GetHistorialToken/{UsuarioId}")]
-        public async Task<IActionResult> GetHistorialToken(int UsuarioId)
+        public Task<IActionResult> GetHistorialToken(int UsuarioId)
         {
             HistorialRefreshToken historialToken = _context.HistorialRefreshToken
                                          .Where(h => h.UsuarioId == UsuarioId).Single();
-            return Ok(historialToken);
+            return Task.FromResult<IActionResult>(Ok(historialToken));
         }
 
     }

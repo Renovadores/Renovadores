@@ -74,16 +74,16 @@ namespace FicusApp.Services
             return Task.FromResult<(int, List<Cliente>)>((code, clientes));
         }
 
-        public async Task<List<Cliente>> GetAllClientes()
+        public Task<List<Cliente>> GetAllClientes()
         {
             List<Cliente> clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderByDescending(c => c.ClienteId).ToList();
-            return clientes;
+            return Task.FromResult(clientes);
         }
 
-        public async Task<int> GetNewId()
+        public Task<int> GetNewId()
         {
             int id = _context.Cliente.Count() + 1;
-            return id;
+            return Task.FromResult(id);
         }
 
         public Task<List<Cliente>> GetMatchClients(string input)
