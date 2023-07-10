@@ -59,7 +59,7 @@ namespace FicusApp.Services
             return response;
         }
 
-        public Task<(int, List<Cliente>)> GetClientes(int index)
+        public Task<(int, List<Cliente>)> GetClientes()
         {
             int code = SUCCESS_CODE;
             List<Cliente> clientes = new();
@@ -69,7 +69,7 @@ namespace FicusApp.Services
             }
             else
             {
-                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).Skip(index).Take(8).ToList();
+                clientes = _context.Cliente.Where(c => c.Estado != "Eliminado").OrderBy(c => c.NombreEmpresa).ToList();
             }
             return Task.FromResult<(int, List<Cliente>)>((code, clientes));
         }

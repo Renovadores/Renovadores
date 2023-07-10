@@ -36,14 +36,28 @@ namespace FicusApp.Services
             return Task.FromResult(orders);
         }
 
-        public Task<List<List<Orden>>> GetOrdersByDate(int eventId)
+        public async Task<List<Orden>> GetTodayOrder()
         {
-            List<Orden> orders = _context.Orden
+            List<Orden> orders = await _context.Orden
+                                .Include(o => o.Cliente)
+                                .Include(o => o.Evento)
+                                .Include(o => o.HistorialOrden)
+                                .Where(o => o.FechaAlquiler == DateTime.Today
+                                        && o.HistorialOrden.OrderByDescending(h => h.FaseId)
+                                        .FirstOrDefault().FaseId == 1)
+                                .ToListAsync();
+            return orders;
+        }
+
+        public async Task<List<List<Orden>>> GetOrdersByDate(int eventId)
+        {
+            List<Orden> orders = await _context.Orden
                                 .Where(o => o.Evento != null && 
                                        o.EventoId == eventId)
                                 .Include(o => o.Cliente)
+                                .Include(o => o.HistorialOrden)
                                 .OrderBy(O => O.FechaAlquiler)
-                                .ToList();
+                                .ToListAsync();
             List<List<Orden>> filterOrders = new();
             foreach (var o in orders)
             {
@@ -62,7 +76,25 @@ namespace FicusApp.Services
                     filterOrders.Add(new List<Orden>() {o});
                 }
             }
-            return Task.FromResult(filterOrders);
+            // verify if there are dates with all his orders in finished state
+            foreach (var date in filterOrders.ToList())
+            {
+                int totalOrders = date.Count();
+                int counterFinished = 0;
+                foreach (var order in date)
+                {
+                    if (order.HistorialOrden?.OrderByDescending(h => h.FaseId)?
+                        .FirstOrDefault()?.FaseId == 3)
+                    {
+                        counterFinished++;
+                    }
+                }
+                if (totalOrders == counterFinished)
+                {
+                    filterOrders.Remove(date);
+                }
+            }
+            return filterOrders;
         }
     }
 }

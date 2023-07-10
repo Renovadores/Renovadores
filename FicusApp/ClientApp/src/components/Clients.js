@@ -7,12 +7,11 @@ import ClientList from "./ClientList";
 import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
-import Pagination from "./Pagination";
-import SelectPersonInCharge from "./SelectPersonInCharge";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
 import MatchingClientList from "./MatchingClientList";
+import SelectPersonInCharge from "./SelectPersonInCharge";
 
 function Clients() {
   // get clients from data base
@@ -21,12 +20,11 @@ function Clients() {
   const [clients, setClients] = useState([]);
   const [users, setUsers] = useState([]);
   const [token, setToken] = useState("");
-  const [updatePagination, setUpdatePagination] = useState(false);
 
   const getClients = async () => {
     setClientsChecked(false);
-    const response = await fetch(`api/cliente/GetClientes/${0}`, {
-      method: "GET",
+    const response = await fetch(`api/cliente/GetClientes`, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -230,7 +228,6 @@ const handleChangeTelefono = (event) => {
     setLlamada(false);
     setOtra(false);
     setPaginaWeb("");
-    setPersonInCharge(1);
     setPriority("Baja");
     setState("Contacto");
     setTelefono("");
@@ -308,6 +305,7 @@ const handleChangeTelefono = (event) => {
     if (responseId.ok) {
       const newClientId = await responseId.json();
       // add client
+      const userId = JSON.parse(sessionStorage.getItem('userId'));
       const responseCliente = await fetch("api/cliente/AddCliente", {
         method: "POST",
         headers: {
@@ -370,9 +368,11 @@ const handleChangeTelefono = (event) => {
         }
         handleCancel();
         // this change autocall getClients
-
-        setToken(currentToken);
-        setUpdatePagination(!updatePagination);
+        if (token === currentToken) {
+          getClients();
+        } else {
+          setToken(currentToken);
+        }
       }
     }
     segments = [];
@@ -659,20 +659,15 @@ const handleChangeTelefono = (event) => {
           </div>
         </div>
       </div>
-      {clientsChecked === false ? (
-        <Spinner />
-      ) : (
-        <ClientList
-          clients={clients}
-          handler={(clientId) => handleClickViewClient(clientId)}
-        />
-      )}
-      <Pagination
-        apiRoute="api/cliente/GetClientes"
-        apiTotalElements="api/cliente/GetTotalClients"
-        setElements={(data) => setClients(data)}
-        update={updatePagination}
-      />
+      {
+        clientsChecked === false ?
+          <Spinner />
+          :
+          <div className="row">
+            <ClientList clients={clients} handler={(clientId) => handleClickViewClient(clientId)} />
+          </div>
+          
+      }
     </div>
   );
 }

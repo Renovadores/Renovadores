@@ -21,11 +21,27 @@ function EventInformation() {
       setEventsChecked(true);
     }
   }
+
+  const getFase = (orderId) => {
+    var fase = historial.find(h => h.ordenId === orderId).faseId;
+    return getFaseBadge(fase);
+  }
+
+  const [historial, setHistorial] = useState([]);
+  const getHistorial = async () => {
+    const response = await fetch("api/HistorialOrden");
+    if (response.ok) {
+      const data = await response.json();
+      setHistorial(data);
+    }
+  }
+
   useEffect(() => {
     getEventsGroupByDate();
+    getHistorial();
   }, [])
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container d-flex justify-content-center min-vh-100">
       {
         eventDateList.length === 0 ?
           <div className=" mx-2 text-center">
@@ -38,14 +54,14 @@ function EventInformation() {
             }
           </div>
           :
-          <div className="row">
+          <div className="row w-100 h-100">
             <div className=" mx-2 text-center">
               <h1>{event.nombreEvento}</h1>
             </div>
             {
               eventDateList.map((date, index) => (
-                <div className="col-sm-6 col-md-4 d-flex justify-content-center" key={index}>
-                  <div className="card my-3" style={{ width: 288 }} >
+                <div className="col-sm-6 col-md-4 d-flex justify-content-center h-50" key={index}>
+                  <div className="card my-3 h-50" style={{ width: 288 }} >
                     <div className="card-body">
                       <h5 className="card-title">Fecha: {dateFormat(date[0].fechaAlquiler)}</h5>
                     </div>
@@ -56,9 +72,24 @@ function EventInformation() {
                             <h6>
                               {order.cliente.nombreEmpresa}
                             </h6>
-                            <a href={"/ordenes/" + order.ordenId} className="card-link link-info">
-                              Orden: {order.ordenId}
-                            </a>
+                            <div className="row">
+                              <div className="col">
+                                <a href={"/ordenes/" + order.ordenId}
+                                  className="card-link link-info">
+                                  Orden: {order.ordenId}
+                                </a>
+                              </div>
+                              <div className="col">
+                                {
+                                  historial.length > 0 ?
+                                    getFase(order.ordenId)
+                                :
+                                    <></>
+                                }
+                                
+                              </div>
+                            </div>
+                            
                           </li>
                         ))
                       }
@@ -80,4 +111,15 @@ function dateFormat(dateDB) {
   const date = day + "-" + arrayDate[1] + "-" + arrayDate[0];
 
   return date;
+}
+
+function getFaseBadge(faseId) {
+  const opciones = {
+    1: <span className="badge text-bg-secondary">Reservada</span>,
+    2: <span className="badge text-bg-info">Entregada</span>,
+    3: <span className="badge text-bg-success">Finalizada</span>,
+    default: <span className="badge text-bg-secondary">Indefinido</span>,
+  };
+  const resultado = opciones[faseId] || opciones.default;
+  return resultado;
 }

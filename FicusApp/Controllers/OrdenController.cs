@@ -28,6 +28,14 @@ namespace FicusApp.Controllers
             return Ok(ordenes);
         }
 
+        [HttpGet]
+        [Route("GetTodayOrders")]
+        public async Task<IActionResult> GetTodayOrders()
+        {
+            List<Orden> ordenes = await _orderService.GetTodayOrder();
+            return Ok(ordenes);
+        }
+
         [Authorize]
         [HttpGet]
         [Route("GetOrdersByDate/{eventId}")]

@@ -128,7 +128,7 @@ CREATE TABLE [HistorialOrden] (
   [OrdenId] integer NOT NULL,
   [FaseId] integer NOT NULL,
   [Inicio] date NOT NULL,
-  [Final] date NOT NULL,
+  [Final] date,
   PRIMARY KEY ([OrdenId], [FaseId])
 )
 GO

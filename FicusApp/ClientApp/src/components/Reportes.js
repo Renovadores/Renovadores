@@ -1,77 +1,145 @@
 ﻿import React, { useEffect, useState } from 'react';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+
 import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import InputInt from './InputInt';
 
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
 );
 
-const options = {
-    maintainAspectRatio: false,
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
+const environmentalReportOptions = {
+  maintainAspectRatio: true,
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
     },
+    title: {
+      display: true,
+      text: "Reporte Huella Ambiental",
+    },
+  },
+};
+
+const orderReportOptions = {
+  maintainAspectRatio: true,
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: "Reporte General De Ordenes Anuales",
+    },
+  },
 };
 
 const Reportes = () => {
-    const [dataLine, setDataLine] = useState({});
+  const monthLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const [environmentalReport, setEnvironmentalReport] = useState({});
+  const [ordersReport, setOrdersReport] = useState({});
+  const [year, setYear] = useState(2022);
 
-    useEffect(() => {
-        const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const handleYear = (event) => {
+    const input = event.target.value;
+    if (input >= 2022) {
+      setYear(input);
+    }
+  }
 
-        const data = {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Kilogramos',
-                    data: [100, 50, 40, 75, 150, 200, 120], // Datos quemados para los trimestres
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                },
-            ],
-        };
+  useEffect(() => {
+    const getReport = async () => {
+      const response = await fetch(`api/reporte/GetAnnualEnvironmentalReport/${year}`);
+      if (response.ok) {
+        const report = await response.json();
+        setEnvironmentalReport({
+          labels: monthLabels,
+          datasets: [
+            {
+              label: 'Gramos',
+              data: report,
+              backgroundColor: 'rgba(255, 44, 44, 1)',
+              borderColor: 'rgba(84, 74, 221, 0.5)'
+            },
+          ],
 
-        setDataLine(data);
-    }, []);
+        });
+      }
+      const responseOrders = await fetch(`api/reporte/GetAnnualOrderReport/${year}`);
+      if (responseOrders.ok) {
+        const report = await responseOrders.json();
+        setOrdersReport({
+          labels: monthLabels,
+          datasets: [
+            {
+              label: 'Cantidad',
+              data: report,
+              backgroundColor: 'rgba(255, 44, 44, 1)',
+              borderColor: 'rgba(84, 74, 221, 0.5)'
+            },
+          ],
 
-    return (
-        <div className="container vh-100">
-            <div className="row d-flex justify-content-center">
-                <div className="col-6">
-                    <h4 className="text-center">Reporte Huella Ambiental</h4>
-                </div>
-            </div>
-            <div className=  "row d-flex justify-content-center vh-50">
-                <div className= "col-6 bg-light d-flex justify-content-center">
-                    <div className="chart-container">
-                        <div className="chart-background" />
-                        {dataLine.datasets ? (
-                            <Line options={options} data={dataLine} />
-                        ) : (
-                            <p>Cargando datos...</p>
-                        )}
-                    </div>
-                </div> 
-            </div>
+        });
+      }
+    }
+    getReport();
+  }, [year]);
+
+  return (
+    <div className="container h-75">
+      <div className="row d-flex justify-content-center">
+        <div className="col-3 col-lg-2 px-0">
+          <InputInt text="Año" default="2022" handler={handleYear} />
         </div>
-    );
+      </div>
+      <div className="row">
+        <div className="col mb-4">
+          <div className="card bg-light border border-success border-5 mx-lg-5">
+            {
+              environmentalReport.datasets ?
+                <div>
+                  <Line options={environmentalReportOptions} data={environmentalReport} />
+                </div>
+                :
+                <p>Cargando datos...</p>
+            }
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col mb-4">
+          <div className="card bg-light border border-success border-5 mx-lg-5">
+            {
+              ordersReport.datasets ?
+                <div>
+                  <Line options={orderReportOptions} data={ordersReport} />
+                </div>
+                :
+                <p>Cargando datos...</p>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
 };
 
 export default Reportes;

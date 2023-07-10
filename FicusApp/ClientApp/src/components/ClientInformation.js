@@ -10,6 +10,8 @@ import Spinner from "./Spinner";
 import InfoClientList from "./InfoClientList";
 import ButtonOrder from "./ButtonOrder";
 import ButtonDeleteClient from "./ButtonDeleteClient";
+import ComponentReport from "./ComponentReport";
+import InputInt from "./InputInt";
 
 function ClientInformation() {
   // get client id sent by navigate function in Client.js
@@ -93,6 +95,15 @@ function ClientInformation() {
     }
   };
 
+  const [year, setYear] = useState(2022);
+  const handleYear = (event) => {
+    const input = event.target.value;
+    console.log(input);
+    if (input >= 2022) {
+      setYear(input);
+    }
+  }
+
   useEffect(() => {
     if (token !== "") {
       getClient();
@@ -100,7 +111,7 @@ function ClientInformation() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      };
+      }
       getToken();
     }
   }, [token]);

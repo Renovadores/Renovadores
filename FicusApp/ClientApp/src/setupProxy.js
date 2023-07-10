@@ -17,6 +17,7 @@ const context = [
     "/api/orden",
     "/api/detalle",
     "/api/evento",
+    "/api/reporte",
     "/api/historialrefreshtoken",
     "/api",
 ];

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import BelongToEvent from "./BelongToEvent";
 import ButtonAddOrder from "./ButtonAddOrder";
@@ -19,23 +18,6 @@ function AddOrder() {
 
   const [currentUserId] = useState(JSON.parse(sessionStorage.getItem('userId')));
   const [userName, setUserName] = useState("");
-  
-  // get a new order id (order code)
-  const [orderId, setIdOrder] = useState(0);
-  const generateIdOrder = async () => {
-    const response = await fetch("api/orden/GetNewCode", {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      setIdOrder(data.id);
-    } else {
-      console.log(response.text);
-    }
-  }
 
   const getUserName = async () => {
     const response = await fetch(`api/usuario/GetUser/${currentUserId}`, {
@@ -67,7 +49,7 @@ function AddOrder() {
   }
   useEffect(() => {
     if (token !== "") {
-      generateIdOrder();
+      /*generateIdOrder();*/
       getUserName();
       if (clientId !== null) {
         getClientName();
@@ -86,6 +68,7 @@ function AddOrder() {
   const [selectedProducts, setSelectedProducts] = useState([])
 
   const date = currentDateFormat();
+  const dateDB = dateFormatBD();
 
   const [clientName, setClientName] = useState("");
 
@@ -232,7 +215,7 @@ function AddOrder() {
         var newCuantity = parseInt(selectedProductInfo.pedidos) + parseInt(cuantity);
         selectedProductInfo.pedidos = newCuantity;
       } else {
-        selectedProductInfo = { ordenId: orderId, productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
+        selectedProductInfo = { ordenId: "", productoId: sku, nombre: productName, pedidos: cuantity, dimensiones: productSize, alquilerRetail: productCost }
         setSelectedProducts([...selectedProducts, selectedProductInfo])
       }
       setProductInput("");
@@ -248,7 +231,7 @@ function AddOrder() {
     setCuantity("");
   }
 
-  const navigate = useNavigate();
+  const [orderCode, setOrderCode] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
     const currentToken = await GetToken();
@@ -264,7 +247,7 @@ function AddOrder() {
       if (responseEventExists.ok) {
         const data = await responseEventExists.json();
         if (data.exist) {
-          console.log("El evento ya existe!")
+
         } else {
           //add event
           const responseEvent = await fetch("api/evento/AddEvento", {
@@ -290,6 +273,18 @@ function AddOrder() {
         const data = await responseEventId.json();
         eventId = data.id;
       }
+    }
+    //generate new order id
+    var orderId;
+    const response = await fetch("api/orden/GetNewCode", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      orderId = data.id;
     }
     var clienteId = clientId !== null ? clientId : selectedClient.clienteId;
     const responseOrder = await fetch("api/orden/AddOrder", {
@@ -326,7 +321,6 @@ function AddOrder() {
             const productStock = await responseStock.json();
             productStock.disponible -= pedidos;
             productStock.enUso = parseInt(productStock.enUso) + parseInt(pedidos);
-            console.log(productStock);
             // Edit record
             const response = await fetch("api/producto/EditProducto", {
               method: "PUT",
@@ -337,17 +331,24 @@ function AddOrder() {
               body: JSON.stringify(productStock)
             });
             if (response.ok) {
-
+              
             }
           } else {
             // notify error
           }
         }
       }
-      
+      const responseHistorial = await fetch(`api/HistorialOrden`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ordenId: orderId, faseId: 1, inicio: dateDB })
+      });
+      if (responseHistorial.ok) {
+        // Show pop up with order id
+        setOrderCode(orderId);
+      }
     }
-    
-    navigate('/ordenes');
+    // Error to add order
   }
 
   return (
@@ -359,7 +360,6 @@ function AddOrder() {
           </div>
           <div className="row mt-2 card-body">
             <ul className="list-group list-group-flush rounded">
-              <li className="list-group-item">Código de la orden: {orderId}</li>
               <li className="list-group-item">Fecha de creación: {date}</li>
               <li className="list-group-item">Responsable de la orden: {userName}</li>
               {
@@ -442,13 +442,27 @@ function AddOrder() {
               deliveryDate === "" || selectedProducts.length === 0 || (selectedClient === null && clientId === null) ?
                 <ButtonAddOrder enable={false} />
                 :
-                <ButtonAddOrder enable={true} />
+                <ButtonAddOrder enable={true} orderId={ orderCode } />
             }
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function dateFormatBD() {
+  const current = new Date();
+  var month = `${current.getMonth() + 1}`;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  var day = `${current.getDate()}`;
+  if (day < 10) {
+    day = '0' + day;
+  }
+  const date = `${current.getFullYear()}-${month}-${day}`;
+  return date;
 }
 
 function currentDateFormat() {

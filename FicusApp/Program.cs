@@ -31,6 +31,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDetailService, DetailService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
