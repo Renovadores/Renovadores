@@ -260,9 +260,16 @@ function ClientInformation() {
     setContacto(event.target.value);
   };
 
-  const [telefono, setTelefono] = useState("");
-  const handleChangeTelefono = (event) => {
-    setTelefono(event.target.value);
+    const [telefono, setTelefono] = useState("");
+    const [telefonoValid, setTelefonoValid] = useState("");
+    const handleChangeTelefono = (event) => {
+        setTelefono(event.target.value);
+        if (event.target.value.match("^[1-9]{1}[0-9]{7}$")) {
+            setTelefonoValid(event.target.value);
+            console.log(telefono + " if");
+        } else {
+            setTelefonoValid("");
+        }
   };
 
   const [correoElectronico, setCorreoElectronico] = useState("");
@@ -673,7 +680,7 @@ function ClientInformation() {
                           <div className="col-6 d-flex justify-content-center">
                             {company !== "" &&
                             contacto !== "" &&
-                            telefono > 11111111 &&
+                            telefonoValid !== "" &&
                             //segments.length > 0 &&
                             personInCharge > 0 ? (
                               <button
