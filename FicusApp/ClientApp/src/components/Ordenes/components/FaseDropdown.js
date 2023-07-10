@@ -44,7 +44,7 @@ const FaseDropDown = ({ ordenId, fases }) => {
         ordenId: ordenId,
         faseId: nuevaFaseId,
         inicio: currentDate.toISOString(),
-        final: null,
+        final: getLatestFase(historial, ordenId)?.inicio,
         fase: null,
         orden: null,
       };
