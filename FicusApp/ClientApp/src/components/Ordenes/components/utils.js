@@ -18,6 +18,58 @@ export function getFaseBadge({ faseId, faseText }) {
   return resultado;
 }
 
+export function getFaseButton({ fases, faseId }) {
+  const descripcion = fases.find(
+    (f) => f?.faseId === faseId
+  )?.descripcionEstado;
+
+  const opciones = {
+    1: (
+      <button
+        type="button"
+        class="btn btn-secondary dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {descripcion}
+      </button>
+    ),
+    2: (
+      <button
+        type="button"
+        class="btn btn-info dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {descripcion}
+      </button>
+    ),
+    3: (
+      <button
+        type="button"
+        class="btn btn-success dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {descripcion}
+      </button>
+    ),
+    default: (
+      <button
+        type="button"
+        class="btn btn-danger dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Indefinido
+      </button>
+    ),
+  };
+  const resultado = opciones[faseId] || opciones.default;
+
+  return resultado;
+}
+
 // Calcular la duración dada una fecha de inicio y una final
 
 export function calcularDuracion(inicio, final) {
@@ -37,3 +89,22 @@ export function calcularDuracion(inicio, final) {
     return `${minutes} minuto${minutes > 1 ? "s" : ""}`;
   }
 }
+
+// Devuelve la orden con el inicio más nuevo
+
+export function getLatestFase(data, ordenId) {
+  const filteredData = data.filter((obj) => obj.ordenId === ordenId);
+  if (filteredData.length === 0) {
+    return null;
+  }
+  const latest = filteredData.reduce((prevObj, currObj) => {
+    if (new Date(currObj.inicio) > new Date(prevObj.inicio)) {
+      return currObj;
+    } else {
+      return prevObj;
+    }
+  });
+
+  return latest
+}
+

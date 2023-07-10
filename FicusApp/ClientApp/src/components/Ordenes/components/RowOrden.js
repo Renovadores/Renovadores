@@ -6,27 +6,17 @@ import { FaPlus } from "react-icons/fa";
 
 import DetallesOrden from "./Detalles.js";
 import EliminarOrden from "./Eliminar.js";
-import { formatDate, getFaseBadge } from "./utils.js";
+import FaseDropDown from "./FaseDropdown.js";
+import { formatDate } from "./utils.js";
 
-const RowOrden = ({ ordenId, clienteId, fechaAlquiler, faseId, monto }) => {
+const RowOrden = ({
+  ordenId,
+  clienteId,
+  fechaAlquiler,
+  fases,
+  monto,
+}) => {
   const paddedOrdenId = String(ordenId).padStart(5, "0");
-
-  const [fase, setFase] = useState([]);
-  // Pedir los datos de una fase con su ID
-  const fetchFase = async (faseId) => {
-    try {
-      const response = await fetch(`/api/fase/${faseId}`);
-      const data = await response.json();
-      setFase(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchFase(faseId);
-  }, [faseId]);
-
 
   return (
     <tr>
@@ -36,9 +26,7 @@ const RowOrden = ({ ordenId, clienteId, fechaAlquiler, faseId, monto }) => {
       <td className="text-center">{clienteId}</td>
       <td className="text-center">{formatDate(fechaAlquiler)}</td>
       <td className="text-center">
-        <div>
-          {getFaseBadge({ faseId: faseId, faseText: fase.descripcionEstado })}
-        </div>
+      <FaseDropDown ordenId={ordenId} fases={fases}/>
       </td>
       <td className="text-center">₡ {monto.toLocaleString()}</td>
       <td className="text-center">

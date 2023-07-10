@@ -11,5 +11,7 @@ namespace FicusApp.Services
         Task<List<List<Orden>>> GetOrdersByDate(int eventId);
         Task<int> GetNewCode();
         Task<int> AddOrder([FromBody] Orden request);
+        Task UpdateOrden(Orden orden);
+        bool OrdenExists(int id);
     }
 }

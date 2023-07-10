@@ -106,7 +106,7 @@ namespace FicusApp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetHistorialOrden", new { id = historialOrden.OrdenId }, historialOrden);
+            return CreatedAtAction("GetHistorialOrden", new { ordenId = historialOrden.OrdenId, faseId = historialOrden.FaseId }, historialOrden);
         }
 
         // DELETE: api/HistorialOrden/5

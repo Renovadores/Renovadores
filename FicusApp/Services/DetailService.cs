@@ -29,5 +29,22 @@ namespace FicusApp.Services
             details = await _context.Detalle.ToListAsync();
             return details; 
         }
+
+        public async Task<bool> UpdateDetalleExists(int OrdenId, string ProductoId)
+        {
+            bool detalleExists = await _context.Detalle.AnyAsync(e => e.OrdenId == OrdenId && e.ProductoId == ProductoId);
+            return detalleExists;
+        }
+
+        public async Task UpdateDetalle(Detalle detalle)
+        {
+            _context.Entry(detalle).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public bool DetalleExists(int OrdenId, string ProductoId)
+        {
+            return (_context.Detalle?.Any(e => e.OrdenId == OrdenId && e.ProductoId == ProductoId)).GetValueOrDefault();
+        }
     }
 }

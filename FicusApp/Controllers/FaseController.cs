@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -21,6 +22,7 @@ namespace FicusApp.Controllers
         }
 
         // GET: api/Fase
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fase>>> GetFase()
         {
@@ -82,6 +84,7 @@ namespace FicusApp.Controllers
 
         // POST: api/Fase
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Fase>> PostFase(Fase fase)
         {

@@ -1,4 +1,5 @@
 ﻿using FicusApp.Controllers;
+using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
@@ -36,6 +37,16 @@ namespace FicusApp.Services
             return orders;
         }
 
+        public async Task UpdateOrden(Orden orden)
+        {
+            _context.Entry(orden).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public bool OrdenExists(int id)
+        {
+            return _context.Orden.Any(e => e.OrdenId == id);
+        }
         public async Task<List<Orden>> GetTodayOrder()
         {
             List<Orden> orders = await _context.Orden
