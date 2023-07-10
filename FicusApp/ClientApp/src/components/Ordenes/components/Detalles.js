@@ -23,8 +23,13 @@ const DetallesOrden = ({ detalleId }) => {
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            <ListaProductos ordenId={detalleId} />
+          <div class="modal-body flex-wrap">
+            <ListaProductos
+              ordenId={detalleId}
+              isOrden={true}
+              isOrdenEditable={false}
+              ordenUpdated={false}
+            />
           </div>
           <div class="modal-footer">
             <button

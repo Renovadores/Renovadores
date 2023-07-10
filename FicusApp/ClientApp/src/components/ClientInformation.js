@@ -752,6 +752,21 @@ function ClientInformation() {
           />
         </div>
       )}
+                <div className="mx-2 mb-5">
+                  <ComponentReport parametro={`api/reporte/GetClientAnnualOrderReport/${clientId}/${year}`} label="Cantidad" texto="Reporte de Ordenes" />
+                </div>
+              </div>
+            </div>
+            <div className="d-md-none d-block">
+              <ButtonOrder clientId={clientId} />
+              <ButtonDeleteClient clientId={clientId}
+                clientName={clientInfo.nombreEmpresa}
+                index="1"
+                handler={handleDeleteClient} />
+            </div>
+            
+          </div>
+      }
     </div>
   );
 }

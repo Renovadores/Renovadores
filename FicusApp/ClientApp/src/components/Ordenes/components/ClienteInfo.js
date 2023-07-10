@@ -7,7 +7,7 @@ const ClienteInfo = ({ clienteId }) => {
   const [token, setToken] = useState("");
   const fetchCliente = async () => {
     try {
-      const response = await fetch(`/api/cliente/GetCliente/${clienteId}`, {
+      const response = await fetch(`api/cliente/GetCliente/${clienteId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
