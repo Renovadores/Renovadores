@@ -11,7 +11,7 @@ namespace FicusApp.Services
         {
             _context = context;
         }
-        public async Task<List<int>> GetAnnualEnvironmentalReport(int year)
+        public Task<List<int>> GetAnnualEnvironmentalReport(int year)
         {
             var detailsPerYear = _context.Detalle
                 .Include(d => d.Producto)
@@ -20,7 +20,7 @@ namespace FicusApp.Services
 
             var detailsPerMonth = detailsPerYear.GroupBy(d => d.Orden.FechaAlquiler.Month);
 
-            List<int> weightSavedInTheYear = new List<int>(new int[12]);
+            List<int> weightSavedInTheYear = new(new int[12]);
 
             foreach (var month in detailsPerMonth)
             {
@@ -44,10 +44,10 @@ namespace FicusApp.Services
                     weightSavedInTheYear[index] = weighSavedPerMonth;
                 }
             }
-            return weightSavedInTheYear;
+            return Task.FromResult(weightSavedInTheYear);
         }
 
-        public async Task<List<int>> GetClientAnnualEnvironmentalReport(int clientId, int year)
+        public Task<List<int>> GetClientAnnualEnvironmentalReport(int clientId, int year)
         {
             var detailsPerYear = _context.Detalle
                 .Include(d => d.Producto)
@@ -57,7 +57,7 @@ namespace FicusApp.Services
 
             var detailsPerMonth = detailsPerYear.GroupBy(d => d.Orden.FechaAlquiler.Month);
 
-            List<int> weightSavedInTheYear = new List<int>(new int[12]);
+            List<int> weightSavedInTheYear = new(new int[12]);
             foreach (var month in detailsPerMonth)
             {
                 int weighSavedPerMonth = 0;
@@ -80,26 +80,26 @@ namespace FicusApp.Services
                     weightSavedInTheYear[index] = weighSavedPerMonth;
                 }
             }
-            return weightSavedInTheYear;
+            return Task.FromResult(weightSavedInTheYear);
         }
 
-        public async Task<List<int>> GetAnnualOrderReport(int year)
+        public Task<List<int>> GetAnnualOrderReport(int year)
         {
             var ordersPerYear = _context.Orden
                 .Where(o => o.FechaAlquiler.Year == year);
 
             var ordersPerMonth = ordersPerYear.GroupBy(o => o.FechaAlquiler.Month);
 
-            List<int> ordersInTheYear = new List<int>(new int[12]);
+            List<int> ordersInTheYear = new(new int[12]);
             foreach (var month in ordersPerMonth)
             {
                 int ordersOfTheMonth = month.Count();
                 int index = month.First().FechaAlquiler.Month - 1;
                 ordersInTheYear[index] = ordersOfTheMonth;
             }
-            return ordersInTheYear;
+            return Task.FromResult(ordersInTheYear);
         }
-        public async Task<List<int>> GetClientAnnualOrderReport(int clientId, int year)
+        public Task<List<int>> GetClientAnnualOrderReport(int clientId, int year)
         {
             var ordersPerYear = _context.Orden
                 .Where(o => o.ClienteId == clientId
@@ -107,14 +107,14 @@ namespace FicusApp.Services
 
             var ordersPerMonth = ordersPerYear.GroupBy(o => o.FechaAlquiler.Month);
 
-            List<int> ordersInTheYear = new List<int>(new int[12]);
+            List<int> ordersInTheYear = new(new int[12]);
             foreach (var month in ordersPerMonth)
             {
                 int ordersOfTheMonth = month.Count();
                 int index = month.First().FechaAlquiler.Month - 1;
                 ordersInTheYear[index] = ordersOfTheMonth;
             }
-            return ordersInTheYear;
+            return Task.FromResult(ordersInTheYear);
         }
     }
 }

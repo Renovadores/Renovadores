@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using System.Runtime.Intrinsics.X86;
 using static NuGet.Packaging.PackagingConstants;
-using Microsoft.EntityFrameworkCore;
 
 namespace FicusApp.Services
 {

@@ -33,7 +33,7 @@ namespace FicusApp.Controllers
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
         {
-            newId id = new newId();
+            NewId id = new NewId();
             id.Id = (await _inventarioService.GetNewId()).Id;
             return Ok(id);
         }

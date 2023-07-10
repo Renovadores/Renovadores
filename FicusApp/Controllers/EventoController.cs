@@ -31,7 +31,7 @@ namespace FicusApp.Controllers
         [Route("AddEvento")]
         public async Task<IActionResult> AddEvento([FromBody] Evento request)
         {
-            int code = await _eventService.AddEvento(request);
+            await _eventService.AddEvento(request);
             return Ok();
         }
 
