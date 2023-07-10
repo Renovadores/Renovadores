@@ -120,6 +120,7 @@ function ClientInformation() {
     setCompany(dataClient.nombreEmpresa);
     setContacto(dataClient.contacto);
     setTelefono(dataClient.telefono);
+    setTelefonoValid(dataClient.telefono);
     setCorreoElectronico(dataClient.correo);
     setPaginaWeb(dataClient.web);
 

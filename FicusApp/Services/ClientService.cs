@@ -43,7 +43,7 @@ namespace FicusApp.Services
             int code = SUCCESS_CODE;
             Cliente? cliente = null;
 
-            if (_context.Cliente == null)
+            if (_context.Cliente.Count() == 0)
             {
                 code = NOT_FOUND_CODE;
             }
