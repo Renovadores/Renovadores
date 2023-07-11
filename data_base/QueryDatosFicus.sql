@@ -106,6 +106,7 @@ VALUES
 
 INSERT INTO Fase (FaseId, DescripcionEstado)
 VALUES
+(0, 'Eliminada'),
 (1, 'Reservada'),
 (2, 'Entregada'),
 (3, 'Finalizada');

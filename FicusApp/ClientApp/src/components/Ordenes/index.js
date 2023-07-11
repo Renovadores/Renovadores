@@ -5,21 +5,41 @@ import RowOrden from "./components/RowOrden.js";
 import ActionsOrdenes from "./components/ActionsOrdenes.js";
 
 const Orden = () => {
-
-   const [token, setToken] = useState("");
-
+  const [token, setToken] = useState("");
 
   const [orden, setOrden] = useState([]);
+  const [historialOrdenEliminadas, setHistorialOrdenEliminadas] = useState([]);
   const fetchOrden = async () => {
     try {
-    const response = await fetch(`/api/orden/GetOrders`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
+      const response = await fetch(`/api/orden/GetOrders`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const dataOrden = await response.json();
+      try {
+        const response = await fetch(`/api/historialorden/`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        const filteredHistorialOrden = data.filter((item) => item.faseId === 0);
+        setHistorialOrdenEliminadas(filteredHistorialOrden);
+
+        const ordenIdsEliminadas = historialOrdenEliminadas.map(
+          (historial) => historial.ordenId
+        );
+        const filteredOrden = dataOrden.filter((orden) =>
+          !ordenIdsEliminadas.includes(orden.ordenId)
+        );
+
+        setOrden(filteredOrden);
+      } catch (error) {
+        console.log(error.message);
       }
-    });
-      const data = await response.json();
-      setOrden(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -29,11 +49,11 @@ const Orden = () => {
   const fetchCliente = async () => {
     try {
       const response = await fetch(`api/cliente/GetAllClientes/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setCliente(data);
     } catch (error) {
@@ -46,11 +66,11 @@ const Orden = () => {
   const fetchFases = async () => {
     try {
       const response = await fetch(`/api/fase/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setFases(data);
     } catch (error) {
@@ -60,27 +80,26 @@ const Orden = () => {
 
   useEffect(() => {
     if (token !== "") {
-    fetchOrden();
-    fetchCliente();
-    fetchFases();
+      fetchOrden();
+      fetchCliente();
+      fetchFases();
     } else {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     }
-  }, [token]);
-
+  }, [token, historialOrdenEliminadas]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   const filteredOrden = orden.filter((orden) => {
     return orden.ordenId.toString().includes(searchTerm);
   });
-
 
   return (
     <>
@@ -88,7 +107,10 @@ const Orden = () => {
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
       />
-      <div class="card overflow-y-scroll" style={{ height: "75vh", overflowY: "auto" }}>
+      <div
+        class="card overflow-y-scroll"
+        style={{ height: "75vh", overflowY: "auto" }}
+      >
         <table className="table table-hover ">
           <thead>
             <tr>

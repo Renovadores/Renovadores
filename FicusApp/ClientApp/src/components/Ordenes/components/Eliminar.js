@@ -1,26 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
+import { getLatestFase } from "./utils.js";
+
+import { GetToken } from "../../../GetToken";
 
 //TODO: eliminar detalles y hostorial de ordenes liberar a inventario productos
 
 const EliminarOrden = ({ ordenId }) => {
-  const handleDeleteOrden = async () => {
+  const [token, setToken] = useState("");
+    const [historial, setHistorial] = useState([]);
+  const fetchHistorial = async () => {
     try {
-      const response = await fetch(`/api/Orden/${ordenId}`, {
-        method: "DELETE",
+      const response = await fetch(`/api/historialorden/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setHistorial(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+  const handleDeleteOrden = async ({ ordenId }) => {
+    try {
+      const url = `/api/historialorden/`;
+      const currentDate = new Date();
+
+      var payload = {
+        ordenId: ordenId,
+        faseId: 0,
+        inicio: currentDate.toISOString(),
+        final: getLatestFase(historial, ordenId)?.inicio,
+        fase: null,
+        orden: null,
+      };
+      console.log(payload);
+
+      const response = await fetch(url, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        // Deletion successful
-        console.log("Orden deleted successfully");
-        // Perform any necessary updates in your component state or UI
+        console.log("Valor agregado correctamente a la columna.");
       } else {
-        // Error occurred
-        console.error("Failed to delete Orden");
+        const errorResponse = await response.json();
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${errorResponse}`
+        );
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const paddedOrdenId = String(ordenId).padStart(5, "0");
   return (
@@ -53,7 +111,12 @@ const EliminarOrden = ({ ordenId }) => {
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-danger" onClick={handleDeleteOrden}>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onClick={() => handleDeleteOrden({ordenId: ordenId})}
+              data-bs-dismiss="modal"
+            >
               Eliminar
             </button>
           </div>
