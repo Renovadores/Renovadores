@@ -311,7 +311,7 @@ function AddOrder() {
         });
         if (responseDetail.ok) {
           // Go to stock and reduce product cuantity
-          const responseStock = await fetch(`api/producto/GetProducto/${productId}`, {
+          const responseStock = await fetch(`api/producto/GetProductForOrder/${productId}`, {
             method: "GET",
             headers: {
               'Authorization': `Bearer ${currentToken}`
