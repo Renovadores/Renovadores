@@ -58,7 +58,7 @@ return (
         <div className="col-md-6 mb-2">
           <div className="card">
             <div className="card-body">
-              <h5 class="card-title">Información del Cliente</h5>
+              <h5 className="card-title">Información del Cliente</h5>
               <ClienteInfo clienteId={orden.clienteId} />
             </div>
           </div>
@@ -66,7 +66,7 @@ return (
         <div className="col-md-6 mb-2">
           <div className="card">
             <div className="card-body">
-              <h5 class="card-title">Grafico</h5>
+              <h5 className="card-title">Grafico</h5>
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@ return (
           <div className="card">
             <div className="card-body justify-content-between">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="card-title fs-5 text-center mb-0">
+                <h5 className="card-title fs-5 text-center mb-0">
                   Lista de productos
                 </h5>
                 {isOrdenEditable ? (
@@ -119,7 +119,7 @@ return (
         <div className="col-md-6 mb-3">
           <div className="card">
             <div className="card-body">
-              <h5 class="card-title">Historial de orden</h5>
+              <h5 className="card-title">Historial de orden</h5>
               <HistorialOrden ordenId={ordenId} />
             </div>
           </div>

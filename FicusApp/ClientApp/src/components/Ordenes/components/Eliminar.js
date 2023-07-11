@@ -83,37 +83,37 @@ const EliminarOrden = ({ ordenId }) => {
   const paddedOrdenId = String(ordenId).padStart(5, "0");
   return (
     <div
-      class="modal fade"
+      className="modal fade"
       id={`modalEliminarOrden${ordenId}`}
-      tabindex="-1"
+      tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" style={{ transform: "translateY(100%)" }}>
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
+      <div className="modal-dialog" style={{ transform: "translateY(100%)" }}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="exampleModalLabel">
               ¿Seguro que desea eliminar la orden{" "}
               <strong>{paddedOrdenId}</strong>?
             </h1>
             <button
               type="button"
-              class="btn-close"
+              className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body d-flex justify-content-center">
+          <div className="modal-body d-flex justify-content-center">
             <button
               type="button"
-              class="btn btn-secondary me-5"
+              className="btn btn-secondary me-5"
               data-bs-dismiss="modal"
             >
               Cancelar
             </button>
             <button
               type="button"
-              class="btn btn-danger"
+              className="btn btn-danger"
               onClick={() => handleDeleteOrden({ordenId: ordenId})}
               data-bs-dismiss="modal"
             >

@@ -1,6 +1,3 @@
--- Usar la base de datos Ficus
-USE Ficus;
-
 INSERT INTO Rol (RolId, TipoRol, DetallesRol)
 VALUES 
   (1, 'Administrador', 'Rol con acceso a todas las funcionalidades del sistema'),

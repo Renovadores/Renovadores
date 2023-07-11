@@ -7,190 +7,192 @@ const ListaProductos = ({
   isOrdenEditable,
   ordenUpdated,
 }) => {
-    const [token, setToken] = useState("");
-    const [detalle, setDetalle] = useState([]);
-    const [producto, setProducto] = useState([]);
+  const [token, setToken] = useState("");
+  const [detalle, setDetalle] = useState([]);
+  const [producto, setProducto] = useState([]);
 
-    const fetchDetalle = async () => {
-      try {
-        const response = await fetch(`/api/detalle/`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setDetalle(data.filter((d) => d.ordenId === ordenId));
-      } catch (error) {
-        console.log(error.message);
-      }
+  const fetchDetalle = async () => {
+    try {
+      const response = await fetch(`/api/detalle/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setDetalle(data.filter((d) => d.ordenId === ordenId));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const fetchProducto = async () => {
+    try {
+      const response = await fetch("api/producto/GetProducts", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setProducto(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const updateDetalle = async (productoId) => {
+    const objetoDetalle = {
+      ordenId: ordenId,
+      productoId: productoId,
+      pedidos: inputValues[productoId].pedidos,
+      sinUsar: inputValues[productoId].pedidos,
+      usados: inputValues[productoId].usados,
+      devueltos: inputValues[productoId].devueltos,
+      descuento: inputValues[productoId].descuento,
     };
 
-    const fetchProducto = async () => {
-      try {
-    const response = await fetch("api/producto/GetProducts", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-        const data = await response.json();
-        setProducto(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+    try {
+      const response = await fetch(`api/Detalle/${ordenId}/${productoId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(objetoDetalle),
+      });
 
-    const updateDetalle = async (productoId) => {
-      const objetoDetalle = {
-        ordenId: ordenId,
-        productoId: productoId,
-        pedidos: inputValues[productoId].pedidos,
-        sinUsar: inputValues[productoId].pedidos,
-        usados: inputValues[productoId].usados,
-        devueltos: inputValues[productoId].devueltos,
-        descuento: inputValues[productoId].descuento,
+      if (response.ok) {
+        // Reinicia el estado para volver a actualizar
+        fetchDetalle();
+      } else {
+        console.error("Error al actualizar el detalle:", response.status);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud PUT:", error);
+    }
+  };
+
+  const [inputValues, setInputValues] = useState({});
+
+  useEffect(() => {
+    if (token !== "") {
+      if (!isOrdenEditable || ordenUpdated) {
+        fetchDetalle();
+        fetchProducto();
+      }
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
       };
+      getToken();
+    }
+  }, [token, isOrdenEditable]);
 
-      try {
-        const response = await fetch(`api/Detalle/${ordenId}/${productoId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify(objetoDetalle),
-        });
-
-        if (response.ok) {
-          // Reinicia el estado para volver a actualizar
-          fetchDetalle();
-        } else {
-          console.error("Error al actualizar el detalle:", response.status);
+  useEffect(() => {
+    if (token !== "") {
+      if (ordenUpdated && !isOrdenEditable) {
+        for (const id in inputValues) {
+          updateDetalle(id);
         }
-      } catch (error) {
-        console.error("Error en la solicitud PUT:", error);
       }
-    };
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    }
+  }, [token, ordenUpdated, isOrdenEditable]);
 
-    const [inputValues, setInputValues] = useState({});
+  useEffect(() => {
+    if (token !== "") {
+      if (!ordenUpdated) {
+        setInputValues((prevInputValues) => {
+          const updatedInputValues = {};
 
-    useEffect(() => {
-      if (token !== "") {
-        if (!isOrdenEditable || ordenUpdated) {
-          fetchDetalle();
-          fetchProducto();
-        }
-      } else {
-        const getToken = async () => {
-          const dbToken = await GetToken();
-          setToken(dbToken);
-        };
-        getToken();
-      }
-    }, [token, isOrdenEditable]);
-
-    useEffect(() => {
-      if (token !== "") {
-        if (ordenUpdated && !isOrdenEditable) {
-          for (const id in inputValues) {
-            updateDetalle(id);
-          }
-        }
-      } else {
-        const getToken = async () => {
-          const dbToken = await GetToken();
-          setToken(dbToken);
-        };
-        getToken();
-      }
-    }, [token, ordenUpdated, isOrdenEditable]);
-
-    useEffect(() => {
-      if (token !== "") {
-        if (!ordenUpdated) {
-          setInputValues((prevInputValues) => {
-            const updatedInputValues = {};
-
-            detalle.forEach((detalle) => {
-              updatedInputValues[detalle.productoId] = {
-                pedidos: detalle.pedidos,
-                usados: detalle.usados,
-                devueltos: detalle.devueltos,
-                descuento: detalle.descuento,
-              };
-            });
-
-            return updatedInputValues;
+          detalle.forEach((detalle) => {
+            updatedInputValues[detalle.productoId] = {
+              pedidos: detalle.pedidos,
+              usados: detalle.usados,
+              devueltos: detalle.devueltos,
+              descuento: detalle.descuento,
+            };
           });
-        }
-      } else {
-        const getToken = async () => {
-          const dbToken = await GetToken();
-          setToken(dbToken);
-        };
-        getToken();
-      }
-    }, [token, ordenUpdated, detalle]);
 
-    const inputRef = useRef(null);
-    const handleInputChange = (event, productoId) => {
-      if (event.key === "Enter" || event.key === "Tab") {
-        if (isOrden) {
-          const { name, value } = event.target;
-
-          setInputValues((prevInputValues) => ({
-            ...prevInputValues,
-            [productoId]: {
-              ...prevInputValues[productoId],
-              [name]: value,
-            },
-          }));
-          updateDetalle(productoId);
-        }
-        event.target.blur();
-        event.preventDefault();
+          return updatedInputValues;
+        });
       }
-    };
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    }
+  }, [token, ordenUpdated, detalle]);
+
+  const inputRef = useRef(null);
+  const handleInputChange = (event, productoId) => {
+    if (event.key === "Enter" || event.key === "Tab") {
+      if (isOrden) {
+        const { name, value } = event.target;
+
+        setInputValues((prevInputValues) => ({
+          ...prevInputValues,
+          [productoId]: {
+            ...prevInputValues[productoId],
+            [name]: value,
+          },
+        }));
+        updateDetalle(productoId);
+      }
+      event.target.blur();
+      event.preventDefault();
+    }
+  };
 
   return (
-    <div class="list-group">
+    <div className="list-group">
       {detalle.map((detalle) => {
         const { productoId, pedidos, usados, devueltos, descuento } = detalle;
         const productoValues = inputValues[productoId] || {};
+    const key = `${detalle.productoId}-${detalle.ordenId}`;
         return (
           <li
-            class="list-group-item list-group-item-action"
+            key={key}
+            className="list-group-item list-group-item-action"
             aria-current="true"
           >
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">
-                {producto.find((p) => p.productoId === detalle.productoId)
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">
+                {producto.find((p) => p.productoId === productoId)
                   ?.nombre || "NULL"}
               </h5>
-              <medium>{detalle.productoId}</medium>
+              <span className="medium-text">{productoId}</span>
             </div>
 
-            <div class="input-group flex-column">
-              <div class="input-group">
+            <div className="input-group flex-column">
+              <div className="input-group">
                 {[
                   {
                     label: "Pedidos",
-                    placeholder: `${detalle.pedidos}`,
+                    placeholder: `${pedidos}`,
                     disabled: !isOrdenEditable,
                     name: "pedidos",
                     value: productoValues.pedidos || "",
                   },
                   {
                     label: "Usados",
-                    placeholder: `${detalle.usados}`,
+                    placeholder: `${usados}`,
                     disabled: !isOrden && !isOrdenEditable,
                     name: "usados",
                     value: productoValues.usados || "",
                   },
                   {
                     label: "Devueltos",
-                    placeholder: `${detalle.devueltos}`,
+                    placeholder: `${devueltos}`,
                     disabled: !isOrdenEditable,
                     name: "devueltos",
                     value: productoValues.devueltos || "",
@@ -198,7 +200,7 @@ const ListaProductos = ({
 
                   {
                     label: "Descuento",
-                    placeholder: `${detalle.descuento}`,
+                    placeholder: `${descuento}`,
                     disabled: !isOrdenEditable,
                     name: "descuento",
                     value: productoValues.descuento || "",
@@ -237,7 +239,7 @@ const ListaProductos = ({
                           ref={inputRef}
                         />
                         {!isOrden && item.label === "Descuento" && (
-                          <span class="input-group-text">%</span>
+                          <span className="input-group-text">%</span>
                         )}
                       </>
                     );
@@ -247,7 +249,7 @@ const ListaProductos = ({
                 })}
 
                 {isOrden && (
-                  <span class="badge text-bg-info d-flex align-items-center">
+                  <span className="badge text-bg-info d-flex align-items-center">
                     Descuento{" "}
                     {detalle.descuento !== null ? detalle.descuento : 0}%
                   </span>
