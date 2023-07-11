@@ -1,39 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getFaseButton, getLatestFase } from "./utils.js";
-import { GetToken } from "../../../GetToken";
 
-const FaseDropDown = ({ ordenId, fases }) => {
-  const [token, setToken] = useState("");
+const FaseDropDown = ({ ordenId, fases, historialOrden, token, onFaseChange }) => {
   const [faseId, setFaseId] = useState();
-
-  const [historial, setHistorial] = useState([]);
-  const fetchHistorial = async () => {
-    try {
-      const response = await fetch(`/api/historialorden/`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setHistorial(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  const latestFase = useRef(getLatestFase(historialOrden, ordenId));
 
   useEffect(() => {
-    if (token !== "") {
-      fetchHistorial();
-      setFaseId(getLatestFase(historial, ordenId)?.faseId);
-    } else {
-      const getToken = async () => {
-        const dbToken = await GetToken();
-        setToken(dbToken);
-      };
-      getToken();
-    }
-  }, [token, faseId, historial, ordenId]);
+    setFaseId(getLatestFase(historialOrden, ordenId)?.faseId);
+  }, [historialOrden]);
 
   const handleCambioFase = async ({ nuevaFaseId }) => {
     try {
@@ -44,7 +18,7 @@ const FaseDropDown = ({ ordenId, fases }) => {
         ordenId: ordenId,
         faseId: nuevaFaseId,
         inicio: currentDate.toISOString(),
-        final: null,
+        final: latestFase.current?.inicio || null,
         fase: null,
         orden: null,
       };
@@ -52,7 +26,6 @@ const FaseDropDown = ({ ordenId, fases }) => {
 
       const response = await fetch(url, {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -62,6 +35,9 @@ const FaseDropDown = ({ ordenId, fases }) => {
 
       if (response.ok) {
         console.log("Valor agregado correctamente a la columna.");
+        if (onFaseChange) {
+          onFaseChange();
+        }
       } else {
         const errorResponse = await response.json();
         throw new Error(
@@ -74,7 +50,6 @@ const FaseDropDown = ({ ordenId, fases }) => {
   };
 
   const renderFases = fases.map((fase) => {
-    // Add your condition here to exclude certain options
     if (fase.faseId > faseId || faseId == null) {
       return (
         <li key={fase.faseId}>
@@ -108,4 +83,5 @@ const FaseDropDown = ({ ordenId, fases }) => {
     </div>
   );
 };
+
 export default FaseDropDown;

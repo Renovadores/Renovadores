@@ -9,10 +9,11 @@ export function formatDate(dateUnFormatted) {
 // Customiza la forma en la que se ve cada estado
 export function getFaseBadge({ faseId, faseText }) {
   const opciones = {
-    1: <span class="badge text-bg-secondary">{faseText}</span>,
-    2: <span class="badge text-bg-info">{faseText}</span>,
-    3: <span class="badge text-bg-success">{faseText}</span>,
-    default: <span class="badge text-bg-secondary">Indefinido</span>,
+    0: <span className="badge text-bg-danger">{faseText}</span>,
+    1: <span className="badge text-bg-secondary">{faseText}</span>,
+    2: <span className="badge text-bg-info">{faseText}</span>,
+    3: <span className="badge text-bg-success">{faseText}</span>,
+    default: <span className="badge text-bg-secondary">Indefinido</span>,
   };
   const resultado = opciones[faseId] || opciones.default;
   return resultado;
@@ -27,7 +28,7 @@ export function getFaseButton({ fases, faseId }) {
     1: (
       <button
         type="button"
-        class="btn btn-secondary dropdown-toggle"
+        className="btn btn-secondary dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
@@ -37,7 +38,7 @@ export function getFaseButton({ fases, faseId }) {
     2: (
       <button
         type="button"
-        class="btn btn-info dropdown-toggle"
+        className="btn btn-info dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
@@ -47,7 +48,7 @@ export function getFaseButton({ fases, faseId }) {
     3: (
       <button
         type="button"
-        class="btn btn-success dropdown-toggle"
+        className="btn btn-success dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
@@ -57,7 +58,7 @@ export function getFaseButton({ fases, faseId }) {
     default: (
       <button
         type="button"
-        class="btn btn-danger dropdown-toggle"
+        className="btn btn-danger dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
@@ -105,6 +106,5 @@ export function getLatestFase(data, ordenId) {
     }
   });
 
-  return latest
+  return latest;
 }
-

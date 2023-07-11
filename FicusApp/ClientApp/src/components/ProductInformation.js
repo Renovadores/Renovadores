@@ -174,6 +174,11 @@ function ProductInformation() {
         categoriaId: categoriaId,
         colorId: colorId,
         familiaId: familiaId,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
+        descontinuado: descontinuado,
       }),
     });
     if (response.ok) {
@@ -223,6 +228,10 @@ function ProductInformation() {
         categoriaId: categoriaId,
         colorId: colorId,
         familiaId: familiaId,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
         descontinuado: descontinuado,
       }),
     });
@@ -246,6 +255,10 @@ function ProductInformation() {
     setCategoriaId(data.categoriaId);
     setFamiliaId(data.familiaId);
     setImage(data.Imagen);
+    setTotalExistente(data.totalExistente);
+    setEnUso(data.enUso);
+    setDisponible(data.disponible);
+    setNoDevueltos(data.noDevueltos);
   };
 
   return (

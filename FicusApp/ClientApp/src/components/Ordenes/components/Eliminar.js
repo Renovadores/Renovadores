@@ -1,59 +1,122 @@
-import React from "react";
+import React, { useState } from "react";
+import { getLatestFase } from "./utils.js";
+
+import { GetToken } from "../../../GetToken";
 
 //TODO: eliminar detalles y hostorial de ordenes liberar a inventario productos
 
 const EliminarOrden = ({ ordenId }) => {
-  const handleDeleteOrden = async () => {
+  const [token, setToken] = useState("");
+    const [historial, setHistorial] = useState([]);
+  const fetchHistorial = async () => {
     try {
-      const response = await fetch(`/api/Orden/${ordenId}`, {
-        method: "DELETE",
+      const response = await fetch(`/api/historialorden/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setHistorial(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+  const handleDeleteOrden = async ({ ordenId }) => {
+    try {
+      const url = `/api/historialorden/`;
+      const currentDate = new Date();
+
+      var payload = {
+        ordenId: ordenId,
+        faseId: 0,
+        inicio: currentDate.toISOString(),
+        final: getLatestFase(historial, ordenId)?.inicio,
+        fase: null,
+        orden: null,
+      };
+      console.log(payload);
+
+      const response = await fetch(url, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        // Deletion successful
-        console.log("Orden deleted successfully");
-        // Perform any necessary updates in your component state or UI
+        console.log("Valor agregado correctamente a la columna.");
       } else {
-        // Error occurred
-        console.error("Failed to delete Orden");
+        const errorResponse = await response.json();
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${errorResponse}`
+        );
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.message);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const paddedOrdenId = String(ordenId).padStart(5, "0");
   return (
     <div
-      class="modal fade"
+      className="modal fade"
       id={`modalEliminarOrden${ordenId}`}
-      tabindex="-1"
+      tabIndex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" style={{ transform: "translateY(100%)" }}>
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
+      <div className="modal-dialog" style={{ transform: "translateY(100%)" }}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="exampleModalLabel">
               ¿Seguro que desea eliminar la orden{" "}
               <strong>{paddedOrdenId}</strong>?
             </h1>
             <button
               type="button"
-              class="btn-close"
+              className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body d-flex justify-content-center">
+          <div className="modal-body d-flex justify-content-center">
             <button
               type="button"
-              class="btn btn-secondary me-5"
+              className="btn btn-secondary me-5"
               data-bs-dismiss="modal"
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-danger" onClick={handleDeleteOrden}>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => handleDeleteOrden({ordenId: ordenId})}
+              data-bs-dismiss="modal"
+            >
               Eliminar
             </button>
           </div>

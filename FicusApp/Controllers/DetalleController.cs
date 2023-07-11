@@ -23,6 +23,7 @@ namespace FicusApp.Controllers
         }
 
         // GET: api/Detalle
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Detalle>>> GetDetalle()
         {
@@ -45,6 +46,7 @@ namespace FicusApp.Controllers
         
         // PUT: api/Detalle/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{OrdenId}/{ProductoId}")]
         public async Task<IActionResult> PutDetalle(int OrdenId, string ProductoId, Detalle detalle)
         {

@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # Variables de conexión
-SERVER="172.17.0.2"
-USER="sa"
+SERVER="ficus-server-pi2023.database.windows.net"
+USER="AdminFicus"
 PASSWORD="Hola1234"
-DATABASE="Ficus"
+DATABASE="FicusDataBase"
 
-sqlcmd -S $SERVER -U $USER -P $PASSWORD -Q "CREATE DATABASE Ficus" >/dev/null 2>&1
 # Comando para conectarse a la base de datos
-CMD="sqlcmd -S $SERVER -d $DATABASE -U $USER -P $PASSWORD"
+CMD="sqlcmd -S $SERVER -d $DATABASE -U $USER -P $PASSWORD -Y 15"
 
 # Verifica si se ha pasado un archivo SQL como argumento
 if [ "$1" != "" ] && [ "${1##*.}" == "sql" ]; then

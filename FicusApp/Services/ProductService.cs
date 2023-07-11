@@ -35,7 +35,13 @@ namespace FicusApp.Services;
                 .FirstAsync();
         }
 
-        public Task<List<Producto>> GetMatchProducts(string input, bool searchByCode)
+        public async Task<Producto> GetProductForOrder(string SKU)
+        {
+            Producto producto = await _context.Producto.FindAsync(SKU);
+            return producto;
+        }
+
+    public Task<List<Producto>> GetMatchProducts(string input, bool searchByCode)
         {
             List<Producto> matchProducts;
             if (searchByCode)
