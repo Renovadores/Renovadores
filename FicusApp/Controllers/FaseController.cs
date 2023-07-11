@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using FicusApp.Models;
 
 namespace FicusApp.Controllers
@@ -21,6 +22,7 @@ namespace FicusApp.Controllers
         }
 
         // GET: api/Fase
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fase>>> GetFase()
         {
@@ -32,6 +34,7 @@ namespace FicusApp.Controllers
         }
 
         // GET: api/Fase/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Fase>> GetFase(int id)
         {
@@ -51,6 +54,7 @@ namespace FicusApp.Controllers
 
         // PUT: api/Fase/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFase(int id, Fase fase)
         {
@@ -82,6 +86,7 @@ namespace FicusApp.Controllers
 
         // POST: api/Fase
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Fase>> PostFase(Fase fase)
         {
@@ -110,6 +115,7 @@ namespace FicusApp.Controllers
         }
 
         // DELETE: api/Fase/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFase(int id)
         {

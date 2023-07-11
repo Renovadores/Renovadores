@@ -71,6 +71,7 @@ namespace FicusApp.Controllers
 
         // PUT: api/Orden/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("PutOrden{id}")]
         public async Task<IActionResult> PutOrden(int id, Orden orden)
         {
@@ -97,6 +98,23 @@ namespace FicusApp.Controllers
 
             return NoContent();
         }
+        
+        [Authorize]
+        [HttpDelete("DeleteOrden/{id}")]
+        public async Task<IActionResult> DeleteOrden(int id)
+        {
+            var result = await _orderService.DeleteOrden(id);
+            
+            if (result)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
     }
 
     public class NewCode

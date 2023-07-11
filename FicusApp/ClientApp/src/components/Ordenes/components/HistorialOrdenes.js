@@ -23,7 +23,12 @@ const HistorialOrdenes = ({ ordenId }) => {
   const [fase, setFase] = useState([]);
   const fetchFase = async (faseId) => {
     try {
-      const response = await fetch(`/api/fase/`);
+      const response = await fetch(`/api/fase/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setFase(data);
     } catch (error) {

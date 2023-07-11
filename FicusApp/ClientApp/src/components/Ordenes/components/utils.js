@@ -9,6 +9,7 @@ export function formatDate(dateUnFormatted) {
 // Customiza la forma en la que se ve cada estado
 export function getFaseBadge({ faseId, faseText }) {
   const opciones = {
+    0: <span class="badge text-bg-danger">{faseText}</span>,
     1: <span class="badge text-bg-secondary">{faseText}</span>,
     2: <span class="badge text-bg-info">{faseText}</span>,
     3: <span class="badge text-bg-success">{faseText}</span>,
@@ -105,6 +106,5 @@ export function getLatestFase(data, ordenId) {
     }
   });
 
-  return latest
+  return latest;
 }
-

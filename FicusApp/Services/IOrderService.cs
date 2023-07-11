@@ -1,4 +1,5 @@
 ﻿using FicusApp.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using static NuGet.Packaging.PackagingConstants;
 
@@ -13,5 +14,6 @@ namespace FicusApp.Services
         Task<int> AddOrder([FromBody] Orden request);
         Task UpdateOrden(Orden orden);
         bool OrdenExists(int id);
+        Task<bool> DeleteOrden(int id);
     }
 }

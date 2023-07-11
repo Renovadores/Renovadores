@@ -47,6 +47,22 @@ namespace FicusApp.Services
         {
             return _context.Orden.Any(e => e.OrdenId == id);
         }
+
+        public async Task<bool> DeleteOrden(int id)
+        {
+            var orden = await _context.Orden.FindAsync(id);
+            if (orden == null)
+            {
+                return false; // Indicate that the order was not found
+            }
+
+            _context.Orden.Remove(orden);
+            await _context.SaveChangesAsync();
+
+            return true; // Indicate successful deletion
+        }
+
+
         public async Task<List<Orden>> GetTodayOrder()
         {
             List<Orden> orders = await _context.Orden

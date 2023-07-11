@@ -34,6 +34,7 @@ function ClientInformation() {
     });
     if (response.ok) {
       const dataClient = await response.json();
+      console.log(dataClient);
       setDate(dateFormat(dataClient.fechaAgregado));
       setInfo(dataClient);
       // get personInCharge name (in user table)
