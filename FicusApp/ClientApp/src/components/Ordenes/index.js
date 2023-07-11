@@ -82,9 +82,21 @@ const Orden = () => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const filteredOrden = orden.filter((orden) => {
-    return orden.ordenId.toString().includes(searchTerm);
-  });
+
+const filteredOrden = orden.filter((orden) => {
+  const clienteEmpresa = cliente.find(
+    (c) => c.clienteId === orden.clienteId
+  )?.nombreEmpresa;
+
+  const searchTermWithoutSpaces = searchTerm.replace(/\s/g, '');
+
+  return (
+    orden.ordenId.toString().includes(searchTermWithoutSpaces) ||
+    clienteEmpresa.replace(/\s/g, '').includes(searchTermWithoutSpaces)
+  );
+});
+
+  filteredOrden.sort((a, b) => new Date(b.fechaAlquiler) - new Date(a.fechaAlquiler));
 
   return (
     <>

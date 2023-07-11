@@ -22,6 +22,8 @@ const RowOrden = ({
   const clienteEmpresa = cliente.find(
     (c) => c.clienteId === clienteId
   )?.nombreEmpresa;
+  console.log(cliente);
+  console.log(orden);
 
   return (
     <tr>
@@ -62,8 +64,8 @@ const RowOrden = ({
             <BsTrashFill />
           </button>
         </div>
-        <DetallesOrden detalleId={ordenId} key={ordenId}/>
-        <EliminarOrden ordenId={ordenId}/>
+        <DetallesOrden detalleId={ordenId} key={ordenId} />
+        <EliminarOrden ordenId={ordenId} />
       </td>
     </tr>
   );
