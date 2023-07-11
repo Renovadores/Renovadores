@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { BsTrashFill } from "react-icons/bs";
@@ -10,23 +10,34 @@ import FaseDropDown from "./FaseDropdown.js";
 import { formatDate } from "./utils.js";
 
 const RowOrden = ({
-  ordenId,
-  clienteId,
-  fechaAlquiler,
+  orden,
+  cliente,
   fases,
-  monto,
+  historialOrden,
+  onFaseChange,
+  token,
 }) => {
+  const { ordenId, clienteId, fechaAlquiler, monto } = orden;
   const paddedOrdenId = String(ordenId).padStart(5, "0");
+  const clienteEmpresa = cliente.find(
+    (c) => c.clienteId === clienteId
+  )?.nombreEmpresa;
 
   return (
     <tr>
       <th scope="row" className="text-center">
         <Link to={`/ordenes/${ordenId}`}>{paddedOrdenId}</Link>
       </th>
-      <td className="text-center">{clienteId}</td>
+      <td className="text-center">{clienteEmpresa}</td>
       <td className="text-center">{formatDate(fechaAlquiler)}</td>
       <td className="text-center">
-      <FaseDropDown ordenId={ordenId} fases={fases}/>
+        <FaseDropDown
+          ordenId={ordenId}
+          fases={fases}
+          historialOrden={historialOrden}
+          onFaseChange={onFaseChange}
+          token={token}
+        />
       </td>
       <td className="text-center">₡ {monto.toLocaleString()}</td>
       <td className="text-center">
@@ -51,10 +62,9 @@ const RowOrden = ({
             <BsTrashFill />
           </button>
         </div>
+        <DetallesOrden detalleId={ordenId} key={ordenId}/>
+        <EliminarOrden ordenId={ordenId}/>
       </td>
-
-      <DetallesOrden detalleId={ordenId} />
-      <EliminarOrden ordenId={ordenId} />
     </tr>
   );
 };
