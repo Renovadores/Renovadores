@@ -37,6 +37,15 @@ public class ProductoController : ControllerBase
 
         [Authorize]
         [HttpGet]
+        [Route("GetProductForOrder/{ProductoId}")]
+        public async Task<IActionResult> GetProductForOrder(string ProductoId)
+        {
+            Producto producto = await _productService.GetProductForOrder(ProductoId);
+            return Ok(producto);
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("GetMatchProducts/{input}/{searchByCode}")]
         public async Task<IActionResult> GetMatchProducts(string input, bool searchByCode)
         {
