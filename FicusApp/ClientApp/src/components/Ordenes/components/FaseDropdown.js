@@ -23,9 +23,16 @@ const FaseDropDown = ({ ordenId, fases }) => {
   };
 
   useEffect(() => {
+    if (historial.length > 0) {
+      setFaseId(getLatestFase(historial, ordenId)?.faseId);
+    }
+
+  }, [historial]);
+
+  useEffect(() => {
     if (token !== "") {
       fetchHistorial();
-      setFaseId(getLatestFase(historial, ordenId)?.faseId);
+      
     } else {
       const getToken = async () => {
         const dbToken = await GetToken();
@@ -33,7 +40,7 @@ const FaseDropDown = ({ ordenId, fases }) => {
       };
       getToken();
     }
-  }, [token, faseId, historial, ordenId]);
+  }, [token, ordenId]);
 
   const handleCambioFase = async ({ nuevaFaseId }) => {
     try {

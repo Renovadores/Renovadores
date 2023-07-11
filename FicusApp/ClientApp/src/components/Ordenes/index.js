@@ -90,7 +90,7 @@ const Orden = () => {
       };
       getToken();
     }
-  }, [token, historialOrdenEliminadas]);
+  }, [token]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchChange = (event) => {
