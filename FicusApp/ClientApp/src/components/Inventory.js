@@ -303,7 +303,7 @@ function Inventory() {
           </div>
         </div>
         <div className="row">
-          <div className="col-5">
+          <div className=" col-sm-7 col-md-6 col-lg-5">
             {/* Filter/Search text*/}
             <MatchingProductsInput
               productInput={productInput}
