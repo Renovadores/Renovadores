@@ -117,8 +117,8 @@ function ProductInformation() {
     setImage(event.target.value);
   };
   const [descontinuado, setDescontinuado] = useState(1);
-  const handleChangeDescontinuado = (event) => {
-    setDescontinuado(event.target.value);
+  const handleChangeDescontinuado = (e) => {
+    setDescontinuado(e);
   };
   const [totalExistente, setTotalExistente] = useState(1);
   const handleChangeTotalExistente = (event) => {
@@ -259,6 +259,7 @@ function ProductInformation() {
     setEnUso(data.enUso);
     setDisponible(data.disponible);
     setNoDevueltos(data.noDevueltos);
+    setDescontinuado(data.descontinuado);
   };
 
   return (
@@ -288,7 +289,7 @@ function ProductInformation() {
               </button>
               <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
                 
-                {productInfo.descontinuado === 0 ? (
+                {productInfo.descontinuado !== 1 ? (
                   <button
                   className="btn btn-danger text-light"
                   type="button"
@@ -302,7 +303,8 @@ function ProductInformation() {
                     <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={() => {}}
+                        onClick={() => {handleChangeDescontinuado(1);}}
+                        onSubmit={handleSubmit}
                         disabled
                     >
                         Reactivar
