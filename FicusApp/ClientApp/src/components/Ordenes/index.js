@@ -71,7 +71,6 @@ const Orden = () => {
   };
 
   const handleFaseChange = async () => {
-    console.log("Actualice my compa...");
     try {
       fetchHistorialOrden();
     } catch (error) {

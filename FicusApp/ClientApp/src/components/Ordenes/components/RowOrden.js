@@ -22,8 +22,6 @@ const RowOrden = ({
   const clienteEmpresa = cliente.find(
     (c) => c.clienteId === clienteId
   )?.nombreEmpresa;
-  console.log(cliente);
-  console.log(orden);
 
   return (
     <tr>
@@ -41,7 +39,7 @@ const RowOrden = ({
           token={token}
         />
       </td>
-      <td className="text-center">₡ {monto.toLocaleString()}</td>
+      <td className="text-center">₡ {monto?.toLocaleString()}</td>
       <td className="text-center">
         <div className="d-flex justify-content-center align-items-center">
           <button
