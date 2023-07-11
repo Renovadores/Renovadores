@@ -125,6 +125,7 @@ const ProductRow = ({ product, onSelectInventory }) => (
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{dateFormat(product.fechaIngreso)}</td>
+    <td>{wordDescontinued(product.producto.descontinuado)}</td>
     <td>
       <button
         className="btn btn-primary mx-2 text-light"
@@ -138,9 +139,9 @@ const ProductRow = ({ product, onSelectInventory }) => (
         Editar
       </button>
 
-      <button className="btn btn-danger text-light" product={product} disabled>
+      {/*<button className="btn btn-danger text-light" product={product} disabled>
         Eliminar
-      </button>
+      </button>*/}
     </td>
   </tr>
 );
@@ -154,6 +155,7 @@ const ProductsTable = ({ inventory, onSelectInventory }) => (
         <th scope="col">Cantidad</th>
         <th scope="col">Lote</th>
         <th scope="col">Fecha Ingreso</th>
+        <th scope="col">Eliminado</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -194,5 +196,13 @@ function InventoryList({
       )}
     </div>
   );
+}
+
+function wordDescontinued(num) {
+    var word = "NO";
+    if (num !== 0) {
+        word = "SI";
+    }
+    return word;
 }
 export default InventoryList;
