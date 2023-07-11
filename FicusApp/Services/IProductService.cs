@@ -12,5 +12,7 @@ public interface IProductService
     Task<Producto> AddProduct([FromBody] Producto request);
     Task<Producto> EditProduct([FromBody] Producto producto);
     Task<Producto> DeleteProduct([FromBody] Producto producto);
-    
+    Task<List<Categoria>> GetCategory();
+    Task<List<Color>> GetColor();
+    Task<List<Familia>> GetFamily();
 }

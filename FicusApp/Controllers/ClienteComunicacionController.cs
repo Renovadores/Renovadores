@@ -20,7 +20,7 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetMedia/{id}")]
-        public async Task<IActionResult> GetMedia(int id)
+        public Task<IActionResult> GetMedia(int id)
         {
             List<ClienteComunicacion> clienteMedios = _clientMediaService.GetMedia(id);
             List<string> medios = new();
@@ -28,7 +28,7 @@ namespace FicusApp.Controllers
             {
                 medios.Add(clienteMedios[i].MedioId);
             }
-            return Ok(medios);
+            return Task.FromResult<IActionResult>(Ok(medios));
         }
 
         [Authorize]
@@ -36,7 +36,7 @@ namespace FicusApp.Controllers
         [Route("AddClientMedia")]
         public async Task<IActionResult> AddClientMedia([FromBody] ClienteComunicacion request)
         {
-            int code = await _clientMediaService.AddMedia(request);
+            await _clientMediaService.AddMedia(request);
             return Ok();
         }
 
@@ -45,7 +45,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClientMedia")]
         public async Task<IActionResult> DeleteClientMedia([FromBody] ClienteComunicacion request)
         {
-            int code = await _clientMediaService.DeleteClientMedia(request);
+            await _clientMediaService.DeleteClientMedia(request);
             return Ok();
         }
 

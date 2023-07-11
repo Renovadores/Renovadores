@@ -70,6 +70,33 @@ public class ProductoController : ControllerBase
             await _productService.DeleteProduct(producto);
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetCategory")]
+        public async Task<IActionResult> GetCategory()
+        {
+            List<Categoria> productos = await _productService.GetCategory();
+            return Ok(productos);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetColor")]
+        public async Task<IActionResult> GetColor()
+        {
+            List<Color> productos = await _productService.GetColor();
+            return Ok(productos);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("GetFamily")]
+        public async Task<IActionResult> GetFamily()
+        {
+            List<Familia> productos = await _productService.GetFamily();
+            return Ok(productos);
+        }
     }
 }
 

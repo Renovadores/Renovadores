@@ -14,8 +14,8 @@ public partial class Producto
 
     [StringLength(255)]
     public string? Nombre { get; set; }
-
-    public int? ColorId { get; set; }
+    [ForeignKey("Color")]
+    public int ColorId { get; set; }
 
     [StringLength(255)]
     public string? Descripcion { get; set; }
@@ -30,10 +30,10 @@ public partial class Producto
     public int? AlquilerComercios { get; set; }
 
     public int? AlquilerRetail { get; set; }
-
-    public int? CategoriaId { get; set; }
-
-    public int? FamiliaId { get; set; }
+    [ForeignKey("Categoria")]
+    public int CategoriaId { get; set; }
+    [ForeignKey("Familia")]
+    public int FamiliaId { get; set; }
 
     [StringLength(255)]
     public string? Imagen { get; set; }
@@ -48,18 +48,12 @@ public partial class Producto
 
     public int? NoDevueltos { get; set; }
 
-    [ForeignKey("CategoriaId")]
-    [InverseProperty("Producto")]
     public virtual Categoria? Categoria { get; set; }
 
-    [ForeignKey("ColorId")]
-    [InverseProperty("Producto")]
     public virtual Color? Color { get; set; }
 
     [InverseProperty("Producto")]
     public virtual ICollection<Detalle> Detalle { get; set; } = new List<Detalle>();
 
-    [ForeignKey("FamiliaId")]
-    [InverseProperty("Producto")]
     public virtual Familia? Familia { get; set; }
 }

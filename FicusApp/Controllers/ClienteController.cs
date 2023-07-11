@@ -74,7 +74,7 @@ namespace FicusApp.Controllers
         [Route("GetNewId")]
         public async Task<IActionResult> GetNewId()
         {
-            newId id = new()
+            NewId id = new()
             {
                 Id = await _clientService.GetNewId()
             };
@@ -108,7 +108,7 @@ namespace FicusApp.Controllers
         [Route("AddCliente")]
         public async Task<IActionResult> AddCliente([FromBody] Cliente request)
         {
-            int code = await _clientService.AddCliente(request);
+            await _clientService.AddCliente(request);
             return Ok();
         }
 
@@ -117,7 +117,7 @@ namespace FicusApp.Controllers
         [Route("EditCliente")]
         public async Task<IActionResult> EditCliente([FromBody] Cliente cliente)
         {
-            int  code = await _clientService.EditCliente(cliente);
+            await _clientService.EditCliente(cliente);
             return Ok();
         }
 
@@ -126,12 +126,12 @@ namespace FicusApp.Controllers
         [Route("DeleteCliente")]
         public async Task<IActionResult> DeleteCliente([FromBody] Cliente cliente)
         {
-            int code = await _clientService.DeleteCliente(cliente);
+            await _clientService.DeleteCliente(cliente);
             return Ok();
         }
     }
 
-    public class newId
+    public class NewId
     {
         public int Id { get; set; }
     }

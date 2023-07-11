@@ -3,27 +3,28 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState } from "react";
 import Input from "./Input";
 import InputInt from "./InputInt";
-import CheckBox from "./CheckBox";
 import { GetToken } from "../GetToken";
 import SelectColor from "./SelectColor";
 import SelectCategory from "./SelectCategory";
 import SelectFamily from "./SelectFamily";
-import { useParams, useLocation, Link } from "react-router-dom";
-import InputDelete from "./InputDelete";
+import { useParams, Link } from "react-router-dom";
 
 function ProductInformation() {
   const [token, setToken] = useState("");
   const params = useParams();
   // get info from URL
   const ProductoId = params.ProductoId;
-  const [productInfo, setInfo] = useState("");
+  const [productInfo, setInfo] = useState({});
   const getProduct = async () => {
-    const responseProduct = await fetch(`api/producto/GetProducto/${ProductoId}`, {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const responseProduct = await fetch(
+      `api/producto/GetProducto/${ProductoId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     if (responseProduct.ok) {
       const data = await responseProduct.json();
       setInfo(data);
@@ -41,10 +42,20 @@ function ProductInformation() {
       const getToken = async () => {
         const dbToken = await GetToken();
         setToken(dbToken);
-      }
+      };
       getToken();
     }
   }, [token]);
+
+    // Get from DB
+    const productCategories = useGetProductCategories();
+    const [productCategory, setProductCategory] = useState(productCategories[0]);
+
+    const productColors = useGetProductColors();
+    const [productColor, setProductColor] = useState(productColors[0]);
+
+    const productFamilies = useGetProductFamily();
+    const [productFamily, setProductFamily] = useState(productFamilies[0]);
 
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
@@ -58,7 +69,7 @@ function ProductInformation() {
 
   const [colorId, setColorId] = useState("");
   const handleChangeColorId = (event) => {
-    setColorId(event.target.value);
+      setColorId(event.target.value);
   };
 
   const [descripcion, setDescripcion] = useState("");
@@ -132,24 +143,26 @@ function ProductInformation() {
       productoId,
       nombre,
       colorId,
+      productColor,
       descripcion,
       dimensiones,
       pesoRecipiente,
       pesoDesechable,
       alquilerComercios,
       alquilerRetail,
+      productCategory,
+      productFamily,
       categoriaId,
-      familiaId,
+      familiaId
     );
     const currentToken = await GetToken();
     const response = await fetch("api/producto/EditProducto", {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': `Bearer ${currentToken}`
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
-        colorId: colorId,
         productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
@@ -159,6 +172,7 @@ function ProductInformation() {
         alquilerComercios: alquilerComercios,
         alquilerRetail: alquilerRetail,
         categoriaId: categoriaId,
+        colorId: colorId,
         familiaId: familiaId,
       }),
     });
@@ -193,11 +207,11 @@ function ProductInformation() {
     const response = await fetch("api/producto/DeleteProducto", {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': `Bearer ${currentToken}`
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({
-        colorId: colorId,
+        
         productoId: productoId,
         nombre: nombre,
         descripcion: descripcion,
@@ -207,6 +221,7 @@ function ProductInformation() {
         alquilerComercios: alquilerComercios,
         alquilerRetail: alquilerRetail,
         categoriaId: categoriaId,
+        colorId: colorId,
         familiaId: familiaId,
         descontinuado: descontinuado,
       }),
@@ -235,87 +250,45 @@ function ProductInformation() {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="card mb-5 mt-5">
-          <div className="card-body">
-            <div className="row align-items-center">
-              <div className="col-8 col-xs-2 px-2">
-                <h5 className="card-title"> {productInfo.nombre} </h5>
-              </div>
-              <div className="col-8 col-xs-2 px-2">
-                <Link to={`/inventario`}>
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                  >
-
-                    Ver en inventario
-                  </button>
-                </Link>
-              </div>
-              <div className="col-2 col-xs-2 px-2">
+      <div className="card m-3 mt-5">
+        <div className="card-body">
+          <div className="row align-items-center">
+            <div className="col-8 col-xs-2 px-2">
+              <h5 className="card-title"> {productInfo.nombre} </h5>
+            </div>
+            <div className="col-8 col-xs-2 px-2">
+              <Link to={`/inventario`}>
+                <button className="btn btn-primary" type="button">
+                  Ver en inventario
+                </button>
+              </Link>
+            </div>
+            <div className="col-2 col-xs-2 px-2">
+              <button
+                className="btn btn-primary"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasWithBothOptions"
+                aria-controls="offcanvasWithBothOptions"
+              >
+                Editar
+              </button>
+              <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-danger text-light"
                   type="button"
                   data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasWithBothOptions"
+                  data-bs-target="#offcanvasWithBothOptions2"
                   aria-controls="offcanvasWithBothOptions"
                 >
-                  Editar
+                  Eliminar
                 </button>
-                <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
-                  <button
-                    className="btn btn-danger text-light"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasWithBothOptions2"
-                    aria-controls="offcanvasWithBothOptions"
-                  >
-                    Eliminar
-                  </button>
 
-                  <div
-                    className="offcanvas offcanvas-start "
-                    data-bs-scroll="true"
-                    tabIndex="-1"
-                    id="offcanvasWithBothOptions2"
-                    aria-labelledby="offcanvasWithBothOptionsLabel"
-                  >
-                    <div className="offcanvas-header">
-                      <h5
-                        className="offcanvas-title"
-                        id="offcanvasWithBothOptionsLabel"
-                      >
-                        Eliminar
-                      </h5>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="offcanvas-body">
-                      Estas seguro que deseas eliminar este producto?
-                      &#8205; &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
-                      <form onSubmit={handleSubmitDelete}>
-                        <div className="row">
-                          <div className="col-6 d-flex justify-content-center">
-                            <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Eliminar</button>
-                          </div>
-                          <div className="col-6 d-flex justify-content-center">
-                            <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
                 <div
                   className="offcanvas offcanvas-start "
                   data-bs-scroll="true"
                   tabIndex="-1"
-                  id="offcanvasWithBothOptions"
+                  id="offcanvasWithBothOptions2"
                   aria-labelledby="offcanvasWithBothOptionsLabel"
                 >
                   <div className="offcanvas-header">
@@ -323,7 +296,7 @@ function ProductInformation() {
                       className="offcanvas-title"
                       id="offcanvasWithBothOptionsLabel"
                     >
-                      Informacion del producto
+                      Eliminar
                     </h5>
                     <button
                       type="button"
@@ -333,85 +306,256 @@ function ProductInformation() {
                     ></button>
                   </div>
                   <div className="offcanvas-body">
-                    <form onSubmit={handleSubmit}>
-
-                      <Input variable={nombre} handler={handleChangeNombre} text="Nombre" />
-                      <div className="mb-3">
-                      </div>
-                      <Input variable={descripcion} handler={handleChangeDescripcion} text="Desripcion" />
-                      <div className="mb-3">
-                      </div>
-                      <Input variable={dimensiones} handler={handleChangeDimensiones} text="Dimensiones" />
-                      <div className="mb-3">
-                      </div>
-                      <InputInt variable={pesoRecipiente} handler={handleChangePesoRecipiente} text="Peso de Recipiente" />
-                      <div className="mb-3">
-                      </div>
-                      <InputInt variable={pesoDesechable} handler={handleChangePesoDesechable} text="Peso Desechable" />
-                      <div className="mb-3">
-                      </div>
-                      <InputInt variable={alquilerComercios} handler={handleChangeAlquilerComercios} text="Precio Comercio" />
-                      <div className="mb-3">
-                      </div>
-                      <InputInt variable={alquilerRetail} handler={handleChangeAlquilerRetail} text="Precio Retail" />
-                      <div className="mb-3">
-                      </div>
-                      <div className="mb-3">
-                      </div>
-                      <SelectCategory variable={categoriaId} handler={handleChangeCategoriaId} />
-                      <SelectFamily variable={familiaId} handler={handleChangeFamiliaId} />
-                      <SelectColor variable={colorId} handler={handleChangeColorId} />
-
+                    Estas seguro que deseas eliminar este producto? &#8205;
+                    &#8205; &#8205; &#8205; &#8205;&#8205;&#8205; &#8205;
+                    <form onSubmit={handleSubmitDelete}>
                       <div className="row">
                         <div className="col-6 d-flex justify-content-center">
-                          <button type="submit" className="btn btn-primary" data-bs-dismiss="offcanvas" >Agregar</button>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            data-bs-dismiss="offcanvas"
+                          >
+                            Eliminar
+                          </button>
                         </div>
                         <div className="col-6 d-flex justify-content-center">
-                          <button className="btn btn-danger text-light" type="button" onClick={() => addDefaultEditForm(productInfo)} data-bs-dismiss="offcanvas">Cancelar</button>
+                          <button
+                            className="btn btn-danger text-light"
+                            type="button"
+                            onClick={() => addDefaultEditForm(productInfo)}
+                            data-bs-dismiss="offcanvas"
+                          >
+                            Cancelar
+                          </button>
                         </div>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
+              <div
+                className="offcanvas offcanvas-start "
+                data-bs-scroll="true"
+                tabIndex="-1"
+                id="offcanvasWithBothOptions"
+                aria-labelledby="offcanvasWithBothOptionsLabel"
+              >
+                <div className="offcanvas-header">
+                  <h5
+                    className="offcanvas-title"
+                    id="offcanvasWithBothOptionsLabel"
+                  >
+                    Informacion del producto
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="offcanvas-body">
+                  <form onSubmit={handleSubmit}>
+                    <Input
+                      variable={nombre}
+                      handler={handleChangeNombre}
+                      text="Nombre"
+                    />
+                    <div className="mb-3"></div>
+                    <Input
+                      variable={descripcion}
+                      handler={handleChangeDescripcion}
+                      text="Desripcion"
+                    />
+                    <div className="mb-3"></div>
+                    <Input
+                      variable={dimensiones}
+                      handler={handleChangeDimensiones}
+                      text="Dimensiones"
+                    />
+                    <div className="mb-3"></div>
+                    <InputInt
+                      variable={pesoRecipiente}
+                      handler={handleChangePesoRecipiente}
+                      text="Peso de Recipiente"
+                    />
+                    <div className="mb-3"></div>
+                    <InputInt
+                      variable={pesoDesechable}
+                      handler={handleChangePesoDesechable}
+                      text="Peso Desechable"
+                    />
+                    <div className="mb-3"></div>
+                    <InputInt
+                      variable={alquilerComercios}
+                      handler={handleChangeAlquilerComercios}
+                      text="Precio Comercio"
+                    />
+                    <div className="mb-3"></div>
+                    <InputInt
+                      variable={alquilerRetail}
+                      handler={handleChangeAlquilerRetail}
+                      text="Precio Retail"
+                    />
+                    <div className="mb-3"></div>
+                    <SelectCategory
+                      variable={categoriaId}
+                      list={productCategories}
+                      handler={handleChangeCategoriaId}
+                    />
+                    <SelectFamily
+                      variable={familiaId}
+                      list={productFamilies}
+                      handler={handleChangeFamiliaId}
+                    />
+                    <SelectColor
+                      variable={colorId}
+                      list={productColors}
+                      handler={handleChangeColorId}
+                    />
+
+                    <div className="row">
+                      <div className="col-6 d-flex justify-content-center">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          data-bs-dismiss="offcanvas"
+                        >
+                          Agregar
+                        </button>
+                      </div>
+                      <div className="col-6 d-flex justify-content-center">
+                        <button
+                          className="btn btn-danger text-light"
+                          type="button"
+                          onClick={() => addDefaultEditForm(productInfo)}
+                          data-bs-dismiss="offcanvas"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">
-                Producto ID: {productoId} </li>
-              <li className="list-group-item">
-                Color: {productInfo.colorId} </li>
-              <li className="list-group-item">
-                Descripcion: {productInfo.descripcion}{" "}</li>
-              <li className="list-group-item">
-                Dimensiones: {productInfo.dimensiones}{" "}</li>
-              <li className="list-group-item">
-                Peso: {productInfo.pesoRecipiente} </li>
-              <li className="list-group-item">
-                Peso sustituido: {productInfo.pesoDesechable} </li>
-              <li className="list-group-item">
-                Precio comercios: {productInfo.alquilerComercios} </li>
-              <li className="list-group-item">
-                Precio retail: {productInfo.alquilerRetail} </li>
-              <li className="list-group-item">
-                Familia: {productInfo.familiaId} </li>
-              <li className="list-group-item">
-                Categoria: {productInfo.categoriaId}{" "}</li>
-              <li className="list-group-item">
-                Imagen: {productInfo.imagen} </li>
-              <li className="list-group-item">
-                Total Producto: {productInfo.totalExistente} </li>
-              <li className="list-group-item">
-                En Uso: {productInfo.enUso} </li>
-              <li className="list-group-item">
-                Disponibles: {productInfo.disponible} </li>
-              <li className="list-group-item">
-                No Devueltos: {productInfo.noDevueltos} </li>
-            </ul>
           </div>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">Producto ID: {productoId} </li>
+            <li className="list-group-item">Color: {productInfo.color?.descripcion} </li>
+            <li className="list-group-item">
+              Descripcion: {productInfo.descripcion}{" "}
+            </li>
+            <li className="list-group-item">
+              Dimensiones: {productInfo.dimensiones}{" "}
+            </li>
+            <li className="list-group-item">
+              Peso: {productInfo.pesoRecipiente}{" "}
+            </li>
+            <li className="list-group-item">
+              Peso sustituido: {productInfo.pesoDesechable}{" "}
+            </li>
+            <li className="list-group-item">
+              Precio comercios: {productInfo.alquilerComercios}{" "}
+            </li>
+            <li className="list-group-item">
+              Precio retail: {productInfo.alquilerRetail}{" "}
+            </li>
+            <li className="list-group-item">
+              Familia: {productInfo.familia?.nombreFamilia}{" "}
+            </li>
+            <li className="list-group-item">
+              Categoria: {productInfo.categoria?.nombreCategoria}{" "}
+            </li>
+            <li className="list-group-item">Imagen: {productInfo.imagen} </li>
+            <li className="list-group-item">
+              Total Producto: {productInfo.totalExistente}{" "}
+            </li>
+            <li className="list-group-item">En Uso: {productInfo.enUso} </li>
+            <li className="list-group-item">
+              Disponibles: {productInfo.disponible}{" "}
+            </li>
+            <li className="list-group-item">
+              No Devueltos: {productInfo.noDevueltos}{" "}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   );
+}
+
+export function useGetProductCategories() {
+    // Get from DB
+    const [productCategories, setProductCategories] = useState([]);
+    useEffect(() => {
+        const getProductCategories = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetCategory", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductCategories(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductCategories();
+    },[]);
+    return productCategories;
+}
+
+export function useGetProductColors() {
+    // Get from DB
+    const [productColors, setProductColors] = useState([]);
+    useEffect(() => {
+        const getProductColors = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetColor", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductColors(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductColors();
+    }, []);
+    return productColors;
+}
+
+export function useGetProductFamily() {
+    // Get from DB
+    const [productFamilies, setProductFamilies] = useState([]);
+    useEffect(() => {
+        const getProductFamilies = async () => {
+            const currentToken = await GetToken();
+            const response = await fetch("api/producto/GetFamily", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${currentToken}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProductFamilies(data);
+            } else {
+                console.log(response.text);
+            }
+        };
+        getProductFamilies();
+    },[]);
+    return productFamilies;
 }
 
 export default ProductInformation;

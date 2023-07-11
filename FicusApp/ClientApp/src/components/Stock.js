@@ -12,6 +12,7 @@ import AddInventoryModal from "./AddInventoryModal";
 import MatchingProductListStock from "./MatchingProductListStock";
 import MatchingProductsInput from "./MatchingProductsInput";
 import { getMatchProducts } from "./Inventory";
+import { useGetProductFamily, useGetProductCategories, useGetProductColors } from "./ProductInformation"
 
 function Stock() {
   // get products from data base
@@ -32,6 +33,7 @@ function Stock() {
       const data = await response.json();
       setProducts(data);
       setProductsChecked(true);
+      console.log(products);
     } else {
       console.log(response.text);
     }
@@ -45,18 +47,21 @@ function Stock() {
       };
       getToken();
     } else {
-      getProducts();
+        getProducts();
+
     }
   }, [token]);
 
-  // // When user click on client button, 'navigate hook' redirect him to new page
-  // const navigate = useNavigate(); // Allows referencing a specific path defined in AppRoutes
-  // const handleClickViewProduct = (productIndex) => {
-  //   navigate("/productos/informacion/", {
-  //     state: products[productIndex].SKU,
-  //   });
-  //   //second argument allows to pass parameters
-  // };
+    // Get from DB
+    const productCategories = useGetProductCategories();
+    const [productCategory, setProductCategory] = useState(productCategories[0]);
+
+    const productColors = useGetProductColors();
+    const [productColor, setProductColor] = useState(productColors[0]);
+
+    const productFamilies = useGetProductFamily();
+    const [productFamily, setProductFamily] = useState(productFamilies[0]);
+
   // Agregar producto
   const [productoId, setProductoId] = useState("");
   const handleChangeProductoId = (event) => {
@@ -313,13 +318,15 @@ function Stock() {
                 />
                 <SelectCategory
                   variable={categoriaId}
+                  list={productCategories}
                   handler={handleChangeCategoriaId}
                 />
                 <SelectFamily
                   variable={familiaId}
+                  list={productFamilies}
                   handler={handleChangeFamiliaId}
                 />
-                <SelectColor variable={colorId} handler={handleChangeColorId} />
+                <SelectColor variable={colorId} list={productColors}handler={handleChangeColorId} />
 
                 <div className="row" data-bs-dismiss="offcanvas">
                   <div className="col-6 d-flex justify-content-center">

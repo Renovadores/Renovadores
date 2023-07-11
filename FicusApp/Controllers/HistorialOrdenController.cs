@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FicusApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FicusApp.Controllers
 {
@@ -82,6 +83,7 @@ namespace FicusApp.Controllers
 
         // POST: api/HistorialOrden
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<HistorialOrden>> PostHistorialOrden(HistorialOrden historialOrden)
         {

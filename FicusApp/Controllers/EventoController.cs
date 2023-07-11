@@ -20,10 +20,10 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetEventos")]
-        public async Task<IActionResult> GetEventos()
+        public Task<IActionResult> GetEventos()
         {
             List<Evento> eventos = _eventService.GetEventos();
-            return Ok(eventos);
+            return Task.FromResult<IActionResult>(Ok(eventos));
         }
 
         [Authorize]
@@ -31,43 +31,43 @@ namespace FicusApp.Controllers
         [Route("AddEvento")]
         public async Task<IActionResult> AddEvento([FromBody] Evento request)
         {
-            int code = await _eventService.AddEvento(request);
+            await _eventService.AddEvento(request);
             return Ok();
         }
 
         [Authorize]
         [HttpGet]
         [Route("FindEvento/{name}")]
-        public async Task<IActionResult> FindEvento(string name)
+        public Task<IActionResult> FindEvento(string name)
         {
             bool r = _eventService.FindEvento(name);
             Exist response = new()
             {
                 exist = r
             };
-            return Ok(response);
+            return Task.FromResult<IActionResult>(Ok(response));
         }
 
         [Authorize]
         [HttpGet]
         [Route("GetEventId/{name}")]
-        public async Task<IActionResult> GetEventId(string name)
+        public Task<IActionResult> GetEventId(string name)
         {
             int id = _eventService.GetEventId(name);
             Id response = new()
             {
                 id = id
             };
-            return Ok(response);
+            return Task.FromResult<IActionResult>(Ok(response));
         }
 
         [Authorize]
         [HttpPut]
         [Route("EditDescription")]
-        public async Task<IActionResult> EditDescription([FromBody] Evento evento)
+        public Task<IActionResult> EditDescription([FromBody] Evento evento)
         {
             _eventService.EditDescription(evento);
-            return Ok();
+            return Task.FromResult<IActionResult>(Ok());
         }
     }
     public class Exist

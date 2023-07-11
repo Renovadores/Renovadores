@@ -13,7 +13,7 @@ namespace FicusApp.Services;
         {
             _context = context;
         }
-        public async Task<List<Inventario>> GetInventory()
+        public Task<List<Inventario>> GetInventory()
         {
             //List<Inventario> Inventarios = _context.Inventario.OrderByDescending(c => c.Producto).ToList();
             var Inventarios = _context.Inventario
@@ -21,13 +21,15 @@ namespace FicusApp.Services;
                 .OrderByDescending(c => c.ProductoId)
                 .ToList();
 
-            return Inventarios;
+            return Task.FromResult(Inventarios);
         }
-        public async Task<newId> GetNewId()
+        public Task<NewId> GetNewId()
         {
-            newId id = new newId();
-            id.Id = _context.Inventario.Count() + 1;
-            return id;
+        NewId id = new()
+        {
+            Id = _context.Inventario.Count() + 1
+        };
+        return Task.FromResult(id);
         }
 
     /*
@@ -69,14 +71,14 @@ namespace FicusApp.Services;
             return inventory;
         }
 
-        public async Task<Inventario> EditInventory([FromBody] Inventario inventario)
+        public Task<Inventario> EditInventory([FromBody] Inventario inventario)
         {
             _context.Inventario.Update(inventario);
             _context.SaveChanges();
-            return inventario;
+            return Task.FromResult(inventario);
         }
 
-        public async Task<List<Inventario>> GetMatchInventory(string input)
+        public Task<List<Inventario>> GetMatchInventory(string input)
         {
             List<Inventario> matchInventory;
                 matchInventory = _context.Inventario
@@ -85,6 +87,6 @@ namespace FicusApp.Services;
                 .OrderByDescending(p => p.Producto.Disponible)
                 .Take(8)
                 .ToList();
-            return matchInventory;
+            return Task.FromResult(matchInventory);
         }
     }

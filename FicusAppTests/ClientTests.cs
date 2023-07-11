@@ -20,7 +20,7 @@ namespace FicusAppTests
         [Theory]
         [InlineData(-1)]
         [InlineData(-200)]
-        [InlineData(3)]
+        [InlineData(4)]
         [InlineData(300)]
         public async void GetClient_WithNotValidId_ExpectedOutOfRangeCode(int id)
         {
@@ -141,7 +141,7 @@ namespace FicusAppTests
             var _clientService = new ClientService(mockDbContext.Object);
 
             // ACT
-            (int code, List<Cliente> clients) = await _clientService.GetClientes(0);
+            (int code, List<Cliente> clients) = await _clientService.GetClientes();
 
             // ASSERT
             Assert.Equal(expected, code);
@@ -173,7 +173,7 @@ namespace FicusAppTests
             var _clientService = new ClientService(mockDbContext.Object);
 
             // ACT
-            (int code, List<Cliente> clients) = await _clientService.GetClientes(0);
+            (int code, List<Cliente> clients) = await _clientService.GetClientes();
 
             // ASSERT
             Assert.Equal(expected, code);

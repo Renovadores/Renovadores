@@ -8,7 +8,7 @@ namespace FicusApp.Services;
     public interface IInventarioService
     {
         Task<List<Inventario>> GetInventory();
-        Task<newId> GetNewId();
+        Task<NewId> GetNewId();
         //Task<List<Estado>> GetState();
         Task<Inventario> GetInventoryDetail(string ProductoId);
         Task<Inventario?> GetInventoryRow(int InventarioId);

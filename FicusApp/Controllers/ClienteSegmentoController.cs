@@ -22,7 +22,7 @@ namespace FicusApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetSegments/{id}")]
-        public async Task<IActionResult> GetSegments(int id)
+        public Task<IActionResult> GetSegments(int id)
         {
             List<ClienteSegmento> clienteSegmentos = _clientSegmentService.GetSegments(id);
             List<string> segmentos = new();
@@ -30,7 +30,7 @@ namespace FicusApp.Controllers
             {
                 segmentos.Add(clienteSegmentos[i].SegmentoId);
             }
-            return Ok(segmentos);
+            return Task.FromResult<IActionResult>(Ok(segmentos));
         }
 
         [Authorize]
@@ -38,7 +38,7 @@ namespace FicusApp.Controllers
         [Route("AddSegment")]
         public async Task<IActionResult> AddSegment([FromBody] ClienteSegmento request)
         {
-            int code = await _clientSegmentService.AddSegment(request);
+            await _clientSegmentService.AddSegment(request);
             return Ok();
         }
 
@@ -47,7 +47,7 @@ namespace FicusApp.Controllers
         [Route("DeleteClientSegment")] 
         public async Task<IActionResult> DeleteClientSegment([FromBody] ClienteSegmento request)
         {
-            int code = await _clientSegmentService.DeleteClientSegment(request);
+            await _clientSegmentService.DeleteClientSegment(request);
             return Ok();
         }
 

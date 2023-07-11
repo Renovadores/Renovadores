@@ -228,12 +228,6 @@ public partial class FicusContext : DbContext
             entity.Property(e => e.EnUso).HasDefaultValueSql("((0))");
             entity.Property(e => e.NoDevueltos).HasDefaultValueSql("((0))");
             entity.Property(e => e.TotalExistente).HasDefaultValueSql("((0))");
-
-            entity.HasOne(d => d.Categoria).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Catego__4D94879B");
-
-            entity.HasOne(d => d.Color).WithMany(p => p.Producto).HasConstraintName("FK__Producto__ColorI__4CA06362");
-
-            entity.HasOne(d => d.Familia).WithMany(p => p.Producto).HasConstraintName("FK__Producto__Famili__4E88ABD4");
         });
 
         modelBuilder.Entity<Rol>(entity =>
