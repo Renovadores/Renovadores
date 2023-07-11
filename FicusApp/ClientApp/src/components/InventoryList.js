@@ -1,6 +1,8 @@
 import InputInt from "./InputInt";
 import { useEffect, useState } from "react";
 import { dateFormat } from "./ClientInformation";
+import { Link } from "react-router-dom";
+
 const NoProducts = () => (
   <h5 className="d-flex justify-content-center">
     No se encontraron productos en la base de datos.
@@ -120,8 +122,8 @@ const FormEditInventory = ({ product, onSubmit }) => {
 };
 const ProductRow = ({ product, onSelectInventory }) => (
   <tr>
-    {/*<th scope="row">{product.id_Inventario}</th>*/}
-    <td>{product.productoId}</td>
+        {/*<th scope="row">{product.id_Inventario}</th>*/}
+        <td><Link to={`/productos/informacion/${product.productoId}`}>{product.productoId}</Link></td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{dateFormat(product.fechaIngreso)}</td>

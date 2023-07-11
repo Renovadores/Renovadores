@@ -287,7 +287,9 @@ function ProductInformation() {
                 Editar
               </button>
               <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
-                <button
+                
+                {productInfo.descontinuado === 0 ? (
+                  <button
                   className="btn btn-danger text-light"
                   type="button"
                   data-bs-toggle="offcanvas"
@@ -296,6 +298,16 @@ function ProductInformation() {
                 >
                   Eliminar
                 </button>
+                    ) : (
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        onClick={() => {}}
+                        disabled
+                    >
+                        Reactivar
+                    </button>
+                    )}
 
                 <div
                   className="offcanvas offcanvas-start "
