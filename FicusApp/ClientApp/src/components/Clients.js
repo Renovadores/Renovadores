@@ -7,7 +7,6 @@ import ClientList from "./ClientList";
 import { GetToken } from "../GetToken";
 import Input from "./Input";
 import InputInt from "./InputInt";
-import Pagination from "./Pagination";
 import SelectPriority from "./SelectPriority";
 import SelectState from "./SelectState";
 import Spinner from "./Spinner";
@@ -20,11 +19,10 @@ function Clients() {
   const [clients, setClients] = useState([]);
   const [users, setUsers] = useState([]);
   const [token, setToken] = useState("");
-  const [updatePagination, setUpdatePagination] = useState(false);
 
   const getClients = async () => {
     setClientsChecked(false);
-    const response = await fetch(`api/cliente/GetClientes/${0}`, {
+    const response = await fetch(`api/cliente/GetClientes`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -335,9 +333,11 @@ function Clients() {
         }
         handleCancel();
         // this change autocall getClients
-
-        setToken(currentToken);
-        setUpdatePagination(!updatePagination);
+        if (token === currentToken) {
+          getClients();
+        } else {
+          setToken(currentToken);
+        }
       }
     }
     segments = [];
@@ -460,13 +460,11 @@ function Clients() {
         clientsChecked === false ?
           <Spinner />
           :
-          <ClientList clients={clients} handler={(clientId) => handleClickViewClient(clientId)} />
+          <div className="row">
+            <ClientList clients={clients} handler={(clientId) => handleClickViewClient(clientId)} />
+          </div>
+          
       }
-      <Pagination apiRoute="api/cliente/GetClientes"
-        apiTotalElements="api/cliente/GetTotalClients"
-        setElements={(data) => setClients(data)}
-        update={updatePagination}
-      />
     </div>
   );
 }

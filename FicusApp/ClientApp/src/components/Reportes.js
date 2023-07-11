@@ -104,14 +104,14 @@ const Reportes = () => {
 
   return (
     <div className="container h-75">
-      <div className="row">
-        <div className="col-4 px-0">
+      <div className="row d-flex justify-content-center">
+        <div className="col-3 col-lg-2 px-0">
           <InputInt text="Año" default="2022" handler={handleYear} />
         </div>
       </div>
       <div className="row">
-        <div className="col p-0 mb-4">
-          <div className="bg-light m-0">
+        <div className="col mb-4">
+          <div className="card bg-light border border-success border-5 mx-lg-5">
             {
               environmentalReport.datasets ?
                 <div>
@@ -124,8 +124,8 @@ const Reportes = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col p-0 mb-4">
-          <div className="bg-light m-0">
+        <div className="col mb-4">
+          <div className="card bg-light border border-success border-5 mx-lg-5">
             {
               ordersReport.datasets ?
                 <div>

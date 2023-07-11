@@ -23,10 +23,10 @@ namespace FicusApp.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("GetClientes/{index}")]
-        public async Task<IActionResult> GetClientes(int index)
+        [Route("GetClientes")]
+        public async Task<IActionResult> GetClientes()
         {
-            (int code, List<Cliente> clientes) = await _clientService.GetClientes(index);
+            (int code, List<Cliente> clientes) = await _clientService.GetClientes();
             if (code == NOT_FOUND_CODE)
             {
                 // There are no clients in the DB

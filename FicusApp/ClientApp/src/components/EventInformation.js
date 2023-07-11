@@ -21,8 +21,24 @@ function EventInformation() {
       setEventsChecked(true);
     }
   }
+
+  const getFase = (orderId) => {
+    var fase = historial.find(h => h.ordenId === orderId).faseId;
+    return getFaseBadge(fase);
+  }
+
+  const [historial, setHistorial] = useState([]);
+  const getHistorial = async () => {
+    const response = await fetch("api/HistorialOrden");
+    if (response.ok) {
+      const data = await response.json();
+      setHistorial(data);
+    }
+  }
+
   useEffect(() => {
     getEventsGroupByDate();
+    getHistorial();
   }, [])
   return (
     <div className="container d-flex justify-content-center min-vh-100">
@@ -56,9 +72,24 @@ function EventInformation() {
                             <h6>
                               {order.cliente.nombreEmpresa}
                             </h6>
-                            <a href={"/ordenes/" + order.ordenId} className="card-link link-info">
-                              Orden: {order.ordenId}
-                            </a>
+                            <div className="row">
+                              <div className="col">
+                                <a href={"/ordenes/" + order.ordenId}
+                                  className="card-link link-info">
+                                  Orden: {order.ordenId}
+                                </a>
+                              </div>
+                              <div className="col">
+                                {
+                                  historial.length > 0 ?
+                                    getFase(order.ordenId)
+                                :
+                                    <></>
+                                }
+                                
+                              </div>
+                            </div>
+                            
                           </li>
                         ))
                       }
@@ -80,4 +111,15 @@ function dateFormat(dateDB) {
   const date = day + "-" + arrayDate[1] + "-" + arrayDate[0];
 
   return date;
+}
+
+function getFaseBadge(faseId) {
+  const opciones = {
+    1: <span className="badge text-bg-secondary">Reservada</span>,
+    2: <span className="badge text-bg-info">Entregada</span>,
+    3: <span className="badge text-bg-success">Finalizada</span>,
+    default: <span className="badge text-bg-secondary">Indefinido</span>,
+  };
+  const resultado = opciones[faseId] || opciones.default;
+  return resultado;
 }
