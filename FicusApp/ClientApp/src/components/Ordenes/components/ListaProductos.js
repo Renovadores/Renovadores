@@ -7,9 +7,8 @@ const ListaProductos = ({
   isOrdenEditable,
   ordenUpdated,
   onDetalleUpdate,
-  token,
 }) => {
-  const [newtoken, setToken] = useState("");
+  const [token, setToken] = useState("");
   const [detalle, setDetalle] = useState([]);
   const [producto, setProducto] = useState([]);
 
