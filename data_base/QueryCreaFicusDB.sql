@@ -1,3 +1,20 @@
+-- Verificar si la base de datos Ficus ya existe
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'Ficus')
+BEGIN
+    -- Eliminar la base de datos Ficus si existe
+    EXEC sp_executesql N'DROP DATABASE Ficus';
+END
+GO
+
+-- Crear la base de datos Ficus
+CREATE DATABASE Ficus;
+GO
+
+-- Usar la base de datos Ficus
+USE Ficus;
+GO
+
+
 CREATE TABLE [Usuario] (
   [UsuarioId] integer PRIMARY KEY,
   [Nombre] nvarchar(255) NOT NULL,

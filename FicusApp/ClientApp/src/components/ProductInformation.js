@@ -232,7 +232,7 @@ function ProductInformation() {
         enUso: enUso,
         disponible: disponible,
         noDevueltos: noDevueltos,
-        descontinuado: descontinuado,
+        descontinuado: 1,
       }),
     });
     console.log(response);
@@ -303,8 +303,6 @@ function ProductInformation() {
                     <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={() => {handleChangeDescontinuado(1);}}
-                        onSubmit={handleSubmit}
                         disabled
                     >
                         Reactivar
