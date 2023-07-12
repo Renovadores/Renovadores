@@ -11,68 +11,94 @@ const Orden = () => {
   const [fases, setFases] = useState([]);
   const [historialOrden, setHistorialOrden] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [historialOrdenEliminadas, setHistorialOrdenEliminadas] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchOrden = async () => {
+    try {
+      const response = await fetch(`/api/orden/GetOrders`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const dataOrden = await response.json();
       try {
-        const responseToken = await GetToken();
-        setToken(responseToken);
+        const response = await fetch(`/api/historialorden/`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setHistorialOrden(data);
+        const filteredHistorialOrden = data.filter((item) => item.faseId === 0);
+        setHistorialOrdenEliminadas(filteredHistorialOrden);
 
-        const [
-          responseOrden,
-          responseCliente,
-          responseFases,
-        ] = await Promise.all([
-          fetch(`/api/orden/GetOrders`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${responseToken}`,
-            },
-          }),
-          fetch(`api/cliente/GetAllClientes/`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${responseToken}`,
-            },
-          }),
-          fetch(`/api/fase/`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${responseToken}`,
-            },
-          }),
-        ]);
+        const ordenIdsEliminadas = historialOrdenEliminadas.map(
+          (historial) => historial.ordenId
+        );
+        const filteredOrden = dataOrden.filter((orden) =>
+          !ordenIdsEliminadas.includes(orden.ordenId)
+        );
 
-        const dataOrden = await responseOrden.json();
-        const dataCliente = await responseCliente.json();
-        const dataFases = await responseFases.json();
-
-        fetchHistorialOrden();
-        setOrden(dataOrden);
-        setCliente(dataCliente);
-        setFases(dataFases);
+        setOrden(filteredOrden);
       } catch (error) {
         console.log(error.message);
       }
-    };
-
-    fetchData();
-  }, []);
-
-  const fetchHistorialOrden = async (token) => {
-    const response = await fetch(`/api/historialorden/`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setHistorialOrden(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
+  const fetchCliente = async () => {
+    try {
+      const response = await fetch(`api/cliente/GetAllClientes/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setCliente(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  // Pedir los datos de una fase con su ID
+  const fetchFases = async () => {
+    try {
+      const response = await fetch(`/api/fase/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setFases(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (token !== "") {
+      fetchOrden();
+      fetchCliente();
+      fetchFases();
+    } else {
+      const getToken = async () => {
+        const dbToken = await GetToken();
+        setToken(dbToken);
+      };
+      getToken();
+    }
+  }, [token, historialOrden]);
+
 
   const handleFaseChange = async () => {
     try {
-      fetchHistorialOrden();
+      fetchOrden();
     } catch (error) {
       console.error("Error:", error.message);
     }

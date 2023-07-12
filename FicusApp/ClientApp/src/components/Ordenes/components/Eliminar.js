@@ -5,9 +5,9 @@ import { GetToken } from "../../../GetToken";
 
 //TODO: eliminar detalles y hostorial de ordenes liberar a inventario productos
 
-const EliminarOrden = ({ ordenId }) => {
-  const [token, setToken] = useState("");
-    const [historial, setHistorial] = useState([]);
+const EliminarOrden = ({ ordenId, token}) => {
+
+  const [historial, setHistorial] = useState([]);
   const fetchHistorial = async () => {
     try {
       const response = await fetch(`/api/historialorden/`, {
@@ -61,25 +61,6 @@ const EliminarOrden = ({ ordenId }) => {
       console.error("Error:", error.message);
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const paddedOrdenId = String(ordenId).padStart(5, "0");
   return (
     <div

@@ -6,8 +6,10 @@ const ListaProductos = ({
   isOrden,
   isOrdenEditable,
   ordenUpdated,
+  onDetalleUpdate,
+  token,
 }) => {
-  const [token, setToken] = useState("");
+  const [newtoken, setToken] = useState("");
   const [detalle, setDetalle] = useState([]);
   const [producto, setProducto] = useState([]);
 
@@ -63,6 +65,9 @@ const ListaProductos = ({
       });
 
       if (response.ok) {
+        if(onDetalleUpdate){
+          onDetalleUpdate()
+        }
         // Reinicia el estado para volver a actualizar
         fetchDetalle();
       } else {

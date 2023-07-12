@@ -14,6 +14,7 @@ const RowOrden = ({
   cliente,
   fases,
   historialOrden,
+  onDetalleUpdate,
   onFaseChange,
   token,
 }) => {
@@ -62,8 +63,13 @@ const RowOrden = ({
             <BsTrashFill />
           </button>
         </div>
-        <DetallesOrden detalleId={ordenId} key={ordenId} />
-        <EliminarOrden ordenId={ordenId} />
+        <DetallesOrden
+          detalleId={ordenId}
+          key={ordenId}
+          onDetalleUpdate={onDetalleUpdate}
+          token={token}
+        />
+        <EliminarOrden ordenId={ordenId} token={token} />
       </td>
     </tr>
   );

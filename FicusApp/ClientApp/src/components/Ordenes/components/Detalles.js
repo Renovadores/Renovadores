@@ -1,6 +1,6 @@
 import ListaProductos from "./ListaProductos.js";
 
-const DetallesOrden = ({ detalleId }) => {
+const DetallesOrden = ({ detalleId, onDetalleUpdate, token }) => {
   const paddedDetalleId = String(detalleId).padStart(5, "0");
   return (
     <div
@@ -29,6 +29,8 @@ const DetallesOrden = ({ detalleId }) => {
               isOrden={true}
               isOrdenEditable={false}
               ordenUpdated={false}
+              onDetalleUpdate={onDetalleUpdate}
+              token={token}
             />
           </div>
           <div className="modal-footer">
