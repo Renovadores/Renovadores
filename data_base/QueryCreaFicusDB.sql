@@ -14,6 +14,7 @@ GO
 USE Ficus;
 GO
 
+
 CREATE TABLE [Usuario] (
   [UsuarioId] integer PRIMARY KEY,
   [Nombre] nvarchar(255) NOT NULL,

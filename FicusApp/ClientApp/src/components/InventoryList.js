@@ -1,6 +1,8 @@
 import InputInt from "./InputInt";
 import { useEffect, useState } from "react";
 import { dateFormat } from "./ClientInformation";
+import { Link } from "react-router-dom";
+
 const NoProducts = () => (
   <h5 className="d-flex justify-content-center">
     No se encontraron productos en la base de datos.
@@ -120,11 +122,12 @@ const FormEditInventory = ({ product, onSubmit }) => {
 };
 const ProductRow = ({ product, onSelectInventory }) => (
   <tr>
-    {/*<th scope="row">{product.id_Inventario}</th>*/}
-    <td>{product.productoId}</td>
+        {/*<th scope="row">{product.id_Inventario}</th>*/}
+        <td><Link to={`/productos/informacion/${product.productoId}`}>{product.productoId}</Link></td>
     <td>{product.cantidad}</td>
     <td>{product.lote}</td>
     <td>{dateFormat(product.fechaIngreso)}</td>
+    <td>{wordDescontinued(product.producto.descontinuado)}</td>
     <td>
       <button
         className="btn btn-primary mx-2 text-light"
@@ -138,9 +141,9 @@ const ProductRow = ({ product, onSelectInventory }) => (
         Editar
       </button>
 
-      <button className="btn btn-danger text-light" product={product} disabled>
+      {/*<button className="btn btn-danger text-light" product={product} disabled>
         Eliminar
-      </button>
+      </button>*/}
     </td>
   </tr>
 );
@@ -154,6 +157,7 @@ const ProductsTable = ({ inventory, onSelectInventory }) => (
         <th scope="col">Cantidad</th>
         <th scope="col">Lote</th>
         <th scope="col">Fecha Ingreso</th>
+        <th scope="col">Eliminado</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -194,5 +198,13 @@ function InventoryList({
       )}
     </div>
   );
+}
+
+function wordDescontinued(num) {
+    var word = "NO";
+    if (num !== 0) {
+        word = "SI";
+    }
+    return word;
 }
 export default InventoryList;

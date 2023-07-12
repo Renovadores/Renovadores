@@ -117,8 +117,8 @@ function ProductInformation() {
     setImage(event.target.value);
   };
   const [descontinuado, setDescontinuado] = useState(1);
-  const handleChangeDescontinuado = (event) => {
-    setDescontinuado(event.target.value);
+  const handleChangeDescontinuado = (e) => {
+    setDescontinuado(e);
   };
   const [totalExistente, setTotalExistente] = useState(1);
   const handleChangeTotalExistente = (event) => {
@@ -174,6 +174,11 @@ function ProductInformation() {
         categoriaId: categoriaId,
         colorId: colorId,
         familiaId: familiaId,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
+        descontinuado: descontinuado,
       }),
     });
     if (response.ok) {
@@ -223,7 +228,11 @@ function ProductInformation() {
         categoriaId: categoriaId,
         colorId: colorId,
         familiaId: familiaId,
-        descontinuado: descontinuado,
+        totalExistente: totalExistente,
+        enUso: enUso,
+        disponible: disponible,
+        noDevueltos: noDevueltos,
+        descontinuado: 1,
       }),
     });
     console.log(response);
@@ -246,6 +255,11 @@ function ProductInformation() {
     setCategoriaId(data.categoriaId);
     setFamiliaId(data.familiaId);
     setImage(data.Imagen);
+    setTotalExistente(data.totalExistente);
+    setEnUso(data.enUso);
+    setDisponible(data.disponible);
+    setNoDevueltos(data.noDevueltos);
+    setDescontinuado(data.descontinuado);
   };
 
   return (
@@ -274,7 +288,9 @@ function ProductInformation() {
                 Editar
               </button>
               <div className="col-sm-1 col-md-1  d-flex my-1 my-md-2">
-                <button
+                
+                {productInfo.descontinuado !== 1 ? (
+                  <button
                   className="btn btn-danger text-light"
                   type="button"
                   data-bs-toggle="offcanvas"
@@ -283,6 +299,15 @@ function ProductInformation() {
                 >
                   Eliminar
                 </button>
+                    ) : (
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled
+                    >
+                        Reactivar
+                    </button>
+                    )}
 
                 <div
                   className="offcanvas offcanvas-start "
