@@ -4,7 +4,7 @@ import { GetToken } from "../../../GetToken";
 import ListaProductos from "./ListaProductos.js";
 import HistorialOrden from "./HistorialOrdenes.js";
 import ClienteInfo from "./ClienteInfo.js";
-import GraficoOrdenes from "./GraficoOrdenes.js";
+import {formatDate} from "./utils.js";
 
 import { FaEdit, FaTimes } from "react-icons/fa";
 
@@ -52,6 +52,7 @@ const OrdenInfo = () => {
     }
   }, [token]);
 
+const paddedOrdenId = String(orden?.ordenId).padStart(5, "0");
 return (
     <div className="container">
       <div className="row">
@@ -59,14 +60,30 @@ return (
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Información del Cliente</h5>
-              <ClienteInfo clienteId={orden.clienteId} />
+              <ClienteInfo clienteId={orden?.clienteId} />
             </div>
           </div>
         </div>
         <div className="col-md-6 mb-2">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Grafico</h5>
+              <h5 className="card-title">Información de la Orden</h5>
+    <div>
+      <div className="list-group">
+        <div className="list-group-item">
+          <strong>Identificador: </strong> {paddedOrdenId}
+        </div>
+        <div className="list-group-item">
+          <strong>Fecha Alquiler:</strong> {formatDate(orden.fechaAlquiler)}
+        </div>
+        <div className="list-group-item">
+          <strong>Descuento: </strong> {orden?.descuento}
+        </div>
+        <div className="list-group-item">
+          <strong>Monto: </strong> {orden?.monto}
+        </div>
+      </div>
+    </div>
             </div>
           </div>
         </div>
